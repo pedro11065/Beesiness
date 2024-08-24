@@ -29,7 +29,7 @@ def birthday_verify(create_data): #birthday
     if len(birthday_original) != 10:
             return False, error
     try:
-        birthday_splited = birthday_original.split("/")  #vai dividir o que dia, mes e ano, a partir da barra. (13 / 03 / 2006)   
+        birthday_splited = birthday_original.split("-")  #vai dividir o que dia, mes e ano, a partir da barra. (13 / 03 / 2006)   
 
         birthday_test = birthday_splited[0]+birthday_splited[1]+birthday_splited[2] #vai juntar tudo
         birthday_test = int(birthday_test) #transfora em int para ver se tudo é numero mesmo
@@ -58,7 +58,7 @@ def birthday_verify(create_data): #birthday
 
 def email_verify(create_data): #email 
 
-    from model.database.db_users.search_user import db_search_user
+    from src.model.database.db_users.search_user import db_search_user
 
     email = create_data[1]
     search_data = email

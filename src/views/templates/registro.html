@@ -1,3 +1,5 @@
+   <!-- Vai chamar a API bonitinho -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -25,7 +27,7 @@
     <div class="container">
         <h1>Criar Nova Conta</h1>
         <!-- Entrada de Dados -->
-        <form>
+        <form id="registroForm">
             <div class="form-group">
                 <label for="fullName">Nome Completo</label>
                 <input type="text" id="fullName" name="fullName" required>
@@ -56,6 +58,6 @@
             Já está registrado? <a href="{{ url_for('auth.login') }}">Clique aqui</a>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/registro.js') }}"></script>
 </body>
 </html>

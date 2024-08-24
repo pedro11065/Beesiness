@@ -1,3 +1,4 @@
+// Código para alternar o modo escuro/claro
 const toggleButton = document.getElementById('dark-mode-toggle');
 const body = document.body;
 
@@ -11,3 +12,4 @@ toggleButton.addEventListener('click', () => {
         toggleButton.textContent = '🌙'; // Ícone de lua para Dark Mode
     }
 });
+// o login e o registro não estão mais utilizando o main, porem, ainda há coisas utilizando ele.
