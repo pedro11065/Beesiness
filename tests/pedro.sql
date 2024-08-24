@@ -1,0 +1,1 @@
+CREATE TABLE db_usuarios (id serial primary key, nomecompleto varchar(255), email varchar(255) unique, senha varchar(25), datadenascimento varchar(10));

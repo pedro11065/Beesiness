@@ -1,0 +1,64 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container geral */
+body {
+    font-family: Arial, sans-serif; /* Fonte usada no corpo do texto */
+    text-align: center; /* Alinha o texto ao centro */
+    padding: 50px; /* Espaçamento interno em torno do conteúdo */
+    background-color: #f0f0f0; /* Cor de fundo da página */
+}
+
+/* Estilo dos botões */
+.button {
+    display: inline-block; /* Exibe o botão como um bloco inline */
+    padding: 10px 20px; /* Espaçamento interno do botão */
+    font-size: 16px; /* Tamanho da fonte no botão */
+    color: #fff; /* Cor do texto no botão */
+    background-color: #007bff; /* Cor de fundo do botão */
+    border: none; /* Remove a borda padrão */
+    border-radius: 5px; /* Bordas arredondadas do botão */
+    text-decoration: none; /* Remove sublinhado dos links */
+}
+
+.button:hover {
+    background-color: #0056b3; /* Cor de fundo quando o botão é hovered */
+}
+
+/* Navegação */
+nav {
+    margin-bottom: 20px; /* Espaçamento abaixo da navegação */
+}
+
+nav a {
+    margin: 0 10px; /* Espaçamento horizontal entre os links de navegação */
+    text-decoration: none; /* Remove sublinhado dos links */
+    color: #007bff; /* Cor do texto dos links */
+}
+
+nav a:hover {
+    text-decoration: underline; /* Sublinha o texto ao passar o mouse */
+}
+
+/* Estilo do footer */
+.footer {
+    background-color: #ff4d4d; /* Cor de fundo vermelho do footer */
+    color: #fff; /* Cor do texto no footer */
+    padding: 15px; /* Espaçamento interno do footer */
+    position: fixed; /* Fixa o footer na parte inferior */
+    bottom: 0; /* Posiciona o footer na parte inferior */
+    left: 0; /* Garante que o footer comece na borda esquerda */
+    width: 100%; /* Faz com que o footer ocupe toda a largura da página */
+    text-align: center; /* Alinha o texto ao centro */
+    font-size: 14px; /* Tamanho da fonte do texto no footer */
+}
+
+/* Estilo para o símbolo de aviso no footer */
+.footer::before {
+    content: "⚠️"; /* Símbolo de aviso */
+    margin-right: 10px; /* Espaçamento à direita do símbolo */
+}

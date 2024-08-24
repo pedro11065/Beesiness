@@ -1,0 +1,171 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container geral */
+body {
+    background-color: #FFD400; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    font-family: 'Roboto Slab', serif;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Container de login */
+.login-container {
+    width: 100%;
+    max-width: 400px; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Caixa de login */
+.login-box {
+    background-color: white;
+    border-radius: 1.25rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
+    width: 100%;
+    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Logotipo */
+.logo img {
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 1.5rem;
+}
+
+/* Cabeçalho */
+h1 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: #000;
+    transition: color 0.5s ease;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: color 0.5s ease;
+}
+
+/* Campos de entrada */
+input[type="email"],
+input[type="tel"] {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.625rem;
+    border: 1px solid #ccc;
+    background-color: #F2F2F2;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="tel"]:focus {
+    border-color: #FFD400;
+    outline: none;
+}
+
+/* Botão */
+button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 0.625rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+/* Link de volta ao login */
+.back-to-login {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.back-to-login:hover {
+    text-decoration: underline;
+}
+
+/* Botão de Dark Mode */
+#dark-mode-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #000;
+    transition: color 0.3s ease;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: #ccc;
+}
+
+body.dark-mode .login-box {
+    background-color: #333;
+    color: #ccc;
+    box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode h1 {
+    color: #FFD400;
+}
+
+body.dark-mode label {
+    color: #ccc;
+}
+
+body.dark-mode input[type="email"],
+body.dark-mode input[type="tel"] {
+    background-color: #555;
+    color: #ccc;
+    border: 1px solid #777;
+}
+
+body.dark-mode button[type="submit"] {
+    background-color: #FFD400;
+    color: #000;
+}
+
+body.dark-mode button[type="submit"]:hover {
+    background-color: #FFC107;
+}
+
+/* Ajustes adicionais para responsividade */
+@media (max-width: 768px) {
+    #dark-mode-toggle {
+        font-size: 1.5rem;
+    }
+}

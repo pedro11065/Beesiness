@@ -1,0 +1,5 @@
+flask
+flask-login
+json
+psycopg2
+requests

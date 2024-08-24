@@ -1,0 +1,8 @@
+.venv
+venv
+.vscode
+src/__pycache__
+src/views/__pycache__
+src/controller/__pycache__
+__pycache__/
+node_modules

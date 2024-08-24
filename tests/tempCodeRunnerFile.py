@@ -1,0 +1,1 @@
+CREATE TABLE db_users (id int primary key, fullname varchar(255), email varchar(255) unique, password varchar(25), birthday varchar(10);

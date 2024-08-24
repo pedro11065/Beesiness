@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esqueci a Senha - Beesiness</title>
+    <!-- Css Linkado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/senha.css') }}">
+
+   <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beessiness_-_Logo-removebg-preview.png') }}" type="image/png">
+
+    <!-- Fontes do Google: Roboto Slab -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Dark Mode -->
+    <button id="dark-mode-toggle">🌙</button>
+
+    <!-- Container -->
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/Beessiness_-_Logo-removebg-preview.png') }}" alt="Beesiness Logo">
+            </div>
+            <h1>Esqueci a Senha</h1>
+
+            <!-- Entrada de Dados -->
+            <form>
+                <label for="email">EMAIL</label>
+                <input type="email" id="email" placeholder="Digite Seu Email">
+                
+                <button type="submit" class="login-btn">Enviar Instruções</button>
+            </form>
+            <a href="{{ url_for('auth.login') }}" class="back-to-login">Voltar para Login</a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
