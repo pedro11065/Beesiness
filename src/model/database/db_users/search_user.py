@@ -12,9 +12,12 @@ def db_search_user(search_data):
     conn = psycopg2.connect(
         host=db_login[0],
         database=db_login[1],
+        user=db_login[2],
         password=db_login[3]
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
+
+    email = search_data
 
     # Busca os dados procurando pelo e-mail.
     cur.execute(f"SELECT * FROM table_users WHERE user_email = '{search_data}';")

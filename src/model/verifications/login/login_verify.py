@@ -5,7 +5,7 @@ def login_verify(search_data):
     sys.path.append("C:/github/Beesiness/src")
     from model.database.db_users.search_user import db_search_user
     
-    data_db = db_search_user(search_data)
+    data_db = db_search_user(search_data[0])
 
     errors = [] #lista de mensagens de erro
     count_errors = 0
