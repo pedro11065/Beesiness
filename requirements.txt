@@ -1,5 +1,5 @@
 flask
 flask-login
-json
+flask_cors
 psycopg2
 requests
