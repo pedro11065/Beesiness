@@ -1,9 +1,6 @@
+from src.model.database.db_users.search_user import db_search_user
 
-import sys
 def login_verify(search_data):
-
-    sys.path.append("C:/github/Beesiness/src")
-    from model.database.db_users.search_user import db_search_user
     
     data_db = db_search_user(search_data[0])
 

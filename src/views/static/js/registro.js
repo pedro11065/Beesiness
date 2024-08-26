@@ -34,10 +34,8 @@ document.getElementById('registroForm').addEventListener('submit', function(even
     .then(response => response.json())
     .then(data => {
         console.log('Sucesso:', data);
-        // Adicione lógica para o que fazer após o sucesso
     })
     .catch(error => {
         console.error('Erro:', error);
-        // Adicione lógica para o que fazer em caso de erro
     });
 });
