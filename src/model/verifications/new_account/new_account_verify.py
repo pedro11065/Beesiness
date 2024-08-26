@@ -1,4 +1,3 @@
-import sys
 import re
 import time
 
@@ -63,7 +62,7 @@ def email_verify(create_data): #email
     email = create_data[1]
     search_data = email
 
-    padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' #não sei explicar, mas funciona
+    padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' # Regex pra verificar o padrão email email@email.com
     
     if re.match(padrao, email):
         None
@@ -79,8 +78,7 @@ def email_verify(create_data): #email
     
 def password_verify(create_data): #password
 
-    sys.path.append("C:/github/Beesiness/src")
-    from model.verifications.special_characters import special_characters
+    from src.model.verifications.special_characters import special_characters
 
     password = create_data[2]
     sp_ch = special_characters()           

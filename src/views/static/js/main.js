@@ -12,4 +12,5 @@ toggleButton.addEventListener('click', () => {
         toggleButton.textContent = '🌙'; // Ícone de lua para Dark Mode
     }
 });
-// o login e o registro não estão mais utilizando o main, porem, ainda há coisas utilizando ele.
+
+// O login e o registro não estão mais utilizando o main, porém, ainda há coisas utilizando ele.
