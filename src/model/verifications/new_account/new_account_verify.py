@@ -18,6 +18,7 @@ def birthday_verify(create_data): #birthday
     year_now = int(time.strftime("%Y"))
 
     birthday_original = create_data[3] #data de nascimento escrita pelo usuário
+    print(f'Aniversário data: {birthday_original}');
 
     dates = dates() #conjunto de valores que vão ser utilizados na verificação da data de nascimento
 
@@ -81,16 +82,16 @@ def password_verify(create_data): #password
     from src.model.verifications.special_characters import special_characters
 
     password = create_data[2]
-    sp_ch = special_characters()           
+    #sp_ch = special_characters()           
 
     if len(password) < 8: #Se a senha for menor que 8 digitos
-        return False, "Minimo de 8 digitos."
+        return False, "A senha deve  ter um mínimo de 8 digitos."
     
     elif password.isalnum() == True: #Se contem somente caracteres alfanumericos, não caracteres como ".","_" ou "@", logo, inválido.
-        return False, "No minimo 1 caracter especial."
+        return False, "A senha deve ter no minimo 1 caracter especial."
     
     elif password.isspace() == True: #Se contem somente espaços tá inválido também
-        return False, "Não pode conter espaços."
+        return False, "A senha não pode conter espaços."
 
     #!!!!!!!!! #elif password in sp_ch: #Verifica se a senha contém algum dos caracteres especiais
      #    return False, "Não pode conter caracteres especiais."
