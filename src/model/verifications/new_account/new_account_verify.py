@@ -1,137 +1,63 @@
 import re
-import time
+from datetime import datetime
 
-# Em breve, o sistema de verificação de aniversários será substituido por um mais eficiente e curto.
-
-
-#create_data[0] # fullname, email, password, birthday
-
-#fullname = create_data[0]
-#email = create_data[1] 
-#password = create_data[2] 
-#birthday = create_data[3]
-
-def birthday_verify(create_data): #birthday
-    from .birthday_dates import dates
-
-    error = "Data de nascimento inválida."
-    year_now = int(time.strftime("%Y"))
-
-    birthday_original = create_data[3] #data de nascimento escrita pelo usuário
-    print(f'Aniversário data: {birthday_original}');
-
-    dates = dates() #conjunto de valores que vão ser utilizados na verificação da data de nascimento
-
-    day = 0
-    month_31 = dates[0] #meses com 31 dias
-    leap_year = dates[1] #anos bissextos
-
-    if len(birthday_original) != 10:
-            return False, error
+def birthday_verify(data_nascimento):
     try:
-        birthday_splited = birthday_original.split("-")  #vai dividir o que dia, mes e ano, a partir da barra. (13 / 03 / 2006)   
+        birth_date = datetime.strptime(data_nascimento, "%Y-%m-%d").date()
+        today = datetime.now().date()
 
-        birthday_test = birthday_splited[0]+birthday_splited[1]+birthday_splited[2] #vai juntar tudo
-        birthday_test = int(birthday_test) #transfora em int para ver se tudo é numero mesmo
+        # Calcula a idade
+        age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
 
-        day_int = int(birthday_splited[0])#separa certinho
-        mouth_int = int(birthday_splited[1])
-        year_int = int(birthday_splited[2])       
+        # Verifica se a idade é válida (mínimo 16 anos)
+        if age < 16:
+            return False, "Data de nascimento inválida. Usuário deve ter no mínimo 16 anos."
 
-    except:
-        return False, error
+    except ValueError:
+        print('Erro: Data de nascimento no formato inválido.')
+        return False, "Data de nascimento inválida."  # Retorna um valor booleano False e uma lista de erros quando o aniversário não condiz.
 
+    return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
 
-    if day > 29 and mouth_int == 2 and year_int in leap_year: #fevereiro bissesto
-        return False, error
-
-    elif day > 28 and mouth_int == 2 and year_int not in leap_year: #feveireiro não bissesto
-        return False, error
-
-    elif day == 31 and mouth_int not in month_31: #meses com 31 dias
-        return False, error
-
-    elif day > 31 or mouth_int > 12 or year_now - year_int <= 16: #dia do mes, mes e idade
-        return False, error
-
-    return True
-
-def email_verify(create_data): #email 
-
+def email_verify(email):
     from src.model.database.db_users.search_user import db_search_user
 
-    email = create_data[1]
-    search_data = email
+    email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' # Regex para o padrão teste@email.com
+    if not re.match(email_pattern, email):
+        return False, "Email inválido."
 
-    padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' # Regex pra verificar o padrão email email@email.com
-    
-    if re.match(padrao, email):
-        None
-    else:
-        return False, "Email inválido."    
-     
-    data_db = db_search_user(search_data)
-  
-    if data_db != []:
+    if db_search_user(email):
         return False, "Email já cadastrado."
 
-    return True
-    
-def password_verify(create_data): #password
+    return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
 
-    from src.model.verifications.special_characters import special_characters
-
-    password = create_data[2]
-    #sp_ch = special_characters()           
-
-    if len(password) < 8: #Se a senha for menor que 8 digitos
-        return False, "A senha deve  ter um mínimo de 8 digitos."
-    
-    elif password.isalnum() == True: #Se contem somente caracteres alfanumericos, não caracteres como ".","_" ou "@", logo, inválido.
-        return False, "A senha deve ter no minimo 1 caracter especial."
-    
-    elif password.isspace() == True: #Se contem somente espaços tá inválido também
+def password_verify(password):
+    if len(password) < 8:
+        return False, "A senha deve ter um mínimo de 8 dígitos."
+    if password.isalnum():
+        return False, "A senha deve ter no mínimo 1 caracter especial."
+    if password.isspace():
         return False, "A senha não pode conter espaços."
 
-    #!!!!!!!!! #elif password in sp_ch: #Verifica se a senha contém algum dos caracteres especiais
-     #    return False, "Não pode conter caracteres especiais."
+    return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
+
+def verify_all(email, senha, data_nascimento):
+    print('Criação de conta iniciada, fazendo as verificações!')
+    email_valid, email_error = email_verify(email)
+    senha_valid, senha_error = password_verify(senha)
+    data_valid, data_error = birthday_verify(data_nascimento)
+
+    errors = []
+    if not email_valid:
+        errors.append(email_error)
+    if not senha_valid:
+        errors.append(senha_error)
+    if not data_valid:
+        errors.append(data_error)
+
+    if errors:
+        print(f'Retorno dos errors: {errors}')
+        return errors, len(errors)
     
+    print('Verificação finalizada, saindo da função.')
     return True
-
-def verify_all(create_data):
-
-    email_verify_answer = email_verify(create_data)
-    password_verify_answer = password_verify(create_data)
-    birthday_verify_answer = birthday_verify(create_data)
-
-    errors = [] #lista de mensagens de erro
-    count_errors = 0
-#---------------------------------------------#email
-
-    if email_verify_answer == True:
-        None 
-    else:
-        errors.append(email_verify_answer[1])
-        count_errors = count_errors + 1
-
-#---------------------------------------------#senha
-#    
-    if password_verify_answer == True:
-        None
-    else:
-        errors.append(password_verify_answer[1])
-        count_errors = count_errors + 1
-
-#---------------------------------------------#data de nascimento
-
-    if birthday_verify_answer == True:
-        None
-    else:
-        errors.append(birthday_verify_answer[1])
-        count_errors = count_errors + 1
-
-#---------------------------------------------#O que a API vai retornar
-
-    if count_errors == 0:
-        return True
-    return errors, count_errors
