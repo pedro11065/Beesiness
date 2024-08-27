@@ -6,7 +6,7 @@ import os
 def json_db_read():
     # Define o caminho relativo a partir da localização atual do script
     base_dir = os.path.dirname(os.path.abspath(__file__))  # Diretório do script em execução
-    file_path = os.path.join(base_dir, 'json_db_test.json')  # Ajuste o caminho para evitar duplicação
+    file_path = os.path.join(base_dir, 'json_db.json')  # Ajuste o caminho para evitar duplicação
 
     try:
         with open(file_path, "r") as file:
