@@ -20,7 +20,7 @@ def db_search_user(search_data):
     email = search_data
 
     # Busca os dados procurando pelo e-mail.
-    cur.execute(f"SELECT * FROM table_users WHERE user_email = '{search_data}';")
+    cur.execute(f"SELECT * FROM table_users WHERE user_cpf = '{search_data}';")
 
     #---------------------------------------------------------------INDICES---------------------
                                                 #0         1          2      3         4

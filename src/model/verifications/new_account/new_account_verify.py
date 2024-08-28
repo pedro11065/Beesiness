@@ -20,19 +20,83 @@ def birthday_verify(data_nascimento):
 
     return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
 
-def email_verify(email):
+def cpf_verify(cpf):
+
+    def cpf_x1(cpf): #Verifica o primeiro digito de verificação do CPF
+        print(cpf)
+        try:  
+            counting_number = 0 ; multiplier = 10 ; counting = 8 ; multiplied = []
+
+            while counting_number <= counting:
+
+                number_str = cpf[counting_number] ; number_int = (int(number_str))
+
+                value = number_int*multiplier
+                multiplied.append(value)
+
+                #proxima letra                         #menos um a ser multiplicado
+                counting_number = counting_number + 1  ; multiplier = multiplier - 1 
+                continue
+
+            sum_number = 0
+
+            for num in multiplied:
+                sum_number += num
+
+            full_result = sum_number * 10 ; full_result_x1 = full_result % 11
+
+            if str(full_result_x1) == cpf[9]:None               
+            else: return False
+        except: return False
+
+        return True # None //é proposital ter somente True como return
+  
+    def cpf_x2(cpf): #Verifica o segundo digito de verificação do CPF
+
+        try:
+            counting_number = 0 ; multiplier = 11 ; counting = 9 ; multiplied = []
+
+            while counting_number <= counting:
+
+                number_str = cpf[counting_number] ; number = (int(number_str))
+                value = number*multiplier
+                multiplied.append(value)
+
+                #proxima letra             #menos um a ser multiplicado
+                counting_number = counting_number + 1  ; multiplier = multiplier - 1 
+
+                continue
+
+            sum_number = 0
+
+            for num in  multiplied:
+                sum_number += num
+
+            full_result = sum_number * 10 ; full_result_x2 = full_result % 11
+
+            if str(full_result_x2) == cpf[10]:None               
+            else: return False, "CPF inválido."
+
+        except: return False, "CPF inválido."
+        return True, None     
+
+    if cpf_x1(cpf): #Se x1 for válido, testar x2...
+        return cpf_x2(cpf)  
+    return False, "CPF inválido." #Se x1 não for válido, já retorna erro
+
+def email_verify(email, cpf):
     from src.model.database.db_users.search_user import db_search_user
 
     email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' # Regex para o padrão teste@email.com
     if not re.match(email_pattern, email):
         return False, "Email inválido."
 
-    if db_search_user(email):
-        return False, "Email já cadastrado."
+    if db_search_user(cpf):
+        return False, "CPF já cadastrado."
 
     return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
 
-def password_verify(password):
+def password_verify(password): #Q codigo bonito pprt
     if len(password) < 8:
         return False, "A senha deve ter um mínimo de 8 dígitos."
     if password.isalnum():
@@ -42,15 +106,19 @@ def password_verify(password):
 
     return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
 
-def verify_all(email, senha, data_nascimento):
+def verify_all(cpf,email, senha, data_nascimento):
     print('Criação de conta iniciada, fazendo as verificações!')
-    email_valid, email_error = email_verify(email)
+
+    email_valid, email_error = email_verify(email, cpf)
+    cpf_valid, cpf_error = cpf_verify(cpf)
     senha_valid, senha_error = password_verify(senha)
     data_valid, data_error = birthday_verify(data_nascimento)
 
     errors = []
     if not email_valid:
         errors.append(email_error)
+    if not cpf_valid:
+        errors.append(cpf_error)
     if not senha_valid:
         errors.append(senha_error)
     if not data_valid:

@@ -8,6 +8,7 @@ def login():
     search_data = request.get_json()
 
     # Tenta obter o email e senha do JSON, caso contrário, usa username e password.
+    # cpf
     email = search_data.get('email') or search_data.get('username')
     senha = search_data.get('senha') or search_data.get('password')
 
