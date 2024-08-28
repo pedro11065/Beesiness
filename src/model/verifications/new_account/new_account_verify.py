@@ -3,12 +3,13 @@ from datetime import datetime
 
 def birthday_verify(data_nascimento):
     try:
-        birth_date = datetime.strptime(data_nascimento, "%Y-%m-%d").date()
+        birth_date = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
         today = datetime.now().date()
 
         # Calcula a idade
+        
         age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-
+        #print(age)
         # Verifica se a idade é válida (mínimo 16 anos)
         if age < 16:
             return False, "Data de nascimento inválida. Usuário deve ter no mínimo 16 anos."

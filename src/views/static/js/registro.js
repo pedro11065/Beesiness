@@ -9,6 +9,11 @@ document.getElementById('registroForm').addEventListener('submit', function(even
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
+    //Deixando a data de nascimento no padrao brasileiro
+
+    let data_americana = birthDate;
+    const data_de_nascimento = data_americana.split('-').reverse().join('/');
+
     // Verifica se a senha e a confirmação são iguais
     if (password !== confirmPassword) {
         alert('As senhas não correspondem.');
@@ -20,7 +25,7 @@ document.getElementById('registroForm').addEventListener('submit', function(even
         "nome":fullName,
         "email":email,
         "senha":password,
-        "data_de_nascimento":birthDate
+        "data_de_nascimento":data_de_nascimento
     };
 
     console.log('Os dados:', dados);
