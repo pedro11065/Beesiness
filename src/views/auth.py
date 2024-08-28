@@ -3,15 +3,15 @@ from flask import Blueprint, render_template
 
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static') #Sempre que declarar uma Blueprint lembre de importar estes arquivos no __init__py.
 
-@auth.route('/login')
+@auth.route('/user-login')
 def login():
     return render_template("login.html");
 
-@auth.route('/sign-up')
+@auth.route('/user-sign-up')
 def sign_up():
     return render_template("registro.html");
 
-@auth.route('/forget-password')
+@auth.route('/user-forget-password')
 def forget_password():
     return render_template("senha.html")
 
