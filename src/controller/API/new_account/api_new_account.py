@@ -13,7 +13,6 @@ def create_account():
 
     nome = create_data.get('nome')
     cpf = create_data.get('cpf')
-    print(f'cpf: {cpf}');
     email = create_data.get('email')
     senha = create_data.get('senha')
     data_nascimento = create_data.get('data_de_nascimento')

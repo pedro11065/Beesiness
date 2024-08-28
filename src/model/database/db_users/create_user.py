@@ -29,6 +29,8 @@ def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário
 
     # Cria um cursor
     cur = conn.cursor()
+
+    print(fullname, cpf, email, password, birthday)
     
     # Insere os dados principais do usuário para armazenar na tabela
     cur.execute("INSERT INTO table_users (user_fullname, user_email, user_password, user_birthday, user_cpf) VALUES (%s, %s, %s, %s, %s)", (fullname, email, password, birthday, cpf))
