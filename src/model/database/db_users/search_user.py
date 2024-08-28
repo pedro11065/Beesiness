@@ -7,6 +7,7 @@ from ..json_db import json_db_read # Importação da função que lê os dados q
 def db_search_user(search_data):
 
     db_login = json_db_read()
+    print(f'db_login senha e tals: {db_login}')
 
     #Conecta ao banco de dados.
     conn = psycopg2.connect(
@@ -16,7 +17,6 @@ def db_search_user(search_data):
         password=db_login[3]
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
-    print(search_data.isdigit())
     
     cur.execute(f"SELECT * FROM table_users WHERE user_cpf = '{search_data}' or user_email = '{search_data}';")   
     #---------------------------------------------------------------INDICES---------------------

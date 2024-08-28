@@ -125,7 +125,7 @@ def verify_all(cpf,email, senha, data_nascimento):
         errors.append(data_error)
 
     if errors:
-        print(f'Retorno dos errors: {errors}')
+        print(f'Retorno dos erros: {errors}')
         return errors, len(errors)
     
     print('Verificação finalizada, saindo da função.')
