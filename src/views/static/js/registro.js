@@ -39,7 +39,7 @@ document.getElementById('registroForm').addEventListener('submit', function(even
     console.log('Os dados:', dados);
 
     // Envia os dados para a API usando fetch
-    fetch('/api/create_account', { //http://localhost:5000/api/create_user_account
+    fetch('/api/user_create_account', { //http://localhost:5000/api/create_user_account
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -25,7 +25,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         "senha": password
     };
 
-    fetch('/api/login', { //http://localhost:5000/api/user_login
+    fetch('/api/user_login', { //http://localhost:5000/api/user_login
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
