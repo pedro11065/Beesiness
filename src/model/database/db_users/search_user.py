@@ -16,12 +16,9 @@ def db_search_user(search_data):
         password=db_login[3]
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
-
-    email = search_data
-
-    # Busca os dados procurando pelo e-mail.
-    cur.execute(f"SELECT * FROM table_users WHERE user_cpf = '{search_data}';")
-
+    print(search_data.isdigit())
+    
+    cur.execute(f"SELECT * FROM table_users WHERE user_cpf = '{search_data}' or user_email = '{search_data}';")   
     #---------------------------------------------------------------INDICES---------------------
                                                 #0         1          2      3         4
     db_data = cur.fetchall() #valores da linha: #id , nomecompleto, email, senha, datanascimento

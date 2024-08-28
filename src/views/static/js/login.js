@@ -21,7 +21,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const password = document.getElementById('password').value;
 
     const dados = {
-        "email": username,
+        "email_cpf": username,
         "senha": password
     };
 

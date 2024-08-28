@@ -9,11 +9,11 @@ def login():
 
     # Tenta obter o email e senha do JSON, caso contrário, usa username e password.
     # cpf
-    email = search_data.get('email') or search_data.get('username')
+    email_cpf = search_data.get('email_cpf') or search_data.get('username')
     senha = search_data.get('senha') or search_data.get('password')
 
     # Verifica o login
-    login_valid, login_errors = login_verify(email, senha)
+    login_valid, login_errors = login_verify(email_cpf, senha)
 
     if login_valid:
         return jsonify({"login": "True"}), 200
