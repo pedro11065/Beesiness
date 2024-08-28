@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.security import check_password_hash
 
-from src.model.verifications.login.login_verify import login_verify
+from src.model.verifications.login.user_login_verify import user_login_verify
 
-api_login = Blueprint('api_login', __name__)
+api_user_login = Blueprint('api_user_login', __name__)
 
-@api_login.route('/login', methods=['POST'])
+@api_user_login.route('/user_login', methods=['POST'])
 def login():
     search_data = request.get_json()
 
@@ -16,7 +16,7 @@ def login():
     #hashed_password = check_password_hash(senha);
 
     # Verifica o login
-    login_valid, login_errors = login_verify(email_cpf, senha)
+    login_valid, login_errors = user_login_verify(email_cpf, senha)
 
     if login_valid:
         return jsonify({"login": "True"}), 200

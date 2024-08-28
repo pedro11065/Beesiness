@@ -7,7 +7,6 @@ from ..json_db import json_db_read # Importação da função que lê os dados q
 def db_search_user(search_data):
 
     db_login = json_db_read()
-    print(f'db_login senha e tals: {db_login}')
 
     #Conecta ao banco de dados.
     conn = psycopg2.connect(
