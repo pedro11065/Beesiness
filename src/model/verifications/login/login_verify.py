@@ -2,6 +2,8 @@ from src.model.database.db_users.search_user import db_search_user
 
 def login_verify(email_or_cpf, senha): #O "username" que tava antes não era porque aceita o nome do usuário, é pq o login.js não queria mudar o .json pra email POR NADA, ai botei o or username lá na API
     data_db = db_search_user(email_or_cpf)
+    print(data_db);
+    
     print(f'Um usuário tentou logar no sistema.')
     print(f'Dados do usuário: {data_db}')
 
