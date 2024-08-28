@@ -20,7 +20,7 @@ document.getElementById('registroForm').addEventListener('submit', function(even
         "nome":fullName,
         "email":email,
         "senha":password,
-        "datadenascimento":birthDate
+        "data_de_nascimento":birthDate
     };
 
     console.log('Os dados:', dados);
