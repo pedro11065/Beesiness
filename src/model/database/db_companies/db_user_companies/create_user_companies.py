@@ -1,7 +1,7 @@
 import psycopg2
-from ..json_db import json_db_read
+from ...json_db import json_db_read
 
-def db_create_company(user_uuid, nome, email, cnpj, senha): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
+def db_create_company(uuid_company, uuid_user, user_access_level): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     db_login = json_db_read()
     
     # Conecta ao banco de dados
@@ -16,7 +16,7 @@ def db_create_company(user_uuid, nome, email, cnpj, senha): # Cria um usuário u
     cur = conn.cursor()
     
     # Insere os dados principais do usuário para armazenar na tabela
-    cur.execute(f"INSERT INTO table_companies (user_id, company_name, company_email, company_cnpj, company_password) VALUES ({user_uuid}, {nome}, {email}, {cnpj}, {senha});")
+    cur.execute(f"INSERT INTO table_user_companies (company_id, user_id, user_access_level) VALUES ({uuid_company}, {uuid_user}, {user_access_level});")
 
     # Confirma as mudanças
     conn.commit()

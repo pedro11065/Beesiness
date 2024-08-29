@@ -5,7 +5,7 @@ from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash
 
 from src.model.database.db_companies.create_company import db_create_company
-from src.model.verifications.new_account.user_new_company_verify import verify_all
+from src.model.verifications.new_account.new_company_account_verify import verify_all
 
 api_new_company_account = Blueprint('api_new_company_account', __name__)
 

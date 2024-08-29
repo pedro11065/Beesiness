@@ -1,5 +1,5 @@
 import psycopg2
-from ..json_db import json_db_read
+from ...json_db import json_db_read
 
 def db_delete_company(delete_data):
     db_login = json_db_read()
@@ -15,7 +15,7 @@ def db_delete_company(delete_data):
     cur = conn.cursor()
 
     # Deleta os dados encontrados naquele e-mail.
-    cur.execute(f"DELETE FROM table_companies WHERE company_cnpj = f'{delete_data}';")
+    cur.execute(f"DELETE FROM table_user_companies WHERE company_cnpj = f'{delete_data}';")
     
     # Atualiza as informações.
     conn.commit()

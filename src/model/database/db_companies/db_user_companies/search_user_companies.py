@@ -1,9 +1,11 @@
+#Pesquisa um valor na tabela "table_user_companies" que registra as relações entre os demais usuários de uma empresa, além do criador
+
 # Responsável por retornar a linha onde o email foi inserido.
 
 import psycopg2
-from ..json_db import json_db_read # Importação da função que lê os dados que armazenam as informações do servidor.
+from ...json_db import json_db_read # Importação da função que lê os dados que armazenam as informações do servidor.
 
-def db_search_company(search_data):
+def db_search_user_companies(search_data):
 
     db_login = json_db_read()
 
@@ -16,10 +18,10 @@ def db_search_company(search_data):
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
     
-    cur.execute(f"SELECT * FROM table_companies WHERE company_cpf = '{search_data}' or company_email = '{search_data}' or company_id = '{search_data}';")   
+    cur.execute(f"SELECT * FROM table_user_companies WHERE user_id = '{search_data}' or company_id = '{search_data}';")   
     #---------------------------------------------------------------INDICES---------------------
-                                                #0         1          2      3         4
-    db_data = cur.fetchall() #valores da linha: #_company_id , user_id, nome, cnpj, senha
+                                                    #0         1             2     
+    db_data = cur.fetchall() #valores da linha: #company_id, user_id, user_access_level
 
     conn.commit()
     cur.close() # Fecha o cursor
