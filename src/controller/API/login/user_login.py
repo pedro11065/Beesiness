@@ -1,12 +1,11 @@
-# ainda falta adicionar a api no src/__init__.py, criar as verificações e o .js (usar o postman)
-
-import os
 from flask import Blueprint, request, jsonify
 from werkzeug.security import check_password_hash
+from colorama import Fore, Style
 
 from src.model.database.db_log.create_log import db_create_log
 from src.model.verifications.login.user_login_verify import user_login_verify
 
+# Ainda falta adicionar a api no src/__init__.py, criar as verificações e o .js (usar o postman)
 api_user_login = Blueprint('api_user_login', __name__)
 
 @api_user_login.route('/user_login', methods=['POST'])
@@ -17,10 +16,7 @@ def login():
     email_cpf = search_data.get('email_cpf') or search_data.get('username')
     senha = search_data.get('senha') or search_data.get('password')
 
-    os.system('cls' if os.name == 'nt' else 'clear')#limpar terminal
-    print("*******************************************************************")
-    print("\n----- login usuário -----\n")
-    (f'Dados recebidos: \n\n//{email_cpf}//\n{senha}//')
+    print(Fore.GREEN + '[Usuário - Login] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nCpf: {email_cpf}\nSenha: {senha}')
     #hashed_password = check_password_hash(senha);
     
     message =  (f'Chamada APi user_login --- Dados recebidos: // Email:{email_cpf} // Senha:{senha} //') ; db_create_log(message)

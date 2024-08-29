@@ -3,3 +3,4 @@ flask-login
 flask_cors
 psycopg2
 requests
+colorama

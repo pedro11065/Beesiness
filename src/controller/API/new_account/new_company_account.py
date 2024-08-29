@@ -1,13 +1,12 @@
-# ainda falta adicionar a api no src/__init__.py, criar as verificações e o .js (usar o postman)
-
-import os
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash
+from colorama import Fore, Style
 
 from src.model.database.db_log.create_log import db_create_log
 from src.model.database.db_companies.create_company import db_create_company
 from src.model.verifications.new_account.new_company_account_verify import verify_all
 
+# Ainda falta adicionar a api no src/__init__.py, criar as verificações e o .js (usar o postman)
 api_new_company_account = Blueprint('api_new_company_account', __name__)
 
 @api_new_company_account.route('/create_company_account', methods=['POST'])
@@ -19,10 +18,7 @@ def create_company():
     cnpj = create_data.get('cnpj')
     senha = create_data.get('senha')
 
-    os.system('cls')#limpar terminal
-    print("*******************************************************************")
-    print("\n----- Registro empresa -----\n")
-    print(f'Dados recebidos:\n\n//{nome}//\n{cpf}//\n{email}//\n{cnpj}//\n{senha}//')
+    print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}')
 
     message = "Chamada APi new_company_account" ; db_create_log(message)
     message =  (f'Dados recebidos: // nome:{nome} // cpf:{cpf} // email:{email} // cnpj:{cnpj} // senha:{senha} //') ; db_create_log(message)
@@ -39,7 +35,10 @@ def create_company():
 
     if verified == True:
         #hashed_password = generate_password_hash(senha)
-        db_create_company(nome, cpf, email, cnpj, senha); print("Empresa registrada com sucesso!") ; message =  ('Empresa registrada com sucesso!') ; db_create_log(message)
+        db_create_company(nome, cpf, email, cnpj, senha);
+        print("Empresa registrada com sucesso!");
+        message =  ('Empresa registrada com sucesso!');
+        db_create_log(message)
         return jsonify({"verify": "True"}), 200
     else:
         return jsonify({"quant_erros": verified[1], "erros": verified[0]}), 400

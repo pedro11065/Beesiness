@@ -1,6 +1,6 @@
-import os
 from flask import Blueprint, request, jsonify
 from werkzeug.security import check_password_hash
+from colorama import Fore, Style
 
 from src.model.database.db_log.create_log import db_create_log
 from src.model.verifications.login.company_login_verify import company_login_verify
@@ -14,10 +14,7 @@ def login():
     # Tenta obter o email e senha do JSON, caso contrário, usa username e password.
     cnpj = search_data.get('cnpj') ; senha = search_data.get('senha')
 
-    os.system('cls' if os.name == 'nt' else 'clear')#limpar terminal
-    print("*******************************************************************")
-    print("\n----- login empresa -----\n")
-    print(f'Dados recebidos: \n\n//{cnpj}//\n{senha}//')
+    print(Fore.GREEN + '[Empresa - Login] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nCnpj: {cnpj}\nSenha: {senha}')
 
     #hashed_password = check_password_hash(senha);
 

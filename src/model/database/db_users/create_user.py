@@ -16,10 +16,11 @@ Recomendações para melhorar o código:
 import psycopg2
 from ..json_db import json_db_read
 from ..db_log.create_log import db_create_log
+from colorama import Fore, Style
 
 def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     
-    print("\nRegistrando novo usuário no banco de dados...")
+    print(Fore.BLUE + '[Banco de dados]' + Style.RESET_ALL + 'Registrando novo usuário no banco de dados...')
     
     db_login = json_db_read()
     
@@ -49,4 +50,4 @@ def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário
     cur.close()
     conn.close()
 
-    print("\nDados registrados com sucesso!")
+    print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Dados registrados com sucesso!')

@@ -1,6 +1,6 @@
-import os
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash
+from colorama import Fore, Style
 
 from src.model.database.db_log.create_log import db_create_log
 from src.model.database.db_users.create_user import db_create_user
@@ -18,10 +18,7 @@ def create_account():
     senha = create_data.get('senha')
     data_nascimento = create_data.get('data_de_nascimento')
 
-    os.system('cls')#limpar terminal
-    print("*******************************************************************")
-    print("\n----- Registro usuário -----\n")
-    print(f'Dados recebidos:\n\n//{nome}//\n{cpf}//\n{email}//\n{senha}//\n{data_nascimento}//')
+    print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\Cpf: {cpf}\nSenha: {senha}\nData de nascimento: {data_nascimento}')
 
     message = "Chamada APi new_user_account" ; db_create_log(message)
     message =  (f'Dados recebidos: // nome:{nome} // cpf:{cpf} // email:{email} // senha:{senha} // data_nascimento:{data_nascimento} //') ; db_create_log(message)
