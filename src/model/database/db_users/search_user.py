@@ -1,7 +1,8 @@
 # Responsável por retornar a linha onde o email foi inserido.
 
 import psycopg2
-from ..json_db import json_db_read # Importação da função que lê os dados que armazenam as informações do servidor.
+from ..json_db import json_db_read
+from ..db_log.create_log import db_create_log # Importação da função que lê os dados que armazenam as informações do servidor.
 
 #O parametro data tem 2 valores, email(login_data[0]) e senha(login_data[1]), enviados na hora do login.
 def db_search_user(search_data):
@@ -19,7 +20,9 @@ def db_search_user(search_data):
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
     
-    cur.execute(f"SELECT * FROM table_users WHERE user_cpf = '{search_data}' or user_email = '{search_data}';")   
+    cur.execute(f"SELECT * FROM table_users WHERE user_cpf = '{search_data}' or user_email = '{search_data}';")
+       
+    message = (f"Pesquisa em table_users por '{search_data}'") ; db_create_log(message)
     #---------------------------------------------------------------INDICES---------------------
                                                 #0         1          2      3         4
     db_data = cur.fetchall() #valores da linha: #id , nomecompleto, email, senha, datanascimento

@@ -15,6 +15,7 @@ Recomendações para melhorar o código:
 
 import psycopg2
 from ..json_db import json_db_read
+from ..db_log.create_log import db_create_log
 
 def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     
@@ -37,6 +38,9 @@ def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário
     
     # Insere os dados principais do usuário para armazenar na tabela
     cur.execute(f"INSERT INTO table_users (user_fullname, user_email, user_password, user_birthday, user_cpf) VALUES({fullname}, {email}, {password}, {birthday}, {cpf});")
+
+    message = (f"Usuário registrado.);") 
+    db_create_log(message)
 
     # Confirma as mudanças
     conn.commit()

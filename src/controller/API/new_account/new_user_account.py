@@ -2,6 +2,7 @@ import os
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash
 
+from src.model.database.db_log.create_log import db_create_log
 from src.model.database.db_users.create_user import db_create_user
 from src.model.verifications.new_account.new_user_account_verify import verify_all
 
@@ -22,11 +23,14 @@ def create_account():
     print("\n----- Registro usuário -----\n")
     print(f'Dados recebidos:\n\n//{nome}//\n{cpf}//\n{email}//\n{senha}//\n{data_nascimento}//')
 
+    message = "Chamada APi new_user_account" ; db_create_log(message)
+    message =  (f'Dados recebidos: // nome:{nome} // cpf:{cpf} // email:{email} // senha:{senha} // data_nascimento:{data_nascimento} //') ; db_create_log(message)
+
     verified = verify_all(cpf, email, senha, data_nascimento)
 
     if verified == True:
         #hashed_password = generate_password_hash(senha)
-        db_create_user(nome, cpf, email, senha, data_nascimento); print("Usuário criado com sucesso!")
+        db_create_user(nome, cpf, email, senha, data_nascimento); print("Usuário criado com sucesso!") ; message =  ('Usuário registrado com sucesso!') ; db_create_log(message)
         return jsonify({"verify": "True"}), 200
     else:
         return jsonify({"quant_erros": verified[1], "erros": verified[0]}), 400

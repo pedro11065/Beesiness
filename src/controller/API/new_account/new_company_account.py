@@ -4,6 +4,7 @@ import os
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash
 
+from src.model.database.db_log.create_log import db_create_log
 from src.model.database.db_companies.create_company import db_create_company
 from src.model.verifications.new_account.new_company_account_verify import verify_all
 
@@ -23,6 +24,9 @@ def create_company():
     print("\n----- Registro empresa -----\n")
     print(f'Dados recebidos:\n\n//{nome}//\n{cpf}//\n{email}//\n{cnpj}//\n{senha}//')
 
+    message = "Chamada APi new_company_account" ; db_create_log(message)
+    message =  (f'Dados recebidos: // nome:{nome} // cpf:{cpf} // email:{email} // cnpj:{cnpj} // senha:{senha} //') ; db_create_log(message)
+
     verified = verify_all(cpf, email, cnpj, senha) 
 
     # CPF - Verifica se esse CPF está no banco de dados, e se estiver, pegar o id do dono desse cpf
@@ -35,7 +39,7 @@ def create_company():
 
     if verified == True:
         #hashed_password = generate_password_hash(senha)
-        db_create_company(nome, cpf, email, cnpj, senha); print("Empresa criada com sucesso!")
+        db_create_company(nome, cpf, email, cnpj, senha); print("Empresa registrada com sucesso!") ; message =  ('Empresa registrada com sucesso!') ; db_create_log(message)
         return jsonify({"verify": "True"}), 200
     else:
         return jsonify({"quant_erros": verified[1], "erros": verified[0]}), 400

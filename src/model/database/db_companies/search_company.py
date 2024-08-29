@@ -2,6 +2,7 @@
 
 import psycopg2
 from ..json_db import json_db_read # Importação da função que lê os dados que armazenam as informações do servidor.
+from ..db_log.create_log import db_create_log
 
 def db_search_company(search_data):
 
@@ -17,6 +18,9 @@ def db_search_company(search_data):
     cur = conn.cursor() # Cria um cursor no PostGreSQL
     
     cur.execute(f"SELECT * FROM table_companies WHERE company_cpf = '{search_data}' or company_email = '{search_data}' or company_id = '{search_data}';")   
+    
+    message = (f"Pesquisa em table_companies por = '{search_data}'")   
+    db_create_log(message)
     #---------------------------------------------------------------INDICES---------------------
                                                 #0         1          2      3         4
     db_data = cur.fetchall() #valores da linha: #_company_id , user_id, nome, cnpj, senha

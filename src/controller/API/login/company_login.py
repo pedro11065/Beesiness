@@ -2,6 +2,7 @@ import os
 from flask import Blueprint, request, jsonify
 from werkzeug.security import check_password_hash
 
+from src.model.database.db_log.create_log import db_create_log
 from src.model.verifications.login.company_login_verify import company_login_verify
 
 api_company_login = Blueprint('api_company_login', __name__)
@@ -21,10 +22,13 @@ def login():
     #hashed_password = check_password_hash(senha);
 
     # Verifica o login
+
+    message =  (f'Chamada APi company_login --- Dados recebidos: // cnpj:{cnpj} // senha:{senha} //') ; db_create_log(message)
+    
     login_valid, login_errors = company_login_verify(cnpj, senha) #mesma coisa que o login do usuário, puxa no banco de dados e compara
 
     if login_valid:
-        print("Login realizado com sucesso!")
+        print("Login realizado com sucesso!"); message =  ('Login de empresa realizado com sucesso!') ; db_create_log(message)
         return jsonify({"login": "True"}), 200
     else:
         print(f'Erros durante o login: {login_errors}') # Log dos erros
