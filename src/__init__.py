@@ -6,8 +6,8 @@ def create_app():
 
     from .views.views import views
     from .views.auth import auth
-    from .controller.API.login.api_user_login import api_user_login
-    from .controller.API.new_account.api_new_user_account import api_new_user_account
+    from .controller.API.login.user_login import api_user_login
+    from .controller.API.new_account.new_user_account import api_new_user_account
     
     # Blueprints essenciais para que as rotas funcionem!!
 

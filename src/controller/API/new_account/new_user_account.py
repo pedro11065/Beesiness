@@ -19,7 +19,7 @@ def create_account():
 
     os.system('cls')#limpar terminal
     print("*******************************************************************")
-    print("\n----- Registro -----\n")
+    print("\n----- Registro usuário -----\n")
     print(f'Dados recebidos:\n\n//{nome}//\n{cpf}//\n{email}//\n{senha}//\n{data_nascimento}//')
 
     verified = verify_all(cpf, email, senha, data_nascimento)

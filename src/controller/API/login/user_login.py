@@ -16,7 +16,7 @@ def login():
 
     os.system('cls' if os.name == 'nt' else 'clear')#limpar terminal
     print("*******************************************************************")
-    print("\n----- login -----\n")
+    print("\n----- login usuário-----\n")
     print(f'Dados recebidos: \n\n//{email_cpf}//\n{senha}//')
 
     #hashed_password = check_password_hash(senha);
