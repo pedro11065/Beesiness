@@ -17,6 +17,9 @@ import psycopg2
 from ..json_db import json_db_read
 
 def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
+    
+    print("\nRegistrando novo usuário no banco de dados...")
+    
     db_login = json_db_read()
     
     # Conecta ao banco de dados
@@ -41,3 +44,5 @@ def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário
     # Fecha o cursor e encerra a conexão.
     cur.close()
     conn.close()
+
+    print("\nDados registrados com sucesso!")

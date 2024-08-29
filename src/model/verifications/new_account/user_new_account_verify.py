@@ -23,7 +23,6 @@ def birthday_verify(data_nascimento):
 def cpf_verify(cpf):
 
     def cpf_x1(cpf): #Verifica o primeiro digito de verificação do CPF
-        print(cpf)
         try:  
             counting_number = 0 ; multiplier = 10 ; counting = 8 ; multiplied = []
 
@@ -107,6 +106,8 @@ def password_verify(password): #Q codigo bonito pprt
     return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
 
 def verify_all(cpf,email, senha, data_nascimento):
+    
+    print("\n\n------------------------------------------------------------")
     print('Criação de conta iniciada, fazendo as verificações!')
 
     email_valid, email_error = email_verify(email, cpf)

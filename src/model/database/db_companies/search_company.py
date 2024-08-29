@@ -3,11 +3,8 @@
 import psycopg2
 from ..json_db import json_db_read # Importação da função que lê os dados que armazenam as informações do servidor.
 
-#O parametro data tem 2 valores, email(login_data[0]) e senha(login_data[1]), enviados na hora do login.
-def db_search_user(search_data):
-    
-    print("------------------------------------------------------------")
-    print("\nBuscando dados...")
+def db_search_company(search_data):
+
     db_login = json_db_read()
 
     #Conecta ao banco de dados.
@@ -19,7 +16,7 @@ def db_search_user(search_data):
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
     
-    cur.execute(f"SELECT * FROM table_users WHERE user_cpf = '{search_data}' or user_email = '{search_data}';")   
+    cur.execute(f"SELECT * FROM table_companies WHERE company_cpf = '{search_data}' or company_email = '{search_data}' or company_id = '{search_data}';")   
     #---------------------------------------------------------------INDICES---------------------
                                                 #0         1          2      3         4
     db_data = cur.fetchall() #valores da linha: #id , nomecompleto, email, senha, datanascimento
@@ -27,10 +24,5 @@ def db_search_user(search_data):
     conn.commit()
     cur.close() # Fecha o cursor
     conn.close() # Fecha a conexão geral
-
-    print("\nDados encotrados:\n")
-    for i in range(len(db_data[0])):
-        print(f'//{db_data[0][i]}//')
-    print("\n")
     
     return db_data #Retorna o resultado para a função login_verify

@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, request, jsonify
 from werkzeug.security import check_password_hash
 
@@ -13,12 +14,18 @@ def login():
     email_cpf = search_data.get('email_cpf') or search_data.get('username')
     senha = search_data.get('senha') or search_data.get('password')
 
+    os.system('cls' if os.name == 'nt' else 'clear')#limpar terminal
+    print("*******************************************************************")
+    print("\n----- login -----\n")
+    print(f'Dados recebidos: \n\n//{email_cpf}//\n{senha}//')
+
     #hashed_password = check_password_hash(senha);
 
     # Verifica o login
     login_valid, login_errors = user_login_verify(email_cpf, senha)
 
     if login_valid:
+        print("Login realizado com sucesso!")
         return jsonify({"login": "True"}), 200
     else:
         print(f'Erros durante o login: {login_errors}') # Log dos erros
