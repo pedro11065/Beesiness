@@ -18,10 +18,11 @@ def create_company():
     cnpj = create_data.get('cnpj')
     senha = create_data.get('senha')
 
-    print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}')
+    print(Fore.GREEN + '[Empresa - Registro] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}')
 
-    message = "Chamada APi new_company_account" ; db_create_log(message)
-    message =  (f'Dados recebidos: // nome:{nome} // cpf:{cpf} // email:{email} // cnpj:{cnpj} // senha:{senha} //') ; db_create_log(message)
+
+    message = (f'[Chamada/API - new_company_account] Dados de identificação - Cnpj: {cnpj}, Cpf: {cpf} e Email: {email}');
+    db_create_log(message)
 
     verified = verify_all(cpf, email, cnpj, senha) 
 
@@ -36,8 +37,9 @@ def create_company():
     if verified == True:
         #hashed_password = generate_password_hash(senha)
         db_create_company(nome, cpf, email, cnpj, senha);
-        print("Empresa registrada com sucesso!");
-        message =  ('Empresa registrada com sucesso!');
+        print(Fore.GREEN + '[Empresa - Registro] ' + Style.RESET_ALL + f'Registrada com sucesso!');
+
+        message =  message =  (f'A empresa ({cnpj}) foi registrada com sucesso!');
         db_create_log(message)
         return jsonify({"verify": "True"}), 200
     else:

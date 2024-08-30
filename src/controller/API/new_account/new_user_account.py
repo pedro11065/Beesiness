@@ -18,16 +18,21 @@ def create_account():
     senha = create_data.get('senha')
     data_nascimento = create_data.get('data_de_nascimento')
 
-    print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\Cpf: {cpf}\nSenha: {senha}\nData de nascimento: {data_nascimento}')
+    hashed_password = generate_password_hash(senha);
 
-    message = "Chamada APi new_user_account" ; db_create_log(message)
-    message =  (f'Dados recebidos: // nome:{nome} // cpf:{cpf} // email:{email} // senha:{senha} // data_nascimento:{data_nascimento} //') ; db_create_log(message)
+    print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de nascimento: {data_nascimento}\n')
+
+    message = "[Chamada/API - new_user_account]";
+    db_create_log(message);
 
     verified = verify_all(cpf, email, senha, data_nascimento)
 
     if verified == True:
-        #hashed_password = generate_password_hash(senha)
-        db_create_user(nome, cpf, email, senha, data_nascimento); print("Usuário criado com sucesso!") ; message =  ('Usuário registrado com sucesso!') ; db_create_log(message)
+        db_create_user(nome, cpf, email, hashed_password, data_nascimento); 
+
+        print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Registrado com sucesso!')
+        message = (f'O usuário ({cpf}) foi criado com sucesso!');
+        db_create_log(message)
         return jsonify({"verify": "True"}), 200
     else:
         return jsonify({"quant_erros": verified[1], "erros": verified[0]}), 400

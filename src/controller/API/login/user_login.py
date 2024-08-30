@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify
-from werkzeug.security import check_password_hash
 from colorama import Fore, Style
 
 from src.model.database.db_log.create_log import db_create_log
@@ -17,15 +16,19 @@ def login():
     senha = search_data.get('senha') or search_data.get('password')
 
     print(Fore.GREEN + '[Usuário - Login] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nCpf: {email_cpf}\nSenha: {senha}')
-    #hashed_password = check_password_hash(senha);
     
-    message =  (f'Chamada APi user_login --- Dados recebidos: // Email:{email_cpf} // Senha:{senha} //') ; db_create_log(message)
+    
+    message =  (f'[Chamada/API - user_login] Dados recebidos - Email:{email_cpf}');
+    db_create_log(message)
 
     # Verifica o login
     login_valid, login_errors = user_login_verify(email_cpf, senha)
 
     if login_valid:
-        print("Login realizado com sucesso!") ; message =  ('Login de usuário realizado com sucesso!') ; db_create_log(message)
+        print(Fore.GREEN + '[Usuário - Login] ' + Style.RESET_ALL + f'Logado com sucesso!')
+        
+        message =  (f'O usuário ({email_cpf}) logou com sucesso!');
+        db_create_log(message)
         return jsonify({"login": "True"}), 200
     else:
         print(f'Erros durante o login: {login_errors}') # Log dos erros

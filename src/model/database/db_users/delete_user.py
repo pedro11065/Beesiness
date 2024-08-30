@@ -16,9 +16,9 @@ def db_delete_user(delete_data):
     cur = conn.cursor()
 
     # Deleta os dados encontrados naquele e-mail.
-    cur.execute(f"DELETE FROM table_companies WHERE user_cpf = f'{delete_data}';")
+    cur.execute("DELETE FROM table_companies WHERE user_cpf = %s", (delete_data,))
 
-    message = (f"Dado deletado")
+    message = (f"Um usuário foi deletado.")
     db_create_log(message)
     
     # Atualiza as informações.

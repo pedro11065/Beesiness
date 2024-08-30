@@ -1,0 +1,8 @@
+O projeto foi desenvolvido utilizando a linguagem Python e o framework Flask, que é direcionado para aplicações web e inclui um mecanismo de roteamento para gerenciar as URLs.
+
+Utilizamos a arquitetura MVC (Model-View-Controller) para organizar o projeto de maneira mais eficiente. Esta arquitetura divide o projeto em três componentes principais:
+
+1. Model: Responsável pelo acesso e manipulação dos dados no banco de dados. Inclui arquivos que lidam com a criação, deleção, pesquisa e outras operações relacionadas aos dados.
+2. View: Foca na apresentação dos dados ao usuário. Contém arquivos que definem o layout e a interface do usuário, como HTML, CSS e JavaScript.
+3. Controller: Atua como intermediário entre o Model e o View. Gerencia a lógica da aplicação e a comunicação entre o banco de dados e a interface do usuário.
+

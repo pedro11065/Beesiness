@@ -1,0 +1,26 @@
+#### `model`
+- **`database`**: Contém arquivos e subpastas relacionados ao gerenciamento e interação com o banco de dados.
+  - **`json_db.json`**: Arquivo com as informações para logar no banco de dados.
+  - **`json_db.py`**: 
+  - **`db_companies`**: Pasta relacionados à manipulação dos dados das empresas.
+    - **`create_company.py`**: Script para criar novas entradas para empresas.
+    - **`delete_company.py`**: Script para deletar empresas.
+    - **`search_company.py`**: Script para buscar empresas no banco de dados.
+    - **`db_user_companies`**: Pasta para gerenciar a relação entre usuários e empresas.
+      - **`create_user_companies.py`**: Script para criar relações entre usuários e empresas.
+      - **`delete_user_companies.py`**: Script para deletar relações entre usuários e empresas.
+      - **`search_user_companies.py`**: Script para buscar relações entre usuários e empresas.
+  - **`db_log`**: Pasta relacionados ao registro de logs.
+    - **`create_log.py`**: Script para criar entradas de log.
+  - **`db_users`**: Pasta relacionados à manipulação dos dados dos usuários.
+    - **`create_user.py`**: Script para criar novos usuários.
+    - **`delete_user.py`**: Script para deletar usuários.
+    - **`search_user.py`**: Script para buscar usuários no banco de dados.
+
+    - **`verifications`**: Contém scripts para verificar e validar dados.
+        - **`login`**: Pasta para verificar a validade das informações de login.
+            - **`company_login_verify.py`**: Verifica a validade das informações de login de empresas.
+            - **`user_login_verify.py`**: Verifica a validade das informações de login de usuários.
+        - **`new_account`**: Pasta para verificar a validade dos dados durante a criação de novas contas.
+            - **`new_company_account_verify.py`**: Verifica a validade dos dados na criação de contas de empresas.
+            - **`new_user_account_verify.py`**: Verifica a validade dos dados na criação de contas de usuários.

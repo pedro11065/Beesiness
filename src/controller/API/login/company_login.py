@@ -18,14 +18,18 @@ def login():
 
     #hashed_password = check_password_hash(senha);
 
-    # Verifica o login
-
-    message =  (f'Chamada APi company_login --- Dados recebidos: // cnpj:{cnpj} // senha:{senha} //') ; db_create_log(message)
     
-    login_valid, login_errors = company_login_verify(cnpj, senha) #mesma coisa que o login do usuário, puxa no banco de dados e compara
+    message =  (f'[Chamada/API - company_login] Dados recebidos - Cnpj: {cnpj}');
+    db_create_log(message)
+    
+    # Verifica o login
+    login_valid, login_errors = company_login_verify(cnpj, senha) # A mesma coisa que o login do usuário, compara com os valores no banco de dados.
 
     if login_valid:
-        print("Login realizado com sucesso!"); message =  ('Login de empresa realizado com sucesso!') ; db_create_log(message)
+        print(Fore.GREEN + '[Empresa - Login] ' + Style.RESET_ALL + f'Logado com sucesso!')
+        message =  (f'A empresa ({cnpj}) logou com sucesso!');
+        db_create_log(message)
+
         return jsonify({"login": "True"}), 200
     else:
         print(f'Erros durante o login: {login_errors}') # Log dos erros

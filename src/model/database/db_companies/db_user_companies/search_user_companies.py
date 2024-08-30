@@ -19,7 +19,7 @@ def db_search_user_companies(search_data):
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
     
-    cur.execute(f"SELECT * FROM table_user_companies WHERE user_id = '{search_data}' or company_id = '{search_data}';")  
+    cur.execute("SELECT * FROM table_user_companies WHERE user_id = %s OR company_id = %s", (search_data, search_data))
 
     message = (f"Pesquisa em table_user_companies por '{search_data}'")
     db_create_log(message)

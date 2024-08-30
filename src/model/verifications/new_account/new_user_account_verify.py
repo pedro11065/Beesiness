@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from colorama import Fore, Style
 
 def birthday_verify(data_nascimento):
     try:
@@ -107,8 +108,9 @@ def password_verify(password): #Q codigo bonito pprt
 
 def verify_all(cpf,email, senha, data_nascimento):
     
-    print("\n\n------------------------------------------------------------")
-    print('Criação de conta iniciada, fazendo as verificações!')
+    
+    print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + f'Criação de conta iniciada, verificando dados!')
+
 
     email_valid, email_error = email_verify(email, cpf)
     cpf_valid, cpf_error = cpf_verify(cpf)

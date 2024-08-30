@@ -17,7 +17,8 @@ def db_search_user(search_data):
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
     
-    cur.execute(f"SELECT * FROM table_users WHERE user_cpf = '{search_data}' or user_email = '{search_data}';")
+    cur.execute("SELECT * FROM table_users WHERE user_cpf = %s OR user_email = %s", (search_data, search_data)) #Search_data duas vezes para evitar injeções SQL.
+
        
     message = f"Pesquisa em table_users por '{search_data}'" 
     db_create_log(message)
@@ -29,9 +30,9 @@ def db_search_user(search_data):
     conn.close() # Fecha a conexão geral
 
     if db_data:
-        print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Dados encontrados: \n')
+        print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Dados encontrados:')
         for i in range(len(db_data[0])):
-            print(f'//{db_data[0][i]}//')
+            print(f'[{i + 1}] - {db_data[0][i]}')
     else:
         print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Nenhum dado encontrado.')
 

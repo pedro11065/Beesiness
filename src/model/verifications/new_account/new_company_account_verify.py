@@ -1,3 +1,5 @@
+from colorama import Fore, Style
+
 def cpf_verify(cpf):
     None
 
@@ -14,9 +16,7 @@ def password_verify(senha):
 
 
 def verify_all(cpf, email, cnpj, senha):
-
-    print("\n\n------------------------------------------------------------")
-    print('Criação de conta iniciada, fazendo as verificações!')
+    print(Fore.MAGENTA + '[Banco de dados] ' + Style.RESET_ALL + f'Criação de empresa iniciada, fazendo as verificações!')
 
     email_valid, email_error = email_verify(email, cpf)
     cpf_valid, cpf_error = cpf_verify(cpf)
@@ -37,5 +37,5 @@ def verify_all(cpf, email, cnpj, senha):
         print(f'Retorno dos erros: {errors}')
         return errors, len(errors)
     
-    print('Verificação finalizada, saindo da função.')
+    print(Fore.MAGENTA + '[Banco de dados] ' + Style.RESET_ALL + f'Verificação finalizada!')
     return True

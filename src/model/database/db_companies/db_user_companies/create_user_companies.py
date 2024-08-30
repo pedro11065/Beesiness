@@ -17,7 +17,11 @@ def db_create_company(uuid_company, uuid_user, user_access_level): # Cria um usu
     cur = conn.cursor()
     
     # Insere os dados principais do usuário para armazenar na tabela
-    cur.execute(f"INSERT INTO table_user_companies VALUES ({uuid_company}, {uuid_user}, {user_access_level});")
+    cur.execute(
+    "INSERT INTO table_user_companies (uuid_company, uuid_user, user_access_level) VALUES (%s, %s, %s)",
+    (uuid_company, uuid_user, user_access_level)
+)
+
     message = f"Usuário '{uuid_user}' linkado como '{user_access_level}'a empresa '{uuid_company}'"
     db_create_log(message)
 
