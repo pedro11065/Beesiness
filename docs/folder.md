@@ -20,7 +20,6 @@
     - **`verifications`**: Contém scripts para verificar e validar dados.
         - **`login`**: Pasta para verificar a validade das informações de login.
             - **`company_login_verify.py`**: Verifica a validade das informações de login de empresas.
-            - **`user_login_verify.py`**: Verifica a validade das informações de login de usuários.
         - **`new_account`**: Pasta para verificar a validade dos dados durante a criação de novas contas.
             - **`new_company_account_verify.py`**: Verifica a validade dos dados na criação de contas de empresas.
             - **`new_user_account_verify.py`**: Verifica a validade dos dados na criação de contas de usuários.

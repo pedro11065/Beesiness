@@ -1,36 +1,41 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, redirect, url_for, jsonify
+from flask_login import login_user
+from werkzeug.security import check_password_hash
+
 from colorama import Fore, Style
 
 from src.model.database.db_log.create_log import db_create_log
-from src.model.verifications.login.user_login_verify import user_login_verify
+from src.model.database.db_users.search_user import db_search_user
+from src.model.user_models import User
 
-# Ainda falta adicionar a api no src/__init__.py, criar as verificações e o .js (usar o postman)
 api_user_login = Blueprint('api_user_login', __name__)
 
 @api_user_login.route('/user_login', methods=['POST'])
-def login():
-    search_data = request.get_json()
+def login_post():
+    login_data = request.get_json()
 
-    # Tenta obter o email e senha do JSON, caso contrário, usa username e password.
-    email_cpf = search_data.get('email_cpf') or search_data.get('username')
-    senha = search_data.get('senha') or search_data.get('password')
+    email_cpf = login_data.get('email_cpf')
+    password = login_data.get('senha')
 
-    print(Fore.GREEN + '[Usuário - Login] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nCpf: {email_cpf}\nSenha: {senha}')
-    
-    
-    message =  (f'[Chamada/API - user_login] Dados recebidos - Email:{email_cpf}');
-    db_create_log(message)
+    # Busca o usuário no banco de dados
+    user_data = db_search_user(email_cpf)
+    #print(f"User_data: {user_data}")
 
-    # Verifica o login
-    login_valid, login_errors = user_login_verify(email_cpf, senha)
+    if not user_data:
+        print(f"Email/CPF não foi encontrado")
+        return jsonify({'error': 'Email/CPF não encontrado'}), 400
 
-    if login_valid:
-        print(Fore.GREEN + '[Usuário - Login] ' + Style.RESET_ALL + f'Logado com sucesso!')
+    # Verifica se o usuário foi encontrado e se a senha está correta
+    if user_data and check_password_hash(user_data['password_hash'], password):
+        user = User( # Cria uma instância do User a partir do dicionário retornado
+            id=user_data['id'],
+            email=user_data['email'],
+            cpf=user_data['cpf'],
+            password_hash=user_data['password_hash']
+        )
+        login_user(user)
+        return redirect(url_for('views.dashboard'))
         
-        message =  (f'O usuário ({email_cpf}) logou com sucesso!');
-        db_create_log(message)
-        return jsonify({"login": "True"}), 200
-    else:
-        print(f'Erros durante o login: {login_errors}') # Log dos erros
-        return jsonify({"quant_erros": len(login_errors), "erros": login_errors}), 400
-    
+    # Se o login falhar, redireciona para a página de login novamente
+    jsonify({'error': 'Senha incorreta'}), 400
+    return redirect(url_for('auth.login'))

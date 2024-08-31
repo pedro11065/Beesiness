@@ -8,9 +8,7 @@ def birthday_verify(data_nascimento):
         today = datetime.now().date()
 
         # Calcula a idade
-        
         age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-        #print(age)
         # Verifica se a idade é válida (mínimo 16 anos)
         if age < 16:
             return False, "Data de nascimento inválida. Usuário deve ter no mínimo 16 anos."
@@ -93,6 +91,9 @@ def email_verify(email, cpf):
 
     if db_search_user(cpf):
         return False, "CPF já cadastrado."
+    
+    if db_search_user(email):
+        return False, "E-mail já cadastrado."
 
     return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
 
