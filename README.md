@@ -5,6 +5,7 @@ Este projeto foi desenvolvido durante o segundo semestre do curso de Análise e 
 ## Autores
 
 - [@biafalls](https://www.github.com/biafalls)
+- [@Juli4Souzas](https://www.github.com/Juli4Souzas)
 - [@MiguelMMarques06](https://www.github.com/MiguelMMarques06)
 - [@pedro11065](https://github.com/pedro11065)
 - [@rhuanmulero](https://github.com/rhuanmulero)

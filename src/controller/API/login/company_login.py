@@ -17,8 +17,6 @@ def login():
     print(Fore.GREEN + '[Empresa - Login] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nCnpj: {cnpj}\nSenha: {senha}')
 
     #hashed_password = check_password_hash(senha);
-
-    
     message =  (f'[Chamada/API - company_login] Dados recebidos - Cnpj: {cnpj}');
     db_create_log(message)
     

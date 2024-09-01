@@ -1,33 +1,25 @@
-// Código para enviar os dados do formulário para a API
 document.getElementById('registroForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Previne o comportamento padrão de envio do formulário
+    event.preventDefault();
 
-    // Captura os dados dos campos
-    const fullName = document.getElementById('fullName').value;
-    const email = document.getElementById('email').value;
-    const cpf = document.getElementById('cpf').value;
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const cpf = document.getElementById('cpf').value.trim().replace(/\D/g, '');
     const birthDate = document.getElementById('birthDate').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
-    console.log(`Nome: ${fullName}`);
-    console.log(`Email: ${email}`);
-    console.log(`CPF: ${cpf}`);
-    console.log(`Data de Nascimento: ${birthDate}`);
-    console.log(`Senha: ${password}`);
-    console.log(`Confirmar Senha: ${confirmPassword}`);
-
-    // Deixando a data de nascimento no padrão brasileiro
-    let data_americana = birthDate;
-    const data_de_nascimento = data_americana.split('-').reverse().join('/');
-
-    // Verifica se a senha e a confirmação são iguais
     if (password !== confirmPassword) {
         alert('As senhas não correspondem.');
         return;
     }
 
-    // Cria o objeto com os dados
+    if (!validateCPF(cpf)) {
+        alert('CPF inválido.');
+        return;
+    }
+
+    const data_de_nascimento = birthDate.split('-').reverse().join('/');
+
     const dados = {
         "nome": fullName,
         "cpf": cpf,
@@ -36,10 +28,7 @@ document.getElementById('registroForm').addEventListener('submit', function(even
         "data_de_nascimento": data_de_nascimento
     };
 
-    console.log('Os dados:', dados);
-
-    // Envia os dados para a API usando fetch
-    fetch('/api/create_user_account', { //http://localhost:5000/api/create_user_account
+    fetch('/api/create_user_account', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -48,9 +37,18 @@ document.getElementById('registroForm').addEventListener('submit', function(even
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Sucesso:', data);
+        if (data.verify === "True") {
+            alert('Usuário registrado com sucesso!');
+        } else {
+            alert('Erros: ' + data.erros.join(', '));
+        }
     })
     .catch(error => {
         console.error('Erro:', error);
     });
 });
+
+function validateCPF(cpf) {
+    // Adicionar aqui a lógica de validação do CPF no frontend, se necessário.
+    return cpf.length === 11;
+}

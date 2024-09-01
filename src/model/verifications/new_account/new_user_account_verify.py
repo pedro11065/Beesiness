@@ -6,86 +6,39 @@ def birthday_verify(data_nascimento):
     try:
         birth_date = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
         today = datetime.now().date()
-
-        # Calcula a idade
         age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-        # Verifica se a idade é válida (mínimo 16 anos)
         if age < 16:
-            return False, "Data de nascimento inválida. Usuário deve ter no mínimo 16 anos."
-
+            return False, "Idade mínima é 16 anos."
     except ValueError:
-        print('Erro: Data de nascimento no formato inválido.')
-        return False, "Data de nascimento inválida."  # Retorna um valor booleano False e uma lista de erros quando o aniversário não condiz.
-
-    return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
+        return False, "Data de nascimento inválida."
+    return True, None
 
 def cpf_verify(cpf):
+    if len(cpf) != 11 or not cpf.isdigit():
+        return False, "CPF inválido."
 
-    def cpf_x1(cpf): #Verifica o primeiro digito de verificação do CPF
+    def cpf_x1(cpf):
         try:  
-            counting_number = 0 ; multiplier = 10 ; counting = 8 ; multiplied = []
+            multiplied = [int(cpf[i]) * (10 - i) for i in range(9)]
+            return (sum(multiplied) * 10 % 11) == int(cpf[9])
+        except:
+            return False
 
-            while counting_number <= counting:
-
-                number_str = cpf[counting_number] ; number_int = (int(number_str))
-
-                value = number_int*multiplier
-                multiplied.append(value)
-
-                #proxima letra                         #menos um a ser multiplicado
-                counting_number = counting_number + 1  ; multiplier = multiplier - 1 
-                continue
-
-            sum_number = 0
-
-            for num in multiplied:
-                sum_number += num
-
-            full_result = sum_number * 10 ; full_result_x1 = full_result % 11
-
-            if str(full_result_x1) == cpf[9]:None               
-            else: return False
-        except: return False
-
-        return True # None //é proposital ter somente True como return
-  
-    def cpf_x2(cpf): #Verifica o segundo digito de verificação do CPF
-
+    def cpf_x2(cpf):
         try:
-            counting_number = 0 ; multiplier = 11 ; counting = 9 ; multiplied = []
+            multiplied = [int(cpf[i]) * (11 - i) for i in range(10)]
+            return (sum(multiplied) * 10 % 11) == int(cpf[10])
+        except:
+            return False
 
-            while counting_number <= counting:
-
-                number_str = cpf[counting_number] ; number = (int(number_str))
-                value = number*multiplier
-                multiplied.append(value)
-
-                #proxima letra             #menos um a ser multiplicado
-                counting_number = counting_number + 1  ; multiplier = multiplier - 1 
-
-                continue
-
-            sum_number = 0
-
-            for num in  multiplied:
-                sum_number += num
-
-            full_result = sum_number * 10 ; full_result_x2 = full_result % 11
-
-            if str(full_result_x2) == cpf[10]:None               
-            else: return False, "CPF inválido."
-
-        except: return False, "CPF inválido."
-        return True, None     
-
-    if cpf_x1(cpf): #Se x1 for válido, testar x2...
-        return cpf_x2(cpf)  
-    return False, "CPF inválido." #Se x1 não for válido, já retorna erro
+    if cpf_x1(cpf) and cpf_x2(cpf):
+        return True, None
+    return False, "CPF inválido."
 
 def email_verify(email, cpf):
     from src.model.database.db_users.search_user import db_search_user
 
-    email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' # Regex para o padrão teste@email.com
+    email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     if not re.match(email_pattern, email):
         return False, "Email inválido."
 
@@ -95,23 +48,25 @@ def email_verify(email, cpf):
     if db_search_user(email):
         return False, "E-mail já cadastrado."
 
-    return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
+    return True, None
 
-def password_verify(password): #Q codigo bonito pprt
+def password_verify(password):
     if len(password) < 8:
         return False, "A senha deve ter um mínimo de 8 dígitos."
-    if password.isalnum():
-        return False, "A senha deve ter no mínimo 1 caracter especial."
+    if not re.search(r'[A-Z]', password):
+        return False, "A senha deve conter ao menos uma letra maiúscula."
+    if not re.search(r'[a-z]', password):
+        return False, "A senha deve conter ao menos uma letra minúscula."
+    if not re.search(r'[0-9]', password):
+        return False, "A senha deve conter ao menos um número."
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        return False, "A senha deve conter ao menos um caractere especial."
     if password.isspace():
         return False, "A senha não pode conter espaços."
+    return True, None
 
-    return True, None  # Retorna um valor booleano True e None para indicar que o login foi bem-sucedido e que não há erros.
-
-def verify_all(cpf,email, senha, data_nascimento):
-    
-    
-    print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + f'Criação de conta iniciada, verificando dados!')
-
+def verify_all(cpf, email, senha, data_nascimento):
+    print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + f'Iniciando verificação dos dados!')
 
     email_valid, email_error = email_verify(email, cpf)
     cpf_valid, cpf_error = cpf_verify(cpf)
@@ -129,8 +84,7 @@ def verify_all(cpf,email, senha, data_nascimento):
         errors.append(data_error)
 
     if errors:
-        print(f'Retorno dos erros: {errors}')
-        return errors, len(errors)
-    
-    print('Verificação finalizada, saindo da função.')
-    return True
+        return False, errors
+
+    print('Verificação finalizada com sucesso.')
+    return True, None

@@ -10,29 +10,35 @@ api_new_user_account = Blueprint('api_new_user_account', __name__)
 
 @api_new_user_account.route('/create_user_account', methods=['POST'])
 def create_account():
-    create_data = request.get_json() # Dados retornam como {'nome': 'thiago', "cpf": "50774811803", 'email': 'teste@email.com', 'senha': '12345678', 'data_de_nascimento': '1990-05-30'}
+    try:
+        create_data = request.get_json()
 
-    nome = create_data.get('nome')
-    cpf = create_data.get('cpf')
-    email = create_data.get('email')
-    senha = create_data.get('senha')
-    data_nascimento = create_data.get('data_de_nascimento')
+        nome = create_data.get('nome')
+        cpf = create_data.get('cpf')
+        email = create_data.get('email')
+        senha = create_data.get('senha')
+        data_nascimento = create_data.get('data_de_nascimento')
 
-    hashed_password = generate_password_hash(senha);
+        # Gera o hash da senha
+        hashed_password = generate_password_hash(senha)
 
-    print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de nascimento: {data_nascimento}\n')
+        # Log de recebimento de dados
+        print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL +
+              f'Dados recebidos:\nNome: {nome}\nCPF: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de Nascimento: {data_nascimento}\n')
 
-    message = "[Chamada/API - new_user_account]";
-    db_create_log(message);
+        db_create_log("[Chamada/API - new_user_account]")
 
-    verified = verify_all(cpf, email, senha, data_nascimento)
+        # Verificação dos dados
+        verified, errors = verify_all(cpf, email, senha, data_nascimento)
 
-    if verified == True:
-        db_create_user(nome, cpf, email, hashed_password, data_nascimento); 
+        if verified:
+            db_create_user(nome, cpf, email, hashed_password, data_nascimento)
+            print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + 'Registrado com sucesso!')
+            db_create_log(f'O usuário ({cpf}) foi criado com sucesso!')
+            return jsonify({"verify": True}), 200
+        else:
+            return jsonify({"quant_erros": len(errors), "erros": errors}), 400
 
-        print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Registrado com sucesso!')
-        message = (f'O usuário ({cpf}) foi criado com sucesso!');
-        db_create_log(message)
-        return jsonify({"verify": "True"}), 200
-    else:
-        return jsonify({"quant_erros": verified[1], "erros": verified[0]}), 400
+    except Exception as e:
+        print(Fore.RED + f'Erro durante o registro: {str(e)}' + Style.RESET_ALL)
+        return jsonify({"error": "Ocorreu um erro no servidor."}), 500
