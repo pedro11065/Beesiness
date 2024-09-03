@@ -21,20 +21,20 @@ CREATE TABLE table_users
 (user_id UUID primary key default uuid_generate_v4(), /*UUID*/
 user_fullname varchar(255), 
 user_email varchar(255) unique, 
-user_password varchar(25), 
-user_birthday varchar(10);
-user_cpf varchar(11) unique);;
+user_password varchar(225), 
+user_birthday varchar(10),
+user_cpf varchar(11) unique);
 
 
 CREATE TABLE table_companies 
-(company_id primary key default uuid_generate_v4(), /*UUID*/
+(company_id UUID primary key default uuid_generate_v4(), /*UUID*/
 user_id UUID REFERENCES table_users(user_id), /*Faz a relação com o user_id na outra tabela. Está ai para indicar quem registrou a empresa*/
 company_name varchar(255),
 company_email varchar(255) unique, 
 company_cnpj varchar(14) unique,
-company_password varchar(25));
+company_password varchar(225));
 
-CREATE TYPE access_level AS ENUM ('viewer', 'checker', 'editor'); /*Cria um tipo de registro chamado acess_level que só permite essas 3 opções, servindo como verificação no banco de dados*/
+CREATE TYPE access_level AS ENUM ('viewer', 'checker', 'editor','creator'); /*Cria um tipo de registro chamado acess_level que só permite essas 3 opções, servindo como verificação no banco de dados*/
 
 CREATE TABLE table_user_companies /*Só mandar o nivel de acesso do usuário ('viewer', 'checker', 'editor')*/
 (company_id UUID REFERENCES table_companies(company_id), 
