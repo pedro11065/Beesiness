@@ -36,6 +36,6 @@ def login_post():
         login_user(user)
         return redirect(url_for('views.dashboard'))
     
-    jsonify({'error': 'Senha incorreta'}), 400
+    return jsonify({'error': 'Senha incorreta'}), 400 ; redirect(url_for('auth.login'))
     # Se o login falhar, redireciona para a página de login novamente
-    return redirect(url_for('auth.login'))
+    
