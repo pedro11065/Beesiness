@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from .model.user_models import User
-from .model.database.db_users.search_user_id import db_search_user_by_id
+from .model.database.db_users.search_user import db_search_user
 
 def create_app():
     app = Flask(__name__, static_folder='views/static', template_folder='views/templates')
@@ -15,7 +15,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        user_data = db_search_user_by_id(user_id) 
+        user_data = db_search_user(user_id) 
         if user_data:
             return User(
             id=user_data['id'],

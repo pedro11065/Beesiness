@@ -4,63 +4,43 @@ from ..db_log.create_log import db_create_log
 from colorama import Fore, Style
 
 def db_search_user(search_data):
-    """Função principal para buscar dados de um usuário no banco de dados."""
-    print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Buscando dados...')
-    
-    db_login = json_db_read()  # Obtém as credenciais de acesso ao banco de dados
-    conn = create_db_connection(db_login)
-    
-    if not conn:
-        return None
+        
+        print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados - search_user')
 
-    db_data = query_user_data(conn, search_data)
-    conn.close()  # Fecha a conexão
+    #try:
+        db_login = json_db_read()
 
-    if db_data:
-        print_user_data(db_data)
-        return format_user_data(db_data)
-    else:
-        print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Nenhum dado encontrado.')
-        return None
-
-def create_db_connection(db_login):
-    """Estabelece a conexão com o banco de dados usando as credenciais fornecidas."""
-    try:
         conn = psycopg2.connect(
             host=db_login[0],
             database=db_login[1],
             user=db_login[2],
             password=db_login[3]
         )
-        return conn
-    except Exception as e:
-        print(Fore.RED + '[Banco de dados - Erro] ' + Style.RESET_ALL + str(e))
-        db_create_log(f"Erro ao conectar ao banco de dados: {e}")
-        return None
+        cur = conn.cursor() # Cria um cursor no PostGreSQL
 
-def query_user_data(conn, search_data):
-    """Executa a consulta SQL para buscar os dados do usuário com base no CPF ou e-mail."""
-    try:
-        with conn.cursor() as cur:
-            cur.execute("SELECT user_id, user_cpf, user_email, user_password FROM table_users WHERE user_cpf = %s OR user_email = %s", 
-                        (search_data, search_data))
-            return cur.fetchone()
-    except Exception as e:
-        print(Fore.RED + '[Banco de dados - Erro] ' + Style.RESET_ALL + str(e))
-        db_create_log(f"Erro ao buscar dados do usuário: {e}")
-        return None
+        db_create_log(message="Chamada/Banco de dados - db_search_user")
 
-def print_user_data(db_data):
-    """Imprime os dados do usuário retornados pela consulta."""
-    print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Dados encontrados:')
-    for idx, value in enumerate(db_data):
-        print(f'[{idx + 1}] - {value}')
+        data = search_data ; db_data = None
 
-def format_user_data(db_data):
-    """Formata os dados do usuário em um dicionário para fácil manipulação posterior."""
-    return {
-        "id": db_data[0],
-        "cpf": db_data[1],
-        "email": db_data[2],
-        "password_hash": db_data[3]
-    }
+        cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")
+        db_data = cur.fetchall()
+
+        if db_data == None:
+                print("error")
+                cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_id = '{data}';")
+                db_data = cur.fetchall()
+
+        conn.commit();cur.close();conn.close()
+
+        print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados encotrados com sucesso!')
+
+        return {
+            "id": db_data[0][0],
+            "cpf": db_data[0][1],
+            "email": db_data[0][2],
+            "password_hash": db_data[0][3]
+        }
+    #except:
+        #print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Erro ao pesquisar dados')
+        #db_create_log(message=f"Erro ao conectar ao banco de dados ou encontrar o dado pesquisado.")
+        #return None

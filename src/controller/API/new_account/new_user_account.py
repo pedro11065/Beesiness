@@ -29,15 +29,13 @@ def create_account():
         db_create_log("[Chamada/API - new_user_account]")
 
         # Verificação dos dados
-        verified, errors, errors_classes = verify_all(cpf, email, senha, data_nascimento)
-
+        verified, errors, errors_classes = verify_all(cpf, email, senha)
         if verified:
             db_create_user(nome, cpf, email, hashed_password, data_nascimento)
             print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + 'Registrado com sucesso!')
             db_create_log(f'O usuário ({cpf}) foi criado com sucesso!')
             return jsonify({"register": True}), 200
         else:
-            print(errors)
             return jsonify({"register": False, "error":errors[0], "classe":errors_classes[0]}), 400
 
     except Exception as e:
