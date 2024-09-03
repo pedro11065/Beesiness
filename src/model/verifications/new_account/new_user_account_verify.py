@@ -4,7 +4,9 @@ from colorama import Fore, Style
 
 #Primeiro adicionar as verificações no front depois remove-las do back
 
-def birthday_verify(data_nascimento): #Verifica nascimento // front
+#verificações  no front: nome, data de nascimento, cpf, email e senha
+
+def birthday_verify(data_nascimento): #Verifica nascimento //deletar// front
     try:
         birth_date = datetime.strptime(data_nascimento, "%d/%m/%Y").date()
         today = datetime.now().date()
@@ -15,7 +17,7 @@ def birthday_verify(data_nascimento): #Verifica nascimento // front
         return False, "Data de nascimento inválida."
     return True, None
 
-def cpf_verify(cpf): #Ve se o cpf é valido // front
+def cpf_verify(cpf): # Verifica se o email/cpf já está cadastrado ou não (pode se mesclar com o cnpj) // back
     if len(cpf) != 11 or not cpf.isdigit():
         return False, "CPF inválido."
 
@@ -37,7 +39,7 @@ def cpf_verify(cpf): #Ve se o cpf é valido // front
         return True, None
     return False, "CPF inválido."
 
-def email_verify(email, cpf):  #Ve se o email já é utilizado // back
+def email_verify(email, cpf):  #Verifica no email //deletar// front
     from src.model.database.db_users.search_user import db_search_user
 
     email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -52,7 +54,7 @@ def email_verify(email, cpf):  #Ve se o email já é utilizado // back
 
     return True, None
 
-def password_verify(password): #Verifica senha // Front
+def password_verify(password): #Verifica senha //deletar// Front
     if len(password) < 8:
         return False, "A senha deve ter um mínimo de 8 dígitos."
     if not re.search(r'[A-Z]', password):
