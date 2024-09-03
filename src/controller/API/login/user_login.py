@@ -25,8 +25,9 @@ def login_post():
         print(f"Email/CPF não foi encontrado")
         return jsonify({'error': 'Email ou CPF não encontrado'}), 400
 
+    print(user_data and check_password_hash(user_data['password_hash'], password))
     # Verifica se o usuário foi encontrado e se a senha está correta
-    if user_data and check_password_hash(user_data['password_hash'], password):
+    if user_data and check_password_hash(user_data['password_hash'], password) == True:
         user = User( # Cria uma instância do User a partir do dicionário retornado
             id=user_data['id'],
             email=user_data['email'],
@@ -34,7 +35,7 @@ def login_post():
             password_hash=user_data['password_hash']
         )
         login_user(user)
-        return redirect(url_for('views.dashboard'))
+        return jsonify({'login':True}), 200; redirect(url_for('views.dashboard'))
     
     return jsonify({'error': 'Senha incorreta'}), 400 ; redirect(url_for('auth.login'))
     # Se o login falhar, redireciona para a página de login novamente
