@@ -35,18 +35,33 @@ document.getElementById('registroForm').addEventListener('submit', function(even
         },
         body: JSON.stringify(dados)
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.verify === "True") {
-            alert('Usuário registrado com sucesso!');
-        } else {
-            alert('Erros: ' + data.erros.join(', '));
+    .then(response => {
+        // Log da resposta bruta para inspeção
+        console.log('Response:', response);
+        
+        // Verifica se a resposta é um erro (status não está na faixa 2xx)
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
+        
+        // Retorna a resposta como JSON para o próximo .then
+        return response.json();
+    })    
+    .then(data => {
+        // Verifica se a resposta contém um erro
+        if (data.error) {
+            console.error('Erro:', data.error); // Lida com a mensagem de erro
+        } else {
+            console.log('Sucesso:', data); // Lida com dados de sucesso
+            window.location.href = 'user-login';
+        }
+        })
+        .catch(error => {
+            // Captura e loga qualquer erro que ocorrer
+            console.error('Erro:', error);
+            window.location.href = 'user-sign-up'; //pelo menos por quanto já que não há como mostrar o erro de "Senha inválida" ou "CPF/email inválido"
+        });
     });
-});
 
 function validateCPF(cpf) {
     // Adicionar aqui a lógica de validação do CPF no frontend, se necessário.
