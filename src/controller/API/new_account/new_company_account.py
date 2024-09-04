@@ -31,7 +31,8 @@ def create_company():
         hashed_password = generate_password_hash(senha)
         user_id = current_user.get_id()
 
-        db_create_company(nome, user_id, email, cnpj, hashed_password);
+        db_create_company(nome, user_id, email, cnpj, hashed_password)
+
         print(Fore.GREEN + '[API Empresa - Registro] ' + Style.RESET_ALL + f'Registrada com sucesso!') 
         
         return jsonify({"register": "True"}), 200

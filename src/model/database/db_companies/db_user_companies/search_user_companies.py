@@ -5,7 +5,7 @@
 import psycopg2
 from ...json_db import json_db_read # Importação da função que lê os dados que armazenam as informações do servidor.
 
-def db_search_user_companies(search_data):
+def db_search_user_company(search_data):
 
     db_login = json_db_read()
 

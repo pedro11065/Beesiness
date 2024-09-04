@@ -18,7 +18,7 @@ INSERT INTO table_users (user_fullname, user_email, user_password, user_birthday
 VALUES ('Pedro Henrique SIlva Quixabeira', 'pedro@gmail.com','12345678','13/03/2006');
 
 CREATE TABLE table_users 
-(user_id UUID primary key default uuid_generate_v4(), /*UUID*/
+(user_id UUID primary key, /*UUID*/
 user_fullname varchar(255), 
 user_email varchar(255) unique, 
 user_password varchar(225), 
@@ -27,7 +27,7 @@ user_cpf varchar(11) unique);
 
 
 CREATE TABLE table_companies 
-(company_id UUID primary key default uuid_generate_v4(), /*UUID*/
+(company_id UUID primary key, /*UUID*/
 user_id UUID REFERENCES table_users(user_id), /*Faz a relação com o user_id na outra tabela. Está ai para indicar quem registrou a empresa*/
 company_name varchar(255),
 company_email varchar(255) unique, 

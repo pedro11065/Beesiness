@@ -1,7 +1,7 @@
 import psycopg2
 from ...json_db import json_db_read
 
-def db_delete_company(delete_data):
+def db_delete_user_company(delete_data):
     db_login = json_db_read()
 
     # Conecta ao banco de dados

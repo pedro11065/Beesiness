@@ -22,13 +22,21 @@ def db_search_user(search_data):
 
         data = search_data
 
-        cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")
-        db_data = cur.fetchall()
+        if len(data) == 11 and (data.isdigit()) : # CPF
 
-        if db_data == []:
-                cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_id = '{data}';")
-                db_data = cur.fetchall()
+            cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")
+            db_data = cur.fetchall()
+        
+        elif data.isdigit() == False and '@' in data: # Email
 
+            cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_email = '{data}';")
+            db_data = cur.fetchall()
+        
+        else:
+
+            cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_id = '{data}';")
+            db_data = cur.fetchall()
+            
         conn.commit();cur.close();conn.close()
 
         try:

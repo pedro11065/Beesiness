@@ -14,6 +14,7 @@ Recomendações para melhorar o código:
 """
 
 import psycopg2
+import uuid
 from ..json_db import json_db_read
 from ..db_log.create_log import db_create_log
 from colorama import Fore, Style
@@ -35,14 +36,10 @@ def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário
     # Cria um cursor
     cur = conn.cursor()
 
-    print(fullname, cpf, email, password, birthday)
+    user_id = uuid.uuid4() #uuid do usuário
     
     # Insere os dados principais do usuário para armazenar na tabela
-    cur.execute(
-    "INSERT INTO table_users (user_fullname, user_email, user_password, user_birthday, user_cpf) VALUES (%s, %s, %s, %s, %s)",
-    (fullname, email, password, birthday, cpf)
-    )
-
+    cur.execute(f"INSERT INTO table_users (user_id, user_fullname, user_email, user_password, user_birthday, user_cpf) VALUES ('{user_id}', '{fullname}', '{email}', '{password}','{birthday}', '{cpf}');")
 
     # Confirma as mudanças
     conn.commit()

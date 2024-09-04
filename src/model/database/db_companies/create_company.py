@@ -1,4 +1,5 @@
 import psycopg2
+import uuid
 from ..json_db import json_db_read
 
 def db_create_company(nome, user_id, email, cnpj, hashed_password): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
@@ -14,9 +15,17 @@ def db_create_company(nome, user_id, email, cnpj, hashed_password): # Cria um us
 
     # Cria um cursor
     cur = conn.cursor()
-    
+
+    company_id = uuid.uuid4()#uuid novo para empresa
+   
     # Insere os dados principais do usuário para armazenar na tabela
-    cur.execute(f"INSERT INTO table_companies (user_id, company_name, company_email, company_cnpj, company_password) VALUES ('{user_id}','{nome}','{email}','{cnpj}','{hashed_password}');")
+    cur.execute(f"INSERT INTO table_companies (company_id, user_id, company_name, company_email, company_cnpj, company_password) VALUES ('{company_id}','{user_id}','{nome}','{email}','{cnpj}','{hashed_password}');")  
+
+    
+    user_access_level = 'creator'#nivel do usuário
+    
+    # Relação do usuário com a empresa a qual ele criou
+    cur.execute(f"INSERT INTO table_user_companies (company_id, user_id, user_access_level) VALUES ('{company_id}', '{user_id}', '{user_access_level}');")
 
     # Confirma as mudanças
     conn.commit()
