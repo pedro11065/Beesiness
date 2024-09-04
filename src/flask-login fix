@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from .model.user_models import User
+from colorama import Fore, Style
 from .model.database.db_users.search_user import db_search_user
 
 def create_app():
@@ -15,15 +16,18 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
+        print(Fore.CYAN+ '[Flask-Login] ' + Style.RESET_ALL + f'Iniciando pesquisa de usuário')
+        print(user_id)
         user_data = db_search_user(user_id) 
         if user_data:
+            print(user_data)
             return User(
             id=user_data['id'],
             email=user_data['email'],
             cpf=user_data['cpf'],
             password_hash=user_data['password_hash']
-            )
-        return None
+            ); print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Dados pesquisados com sucesso!')
+        return None;print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Pesquisa mal sucedida')
 
     from .views.views import views
     from .views.auth import auth
