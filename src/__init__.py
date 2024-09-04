@@ -26,8 +26,11 @@ def create_app():
             email=user_data['email'],
             cpf=user_data['cpf'],
             password_hash=user_data['password_hash']
-            ); print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Dados pesquisados com sucesso!')
-        return None;print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Pesquisa mal sucedida')
+            );
+            print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Dados pesquisados com sucesso!')
+        
+        return None;
+        print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Pesquisa mal sucedida')
 
     from .views.views import views
     from .views.auth import auth

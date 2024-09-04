@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from flask_login import login_user
+from flask_login import login_user, current_user
+
 from werkzeug.security import generate_password_hash
 from colorama import Fore, Style
 
@@ -30,7 +31,8 @@ def create_company():
     if verified[0] == True:
 
         hashed_password = generate_password_hash(senha)
-        user_id = ??????????????? #qual é o user id da sessão?
+        user_id = current_user
+        print(user_id);
 
         db_create_company(nome, user_id, email, cnpj, hashed_password);
         print(Fore.GREEN + '[API Empresa - Registro] ' + Style.RESET_ALL + f'Registrada com sucesso!') 

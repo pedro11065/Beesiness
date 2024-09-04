@@ -19,8 +19,9 @@ def login_post():
     print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Pesquisa iniciada')
 
     user_data = db_search_user(email_cpf)
+
     if not user_data:
-        print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Email ou CPF nã encotrado')       
+        print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Email ou CPF não encontrado')       
         return jsonify({'error': 'Email ou CPF não encontrado'}), 400
 
     if user_data and check_password_hash(user_data['password_hash'], password) == True:
