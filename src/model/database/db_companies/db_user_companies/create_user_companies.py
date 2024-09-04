@@ -1,6 +1,5 @@
 import psycopg2
 from ...json_db import json_db_read
-from ...db_log.create_log import db_create_log
 
 def db_create_company(uuid_company, uuid_user, user_access_level): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     db_login = json_db_read()
@@ -21,10 +20,6 @@ def db_create_company(uuid_company, uuid_user, user_access_level): # Cria um usu
     "INSERT INTO table_user_companies (uuid_company, uuid_user, user_access_level) VALUES (%s, %s, %s)",
     (uuid_company, uuid_user, user_access_level)
 )
-
-    message = f"Usuário '{uuid_user}' linkado como '{user_access_level}'a empresa '{uuid_company}'"
-    db_create_log(message)
-
     # Confirma as mudanças
     conn.commit()
 

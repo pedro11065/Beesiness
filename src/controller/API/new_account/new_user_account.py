@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash
 from colorama import Fore, Style
 
-from src.model.database.db_log.create_log import db_create_log
 from src.model.database.db_users.create_user import db_create_user
 from src.model.verifications.new_account.new_user_account_verify import verify_all
 
@@ -23,13 +22,11 @@ def create_account():
 
         print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos:\nNome: {nome}\nCPF: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de Nascimento: {data_nascimento}\n')
 
-        db_create_log("[Chamada/API - new_user_account]")
 
         verified, errors, errors_classes = verify_all(cpf, email, senha)
         if verified:
             db_create_user(nome, cpf, email, hashed_password, data_nascimento)
             print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + 'Registrado com sucesso!')
-            db_create_log(f'O usuário ({cpf}) foi criado com sucesso!')
             return jsonify({"register": True}), 200
         
         else:

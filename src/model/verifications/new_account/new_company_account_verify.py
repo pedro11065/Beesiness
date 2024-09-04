@@ -41,7 +41,7 @@ def password_verify(senha): #Verifica a senha // back
     return True, None
 
 #Já que algumas verificações vão ser realizadas no front, removi elas daqui por que não há motivo de ter essa redundância toda 
-
+  
 def verify_all(cpf, cnpj, email, senha):
 
     print(Fore.MAGENTA + '[Verificação] ' + Style.RESET_ALL + f'Criação de empresa iniciada, fazendo as verificações!')

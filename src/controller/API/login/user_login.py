@@ -1,9 +1,9 @@
 from flask import Blueprint, request, redirect, url_for, jsonify
-from flask_login import login_user
+from flask_login import login_user, current_user
 from werkzeug.security import check_password_hash
 from colorama import Fore, Style
 
-from src.model.database.db_log.create_log import db_create_log
+#from src.model.database.db_log.create_log import db_create_log
 from src.model.database.db_users.search_user import db_search_user
 from src.model.user_models import User
 
@@ -33,6 +33,7 @@ def login_post():
         )
         login_user(user)
         print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Usuário logado com sucesso!')
+        print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'user_id:{current_user.get_id()}')
         return jsonify({'login':True}), 200
     
     print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta')

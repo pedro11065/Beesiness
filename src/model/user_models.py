@@ -9,7 +9,7 @@ class User(UserMixin):
         self.password_hash = password_hash
 
     def get_id(self):
-        return str(self.id)  # Retorna o UUID como string
+        return (self.id)  # Retorna o UUID como string
     
     def __repr__(self):
         return f"User(id={self.id}, email={self.email}, cpf={self.cpf})"

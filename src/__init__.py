@@ -17,20 +17,21 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         print(Fore.CYAN+ '[Flask-Login] ' + Style.RESET_ALL + f'Iniciando pesquisa de usuário')
-        print(user_id)
+        #print(user_id)
         user_data = db_search_user(user_id) 
         if user_data:
-            print(user_data)
+            print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Dados pesquisados com sucesso!')
+
             return User(
             id=user_data['id'],
             email=user_data['email'],
             cpf=user_data['cpf'],
             password_hash=user_data['password_hash']
-            );
-            print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Dados pesquisados com sucesso!')
-        
-        return None;
+            )
+            
         print(Fore.CYAN + '[Flask-Login] ' + Style.RESET_ALL + f'Pesquisa mal sucedida')
+        return None
+        
 
     from .views.views import views
     from .views.auth import auth

@@ -1,3 +1,4 @@
+from colorama import Fore, Style
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 # Blueprint é uma maneira de separar a rota do nosso site sem precisar deixar tudo em apenas um arquivo. 
@@ -11,5 +12,5 @@ def home():
 @views.route('/dashboard')
 @login_required
 def dashboard():
-    print(f"Usuário (UUID) acessando o dashboard: {current_user.id}")
+    print(Fore.YELLOW + '[views] ' + Style.RESET_ALL + f'Usuário (UUID) acessando o dashboard: {current_user.id}\n')
     return render_template('dashboard.html', user=current_user)
