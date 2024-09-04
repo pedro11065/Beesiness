@@ -1,7 +1,10 @@
 from flask import Blueprint, request, jsonify
+from flask_login import login_user
 from werkzeug.security import generate_password_hash
 from colorama import Fore, Style
 
+
+from src.model.user_models import User
 from src.model.database.db_log.create_log import db_create_log
 from src.model.database.db_companies.create_company import db_create_company
 from src.model.verifications.new_account.new_company_account_verify import verify_all
@@ -18,29 +21,21 @@ def create_company():
     cnpj = create_data.get('cnpj')
     senha = create_data.get('senha')
 
-    print(Fore.GREEN + '[Empresa - Registro] ' + Style.RESET_ALL + f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}')
+    print(Fore.GREEN + '[Empresa - Registro] ' + Style.RESET_ALL +
+           f'Os dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}')
 
-
-    message = (f'[Chamada/API - new_company_account] Dados de identificação - Cnpj: {cnpj}, Cpf: {cpf} e Email: {email}');
-    db_create_log(message)
+    db_create_log(message=f'[Chamada/API - new_company_account] Dados de identificação - Cnpj: {cnpj}, Cpf: {cpf} e Email: {email}')
 
     verified = verify_all(cpf, email, cnpj, senha) 
 
-    # CPF - Verifica se esse CPF está no banco de dados, e se estiver, pegar o id do dono desse cpf
-    # Email - Usa o mesmo verificador de mail do registro de usuário
-    # cnpj - Vamo ter que criar (emoji chorando)
-    # senha - Mesma validação 
+    if verified[0] == True:
+        hashed_password = generate_password_hash(senha)
+        print(login_user)
 
-    #ideia - Modular todas validações para que elas possam ser reutilizadas para que não tenha que compiar a validação da senha por exemplo.
-    # senha_verify.py; cnpj_verify.py...assim por diante. Nem é mto dificil, só copiar o pronto e tacalhe import no verify_all
+        user_id = ??????????????? #qual é o user id da sessão?
 
-    if verified == True:
-        #hashed_password = generate_password_hash(senha)
-        db_create_company(nome, cpf, email, cnpj, senha);
-        print(Fore.GREEN + '[Empresa - Registro] ' + Style.RESET_ALL + f'Registrada com sucesso!');
-
-        message =  message =  (f'A empresa ({cnpj}) foi registrada com sucesso!');
-        db_create_log(message)
-        return jsonify({"verify": "True"}), 200
-    else:
-        return jsonify({"quant_erros": verified[1], "erros": verified[0]}), 400
+        db_create_company(nome, user_id, email, cnpj, hashed_password);
+        print(Fore.GREEN + '[API Empresa - Registro] ' + Style.RESET_ALL + f'Registrada com sucesso!') 
+        db_create_log(message = f'A empresa ({cnpj}) foi registrada com sucesso!')
+        
+        return jsonify({"register": "True"}), 200

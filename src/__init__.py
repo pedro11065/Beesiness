@@ -25,16 +25,17 @@ def create_app():
             )
         return None
 
-
     from .views.views import views
     from .views.auth import auth
     from .controller.API.login.user_login import api_user_login
     from .controller.API.new_account.new_user_account import api_new_user_account
+    from .controller.API.new_account.new_company_account import api_new_company_account
     
     # Blueprints essenciais para que as rotas funcionem!!
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(api_user_login, url_prefix='/api')
     app.register_blueprint(api_new_user_account, url_prefix='/api')
+    app.register_blueprint(api_new_company_account, url_prefix='/api')
     
     return app;

@@ -19,22 +19,19 @@ def create_account():
         senha = create_data.get('senha')
         data_nascimento = create_data.get('data_de_nascimento')
 
-        # Gera o hash da senha
-        hashed_password = generate_password_hash(senha)
-
-        # Log de recebimento de dados
-        print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL +
-              f'Dados recebidos:\nNome: {nome}\nCPF: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de Nascimento: {data_nascimento}\n')
+        print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos:\nNome: {nome}\nCPF: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de Nascimento: {data_nascimento}\n')
 
         db_create_log("[Chamada/API - new_user_account]")
 
-        # Verificação dos dados
         verified, errors, errors_classes = verify_all(cpf, email, senha)
+
         if verified:
+            hashed_password = generate_password_hash(senha)
             db_create_user(nome, cpf, email, hashed_password, data_nascimento)
             print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + 'Registrado com sucesso!')
             db_create_log(f'O usuário ({cpf}) foi criado com sucesso!')
             return jsonify({"register": True}), 200
+        
         else:
             return jsonify({"register": False, "error":errors[0], "classe":errors_classes[0]}), 400
 

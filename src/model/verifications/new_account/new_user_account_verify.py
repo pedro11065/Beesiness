@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 from colorama import Fore, Style
+from src.model.database.db_users.search_user import db_search_user ###
 
 #Verificações no front: email, senha, cpf e nome
 
@@ -28,8 +29,7 @@ def cpf_verify(cpf): # Por enquanto a verificação de cpf está aqui por que el
     return False, "CPF inválido."
 
 def email_verify(email, cpf):  # Verifica se email já está cadastrado // back
-    from src.model.database.db_users.search_user import db_search_user
-
+    
     email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     if not re.match(email_pattern, email):
         return False, "Email inválido."
