@@ -20,26 +20,32 @@ def db_search_user(search_data):
 
         db_create_log(message="Chamada/Banco de dados - db_search_user")
 
-        data = search_data ; db_data = None
+        data = search_data
 
         cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")
         db_data = cur.fetchall()
 
-        if db_data == None:
+        if db_data == []:
                 print("error")
                 cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_id = '{data}';")
                 db_data = cur.fetchall()
 
         conn.commit();cur.close();conn.close()
 
-        print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados encotrados com sucesso!')
+        try:
 
-        return {
+            print(db_data)
+
+            return {
             "id": db_data[0][0],
             "cpf": db_data[0][1],
             "email": db_data[0][2],
             "password_hash": db_data[0][3]
-        }
+        }; print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados encotrados com sucesso!')
+            
+        except:
+               print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados não encotrados')
+               return False
     #except:
         #print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Erro ao pesquisar dados')
         #db_create_log(message=f"Erro ao conectar ao banco de dados ou encontrar o dado pesquisado.")
