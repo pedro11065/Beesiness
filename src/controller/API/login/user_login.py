@@ -17,8 +17,8 @@ def login_post():
     password = login_data.get('senha')
 
     print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Pesquisa iniciada')
-    user_data = db_search_user(email_cpf)
 
+    user_data = db_search_user(email_cpf)
     if not user_data:
         print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Email ou CPF nã encotrado')       
         return jsonify({'error': 'Email ou CPF não encontrado'}), 400
@@ -32,7 +32,6 @@ def login_post():
         )
         login_user(user)
         print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Usuário logado com sucesso!')
-        
         return jsonify({'login':True}), 200
     
     print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta')
