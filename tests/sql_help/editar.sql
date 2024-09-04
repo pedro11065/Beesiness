@@ -1,0 +1,3 @@
+UPDATE alunos
+SET CPF = '50774811803'
+WHERE matricula = '00001';
