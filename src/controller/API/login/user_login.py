@@ -20,10 +20,11 @@ def login_post():
     print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Pesquisa iniciada')
 
     user_data = db_search_user(email_cpf)
+    print(user_data)
 
     if not user_data:
         print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Email ou CPF não encontrado')       
-        return jsonify({'error': 'Email ou CPF não encontrado'}), 400
+        return jsonify({'login':False, 'error': 'Email ou CPF não encontrado'}), 400
 
     if user_data and check_password_hash(user_data['password_hash'], password) == True:
         user = User( # Cria uma instância do User a partir do dicionário retornado
@@ -38,6 +39,6 @@ def login_post():
         return jsonify({'login':True}), 200
     
     print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta')
-    return jsonify({'error': 'Senha incorreta'}), 400 
+    return jsonify({'login':False, 'error': 'Senha incorreta'}), 400 
 
     
