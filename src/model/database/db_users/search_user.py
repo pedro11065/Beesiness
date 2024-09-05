@@ -5,54 +5,48 @@ from colorama import Fore, Style
 
 def db_search_user(search_data):
         
-        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário - search_user')
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário - search_user')
 
-    #try:
-        db_login = json_db_read()
+    db_login = json_db_read()
 
-        conn = psycopg2.connect(
-            host=db_login[0],
-            database=db_login[1],
-            user=db_login[2],
-            password=db_login[3]
-        )
-        cur = conn.cursor() # Cria um cursor no PostGreSQL
+    conn = psycopg2.connect(
+        host=db_login[0],
+        database=db_login[1],
+        user=db_login[2],
+        password=db_login[3]
+    )
+    cur = conn.cursor() # Cria um cursor no PostGreSQL
 
-        db_create_log(message="Chamada/Banco de dados - db_search_user")
+    data = search_data
+    if len(data) == 11 and (data.isdigit()) : # CPF
 
-        data = search_data
-        if len(data) == 11 and (data.isdigit()) : # CPF
+        cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")
+        db_data = cur.fetchall()
+    
+    elif data.isdigit() == False and '@' in data: # Email
 
-            cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")
-            db_data = cur.fetchall()
+        cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_email = '{data}';")
+        db_data = cur.fetchall()
+    
+    else: #user_id
+
+        cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_id = '{data}';")
+        db_data = cur.fetchall()
         
-        elif data.isdigit() == False and '@' in data: # Email
+    conn.commit();cur.close();conn.close()
 
-            cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_email = '{data}';")
-            db_data = cur.fetchall()
+    try:
+        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário encotrados com sucesso!')
+
+        return {
+        "id": db_data[0][0],
+        "cpf": db_data[0][1],
+        "email": db_data[0][2],
+        "password_hash": db_data[0][3]
+    }
         
-        else:
-
-            cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_id = '{data}';")
-            db_data = cur.fetchall()
+    except:
+            print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário não encotrados')
             
-        conn.commit();cur.close();conn.close()
+            return False
 
-        try:
-            print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário encotrados com sucesso!')
-
-            return {
-            "id": db_data[0][0],
-            "cpf": db_data[0][1],
-            "email": db_data[0][2],
-            "password_hash": db_data[0][3]
-        }
-            
-        except:
-               print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário não encotrados')
-               
-               return False
-    #except:
-        #print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Erro ao pesquisar dados')
-        #db_create_log(message=f"Erro ao conectar ao banco de dados ou encontrar o dado pesquisado.")
-        #return None

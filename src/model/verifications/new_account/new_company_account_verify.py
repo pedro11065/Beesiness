@@ -5,13 +5,6 @@ from src.model.database.db_users.search_user import db_search_user
 
 #Verificações no front: email, senha, cpf, cnpj e nome da empresa
 
-def cpf_check(cpf):# Verifica se o cpf já está cadastrado // back
-
-    print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação CPF')
-    if db_search_user(cpf):
-        return False, "CPF já cadastrado."
-    return True, None
-
 def cnpj_check(cnpj): # Verifica se o cnpj já está cadastrado // back
 
     print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação CNPJ')
@@ -48,11 +41,10 @@ def password_verify(senha): #Verifica a senha // back
 
 #Já que algumas verificações vão ser realizadas no front, removi elas daqui por que não há motivo de ter essa redundância toda 
   
-def verify_all(cpf, cnpj, email, senha):
+def verify_all(cnpj, email, senha):
 
-    print(Fore.MAGENTA + '[Verificação] ' + Style.RESET_ALL + f'Iniciando verificação dos dados!')
+    print(Fore.MAGENTA + '[Verificação] ' + Style.RESET_ALL + f'Iniciando verificação dos dados!\n')
 
-    cpf_valid, cpf_error = cpf_check(cpf)
     email_valid, email_error = email_check(email)
     cnpj_valid, cnpj_error = cnpj_check(cnpj)
     senha_valid, senha_error = password_verify(senha)
@@ -65,9 +57,6 @@ def verify_all(cpf, cnpj, email, senha):
     if not cnpj_valid:
         errors.append(cnpj_error)
         errors_classes.append("cnpj")
-    if not cpf_valid:
-        errors.append(cpf_error)
-        errors_classes.append("cpf")
     if not senha_valid:
         errors.append(senha_error)
         errors_classes.append("senha")

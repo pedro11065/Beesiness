@@ -14,16 +14,15 @@ api_new_company_account = Blueprint('api_new_company_account', __name__)
 def create_company():
     create_data = request.get_json()
 
-    cpf = create_data.get('cpf')
     nome = create_data.get('nome')
     email = create_data.get('email')
     cnpj = create_data.get('cnpj')
     senha = create_data.get('senha')
 
     print(Fore.GREEN + '\n[API Empresa - Registro] ' + Style.RESET_ALL +
-           f'\nOs dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}\n')
+           f'\nOs dados recebidos foram:\nNome: {nome}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}\n')
 
-    verified, errors, errors_classes = verify_all(cpf, email, cnpj, senha) 
+    verified, errors, errors_classes = verify_all(email, cnpj, senha) 
     #true ou false,quais foram os erros, tipo do erro (email, cnpj, cpf ou senha)
 
     if verified == True:
@@ -38,4 +37,4 @@ def create_company():
         return jsonify({"register": "True"}), 200
     
     print(Fore.GREEN + '\n[API Empresa - Registro] ' + Fore.RED + f'Erro(s):{errors} + Style.RESET_ALL') 
-    return jsonify({"register": False, "error":errors, "classe":errors_classes}), 400
+    return jsonify({"count_error":len(errors), "register":False, "error":errors, "class":errors_classes}), 400
