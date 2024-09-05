@@ -30,9 +30,9 @@ def create_account():
             return jsonify({"register": True}), 200
         
         else:
-            print(Fore.GREEN + '[API Usuário - Registro] ' + Fore.RED + f'Erro(s):{errors} + Style.RESET_ALL') 
+            print(Fore.GREEN + '\n[API Usuário - Registro] ' + Fore.RED + f'Erro(s):{errors} + Style.RESET_ALL') 
             return jsonify({"register": False, "error":errors, "classe":errors_classes}), 400
 
     except Exception as e:
-        print(Fore.RED + f'Erro durante o registro: {str(e)}' + Style.RESET_ALL)
+        print(Fore.RED + f'\nErro durante o registro: {str(e)}' + Style.RESET_ALL)
         return jsonify({"error": "Ocorreu um erro no servidor."}), 500

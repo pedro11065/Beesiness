@@ -32,11 +32,11 @@ def login_post():
             password_hash=user_data['password_hash']
         )
         login_user(user)
-        print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Usuário logado com sucesso!')
+        print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Usuário logado com sucesso!')
         print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'user_id:{current_user.get_id()}')
         return jsonify({'login':True}), 200
     
-    print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta')
+    print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta')
     return jsonify({'error': 'Senha incorreta'}), 400 
 
     

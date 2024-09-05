@@ -33,7 +33,7 @@ def create_company():
 
         db_create_company(nome, user_id, email, cnpj, hashed_password)
 
-        print(Fore.GREEN + '[API Empresa - Registro] ' + Style.RESET_ALL + f'Empresa registrada com sucesso!') 
+        print(Fore.GREEN + '\n[API Empresa - Registro] ' + Style.RESET_ALL + f'Empresa registrada com sucesso!') 
         
         return jsonify({"register": "True"}), 200
     
