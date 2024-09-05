@@ -16,6 +16,7 @@ def login_post():
     email_cpf = login_data.get('email_cpf')
     password = login_data.get('senha')
 
+    print(Fore.GREEN + '\n[API Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos: \nEmail_cpf: {email_cpf}\nSenha: {password}')
     print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Pesquisa iniciada')
 
     user_data = db_search_user(email_cpf)
