@@ -21,7 +21,7 @@ from colorama import Fore, Style
 
 def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     
-    print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando novo usuário no banco de dados...')
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando novo usuário - create_user')
     
     db_login = json_db_read()
     
@@ -48,4 +48,4 @@ def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário
     cur.close()
     conn.close()
 
-    print(Fore.BLUE + '[Banco de dados] ' + Style.RESET_ALL + 'Dados registrados com sucesso!')
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Usuário registrado com sucesso!')

@@ -20,7 +20,7 @@ def create_company():
     cnpj = create_data.get('cnpj')
     senha = create_data.get('senha')
 
-    print(Fore.GREEN + '[API Empresa - Registro] ' + Style.RESET_ALL +
+    print(Fore.GREEN + '\n[API Empresa - Registro] ' + Style.RESET_ALL +
            f'\nOs dados recebidos foram:\nNome: {nome}\nCpf: {cpf}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}\n')
 
     verified, errors, errors_classes = verify_all(cpf, email, cnpj, senha) 
@@ -33,8 +33,9 @@ def create_company():
 
         db_create_company(nome, user_id, email, cnpj, hashed_password)
 
-        print(Fore.GREEN + '[API Empresa - Registro] ' + Style.RESET_ALL + f'Registrada com sucesso!') 
+        print(Fore.GREEN + '[API Empresa - Registro] ' + Style.RESET_ALL + f'Empresa registrada com sucesso!') 
         
         return jsonify({"register": "True"}), 200
     
+    print(Fore.GREEN + '\n[API Empresa - Registro] ' + Fore.RED + f'Erro(s):{errors} + Style.RESET_ALL') 
     return jsonify({"register": False, "error":errors, "classe":errors_classes}), 400

@@ -1,23 +1,27 @@
 import re
 from colorama import Fore, Style
 from src.model.database.db_companies.search_company import db_search_company
+from src.model.database.db_users.search_user import db_search_user
 
 #Verificações no front: email, senha, cpf, cnpj e nome da empresa
 
 def cpf_check(cpf):# Verifica se o cpf já está cadastrado // back
 
-    if db_search_company(cpf):
+    print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação CPF')
+    if db_search_user(cpf):
         return False, "CPF já cadastrado."
     return True, None
 
 def cnpj_check(cnpj): # Verifica se o cnpj já está cadastrado // back
 
+    print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação CNPJ')
     if db_search_company(cnpj):
         return False, "CNPJ já cadastrado."
     return True, None
 
 def email_check(email): # Verifica se o email já está cadastrado // back
 
+    print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação EMAIL')
     if db_search_company(email):
         return False, "E-mail já cadastrado."
     
@@ -25,6 +29,8 @@ def email_check(email): # Verifica se o email já está cadastrado // back
 
 def password_verify(senha): #Verifica a senha // back
 
+    print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação SENHA')
+    
     if len(senha) < 8:
         return False, "A senha deve ter um mínimo de 8 dígitos."
     if not re.search(r'[A-Z]', senha):
@@ -44,7 +50,7 @@ def password_verify(senha): #Verifica a senha // back
   
 def verify_all(cpf, cnpj, email, senha):
 
-    print(Fore.MAGENTA + '[Verificação] ' + Style.RESET_ALL + f'Criação de empresa iniciada, fazendo as verificações!')
+    print(Fore.MAGENTA + '[Verificação] ' + Style.RESET_ALL + f'Iniciando verificação dos dados!')
 
     cpf_valid, cpf_error = cpf_check(cpf)
     email_valid, email_error = email_check(email)

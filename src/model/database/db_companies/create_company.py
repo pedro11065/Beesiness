@@ -1,8 +1,12 @@
 import psycopg2
 import uuid
 from ..json_db import json_db_read
+from colorama import Fore, Style
 
 def db_create_company(nome, user_id, email, cnpj, hashed_password): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
+    
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando nova empresa - create_company')
+
     db_login = json_db_read()
     
     # Conecta ao banco de dados
@@ -33,4 +37,6 @@ def db_create_company(nome, user_id, email, cnpj, hashed_password): # Cria um us
     # Fecha o cursor e encerra a conexão.
     cur.close()
     conn.close()
+
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Empresa registrados com sucesso!')
 

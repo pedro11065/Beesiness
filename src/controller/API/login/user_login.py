@@ -16,12 +16,12 @@ def login_post():
     email_cpf = login_data.get('email_cpf')
     password = login_data.get('senha')
 
-    print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Pesquisa iniciada')
+    print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Pesquisa iniciada')
 
     user_data = db_search_user(email_cpf)
 
     if not user_data:
-        print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Email ou CPF não encontrado')       
+        print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Email ou CPF não encontrado')       
         return jsonify({'error': 'Email ou CPF não encontrado'}), 400
 
     if user_data and check_password_hash(user_data['password_hash'], password) == True:
@@ -32,11 +32,11 @@ def login_post():
             password_hash=user_data['password_hash']
         )
         login_user(user)
-        print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Usuário logado com sucesso!')
-        print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'user_id:{current_user.get_id()}')
+        print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Usuário logado com sucesso!')
+        print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'user_id:{current_user.get_id()}')
         return jsonify({'login':True}), 200
     
-    print(Fore.BLUE + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta')
+    print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta')
     return jsonify({'error': 'Senha incorreta'}), 400 
 
     

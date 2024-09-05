@@ -5,7 +5,7 @@ from colorama import Fore, Style
 
 def db_search_user(search_data):
         
-        print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados - search_user')
+        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário - search_user')
 
     #try:
         db_login = json_db_read()
@@ -21,7 +21,7 @@ def db_search_user(search_data):
         db_create_log(message="Chamada/Banco de dados - db_search_user")
 
         data = search_data
-
+        print(data)
         if len(data) == 11 and (data.isdigit()) : # CPF
 
             cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")
@@ -40,7 +40,7 @@ def db_search_user(search_data):
         conn.commit();cur.close();conn.close()
 
         try:
-            print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados encotrados com sucesso!')
+            print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário encotrados com sucesso!')
 
             return {
             "id": db_data[0][0],
@@ -50,7 +50,7 @@ def db_search_user(search_data):
         }
             
         except:
-               print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados não encotrados')
+               print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário não encotrados')
                
                return False
     #except:

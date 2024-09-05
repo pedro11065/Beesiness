@@ -3,6 +3,9 @@ from ..json_db import json_db_read
 from ..db_log.create_log import db_create_log
 
 def db_delete_user(delete_data):
+    from colorama import Fore, Style
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'deletando usuário - delete_user')
+
     db_login = json_db_read()
 
     # Conecta ao banco de dados
@@ -15,11 +18,10 @@ def db_delete_user(delete_data):
     # Cria um cursor
     cur = conn.cursor()
 
-    # Deleta os dados encontrados naquele e-mail.
-    cur.execute("DELETE FROM table_companies WHERE user_cpf = %s", (delete_data,))
+    data = delete_data
 
-    message = (f"Um usuário foi deletado.")
-    db_create_log(message)
+    # Deleta os dados encontrados naquele e-mail.
+    cur.execute(f"DELETE FROM table_companies WHERE user_cpf = '{data}'")
     
     # Atualiza as informações.
     conn.commit()
@@ -27,3 +29,4 @@ def db_delete_user(delete_data):
     # Fecha o cursor e encerra a conexão.
     cur.close()
     conn.close()
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Usuário deletado com sucesso!')

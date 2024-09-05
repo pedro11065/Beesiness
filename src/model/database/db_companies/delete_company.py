@@ -1,7 +1,11 @@
 import psycopg2
 from ..json_db import json_db_read
+from colorama import Fore, Style
 
 def db_delete_company(delete_data):
+
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando nova empresa - create_company')
+
     db_login = json_db_read()
 
     # Conecta ao banco de dados
@@ -23,3 +27,5 @@ def db_delete_company(delete_data):
     # Fecha o cursor e encerra a conexão.
     cur.close()
     conn.close()
+
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Empresa registrada com sucesso!')

@@ -20,17 +20,18 @@ def create_account():
 
         hashed_password = generate_password_hash(senha)
 
-        print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos:\nNome: {nome}\nCPF: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de Nascimento: {data_nascimento}\n')
+        print(Fore.GREEN + '\n[API Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos:\nNome: {nome}\nCPF: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de Nascimento: {data_nascimento}\n')
 
 
         verified, errors, errors_classes = verify_all(cpf, email, senha)
         if verified:
             db_create_user(nome, cpf, email, hashed_password, data_nascimento)
-            print(Fore.GREEN + '[Usuário - Registro] ' + Style.RESET_ALL + 'Registrado com sucesso!')
+            print(Fore.GREEN + '[API Usuário - Registro] ' + Style.RESET_ALL + 'Registrado com sucesso!')
             return jsonify({"register": True}), 200
         
         else:
-            return jsonify({"register": False, "error":errors[0], "classe":errors_classes[0]}), 400
+            print(Fore.GREEN + '[API Usuário - Registro] ' + Fore.RED + f'Erro(s):{errors} + Style.RESET_ALL') 
+            return jsonify({"register": False, "error":errors, "classe":errors_classes}), 400
 
     except Exception as e:
         print(Fore.RED + f'Erro durante o registro: {str(e)}' + Style.RESET_ALL)
