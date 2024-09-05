@@ -6,7 +6,7 @@ from colorama import Fore, Style
 
 def db_search_company(search_data):
 
-    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando nova empresa - create_company')
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Pesquisando dados das empresas - search_company')
 
     db_login = json_db_read()
 

@@ -21,7 +21,6 @@ def db_search_user(search_data):
         db_create_log(message="Chamada/Banco de dados - db_search_user")
 
         data = search_data
-        print(data)
         if len(data) == 11 and (data.isdigit()) : # CPF
 
             cur.execute(f"SELECT user_id, user_cpf, user_email, user_password from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")

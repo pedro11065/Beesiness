@@ -20,7 +20,7 @@ def create_account():
 
         hashed_password = generate_password_hash(senha)
 
-        print(Fore.GREEN + '\n[API Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos:\nNome: {nome}\nCPF: {cpf}\nEmail: {email}\nSenha com hash: {hashed_password}\nData de Nascimento: {data_nascimento}\n')
+        print(Fore.GREEN + '\n[API Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos:\nNome: {nome}\nCPF: {cpf}\nEmail: {email}\nSenha: {senha}\nData de Nascimento: {data_nascimento}\n')
 
 
         verified, errors, errors_classes = verify_all(cpf, email, senha)

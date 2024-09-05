@@ -7,6 +7,8 @@ from src.model.database.db_users.search_user import db_search_user ###
 
 def cpf_verify(cpf): # Por enquanto a verificação de cpf está aqui por que ela não existe no front, faz futuramente vai verificar se cpf já está cadastrado // back
 
+    print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação CPF')
+
     if len(cpf) != 11 or not cpf.isdigit():
         return False, "CPF inválido."
 
@@ -25,17 +27,20 @@ def cpf_verify(cpf): # Por enquanto a verificação de cpf está aqui por que el
             return False
 
     if cpf_x1(cpf) and cpf_x2(cpf):
+
+        if db_search_user(cpf):
+            return False, "CPF já cadastrado."
         return True, None
+    
     return False, "CPF inválido."
 
 def email_verify(email, cpf):  # Verifica se email já está cadastrado // back
+
+    print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação EMAIL')
     
     email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     if not re.match(email_pattern, email):
         return False, "Email inválido."
-
-    if db_search_user(cpf):
-        return False, "CPF já cadastrado."
     
     if db_search_user(email):
         return False, "E-mail já cadastrado."
@@ -43,6 +48,9 @@ def email_verify(email, cpf):  # Verifica se email já está cadastrado // back
     return True, None
 
 def password_verify(senha): #Verifica senha // Back(por ser mais)
+
+    print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação SENHA')
+
     if len(senha) < 8:
         return False, "A senha deve ter um mínimo de 8 dígitos."
     if not re.search(r'[A-Z]', senha):
