@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import request, redirect, flash, url_for, render_template
+from flask import request, redirect, flash, url_for
 from werkzeug.security import generate_password_hash
 from src.model.database.user.create_user import db_create_user
 from src.model.validation.user.validate import validate_cpf_and_email

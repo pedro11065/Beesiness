@@ -1,12 +1,5 @@
 from flask import Blueprint, Flask, flash, get_flashed_messages, request, render_template, redirect, session, url_for
 from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.security import generate_password_hash
-from datetime import datetime
-
-from src.model.database.user.search_user import db_search_user
-from src.model.database.user.create_user import db_create_user
-from src.model.validation.user.validate import validate_cpf_and_email
-from src.model.user_model import User
 
 from src.controller.user.login import process_login
 from src.controller.user.register import process_registration
