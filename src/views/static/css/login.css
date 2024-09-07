@@ -73,6 +73,7 @@ label {
 
 /* Campos de entrada */
 input[type="text"], 
+input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 0.75rem;
@@ -85,6 +86,7 @@ input[type="password"] {
 }
 
 input[type="text"]:focus,
+input[type="email"]:focus,
 input[type="password"]:focus {
     border-color: #FFD400;
     outline: none;
@@ -175,6 +177,7 @@ body.dark-mode label {
 }
 
 body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
 body.dark-mode input[type="password"] {
     background-color: #555;
     color: #ccc;

@@ -1,17 +1,16 @@
-   <!-- Vai chamar a API bonitinho -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Beesiness</title>
 
     <!-- Css Linkado -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
 
     <!-- Icon da Aba do Navegador -->
-    <link rel="icon" href="{{ url_for('static', filename='images/Beessiness_-_Logo-removebg-preview.png') }}" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
 
     <!-- Fontes do Google: Roboto Slab -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
     <!-- Dark Mode -->
     <button id="dark-mode-toggle">🌙</button>
@@ -26,44 +26,55 @@
     <!-- Registro -->
     <div class="container">
         <h1>Criar Nova Conta</h1>
+
         <!-- Entrada de Dados -->
-        <form id="registroForm">
+        <form id="registroForm" action="/user-register" method="post">
             <div class="form-group">
-                <label for="fullName">Nome Completo</label>
-                <input type="text" id="fullName" name="fullName" required>
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="fullName" required>
+                <p class="error" id="name-error"></p>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">E-mail</label>
                 <input type="email" id="email" name="email" required>
+                <p class="error" id="email-error"></p>
+                {% if 'E-mail já cadastrado.' in messages %}
+                <small class="error">{{ 'E-mail já foi cadastrado.' }}</small>
+                {% endif %}
             </div>
-            <!-- Campo de CPF adicionado! -->
             <div class="form-group">
                 <label for="cpf">CPF</label>
-                <input type="text" id="cpf" autocomplete="off" maxlength="14" oninput="this.value = this.value.replace(/[^0-9.-]/g, '')" required>
-                <!-- O máximo de 14 letras foi adicionado (para contar com as máscara, os pontos e traços do cpf). -->
+                <input type="text" id="cpf" name="cpf" maxlength="14" required>
+                <p class="error" id="cpf-error"></p>
+                {% if 'CPF já cadastrado.' in messages %}
+                <small class="error">{{ 'CPF já foi cadastrado.' }}</small>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="birthDate">Data de Nascimento</label>
-                <input type="date" id="birthDate" name="birthDate" required>
+                <input type="date" id="birthDate" name="birthDate" maxlength="10" required>
+                <p class="error" id="birthDate-error"></p>
             </div>
             <div class="form-group">
                 <label for="password">Senha</label>
                 <input type="password" id="password" name="password" required>
+                <p class="error" id="password-error"></p>
+                <p class="error" id="confirmPassword-error"></p>
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Confirmar Senha</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <p class="error" id="confirmPassword-error"></p>
             </div>
-            <div class="form-group">
-                <button type="submit">Registre-se</button>
-            </div>
-
-            <!-- Voltar ao Login -->
+            <button type="submit">Registrar</button>
         </form>
+
+        <!-- Voltar ao Login -->
         <div class="register-link">
-            Já está registrado? <a href="{{ url_for('auth.login') }}">Clique aqui</a>
+            Já está registrado? <a href="{{ url_for('auth_user.login') }}">Clique aqui</a>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/registro_usuário.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
 </body>
+
 </html>

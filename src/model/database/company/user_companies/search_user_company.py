@@ -3,11 +3,11 @@
 # Responsável por retornar a linha onde o email foi inserido.
 
 import psycopg2
-from ...json_db import json_db_read # Importação da função que lê os dados que armazenam as informações do servidor.
+from ...connect import connect_database
 
 def db_search_user_company(search_data):
 
-    db_login = json_db_read()
+    db_login = connect_database() # Coleta os dados para conexão
 
     #Conecta ao banco de dados.
     conn = psycopg2.connect(

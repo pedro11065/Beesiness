@@ -2,8 +2,8 @@ from src import create_app
 from flask_cors import CORS
 
 app = create_app()
-CORS(app)  # O CORS é um sistema de segurança das requisições HTTP que verifica o método da API antes de chamá-lo.
 
+CORS(app)  # O CORS é um sistema de segurança das requisições HTTP que verifica o método da API antes de chamá-lo.
 app.app_context().push()
 
 if __name__ == '__main__':

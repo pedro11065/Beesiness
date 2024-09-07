@@ -3,19 +3,20 @@
 import json
 import os
 
-def json_db_read():
-    # Define o caminho relativo a partir da localização atual do script
+def connect_database():
     base_dir = os.path.dirname(os.path.abspath(__file__))  # Diretório do script em execução
-    file_path = os.path.join(base_dir, 'json_db.json')  # Ajuste o caminho para evitar duplicação
+    file_path = os.path.join(base_dir, 'information.json') 
 
     try:
         with open(file_path, "r") as file:
-            data = json.load(file)
+            config = json.load(file)
 
-        host = data['db']['host']
-        database = data['db']['database']
-        user = data['db']['user']
-        password = data['db']['password']
+        db_config = config['db']
+
+        host = db_config['host']
+        database = db_config['database']
+        user = db_config['user']
+        password = db_config['password']
 
         return host, database, user, password
     except FileNotFoundError:

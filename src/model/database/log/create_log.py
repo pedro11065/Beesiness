@@ -1,8 +1,9 @@
 import psycopg2
-from ..json_db import json_db_read
+
+from ..connect import connect_database
 
 def db_create_log(message): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
-    db_login = json_db_read()
+    db_login = connect_database() # Coleta os dados para conexão
     
     # Conecta ao banco de dados
     conn = psycopg2.connect(
