@@ -29,10 +29,12 @@ def create_app():
     login_manager.init_app(app)  # Inicializa o LoginManager com a aplicação Flask
 
     from .views.views import views
-    from .controller.user.get_request import auth_user
+    from .controller.user.user_request import user_request
+    from .controller.company.company_requests import company_request
 
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth_user, url_prefix='/')
+    app.register_blueprint(user_request, url_prefix='/')
+    app.register_blueprint(company_request, url_prefix='/')
 
     return app;
 

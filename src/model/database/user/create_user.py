@@ -23,13 +23,8 @@ def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário
     user_id = str(uuid.uuid4()) # Gera um UUID e o converte para string
     
     # Insere os dados principais do usuário para armazenar na tabela
-    query = """
-    INSERT INTO table_users (user_id, user_fullname, user_email, user_password, user_birthday, user_cpf) 
-    VALUES (%s, %s, %s, %s, %s, %s);
-    """
-    params = (user_id, fullname, email, password, birthday, cpf)
-    cur.execute(query, params)
-
+   
+    cur.execute(f"INSERT INTO table_users (user_id, user_fullname, user_email, user_password, user_birthday, user_cpf) VALUES ('{user_id}', '{fullname}', '{email}', '{password}', '{birthday}', '{cpf}');")
 
     # Confirma as mudanças
     conn.commit()
