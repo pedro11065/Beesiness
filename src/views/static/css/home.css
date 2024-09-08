@@ -1,64 +1,297 @@
-/* Reset básico */
+/* Reset de margens, preenchimentos e box-sizing para garantir um layout consistente */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Container geral */
+/* Transição suave ao rolar a tela */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Configuração básica do corpo da página */
 body {
-    font-family: Arial, sans-serif; /* Fonte usada no corpo do texto */
-    text-align: center; /* Alinha o texto ao centro */
-    padding: 50px; /* Espaçamento interno em torno do conteúdo */
-    background-color: #f0f0f0; /* Cor de fundo da página */
+    font-family: Roboto Slab;
+    overflow-x: hidden; 
 }
 
-/* Estilo dos botões */
-.button {
-    display: inline-block; /* Exibe o botão como um bloco inline */
-    padding: 10px 20px; /* Espaçamento interno do botão */
-    font-size: 16px; /* Tamanho da fonte no botão */
-    color: #fff; /* Cor do texto no botão */
-    background-color: #007bff; /* Cor de fundo do botão */
-    border: none; /* Remove a borda padrão */
-    border-radius: 5px; /* Bordas arredondadas do botão */
-    text-decoration: none; /* Remove sublinhado dos links */
+a {
+    color: #000;
+    text-decoration: none;
 }
 
-.button:hover {
-    background-color: #0056b3; /* Cor de fundo quando o botão é hovered */
+.icon {
+    margin-top: 16px;
+    width: 36px !important;
+    height: 36px !important;
+    margin-right: 8px !important;
 }
 
-/* Navegação */
-nav {
-    margin-bottom: 20px; /* Espaçamento abaixo da navegação */
+/* Estilo do cabeçalho */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    background-color: #000;
+    flex-wrap: wrap;
+    max-width: 100vw; 
 }
 
-nav a {
-    margin: 0 10px; /* Espaçamento horizontal entre os links de navegação */
-    text-decoration: none; /* Remove sublinhado dos links */
-    color: #007bff; /* Cor do texto dos links */
+/* Estilo do logotipo */
+.logo {
+    font-size: 1.5rem; /* 24px */
+    color: #FFD700;
+    font-weight: bold;
+    margin-right: auto;
 }
 
-nav a:hover {
-    text-decoration: underline; /* Sublinha o texto ao passar o mouse */
+/* Estilo do menu de navegação */
+nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center; 
+    max-width: 100vw; 
 }
 
-/* Estilo do footer */
-.footer {
-    background-color: #ff4d4d; /* Cor de fundo vermelho do footer */
-    color: #fff; /* Cor do texto no footer */
-    padding: 15px; /* Espaçamento interno do footer */
-    position: fixed; /* Fixa o footer na parte inferior */
-    bottom: 0; /* Posiciona o footer na parte inferior */
-    left: 0; /* Garante que o footer comece na borda esquerda */
-    width: 100%; /* Faz com que o footer ocupe toda a largura da página */
-    text-align: center; /* Alinha o texto ao centro */
-    font-size: 14px; /* Tamanho da fonte do texto no footer */
+nav ul li {
+    margin-right: 1.25rem;
+    margin-bottom: 0.625rem;
 }
 
-/* Estilo para o símbolo de aviso no footer */
-.footer::before {
-    content: "⚠️"; /* Símbolo de aviso */
-    margin-right: 10px; /* Espaçamento à direita do símbolo */
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem; /* 16px */
+}
+
+/* Estilo dos botões no cabeçalho */
+.buttons {
+    display: flex;
+    flex-direction: row; 
+    margin-top: 1.25rem;
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 1rem; 
+}
+
+/* Estilo para botões de navegação e botões de ação */
+.register, .login {
+    padding: 0.75rem 1.5rem; 
+    text-decoration: none;
+    border-radius: 0.375rem; 
+    font-size: 1rem; 
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    margin: 0 0.5rem; 
+    display: inline-block;
+    width: auto; 
+    text-align: center;
+    max-width: 100%; 
+}
+
+/* Estilo do botão de registro */
+.register {
+    background-color: #FFD700;
+    color: black;
+    border: 1px solid #FFD700;
+}
+
+.register:hover {
+    background-color: #FFC107;
+}
+
+/* Estilo do botão de login */
+.login {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+}
+
+.login:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilo da seção hero */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3.75rem 1.25rem;
+    text-align: center; 
+    max-width: 100vw;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    line-height: 1.2;
+}
+
+.hero .highlight {
+    color: #FFD700;
+}
+
+.hero p {
+    margin-top: 1.25rem;
+    font-size: 1.125rem; 
+    color: #333;
+}
+
+/* Estilo do gráfico */
+.chart {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+    max-width: 100vw;
+}
+
+.chart img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Estilo da seção de recursos */
+.features {
+    padding: 3.75rem 1.25rem; 
+    background-color: #000;
+    color: #FFD700;
+    text-align: center;
+    max-width: 100vw;
+    overflow: hidden; 
+}
+
+.features h2 {
+    font-size: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.features-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 100%;
+}
+
+.feature-item {
+    flex: 1 1 30%;
+    background-color: #000;
+    color: white;
+    padding: 1.25rem;
+    margin: 0.625rem;
+    border-radius: 0.625rem;
+    text-align: center;
+    max-width: 100%;
+}
+
+/* Estilo da seção de equipe */
+.team {
+    padding: 3.75rem 1.25rem;
+    background-color: #FFD700;
+    color: black;
+    text-align: center;
+    max-width: 100vw;
+}
+
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+}
+
+.team-member {
+    flex: 1 1 30%;
+    background-color: white;
+    color: black;
+    padding: 1.25rem;
+    margin: 0.625rem;
+    border-radius: 0.625rem;
+    text-align: center;
+    max-width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.team-member:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #FFD700; 
+    background-color: #f8f8f8;
+}
+
+/* Estilo da imagem do membro da equipe */
+.team-member img {
+    width: 100%;
+    max-width: 150px; 
+    height: auto; 
+    border-radius: 50%;
+    margin-bottom: 1.25rem;
+}
+
+#pedro-card h3,
+#pedro-card p,
+#pedro-photo {
+    transition: all 0.5s ease;
+}
+
+#pedro-photo {
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+
+/* Ajuste responsivo para telas menores */
+@media (max-width: 48rem) {
+    .team-member img {
+        max-width: 100px;
+    }
+}
+
+/* Estilo responsivo para telas pequenas */
+@media (max-width: 48rem) { 
+    header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin-right: 0;
+        margin-bottom: 0.625rem;
+    }
+
+    .buttons {
+        flex-direction: column;
+        margin-top: 1.25rem;
+    }
+
+    .feature-item, .team-member {
+        flex: 1 1 100%;
+        margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem; 
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
 }
