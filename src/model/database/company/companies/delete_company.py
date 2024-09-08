@@ -1,7 +1,7 @@
 import psycopg2
 from colorama import Fore, Style
 
-from ..connect import connect_database
+from ...connect import connect_database
 
 def db_delete_company(delete_data):
 

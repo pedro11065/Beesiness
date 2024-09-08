@@ -2,7 +2,7 @@ import psycopg2
 import uuid
 from colorama import Fore, Style
 
-from ..connect import connect_database
+from ...connect import connect_database
 
 def db_create_company(nome, user_id, email, cnpj, hashed_password): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     

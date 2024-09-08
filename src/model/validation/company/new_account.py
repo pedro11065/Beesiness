@@ -1,6 +1,6 @@
 import re
 from colorama import Fore, Style
-from src.model.database.company.search_company import db_search_company
+from src.model.database.company.companies.search_company import db_search_company
 from src.model.database.user.search_user import db_search_user
 
 #Verificações no front: email, senha, cpf, cnpj e nome da empresa
