@@ -2,9 +2,11 @@ from flask import Blueprint, Flask, flash, get_flashed_messages, request, render
 from flask_login import login_user, logout_user, current_user, login_required
 from src.controller.company.functions.register import process_registration
 
+#tudo aqui é: /company...
+
 company_request = Blueprint('auth_company', __name__, template_folder='templates', static_folder='static')
 
-@company_request.route('/company-register', methods= ['POST','GET']) #methods=['GET', 'POST']
+@company_request.route('/register', methods= ['POST','GET']) #methods=['GET', 'POST']
 @login_required
 def register():
     if request.method == 'POST':
@@ -14,6 +16,4 @@ def register():
     
     else:
         return render_template('company/company_register.html')
-    #print(a, b)
-    #return render_template('login.html')
-    #return render_template('registro_empresa.html')
+

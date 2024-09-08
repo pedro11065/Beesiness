@@ -27,9 +27,9 @@ def process_registration(data):
 
         db_create_company(nome, user_id, email, cnpj, hashed_password)
 
-        return redirect('company/dashboard')
+        return redirect('/dashboard/')
     
-    return redirect('company/company-register')
+    return redirect('/company/register')
     
 
 
