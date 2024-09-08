@@ -3,8 +3,12 @@ from flask_login import login_required
 
 views = Blueprint('views', __name__, template_folder='templates', static_folder='static')
 
-@views.route('/')
+@views.route('/home')
 def home():
+    return render_template('home.html')
+
+@views.route('/')
+def home_():
     return render_template('home.html')
 
 @views.route('/dashboard')
