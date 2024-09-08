@@ -82,7 +82,7 @@ function displayError(fieldId, message) {
 function validateCompanyForm() {
     clearErrors(); // Limpa os erros antes de validar
 
-    var companyName = document.getElementById('companyName').value.trim();
+    var companyName = document.getElementById('nomeEmpresa').value.trim();
     var email = document.getElementById('email').value.trim();
     var password = document.getElementById('password').value;
     var confirmPassword = document.getElementById('confirmPassword').value;
@@ -92,7 +92,7 @@ function validateCompanyForm() {
 
     // Validação de nome da empresa
     if (companyName.length < 3) {
-        displayError('companyName', 'Nome da empresa muito curto.');
+        displayError('nomeEmpresa', 'Nome da empresa muito curto.');
         isValid = false;
     }
 
@@ -139,12 +139,42 @@ function validateCompanyForm() {
     return isValid;
 }
 
-document.getElementById('companyRegisterForm').addEventListener('submit', function (e) {
+document.getElementById('registroEmpresaForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Impede o envio padrão do formulário
+
     if (!validateCompanyForm()) {
-        e.preventDefault(); // Previne o envio do formulário se houver erros
+        return; // Não envia os dados se houver erros
+    }
+    {
+        const companyName = document.getElementById('nomeEmpresa').value.trim();
+        const email= document.getElementById('email').value.trim();
+        const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+        const password= document.getElementById('password').value;
+        const confirmPassword= document.getElementById('confirmPassword').value;
+
     }
 
-    // Remove a máscara do CNPJ
-    var cnpjInput = document.getElementById('cnpj');
-    cnpjInput.value = cnpjInput.value.replace(/\D/g, '');
+    const dados = {
+        "nome": companyName,
+        "cnpj": cnpj,
+        "email": email,
+        "senha": password
+    };
+
+    fetch('/company-register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Manipule a resposta do servidor aqui
+            
+        // Pode redirecionar ou mostrar uma mensagem de sucesso
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+    });
 });

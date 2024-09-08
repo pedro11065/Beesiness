@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, redirect, render_template
 from flask_login import login_user, current_user
 
 from werkzeug.security import generate_password_hash
@@ -10,10 +10,10 @@ from src.model.validation.company.new_account  import verify_all
 
 def process_registration(data):
 
-    nome = data.get('nome')
+    nome = data.get('nomeEmpresa')
     email = data.get('email')
     cnpj = data.get('cnpj')
-    senha = data.get('senha')
+    senha = data.get('password')
 
     print(Fore.GREEN + '\n[API Empresa - Registro] ' + Style.RESET_ALL +
            f'\nOs dados recebidos foram:\nNome: {nome}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}\n')
@@ -28,10 +28,9 @@ def process_registration(data):
 
         db_create_company(nome, user_id, email, cnpj, hashed_password)
 
-        print(Fore.GREEN + '\n[API Empresa - Registro] ' + Style.RESET_ALL + f'Empresa registrada com sucesso!')        
-        return jsonify({"register": "True"}), 200
+        return redirect('/dashboard')
     
-    print(Fore.GREEN + '\n[API Empresa - Registro] ' + Fore.RED + f'Erro(s):{errors}' + Style.RESET_ALL + ".") 
-    return jsonify({"count_error":len(errors), "register":False, "error":errors, "class":errors_classes}), 400
+    return redirect('/company-register')
+    
 
-    #por enquanto está retornando a os dados em .json, mas depois que o front estiver criado é só mudar para o necessário.
+

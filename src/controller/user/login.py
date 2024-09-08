@@ -19,6 +19,6 @@ def process_login():
             password_hash=user_data['password_hash']
         )
         login_user(user)
-        return redirect('/dashboard')
+        return redirect('/dashboard_new_user')
     else:
-        return render_template('login.html')
+        return redirect('/user-login')

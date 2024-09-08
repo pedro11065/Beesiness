@@ -1,0 +1,20 @@
+  <!-- tela que aparece depois que o usuário faz login porem não está relacionado a nenhuma empresa -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Dashboard_new_user.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Bem-vindo!</h1>
+        <div class="button-container">
+            <a href="/company-register" class="button">Cadastre sua empresa</a>
+            <a href="/404" class="button">Afilie-se a uma empresa</a>
+        </div>
+    </div>
+</body>
+</html>
