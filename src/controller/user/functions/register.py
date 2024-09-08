@@ -21,8 +21,8 @@ def process_registration():
     if errors: # Se houver erros, adicione-os ao flash e redirecione
         for error in errors:
             flash(error, 'error')
-        return redirect(url_for('auth_user.register'))  # Redireciona para a página de registro
+        return redirect(url_for('user/register'))  # Redireciona para a página de registro
     else:
         hashed_password = generate_password_hash(password)
         db_create_user(name, cpf, email, hashed_password, formatted_birth_date)
-        return redirect('/user-login')
+        return redirect('user/login')

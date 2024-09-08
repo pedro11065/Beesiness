@@ -5,9 +5,6 @@ from colorama import Fore, Style
 from ..connect import connect_database
 
 def db_search_user(search_data):
-
-    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário - search_user')
-
     db_login = connect_database() 
 
     conn = psycopg2.connect(
@@ -18,26 +15,29 @@ def db_search_user(search_data):
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
 
-    data = search_data
-    if len(data) == 11 and (data.isdigit()) : # CPF
+    if len(search_data) == 11 and search_data.isdigit() : # CPF
+        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário com cpf ou email: {search_data}')
 
-        cur.execute(f"SELECT * from table_users WHERE user_cpf = '{data}' or user_email = '{data}';")
+        cur.execute(f"SELECT * from table_users WHERE user_cpf = '{search_data}' or user_email = '{search_data}';")
         db_data = cur.fetchall()
     
-    elif data.isdigit() == False and '@' in data: # Email
+    elif '@' in search_data and not search_data.isdigit():  # Email
+        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário via e-mail: {search_data}')
 
-        cur.execute(f"SELECT * from table_users WHERE user_email = '{data}';")
+        cur.execute(f"SELECT * from table_users WHERE user_email = '{search_data}';")
         db_data = cur.fetchall()
     
     else: #user_id
-
-        cur.execute(f"SELECT * from table_users WHERE user_id = '{data}';")
+        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário com user_id: {search_data}')
+        cur.execute(f"SELECT * from table_users WHERE user_id = '{search_data}';")
         db_data = cur.fetchall()
         
-    conn.commit();cur.close();conn.close()
+    conn.commit();
+    cur.close();
+    conn.close();
 
     try:
-        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário encotrados com sucesso!')
+        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário encontrados com sucesso!')
 
         return {
         "id": db_data[0][0],
@@ -48,6 +48,5 @@ def db_search_user(search_data):
     }
         
     except:
-            print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário não encotrados')
-            
+            print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário não encontrados')
             return False

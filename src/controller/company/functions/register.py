@@ -18,8 +18,7 @@ def process_registration(data):
     print(Fore.GREEN + '\n[API Empresa - Registro] ' + Style.RESET_ALL +
            f'\nOs dados recebidos foram:\nNome: {nome}\nE-mail: {email}\nCnpj: {cnpj}\nSenha: {senha}\n')
 
-    verified, errors, errors_classes = verify_all(email, cnpj, senha) 
-    #true ou false,quais foram os erros, tipo do erro (email, cnpj, cpf ou senha)
+    verified, errors, errors_classes = verify_all(email, cnpj, senha) # Retorna true ou false, e os erros que ocorreram, por exemplo email e cnpj já existente.
 
     if verified == True:
 
@@ -28,9 +27,9 @@ def process_registration(data):
 
         db_create_company(nome, user_id, email, cnpj, hashed_password)
 
-        return redirect('/dashboard')
+        return redirect('/dashboard/')
     
-    return redirect('/company-register')
+    return redirect('/company/register')
     
 
 
