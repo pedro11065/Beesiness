@@ -1,10 +1,12 @@
 from werkzeug.security import check_password_hash
 from flask import request, redirect, render_template
-from src.model.database.user.search_user import db_search_user
-from src.model.user_model import User
 from flask_login import login_user
 
+from src.model.database.user.search_user import db_search_user
+from src.model.user_model import User
+
 def process_login():
+
     email = request.form['username']
     password = request.form['password']
 

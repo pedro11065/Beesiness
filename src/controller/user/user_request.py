@@ -14,6 +14,10 @@ user_request = Blueprint('auth_user', __name__, template_folder='templates', sta
 def login():
     if request.method == 'POST':
         return process_login()
+
+    if current_user.is_authenticated: # Se o usuário já estiver logado, redireciona ele para o dashboard.
+        return redirect('/dashboard/new_user')
+
     return render_template('user/login.html')
 
 
