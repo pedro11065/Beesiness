@@ -1,6 +1,6 @@
 from src.model.database.user.search_user import db_search_user
 
-# Se mudar as mensagens do append, será necessário mudar em register.html, por exemplo.
+# Se mudar as mensagens do append, será necessário mudar em register.html.
 def validate_cpf_and_email(cpf, email):
     errors = []  # Lista para armazenar os erros
     

@@ -25,4 +25,4 @@ def process_registration():
     else:
         hashed_password = generate_password_hash(password)
         db_create_user(name, cpf, email, hashed_password, formatted_birth_date)
-        return redirect('/user-login')
+        return redirect('user/user-login')

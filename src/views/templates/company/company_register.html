@@ -7,7 +7,7 @@
     <title>Registro de Empresa - Beesiness</title>
 
     <!-- Css Linkado -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/company_register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/company/company_register.css') }}">
 
     <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
@@ -62,13 +62,9 @@
             </div>
             <button type="submit">Registrar Empresa</button>
         </form>
-
-        <!-- Voltar ao Login -->
-        <div class="register-link">
-            Já possui uma conta? <a href="{{ url_for('auth_user.register') }}">Clique aqui</a>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/company_register.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/company/company_register.js') }}"></script>
 </body>
 
 </html>

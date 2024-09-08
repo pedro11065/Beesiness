@@ -3,16 +3,17 @@ from colorama import Fore, Style
 from src.model.database.company.companies.search_company import db_search_company
 from src.model.database.user.search_user import db_search_user
 
-#Verificações no front: email, senha, cpf, cnpj e nome da empresa
+# Verificações que são feitas no front: email, senha, cpf, cnpj e nome da empresa
+# Por exemplo, gramática, falta de arroba no email, cpf inexistente, etc.
 
-def cnpj_check(cnpj): # Verifica se o cnpj já está cadastrado // back
+def cnpj_check(cnpj):
 
     print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação CNPJ')
     if db_search_company(cnpj):
         return False, "CNPJ já cadastrado."
     return True, None
 
-def email_check(email): # Verifica se o email já está cadastrado // back
+def email_check(email):
 
     print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação EMAIL')
     if db_search_company(email):
@@ -20,7 +21,7 @@ def email_check(email): # Verifica se o email já está cadastrado // back
     
     return True, None
 
-def password_verify(senha): #Verifica a senha // back
+def password_verify(senha):
 
     print(Fore.LIGHTMAGENTA_EX+ '[Verificação] ' + Style.RESET_ALL + f'Verificação SENHA')
     
