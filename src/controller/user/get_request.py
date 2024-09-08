@@ -13,6 +13,7 @@ def login():
         return process_login()
     return render_template('login.html')
 
+
 # Aba de registrar, tanto com o GET (mostrar a aba), tanto com o POST (para receber os dados).
 @auth_user.route('/user-register', methods=['GET', 'POST'])
 def register():
@@ -21,9 +22,14 @@ def register():
     messages = get_flashed_messages()
     return render_template('register.html', messages=messages)
 
+
+#esqueci minha senha
+
 @auth_user.route('/user-forget-password')
 def forget_password():
     return render_template("password.html")
+
+#logout
 
 @auth_user.route('/logout')
 @login_required

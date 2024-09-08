@@ -21,5 +21,4 @@ def process_login():
         login_user(user)
         return redirect('/dashboard')
     else:
-        print('[src/controller/user/login] Algum dado estava incorreto! (É uma mensagem temporária, só pra você ver mesmo).')
         return render_template('login.html')
