@@ -31,7 +31,7 @@ def create_app():
     from .controller.views import views
     from .controller.errors.errors_request import errors
     from .controller.user.user_request import user_request
-    from .controller.company.company_requests import company_request
+    from .controller.company.company_request import company_request
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(errors, url_prefix='/')
