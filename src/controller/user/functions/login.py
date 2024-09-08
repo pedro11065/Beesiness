@@ -5,7 +5,7 @@ from src.model.user_model import User
 from flask_login import login_user
 
 def process_login():
-    email = request.form['username']
+    email = request.form['email']
     password = request.form['password']
 
     user_data = db_search_user(email)

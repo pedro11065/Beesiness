@@ -12,8 +12,46 @@ toggleButton.addEventListener('click', () => {
         toggleButton.textContent = '🌙'; // Ícone de lua para Dark Mode
     }
 });
+/*
+const loginForm = document.getElementById('loginForm');
 
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Impede o envio padrão do formulário
 
+    // Obtém os valores dos campos de entrada
+    const username = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Cria o objeto com os dados que serão enviados
+    const loginData = {
+        "email": username,
+        "senha": password
+    };
+
+    try {
+        // Envia a requisição POST para o backend
+        const response = await fetch('/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(loginData)
+        });
+
+        // Verifica se a resposta foi bem-sucedida
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Login bem-sucedido:', result);
+            // Redirecionar ou realizar outra ação
+        } else {
+            console.error('Erro no login:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+    }
+});
+
+*/
 /*
 function clearErrors() {
     var errorFields = document.querySelectorAll('.error');
