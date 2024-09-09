@@ -14,7 +14,7 @@ user_request = Blueprint('auth_user', __name__, template_folder='templates', sta
 def login():
     if request.method == 'POST':
         data = request.get_json()
-        return process_login(data)
+        return process_login()
     return render_template('user/login.html')
 
 # -------------------------------------------------------------------------------------
