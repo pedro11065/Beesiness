@@ -11,6 +11,14 @@ toggleButton.addEventListener('click', () => {
     }
 });
 
+function displayError(fieldId, message) {
+    var errorField = document.getElementById(fieldId + '-error');
+    if (errorField) {
+        console.log(errorField);
+        errorField.textContent = message;
+    }
+}
+
 const loginForm = document.getElementById('loginForm');
 
 loginForm.addEventListener('submit', async (event) => {
@@ -39,7 +47,6 @@ loginForm.addEventListener('submit', async (event) => {
     })
     .then(data => {
         console.log('Dados recebidos da API:', data);
-        console.log('Valor específico:', data.login);
 
         if (data.company && data.login) {
             console.log('ambos True');
@@ -49,11 +56,15 @@ loginForm.addEventListener('submit', async (event) => {
         else if (data.login) {
             console.log('login true');
             window.location.href = "/dashboard/new_user";
-        }           
+        }  
+        else {
+            console.log('login false');
+            displayError('email', 'Senha ou email inválido.')
+        }         
     })
-    .catch(error => {
-        console.error('Erro ao fazer login:');
+    .catch(error => {    
+        console.error('Erro ao fazer login:', error);
+        displayError('email', 'Erro ao processar o login. Tente novamente.');;
 
-        window.location.href = '/user/login';
     });
 });

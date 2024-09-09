@@ -15,7 +15,8 @@ def login():
     if request.method == 'POST':
         data = request.get_json()
         return process_login()
-    return render_template('user/login.html')
+    messages = get_flashed_messages()
+    return render_template('user/login.html', messages=messages)
 
 # -------------------------------------------------------------------------------------
 
