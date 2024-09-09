@@ -6,7 +6,7 @@ app = create_app()
 
 CORS(app)  # O CORS é um sistema de segurança das requisições HTTP que verifica o método da API antes de chamá-lo.
 app.app_context().push()
-
+ 
 @app.errorhandler(404) # Manipulador para o erro 404
 def page_not_found(e):
     return render_template('errors/404.html'), 404
