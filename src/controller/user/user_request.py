@@ -21,6 +21,7 @@ def login():
 
 @user_request.route('/register', methods=['GET', 'POST'])
 def register():
+    print("Entrou no register")
     if request.method == 'POST':
         return process_registration()
     messages = get_flashed_messages()

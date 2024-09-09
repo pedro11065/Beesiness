@@ -28,7 +28,7 @@
         <h1>Criar Nova Conta</h1>
 
         <!-- Entrada de Dados -->
-        <form id="registroForm" action="/user/register" method="post">
+        <form id="registroForm">
             <div class="form-group">
                 <label for="name">Nome</label>
                 <input type="text" id="name" name="fullName" required>
@@ -71,7 +71,7 @@
 
         <!-- Voltar ao Login -->
         <div class="register-link">
-            Já está registrado? <a href="/user/login">Clique aqui</a>
+            Já está registrado? <a href="{{ url_for('auth_user.login') }}">Clique aqui</a>
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/user/user_register.js') }}"></script>
