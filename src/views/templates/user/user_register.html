@@ -20,7 +20,6 @@
 </head>
 
 <body>
-    <script src="{{ url_for('static', filename='js/user/user_register.js') }}"></script>
     <!-- Dark Mode -->
     <button id="dark-mode-toggle">🌙</button>
 
@@ -72,10 +71,10 @@
 
         <!-- Voltar ao Login -->
         <div class="register-link">
-            Já está registrado? <a href="/user/login">Clique aqui</a>
+            Já está registrado? <a href="{{ url_for('auth_user.login') }}">Clique aqui</a>
         </div>
     </div>
-    
+    <script src="{{ url_for('static', filename='js/user/user_register.js') }}"></script>
 </body>
 
 </html>

@@ -143,7 +143,7 @@ function validateForm() {
             isValid = false;
         }
     }
-    
+
     return isValid;
 }
 
@@ -155,47 +155,46 @@ document.getElementById('registroForm').addEventListener('submit', function (e) 
      // Remove a máscara do cpf
     var cpfInput = document.getElementById('cpf');
     cpfInput.value = cpfInput.value.replace(/\D/g, '');
-
-    // Remove a máscara do CPF
-    var cpfInput = document.getElementById('cpf').value.replace(/\D/g, '');
-    var name = document.getElementById('name').value.trim();
-    var email = document.getElementById('email').value.trim();
-    var password = document.getElementById('password').value;
-    var birthDate = document.getElementById('birthDate').value;
-
-    // Monta os dados a serem enviados
-    var formData = {
-        "fullName": nome,
-        "cpf": cpfInput,
-        "email": email,
-        "password": password,
-        "birthDate": birthDate
-    };
-
-    // Realiza a requisição para a API
-    fetch('/user/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.register) {
-            // Sucesso no cadastro
-            alert('Cadastro realizado com sucesso!');
-            window.location.assign("/user/login");
-            
-        } else {
-            // Erro no cadastro
-            alert('Erro no cadastro: ' + data.error);
-            window.location.assign("/user/register");
-        }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        alert('Ocorreu um erro durante o cadastro.');
-    });
-
 });
+
+var cpfInput = document.getElementById('cpf').value.replace(/\D/g, '');
+var name = document.getElementById('name').value.trim();
+var email = document.getElementById('email').value.trim();
+var password = document.getElementById('password').value;
+var birthDate = document.getElementById('birthDate').value;
+
+// Monta os dados a serem enviados
+var formData = {
+    "fullName": nome,
+    "cpf": cpfInput,
+    "email": email,
+    "password": password,
+    "birthDate": birthDate
+};
+
+// Realiza a requisição para a API
+fetch('/user/register', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData)
+})
+.then(response => response.json())
+.then(data => {
+    if (data.register) {
+        // Sucesso no cadastro
+        alert('Cadastro realizado com sucesso!');
+        window.location.assign("/user/login");
+        
+    } else {
+        // Erro no cadastro
+        alert('Erro no cadastro: ' + data.error);
+        window.location.assign("/user/register");
+    }
+})
+.catch(error => {
+    console.error('Erro:', error);
+    alert('Ocorreu um erro durante o cadastro.');
+});
+
