@@ -20,14 +20,15 @@ def process_registration(data):
 
     verified, errors, errors_classes = verify_all(email, cnpj, senha) # Retorna true ou false, e os erros que ocorreram, por exemplo email e cnpj já existente.
 
-    if verified:
+    if verified == True:
+
         hashed_password = generate_password_hash(senha)
         user_id = current_user.get_id()
 
         db_create_company(nome, user_id, email, cnpj, hashed_password)
 
         return redirect('/dashboard/')
-
+    
     return redirect('/company/register')
     
 

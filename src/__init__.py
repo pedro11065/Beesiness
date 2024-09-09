@@ -37,6 +37,5 @@ def create_app():
     app.register_blueprint(user_request, url_prefix='/user')
     app.register_blueprint(company_request, url_prefix='/company')
     app.register_blueprint(dashboard_request, url_prefix='/dashboard')
-
-    return app
+    return app;
 

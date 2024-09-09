@@ -13,20 +13,18 @@ user_request = Blueprint('auth_user', __name__, template_folder='templates', sta
 @user_request.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        return process_login()
-
-    if current_user.is_authenticated: # Se o usuário já estiver logado, redireciona ele para o dashboard.
-        return redirect('/dashboard/new_user')
-
+        data = request.get_json()
+        return process_login(data)
     return render_template('user/login.html')
-
 
 # -------------------------------------------------------------------------------------
 
 @user_request.route('/register', methods=['GET', 'POST'])
 def register():
+    print("Entrou no register")
     if request.method == 'POST':
-        return process_registration()
+        create_data = request.get_json()
+        return process_registration(create_data)
     messages = get_flashed_messages()
     return render_template('user/user_register.html', messages=messages)
 
