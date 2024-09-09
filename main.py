@@ -15,3 +15,5 @@ if __name__ == '__main__':
     # Apenas irá rodar o aplicativo caso você inicie o arquivo main. 
     # Se não houvesse essa verificação, até mesmo uma importação desse arquivo iria rodar o programa.
     app.run(debug=True)  # É oq ativa ou não as 200 msgs de get, post e bla bla bla no terminal
+
+#<script src="{{ url_for('static', filename='js/user/login.js') }}" defer></script>

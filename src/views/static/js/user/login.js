@@ -24,24 +24,36 @@ loginForm.addEventListener('submit', async (event) => {
         "senha": password
     };
 
-    try {
-        fetch('/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(loginData) } )
-        
-        .then(response => response.json())
-        
-        .then(data => { 
-            console.log('Dados recebidos da API:', data);
-            console.log('Valor específico:', data.login);
-        })
-        .catch(error => {
-          // Handle errors
-        });
-    } catch (error) {
+    fetch('/user/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na resposta da API: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Dados recebidos da API:', data);
+        console.log('Valor específico:', data.login);
+
+        if (data.company && data.login) {
+            window.location.assign("/dashboard/");
+        }
+        else if (data.login) {
+            window.location.assign("/dashboard/new_user");
+        }
+        else {           
+            alert('Erro de login, verifique as credenciais.');
+        }
+    })
+    .catch(error => {
         console.error('Erro ao fazer login:', error);
-    }
+
+        window.location.assign('http://127.0.0.1:5000/user/login');
+    });
 });
