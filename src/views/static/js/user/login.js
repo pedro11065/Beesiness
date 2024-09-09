@@ -1,53 +1,47 @@
-// Código para alternar o modo escuro/claro
 const toggleButton = document.getElementById('dark-mode-toggle');
 const body = document.body;
 
 toggleButton.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
     
-    // Alterna o ícone do botão
     if (body.classList.contains('dark-mode')) {
-        toggleButton.textContent = '☀️'; // Ícone de sol para Light Mode
+        toggleButton.textContent = '☀️'; 
     } else {
-        toggleButton.textContent = '🌙'; // Ícone de lua para Dark Mode
+        toggleButton.textContent = '🌙'; 
     }
 });
 
+const loginForm = document.getElementById('loginForm');
 
-/*
-function clearErrors() {
-    var errorFields = document.querySelectorAll('.error');
-    errorFields.forEach(function (errorField) {
-        errorField.textContent = ''; // Limpa os erros anteriores
-    });
-}
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); 
 
-function displayError(fieldId, message) {
-    var errorField = document.getElementById(fieldId + '-error');
-    if (errorField) {
-        errorField.textContent = message;
-    }
-}
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-function validateForm() {
-    clearErrors(); // Limpa os erros antes de validar
+    const loginData = {
+        "email": email,
+        "senha": password
+    };
 
-    var email = document.getElementById('email').value.trim();
-
-    var isValid = true;
-    
-    // Validação de e-mail
-    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
-        displayError('email', 'E-mail inválido.');
-        isValid = false;
-    }
-}
-
-document.getElementById('registroForm').addEventListener('submit', function (e) {
-    if (!validateForm()) {
-        e.preventDefault(); // Previne o envio do formulário se houver erros
+    try {
+        fetch('/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(loginData) } )
+        
+        .then(response => response.json())
+        
+        .then(data => { 
+            console.log('Dados recebidos da API:', data);
+            console.log('Valor específico:', data.login);
+        })
+        .catch(error => {
+          // Handle errors
+        });
+    } catch (error) {
+        console.error('Erro ao fazer login:', error);
     }
 });
-
-*/
