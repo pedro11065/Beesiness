@@ -42,7 +42,7 @@ loginForm.addEventListener('submit', async (event) => {
         console.log('Valor específico:', data.login);
 
         if (data.company && data.login) {
-            window.location.assign("/dashboard/");
+            window.location.assign("/404");
         }
         else if (data.login) {
             window.location.assign("/dashboard/new_user");
@@ -54,6 +54,6 @@ loginForm.addEventListener('submit', async (event) => {
     .catch(error => {
         console.error('Erro ao fazer login:', error);
 
-        window.location.assign('http://127.0.0.1:5000/user/login');
+        window.location.assign('/user/login');
     });
 });
