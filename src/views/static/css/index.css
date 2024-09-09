@@ -124,7 +124,7 @@ nav ul li a {
     align-items: center;
     padding: 3.75rem 1.25rem;
     text-align: center; 
-    max-width: 100vw;
+    max-width: 150vw;
     background-image: url('/static/images/index/abelhas.png');
     background-size: cover;
     background-position: center;
