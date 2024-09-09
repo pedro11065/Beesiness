@@ -1,18 +1,3 @@
-// Código para alternar o modo escuro/claro
-const toggleButton = document.getElementById('dark-mode-toggle');
-const body = document.body;
-
-toggleButton.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-
-    // Alterna o ícone do botão
-    if (body.classList.contains('dark-mode')) {
-        toggleButton.textContent = '☀️'; // Ícone de sol para Light Mode
-    } else {
-        toggleButton.textContent = '🌙'; // Ícone de lua para Dark Mode
-    }
-});
-
 function formatCPF(value) {
     value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
     value = value.replace(/^(\d{3})(\d)/, '$1.$2'); // Adiciona o primeiro ponto
@@ -149,12 +134,16 @@ function validateForm() {
 
 document.getElementById("registroForm").addEventListener("submit", function(event) {
     event.preventDefault(); // Impede o comportamento padrão do formulário (evita o envio via GET)
-    
+
+    // Verifica se o formulário é válido
+    if (!validateForm()) {
+        return; // Interrompe o processo de envio se houver erros
+    }
+
     // Coleta os dados do formulário
     const formData = new FormData(this);
-
     const cpfSemMascara = formData.get('cpf').replace(/\D/g, '');
-    
+
     // Converte para um objeto para facilitar a manipulação
     const dados = {
         fullName: formData.get('fullName'),
@@ -164,14 +153,6 @@ document.getElementById("registroForm").addEventListener("submit", function(even
         password: formData.get('password'),
         confirmPassword: formData.get('confirmPassword')
     };
-
-    // Validações no front-end (exemplo, você pode adicionar mais conforme necessário)
-    if (dados.password !== dados.confirmPassword) {
-        document.getElementById("confirmPassword-error").textContent = "As senhas não coincidem.";
-        return;
-    } else {
-        document.getElementById("confirmPassword-error").textContent = "";
-    }
 
     // Faz a requisição POST
     fetch('/user/register', {
@@ -184,16 +165,18 @@ document.getElementById("registroForm").addEventListener("submit", function(even
     .then(response => response.json())
     .then(data => {
         // Processar a resposta do servidor
-        if (data.register)  {
+        if (data.register) {
             window.location.href = '/user/login'; // Redirecionar em caso de sucesso
-        } else if (data.cpf_error&&data.email_error) {   
-            displayError('cpf', 'CPF já está registrado.')
-            displayError('email', 'Email já está registrado.')
-        } else if (data.email_error) {
-            displayError('email', 'Email já está registrado.')
-        } else if (data.cpf_error)  {
-            displayError('cpf', 'CPF já está registrado.')
-        }    
+            return;
+        }
+        
+        if (data.cpf_error) {
+            displayError('cpf', 'CPF já está registrado.');
+        }
+        
+        if (data.email_error) {
+            displayError('email', 'Email já está registrado.');
+        } 
     })
     .catch(error => console.error('Erro:', error));
 });

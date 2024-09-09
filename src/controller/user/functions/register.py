@@ -19,8 +19,8 @@ def process_registration(create_data):
 
     if errors: # Se houver erros, adicione-os ao flash e redirecione
 
-        print(Fore.GREEN + '\n[API Usuário - Registro] ' + Fore.RED + f'Erro(s):{errors} + Style.RESET_ALL') 
-        return jsonify({"register": False, "cpf_error":cpf_error, "email_error":email_error}), 200
+        print(Fore.GREEN + '\n[API Usuário - Registro] ' + Fore.RED + f'Erro(s): {errors}' + Style.RESET_ALL) 
+        return jsonify({"register": False, "cpf_error": cpf_error, "email_error": email_error}), 200
     
     else:
         hashed_password = generate_password_hash(password)

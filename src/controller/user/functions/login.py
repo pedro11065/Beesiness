@@ -39,4 +39,4 @@ def process_login(data):
 
     
     print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta ou email/cpf incorreto.')
-    return jsonify({'login':False}), 200
+    return jsonify({'login': False}), 200

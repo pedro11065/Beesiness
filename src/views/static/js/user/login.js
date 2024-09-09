@@ -1,3 +1,17 @@
+function clearErrors() {
+    var errorFields = document.querySelectorAll('.error');
+    errorFields.forEach(function (errorField) {
+        errorField.textContent = ''; // Limpa os erros anteriores
+    });
+}
+
+function displayError(fieldId, message) {
+    var errorField = document.getElementById(fieldId + '-error');
+    if (errorField) {
+        errorField.textContent = message;
+    }
+}
+
 loginForm.addEventListener('submit', async (event) => {
     event.preventDefault(); 
 
@@ -26,12 +40,11 @@ loginForm.addEventListener('submit', async (event) => {
         if (data.login) {
             window.location.href = data.redirect_url;
         } else {
-            console.error('Falha no login');
-            window.location.href = '/user/login';
+            displayError('message', 'E-mail ou senha está incorreto.')
         }
     })
     .catch(error => {
         console.error('Erro ao fazer login:', error);
-        window.location.href = '/user/login';
+        displayError('message', 'Um erro inesperado ocorreu, sentimos muito.')
     });
 });

@@ -19,10 +19,12 @@
 <body>
     <header>
         <div class="logo">BEESINESS</div>
-        <div class="buttons">
+        {% if current_user.is_authenticated %}
+            <a href="/user/logout" class="logout">Logout</a>
+        {% else %}
             <a href="/user/register" class="register">Registre-se</a>
             <a href="/user/login" class="login">Login</a>
-        </div>
+        {% endif %}
     </header>
 
     <main>

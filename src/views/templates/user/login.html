@@ -22,6 +22,11 @@
 </head>
 
 <body>
+  <!-- Botão de Voltar 
+    <a href="javascript:history.back()" class="back-button">← Voltar</a>
+  -->
+  
+
   <!-- Dark Mode -->
   <button id="dark-mode-toggle">🌙</button>
 
@@ -33,9 +38,10 @@
       </div>
       <h1>Login</h1>
       <!-- Entrada de Dados -->
-      <form id="loginForm">
+      <form id="loginForm" action="/user/login" method="POST">
         <label for="email">E-MAIL</label>
         <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+        <p class="error" id="message-error"></p>
 
         <label for="password">SENHA</label>
         <div class="password-container">
@@ -52,6 +58,8 @@
       </form>
     </div>
   </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 
 </html>
