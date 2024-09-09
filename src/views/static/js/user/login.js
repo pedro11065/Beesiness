@@ -1,18 +1,3 @@
-const toggleButton = document.getElementById('dark-mode-toggle');
-const body = document.body;
-
-toggleButton.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    
-    if (body.classList.contains('dark-mode')) {
-        toggleButton.textContent = '☀️'; 
-    } else {
-        toggleButton.textContent = '🌙'; 
-    }
-});
-
-const loginForm = document.getElementById('loginForm');
-
 loginForm.addEventListener('submit', async (event) => {
     event.preventDefault(); 
 
@@ -38,22 +23,15 @@ loginForm.addEventListener('submit', async (event) => {
         return response.json();
     })
     .then(data => {
-        console.log('Dados recebidos da API:', data);
-        console.log('Valor específico:', data.login);
-
-        if (data.company && data.login) {
-            console.log('ambos True');
-            window.location.href = "/dashboard/";
-            
+        if (data.login) {
+            window.location.href = data.redirect_url;
+        } else {
+            console.error('Falha no login');
+            window.location.href = '/user/login';
         }
-        else if (data.login) {
-            console.log('login true');
-            window.location.href = "/dashboard/new_user";
-        }           
     })
     .catch(error => {
-        console.error('Erro ao fazer login:');
-
+        console.error('Erro ao fazer login:', error);
         window.location.href = '/user/login';
     });
 });

@@ -5,9 +5,7 @@ from src.model.database.user.create_user import db_create_user
 from src.model.validation.user.validate import validate_cpf_and_email
 from colorama import Fore, Style
 
-def process_registration():
-
-    create_data = request.get_json()
+def process_registration(create_data):
      
     name = create_data.get('fullname')
     cpf = create_data.get('cpf')

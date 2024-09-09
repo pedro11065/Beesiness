@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffeb3b; /* Amarelo claro */
+    background-color: #FFD400;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +17,7 @@ body {
 }
 
 h1 {
-    color: #ff5722; /* Cor laranja para destaque */
+    color: #ff0000;
     font-size: 100px;
     margin: 0;
 }
@@ -29,6 +29,7 @@ p {
 }
 
 .button {
+    display: inline-block;
     padding: 10px 20px;
     background-color: #007bff;
     border: none;
@@ -36,6 +37,7 @@ p {
     color: #fff;
     text-decoration: none;
     font-size: 14px;
+    margin-top: 20px;
 }
 
 .button:hover {

@@ -23,7 +23,8 @@ def login():
 def register():
     print("Entrou no register")
     if request.method == 'POST':
-        return process_registration()
+        create_data = request.get_json()
+        return process_registration(create_data)
     messages = get_flashed_messages()
     return render_template('user/user_register.html', messages=messages)
 

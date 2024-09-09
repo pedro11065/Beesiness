@@ -184,22 +184,14 @@ document.getElementById("registroForm").addEventListener("submit", function(even
     .then(response => response.json())
     .then(data => {
         // Processar a resposta do servidor
-        if (data.register) 
-        {
+        if (data.register)  {
             window.location.href = '/user/login'; // Redirecionar em caso de sucesso
-        } 
-        else if (data.cpf_error&&data.email_error) 
-        {   
+        } else if (data.cpf_error&&data.email_error) {   
             displayError('cpf', 'CPF já está registrado.')
             displayError('email', 'Email já está registrado.')
-
-        }
-        else if (data.email_error) 
-        {
+        } else if (data.email_error) {
             displayError('email', 'Email já está registrado.')
-        } 
-        else if (data.cpf_error) 
-        {
+        } else if (data.cpf_error)  {
             displayError('cpf', 'CPF já está registrado.')
         }    
     })
