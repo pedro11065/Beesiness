@@ -30,16 +30,17 @@ def process_login():
             password_hash=user_data['password_hash']           
         )
 
-        id = current_user.get_id()
+        login_user(user)
+        id = user_data['id']
 
         if db_search_user_company(id):
 
-            print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Usuário está relacionado a uma empresa!')
+            print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Usuário está relacionado a uma empresa!')
             return jsonify({'login':True, 'company':True}), 200
         
-        print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Usuário não está relacionado a uma empresa!')
+        print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Usuário não está relacionado a uma empresa!')
         return jsonify({'login':True, 'company':False}), 200        
 
     
-    print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta ou email/cpf incorreto.')
-    return jsonify({'login':False}), 502 
+    print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta ou email/cpf incorreto.')
+    return jsonify({'login':False}), 200

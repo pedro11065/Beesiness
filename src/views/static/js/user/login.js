@@ -42,18 +42,18 @@ loginForm.addEventListener('submit', async (event) => {
         console.log('Valor específico:', data.login);
 
         if (data.company && data.login) {
-            window.location.assign("/404");
+            console.log('ambos True');
+            window.location.href = "/dashboard/";
+            
         }
         else if (data.login) {
-            window.location.assign("/dashboard/new_user");
-        }
-        else {           
-            alert('Erro de login, verifique as credenciais.');
-        }
+            console.log('login true');
+            window.location.href = "/dashboard/new_user";
+        }           
     })
     .catch(error => {
-        console.error('Erro ao fazer login:', error);
+        console.error('Erro ao fazer login:');
 
-        window.location.assign('/user/login');
+        window.location.href = '/user/login';
     });
 });

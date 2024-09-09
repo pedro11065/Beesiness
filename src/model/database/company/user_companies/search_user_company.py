@@ -7,7 +7,7 @@ from ...connect import connect_database
 
 def db_search_user_company(search_data):
 
-    try:
+
         db_login = connect_database() # Coleta os dados para conexão
 
         #Conecta ao banco de dados.
@@ -28,9 +28,7 @@ def db_search_user_company(search_data):
         conn.commit()
         cur.close() # Fecha o cursor
         conn.close() # Fecha a conexão geral
-    
-        return True 
-    
-    except:
-        
-        return False
+
+        if db_data == []:
+            return False    
+        return True
