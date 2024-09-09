@@ -13,9 +13,9 @@ user_request = Blueprint('auth_user', __name__, template_folder='templates', sta
 @user_request.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        return process_login()
+        data = request.get_json()
+        return process_login(data)
     return render_template('user/login.html')
-
 
 # -------------------------------------------------------------------------------------
 

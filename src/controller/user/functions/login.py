@@ -5,11 +5,12 @@ from flask_login import login_user
 from src.model.database.user.search_user import db_search_user
 from src.model.user_model import User
 
-def process_login():
+def process_login(data):
 
-    email = request.form['email']
+    print(data)
 
-    password = request.form['password']
+    email = data.get['email']
+    password = data.get['password']
 
     user_data = db_search_user(email)
 

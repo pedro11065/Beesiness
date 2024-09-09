@@ -12,7 +12,6 @@ toggleButton.addEventListener('click', () => {
         toggleButton.textContent = '🌙'; // Ícone de lua para Dark Mode
     }
 });
-/*
 const loginForm = document.getElementById('loginForm');
 
 loginForm.addEventListener('submit', async (event) => {
@@ -51,7 +50,6 @@ loginForm.addEventListener('submit', async (event) => {
     }
 });
 
-*/
 /*
 function clearErrors() {
     var errorFields = document.querySelectorAll('.error');
