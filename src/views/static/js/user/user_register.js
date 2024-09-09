@@ -147,54 +147,61 @@ function validateForm() {
     return isValid;
 }
 
-document.getElementById('registroForm').addEventListener('submit', function (e) {
-    if (!validateForm()) {
-        e.preventDefault(); // Previne o envio do formulário se houver erros
-    }
+document.getElementById("registroForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Impede o comportamento padrão do formulário (evita o envio via GET)
+    
+    // Coleta os dados do formulário
+    const formData = new FormData(this);
 
-     // Remove a máscara do cpf
-    var cpfInput = document.getElementById('cpf');
-    cpfInput.value = cpfInput.value.replace(/\D/g, '');
-});
+    const cpfSemMascara = formData.get('cpf').replace(/\D/g, '');
+    
+    // Converte para um objeto para facilitar a manipulação
+    const dados = {
+        fullName: formData.get('fullName'),
+        email: formData.get('email'),
+        cpf: cpfSemMascara,
+        birthDate: formData.get('birthDate'),
+        password: formData.get('password'),
+        confirmPassword: formData.get('confirmPassword')
+    };
 
-var cpfInput = document.getElementById('cpf').value.replace(/\D/g, '');
-var name = document.getElementById('name').value.trim();
-var email = document.getElementById('email').value.trim();
-var password = document.getElementById('password').value;
-var birthDate = document.getElementById('birthDate').value;
-
-// Monta os dados a serem enviados
-var formData = {
-    "fullName": nome,
-    "cpf": cpfInput,
-    "email": email,
-    "password": password,
-    "birthDate": birthDate
-};
-
-// Realiza a requisição para a API
-fetch('/user/register', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData)
-})
-.then(response => response.json())
-.then(data => {
-    if (data.register) {
-        // Sucesso no cadastro
-        alert('Cadastro realizado com sucesso!');
-        window.location.assign("/user/login");
-        
+    // Validações no front-end (exemplo, você pode adicionar mais conforme necessário)
+    if (dados.password !== dados.confirmPassword) {
+        document.getElementById("confirmPassword-error").textContent = "As senhas não coincidem.";
+        return;
     } else {
-        // Erro no cadastro
-        alert('Erro no cadastro: ' + data.error);
-        window.location.assign("/user/register");
+        document.getElementById("confirmPassword-error").textContent = "";
     }
-})
-.catch(error => {
-    console.error('Erro:', error);
-    alert('Ocorreu um erro durante o cadastro.');
-});
 
+    // Faz a requisição POST
+    fetch('/user/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Processar a resposta do servidor
+        if (data.register) 
+        {
+            window.location.href = '/user/login'; // Redirecionar em caso de sucesso
+        } 
+        else if (data.cpf_error&&data.email_error) 
+        {   
+            displayError('cpf', 'CPF já está registrado.')
+            displayError('email', 'Email já está registrado.')
+
+        }
+        else if (data.email_error) 
+        {
+            displayError('email', 'Email já está registrado.')
+        } 
+        else if (data.cpf_error) 
+        {
+            displayError('cpf', 'CPF já está registrado.')
+        }    
+    })
+    .catch(error => console.error('Erro:', error));
+});

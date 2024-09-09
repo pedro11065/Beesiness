@@ -17,12 +17,12 @@ def process_registration():
 
     # Transformando a data de 2006-04-29 para 29/04/2006
 
-    errors = validate_cpf_and_email(cpf, email)
+    errors, cpf_error, email_error = validate_cpf_and_email(cpf, email)
 
     if errors: # Se houver erros, adicione-os ao flash e redirecione
 
         print(Fore.GREEN + '\n[API Usuário - Registro] ' + Fore.RED + f'Erro(s):{errors} + Style.RESET_ALL') 
-        return jsonify({"count_error":len(errors), "register": False, "error":errors}), 400
+        return jsonify({"register": False, "cpf_error":cpf_error, "email_error":email_error}), 200
     
     else:
         hashed_password = generate_password_hash(password)
