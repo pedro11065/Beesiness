@@ -22,6 +22,7 @@ a {
 }
 
 .icon {
+
     margin-top: 16px;
     width: 36px !important;
     height: 36px !important;
@@ -128,6 +129,7 @@ nav ul li a {
 }
 
 /* Estilo da seção hero */
+
 .hero {
     position: relative;
     display: flex;
@@ -136,12 +138,44 @@ nav ul li a {
     padding: 3.75rem 1.25rem;
     text-align: center; 
     max-width: 150vw;
+    background-image: url('/static/images/index/abelha_desenho.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+/* Primeiro pseudo-elemento: filtro escuro */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.0); /* Cor preta com 0% de opacidade */
+    z-index: -2; /* Coloca o overlay atrás do conteúdo e do segundo pseudo-elemento */
+}
+
+/* Segundo pseudo-elemento: efeito de blur */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(0px); /* Aplica o desfoque */
+    z-index: -1; /* Coloca o efeito de blur atrás do filtro escuro */
 }
 
 
 .hero h1 {
     font-size: 3rem;
     line-height: 1.2;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 7.5), 
+    0 0 25px rgba(0, 0, 0, 0.0), 
+    0 0 5px rgba(0, 0, 0, 0.0); 
 }
 
 .hero .highlight {
@@ -191,13 +225,17 @@ nav ul li a {
 
 .feature-item {
     flex: 1 1 30%;
-    background-color: #000;
+    background-color: #111111;
     color: white;
-    padding: 1.25rem;
+    padding: 1.0rem;
     margin: 0.625rem;
     border-radius: 0.625rem;
     text-align: center;
     max-width: 100%;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
 }
 
 /* Estilo da seção de equipe */
