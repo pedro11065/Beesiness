@@ -16,6 +16,7 @@
         <div class="header-links">
             {% if current_user.is_authenticated %}
                 <a href="/user/logout" class="logout">Logout</a>
+                <a href="/user/login" class="dashboard">Dashboard</a>
             {% else %}
                 <a href="/user/register" class="register">Registre-se</a>
                 <a href="/user/login" class="login">Login</a>
@@ -57,7 +58,7 @@
                         <img src="{{ url_for('static', filename='images/index/rhuan.jpg') }}" alt="Rhuan Mulero">
                     </div>
                     <h3>Rhuan Mulero, CEO da Startup</h3>
-                    <p>Rhuan Mulero além de nosso CEO é um de nossos desenvolvedores front-end.</p>
+                    <p>CEO e desenvolvedor front-end.</p>
                     <p>
                         <a href="https://github.com/dev/rhuanmulero" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -72,8 +73,8 @@
                     <div class="member-photo">
                         <img src="{{ url_for('static', filename='images/index/miguel.jpeg') }}" alt="Miguel Marques">
                     </div>
-                    <h3>Miguel Marques, Tech Lead</h3>
-                    <p>Miguel Marques além de nosso Tech Lead é um de nossos desenvolvedores back-end.</p>
+                    <h3>Miguel Marques, back-end</h3>
+                    <p>Responsável pela criação dos designs das páginas e pelo desenvolvimento do back-end.</p>
                     <p>
                         <a href="https://github.com/MiguelMMarques06" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -88,8 +89,8 @@
                     <div class="member-photo">
                         <img id="pedro-photo" src="{{ url_for('static', filename='images/index/pedro.jpeg') }}" alt="Pedro Quixabeira">
                     </div>
-                    <h3>Pedro Quixabeira, Engenheiro de Dados e Dev. Back-End</h3>
-                    <p>Pedro Quixabeira além de nosso Engenheiro de Dados é um de nossos desenvolvedores back-end.</p>
+                    <h3>Pedro Quixabeira, Eng. de Dados</h3>
+                    <p>Lider na gestão do banco de dados e do desenvolvimento do back-end em python.</p>
                     <p>
                         <a href="https://github.com/pedro11065" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -104,8 +105,8 @@
                     <div class="member-photo">
                         <img src="{{ url_for('static', filename='images/index/thiago.jpeg') }}" alt="Thiago Almeida">
                     </div>
-                    <h3>Thiago Almeida, Dev. Back-End</h3>
-                    <p>Thiago Almeida é um dos nossos desenvolvedores back-end, especializado em JavaScript.</p>
+                    <h3>Thiago Almeida, Dev. back-end</h3>
+                    <p>Um dos nossos desenvolvendores back-end mais experientes da equipe, especializado em JavaScript.</p>
                     <p>
                         <a href="https://github.com/ThiagoAlmeidaDev" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -120,7 +121,7 @@
                         <img src="{{ url_for('static', filename='images/index/beatriz.jpeg') }}" alt="Beatriz Lima">
                     </div>
                     <h3>Beatriz Lima, Dev. Front-End</h3>
-                    <p>Beatriz Lima é uma das nossas desenvolvedoras front-end, especializada em UI.</p>
+                    <p>Desenvolvedora front-end, especializada em UI e na arquitetura de banco de dados.</p>
                     <p>
                         <a href="https://github.com/biafalls" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -136,7 +137,7 @@
                         <img src="{{ url_for('static', filename='images/index/julia.jpeg') }}" alt="Julia Santos">
                     </div>
                     <h3>Julia Santos, Dev. Front-End</h3>
-                    <p>Julia Santos é uma das nossas desenvolvedoras front-end, especializada em UX.</p>
+                    <p>Uma de nossas desenvolvedoras front-end e resposável pela documentação e pela UX.</p>
                     <p>
                         <a href="https://github.com/Juli4Souzas" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">

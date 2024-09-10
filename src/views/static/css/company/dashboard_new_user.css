@@ -38,23 +38,31 @@ ul {
     list-style: disc;
 }
 
-.btn {
-    display: inline-block;
-    padding: 12px 24px;
-    margin: 10px;
-    font-size: 1em;
+.btn{
+    padding: 0.75rem 1.5rem; 
     text-decoration: none;
-    border-radius: 30px;
+    border-radius: 0.375rem; 
+    font-size: 1rem; 
+    font-weight: bold;
     transition: background-color 0.3s, color 0.3s;
-    border: 2px solid #ffeb3b; /* Borda com cor principal */
-    color: #ffeb3b; /* Cor principal do texto */
-    background-color: transparent; /* Fundo transparente */
+    margin: 0 0.5rem; 
+    display: inline-block;
+    width: auto; 
+    text-align: center;
+    max-width: 100%; 
+}
+.btn {
+    background-color: transparent;
+    color: #ffeb3b;
+    border: 1px solid #ffeb3b;
 }
 
 .btn:hover {
-    background-color: #ffeb3b; /* Cor principal */
-    color: #121212; /* Texto escuro no hover */
+    background-color: #ffeb3b;
+    color: black;
 }
+  
+
 
 @media (max-width: 600px) {
     .container {
@@ -66,6 +74,52 @@ ul {
     }
 
     .btn {
-        font-size: 0.9em;
-    }
+        box-sizing: border-box;
+        -webkit-appearance: none;
+           -moz-appearance: none;
+                appearance: none;
+        background-color: transparent;
+        border: 2px solid #e74c3c;
+        border-radius: 0.6em;
+        color: #e74c3c;
+        cursor: pointer;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-align-self: center;
+            -ms-flex-item-align: center;
+                align-self: center;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1;
+        margin: 20px;
+        padding: 1.2em 2.8em;
+        text-decoration: none;
+        text-align: center;
+        text-transform: uppercase;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+      }
+      .btn:hover, .btn:focus {
+        color: #fff;
+        outline: 0;
+      }
+      
+      .btn {
+        border-color: #f1c40f;
+        color: #fff;
+        background-image: -webkit-linear-gradient(45deg, #f1c40f 50%, transparent 50%);
+        background-image: linear-gradient(45deg, #f1c40f 50%, transparent 50%);
+        background-position: 100%;
+        background-size: 400%;
+        -webkit-transition: background 300ms ease-in-out;
+        transition: background 300ms ease-in-out;
+      }
+      .btn:hover {
+        background-position: 0;
+      }
+      
+      
 }
+

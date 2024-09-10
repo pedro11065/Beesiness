@@ -42,7 +42,7 @@ header {
 
 /* Estilo do logotipo */
 .logo {
-    font-size: 1.5rem; /* 24px */
+    font-size: 2.0rem; /* 24px */
     color: #FFD700;
     font-weight: bold;
     margin: 10;
@@ -81,7 +81,7 @@ nav ul li a {
 }
 
 /* Estilo para botões de navegação e botões de ação */
-.register, .login, .logout {
+.register, .login, .logout, .dashboard{
     padding: 0.75rem 1.5rem; 
     text-decoration: none;
     border-radius: 0.375rem; 
@@ -126,6 +126,16 @@ nav ul li a {
 
 .logout:hover {
     background-color: #f0f0f0;
+}
+
+.dashboard {
+    background-color: #FFD700;
+    color: black;
+    border: 1px solid #FFD700;
+}
+
+.dashboard:hover {
+    background-color: #ffd900b7;
 }
 
 /* Estilo da seção hero */
@@ -307,7 +317,7 @@ nav ul li a {
 
 
 /* Estilo responsivo para telas pequenas */
-@media (max-width: 48rem) { 
+@media (max-width: 40rem) { 
     header {
         flex-direction: column;
         align-items: center;
@@ -315,11 +325,15 @@ nav ul li a {
     }
 
     .logo {
-        font-size: 4rem; /* Ajuste o tamanho conforme necessário */
+        font-size: 3rem; /* Ajuste o tamanho conforme necessário */
         margin-bottom: 1rem;
     }
-    .register, .login, .logout {
-        padding: 0.75rem 5.5rem; 
+    .register,.logout {
+        padding: 0.5rem 2rem; 
+        border-radius: 0.375rem; 
+    }
+    .login {
+        padding: 0.5rem 3.3rem; 
         border-radius: 0.375rem; 
     }
 
@@ -334,6 +348,14 @@ nav ul li a {
         margin-bottom: 0.625rem;
     }
 
+    .hero h1 {
+        font-size: 3rem; 
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
     .buttons {
         flex-direction: column;
         margin-top: 1.25rem;
@@ -344,15 +366,48 @@ nav ul li a {
         margin-bottom: 1rem;
     }
 
-    .hero h1 {
-        font-size: 3rem; 
-    }
-
-    .hero p {
-        font-size: 1rem;
+    .features h2 {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem;
     }
 
     .team-member img {
         max-width: 100px;
+    }
+
+    .footer {
+        padding: 2.00rem 1.25rem;
+        background-color: #FFD700;
+        color: black;
+        text-align: center;
+        max-width: 100vw;
+    }
+    
+    .footer-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 100%;
+    }
+    .footer h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2.0rem;
+    }
+}
+
+@media (max-width: 25rem) { 
+    header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .register,.logout {
+        padding: 0.5rem 1.9rem; 
+        border-radius: 0.375rem; 
+    }
+    .login {
+        padding: 0.5rem 3.1rem; 
+        border-radius: 0.375rem; 
     }
 }
