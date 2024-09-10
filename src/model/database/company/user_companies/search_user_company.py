@@ -7,25 +7,28 @@ from ...connect import connect_database
 
 def db_search_user_company(search_data):
 
-    db_login = connect_database() # Coleta os dados para conexão
 
-    #Conecta ao banco de dados.
-    conn = psycopg2.connect(
-        host=db_login[0],
-        database=db_login[1],
-        user=db_login[2],
-        password=db_login[3]
-    )
-    cur = conn.cursor() # Cria um cursor no PostGreSQL
-    
-    cur.execute("SELECT * FROM table_user_companies WHERE user_id = %s OR company_id = %s", (search_data, search_data))
-    
-    #---------------------------------------------------------------INDICES---------------------
-                                                    #0         1             2     
-    db_data = cur.fetchall() #valores da linha: #company_id, user_id, user_access_level
+        db_login = connect_database() # Coleta os dados para conexão
 
-    conn.commit()
-    cur.close() # Fecha o cursor
-    conn.close() # Fecha a conexão geral
-    
-    return db_data #Retorna o resultado para a função login_verify
+        #Conecta ao banco de dados.
+        conn = psycopg2.connect(
+            host=db_login[0],
+            database=db_login[1],
+            user=db_login[2],
+            password=db_login[3]
+        )
+        cur = conn.cursor() # Cria um cursor no PostGreSQL
+        
+        cur.execute("SELECT * FROM table_user_companies WHERE user_id = %s OR company_id = %s", (search_data, search_data))
+        
+        #---------------------------------------------------------------INDICES---------------------
+                                                        #0         1             2     
+        db_data = cur.fetchall() #valores da linha: #company_id, user_id, user_access_level
+
+        conn.commit()
+        cur.close() # Fecha o cursor
+        conn.close() # Fecha a conexão geral
+
+        if db_data == []:
+            return False    
+        return True

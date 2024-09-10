@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro - Beesiness</title>
+  <title>Login - Beesiness</title>
 
   <!-- Css Linkado -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/user/login.css') }}">
@@ -17,9 +17,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 
+  <!-- Script JavaScript -->
+  <script src="{{ url_for('static', filename='js/user/login.js') }}" defer></script>
 </head>
 
 <body>
+  <!-- Botão de Voltar 
+    <a href="javascript:history.back()" class="back-button">← Voltar</a>
+  -->
+  
+
   <!-- Dark Mode -->
   <button id="dark-mode-toggle">🌙</button>
 
@@ -27,30 +34,32 @@
   <div class="login-container">
     <div class="login-box">
       <div class="logo">
-        <img src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Beesiness Logo" />
+        <img src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Beesiness Logo">
       </div>
       <h1>Login</h1>
       <!-- Entrada de Dados -->
-      <form id="loginForm">
+      <form id="loginForm" action="/user/login" method="POST">
         <label for="email">E-MAIL</label>
-        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required />
+        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+        <p class="error" id="message-error"></p>
 
         <label for="password">SENHA</label>
         <div class="password-container">
-          <input type="password" id="password" name="password" placeholder="Digite sua senha" required />
-          <button type="button" class="show-password"></button>
+          <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+          <button type="button" class="show-password" aria-label="Mostrar senha"></button>
         </div>
         <a href="/user/forget-password" class="forgot">Esqueceu a Senha?</a>
-
+        
         <!-- Entrar no Beesiness -->
         <button type="submit" class="login-btn">Acesse</button>
-
+        
         <!-- Criar Conta -->
         <a href="/user/register" class="create-account">Abrir Conta</a>
       </form>
     </div>
   </div>
-  <script src="{{ url_for('static', filename='js/user/login.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 
 </html>

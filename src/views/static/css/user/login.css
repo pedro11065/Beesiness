@@ -204,3 +204,10 @@ body.dark-mode .login-btn:hover {
         font-size: 1.5rem;
     }
 }
+
+/* Responsável por mostrar a mensagem de erro vermelha */
+.error {
+    color: red;
+    font-size: 12px;
+    display: block;
+}

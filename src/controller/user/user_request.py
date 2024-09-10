@@ -15,16 +15,20 @@ def login():
     if request.method == 'POST':
         data = request.get_json()
         return process_login(data)
-    return render_template('user/login.html')
+    
+    if request.method == 'GET':
+        return render_template('user/login.html')
 
 # -------------------------------------------------------------------------------------
 
 @user_request.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        return process_registration()
-    messages = get_flashed_messages()
-    return render_template('user/user_register.html', messages=messages)
+        create_data = request.get_json()
+        return process_registration(create_data)
+    
+    if request.method == 'GET':
+        return render_template('user/register.html')
 
 # -------------------------------------------------------------------------------------
 
@@ -38,6 +42,6 @@ def forget_password():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth_user.login'))  
+    return redirect('/')  
 
 

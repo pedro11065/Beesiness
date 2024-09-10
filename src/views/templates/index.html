@@ -5,34 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beesiness</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-
-    <link rel="icon" href="{{ url_for('static', filename='images/Beessiness_white_Logo.png') }}" type="image/x-icon">
-
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet" />
 </head>
 <body>
     <header>
         <div class="logo">BEESINESS</div>
-        <div class="buttons">
-            <a href="/user/register" class="register">Registre-se</a>
-            <a href="/user/login" class="login">Login</a>
+        <div class="header-links">
+            {% if current_user.is_authenticated %}
+                <a href="/user/logout" class="logout">Logout</a>
+                <a href="/user/login" class="dashboard">Dashboard</a>
+            {% else %}
+                <a href="/user/register" class="register">Registre-se</a>
+                <a href="/user/login" class="login">Login</a>
+            {% endif %}
         </div>
     </header>
 
     <main>
         <section id="hero" class="hero">
             <h1>Faça sua <span class="highlight">empresa voar</span><br>como uma <span class="highlight">abelha</span></h1>
-            <p>Com a Beesiness, gerenciar sua empresa ficou mais fácil e eficiente. Transforme suas finanças e tome decisões baseadas em dados reais, melhorando o crescimento do seu negócio.</p>
         </section>
 
         <section id="features" class="features">
-            <h2>A Beesiness é um aplicativo inovador voltado para pequenas e médias empresas, oferecendo uma plataforma completa para gestão econômica e contábil.</h2>
+            <h2>A Beesiness é um gestor de patrimônio inovador voltado para pequenas e médias empresas, oferecendo uma plataforma completa para gestão econômica e contábil.</h2>
             <div class="features-container">
                 <div class="feature-item">
                     <div class="icon">✔️</div>
@@ -60,7 +58,7 @@
                         <img src="{{ url_for('static', filename='images/index/rhuan.jpg') }}" alt="Rhuan Mulero">
                     </div>
                     <h3>Rhuan Mulero, CEO da Startup</h3>
-                    <p>Rhuan Mulero além de nosso CEO é um de nossos desenvolvedores front-end.</p>
+                    <p>CEO e desenvolvedor front-end.</p>
                     <p>
                         <a href="https://github.com/dev/rhuanmulero" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -68,19 +66,15 @@
                         <a href="https://www.linkedin.com/in/rhuan-mulero/" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
                         </a>
-                        <a href="mailto:rhuanmscontato@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon">
-                        </a>
+                        <a href="mailto:rhuanmscontato@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
                     </p>
                 </div>
-                
-
-                
                 <div class="team-member">
                     <div class="member-photo">
                         <img src="{{ url_for('static', filename='images/index/miguel.jpeg') }}" alt="Miguel Marques">
                     </div>
-                    <h3>Miguel Marques, Tech Lead</h3>
-                    <p>Miguel Marques além de nosso Tech Lead é um de nossos desenvolvedores back-end.</p>
+                    <h3>Miguel Marques, back-end</h3>
+                    <p>Responsável pela criação dos designs das páginas e pelo desenvolvimento do back-end.</p>
                     <p>
                         <a href="https://github.com/MiguelMMarques06" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -88,18 +82,15 @@
                         <a href="https://www.linkedin.com/in/miguel-macedo-marques-8308392b8/" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
                         </a>
-                        <a href="mailto:miguelmm06@hotmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon">
-                        </a>
+                        <a href="mailto:miguelmm06@hotmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
                     </p>
-
                 </div>
-
                 <div class="team-member" id="pedro-card">
                     <div class="member-photo">
                         <img id="pedro-photo" src="{{ url_for('static', filename='images/index/pedro.jpeg') }}" alt="Pedro Quixabeira">
                     </div>
-                    <h3>Pedro Quixabeira, Engenheiro de Dados e Dev. Back-End</h3>
-                    <p>Pedro Quixabeira além de nosso Engenheiro de Dados é um de nossos desenvolvedores back-end e diretor de diversidade.</p>
+                    <h3>Pedro Quixabeira, Eng. de Dados</h3>
+                    <p>Lider na gestão do banco de dados e do desenvolvimento do back-end em python.</p>
                     <p>
                         <a href="https://github.com/pedro11065" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -107,18 +98,15 @@
                         <a href="https://www.linkedin.com/in/pedro-henrique-silva-quixabeira/" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
                         </a>
-                        <a href="mailto:pedrohenriquesilvaquixabeira@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon">
-                        </a>
+                        <a href="mailto:pedrohenriquesilvaquixabeira@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
                     </p>
                 </div>
-
-
                 <div class="team-member">
                     <div class="member-photo">
                         <img src="{{ url_for('static', filename='images/index/thiago.jpeg') }}" alt="Thiago Almeida">
                     </div>
-                    <h3>Thiago Almeida, Dev. Back-End</h3>
-                    <p>Thiago Almeida é um dos nossos desenvolvedores back-end, especializado em javascript</p>
+                    <h3>Thiago Almeida, Dev. back-end</h3>
+                    <p>Um dos nossos desenvolvendores back-end mais experientes da equipe, especializado em JavaScript.</p>
                     <p>
                         <a href="https://github.com/ThiagoAlmeidaDev" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -128,13 +116,12 @@
                         </a>
                     </p>
                 </div>
-
                 <div class="team-member">
                     <div class="member-photo">
                         <img src="{{ url_for('static', filename='images/index/beatriz.jpeg') }}" alt="Beatriz Lima">
                     </div>
                     <h3>Beatriz Lima, Dev. Front-End</h3>
-                    <p>Beatriz Lima é uma das nossas desenvolvedoras front-end, especializada em UI</p>
+                    <p>Desenvolvedora front-end, especializada em UI e na arquitetura de banco de dados.</p>
                     <p>
                         <a href="https://github.com/biafalls" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -142,17 +129,15 @@
                         <a href="https://www.linkedin.com/in/beatriz-lima-a21a6b2a4/" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
                         </a>
-                        <a href="mailto:biaevangelista1967@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon">
-                        </a>
+                        <a href="mailto:biaevangelista1967@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
                     </p>
                 </div>
-
                 <div class="team-member">
                     <div class="member-photo">
                         <img src="{{ url_for('static', filename='images/index/julia.jpeg') }}" alt="Julia Santos">
                     </div>
                     <h3>Julia Santos, Dev. Front-End</h3>
-                    <p>Julia Santos é uma das nossas desenvolvedoras front-end, especializada em UX</p>
+                    <p>Uma de nossas desenvolvedoras front-end e resposável pela documentação e pela UX.</p>
                     <p>
                         <a href="https://github.com/Juli4Souzas" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
@@ -160,12 +145,20 @@
                         <a href="https://www.linkedin.com/in/julia-santos-3873252b3/" target="_blank">
                             <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
                         </a>
-                        <a href="mailto:souzasjulia14@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon">
-                        </a>
+                        <a href="mailto:souzasjulia14@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
                     </p>
                 </div>
             </div>
         </section>
+        <footer id="footer" class="footer"></footer>
+            <div class="footer-container">
+                <h1> Av. Senador Feijó, 350 - Vila Matias, Santos - SP, 11015-502</h1>
+                <p>© 2024 Beesiness L.T.D.A. Todos os direitos reservados.</p>
+            <div class="footer-container">
+        </footer>
+
+        <!-- Seção de login e registro -->
+
     </main>
 
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
