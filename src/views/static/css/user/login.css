@@ -137,6 +137,12 @@ input[type="password"]:focus {
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
+.login-btn:disabled {
+    background-color: #ccc; /* Altera a cor para indicar que o botão está desativado */
+    cursor: not-allowed;    /* Altera o cursor para indicar que o botão não está clicável */
+    pointer-events: none;   /* Remove a possibilidade de clicar no botão */
+}
+
 .login-btn:hover {
     background-color: #333;
     transform: scale(1.05);

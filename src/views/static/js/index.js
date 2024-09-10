@@ -25,7 +25,7 @@
             setTimeout(function() {
                 h3.textContent = 'Pedro Gayxabeira, Diretor de Logística';
                 p.textContent = 'Pedro Gayxabeira é nosso Diretor de Logística e um dos desenvolvedores back-end.';
-                pedroPhoto.src = 'pedro_logistica.jpeg'; 
+                pedroPhoto.src = '/static/images/index/pedro_logistica.jpeg'; 
                 pedroPhoto.alt = 'Pedro Gayxabeira';
 
                 // Remove a classe fade-out e adiciona a fade-in para a transição de entrada
