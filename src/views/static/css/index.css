@@ -315,6 +315,35 @@ nav ul li a {
     opacity: 1;
 }
 
+.footer {
+    background-color: #FFD700;
+    color: black;
+    text-align: center;
+    max-width: 100vw;
+}
+
+.footer-container {
+    padding: 0.5rem 3.25rem;
+    background-color: #000;
+    text-align: center;
+    max-width: 100%;
+}
+.footer-container h1 {
+    padding: 3.00rem 2.25rem;
+    font-size: 1.2rem; 
+    color:white;   
+    font-weight: normal;
+    
+}
+
+.footer-container p {
+    padding: 0rem 0rem;
+    font-size: 1rem;
+    color:white;
+    font-weight: normal;
+}
+
+
 
 /* Estilo responsivo para telas pequenas */
 @media (max-width: 40rem) { 
@@ -375,24 +404,6 @@ nav ul li a {
         max-width: 100px;
     }
 
-    .footer {
-        padding: 2.00rem 1.25rem;
-        background-color: #FFD700;
-        color: black;
-        text-align: center;
-        max-width: 100vw;
-    }
-    
-    .footer-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        max-width: 100%;
-    }
-    .footer h2 {
-        font-size: 2.5rem;
-        margin-bottom: 2.0rem;
-    }
 }
 
 @media (max-width: 25rem) { 
