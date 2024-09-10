@@ -357,7 +357,7 @@ nav ul li a {
         font-size: 3rem; /* Ajuste o tamanho conforme necessário */
         margin-bottom: 1rem;
     }
-    .register,.logout {
+    .register,.logout,.dashboard {
         padding: 0.5rem 2rem; 
         border-radius: 0.375rem; 
     }
@@ -413,7 +413,7 @@ nav ul li a {
         text-align: center;
     }
 
-    .register,.logout {
+    .register,.logout,.dashboard {
         padding: 0.5rem 1.9rem; 
         border-radius: 0.375rem; 
     }
