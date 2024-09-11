@@ -2,7 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from colorama import Fore, Style
 
-from src.model.database.user.search_user import db_search_user
+from src.model.database.user.search import db_search_user
 from src.model.user_model import User
 
 # Criação do LoginManager fora da função create_app

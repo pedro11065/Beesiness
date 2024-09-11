@@ -1,7 +1,7 @@
 import re
 from colorama import Fore, Style
-from src.model.database.company.companies.search_company import db_search_company
-from src.model.database.user.search_user import db_search_user
+from src.model.database.company.companies.search import db_search_company
+from src.model.database.user.search import db_search_user
 
 # Verificações que são feitas no front: email, senha, cpf, cnpj e nome da empresa
 # Por exemplo, gramática, falta de arroba no email, cpf inexistente, etc.

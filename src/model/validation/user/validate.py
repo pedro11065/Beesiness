@@ -1,4 +1,4 @@
-from src.model.database.user.search_user import db_search_user
+from src.model.database.user.search import db_search_user
 
 def validate_cpf_and_email(cpf, email):
     errors = [] 

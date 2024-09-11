@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash
 from colorama import Fore, Style
 
 from src.model.user_model import User
-from src.model.database.company.companies.create_company import db_create_company
+from src.model.database.company.companies.create import db_create_company
 from src.model.validation.company.new_account  import verify_all
 
 def process_registration(data):
