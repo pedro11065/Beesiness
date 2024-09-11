@@ -43,14 +43,7 @@ def db_search_company(search_data):
 
         print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados da empresa encotrados com sucesso!')
     
-        return {
-            "id_empresa": db_data[0][0],
-            "id_usuário": db_data[0][1], #criador da empresa
-            "nome": db_data[0][2],
-            "email": db_data[0][3],
-            "cnpj": db_data[0][4],
-            "senha": db_data[0][5]
-            }
+        return db_data
 
     except:
         print(Fore.CYAN + '[Banco de dados] ' + Fore.RED  + f'Erro ao responder dados solicitados.' + Style.RESET_ALL)

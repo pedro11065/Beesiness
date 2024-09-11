@@ -30,12 +30,13 @@ def process_login(data):
         login_user(user)
         id = user_data['id']
 
+        
         if db_search_user_company(id):
             print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Usuário está relacionado a uma empresa!')
             return jsonify({'login': True, 'company': True, 'redirect_url': '/dashboard/'}), 200
         else:
             print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Usuário não está relacionado a uma empresa!')
-            return jsonify({'login': True, 'company': False, 'redirect_url': '/dashboard/new_user'}), 200      
+            return jsonify({'login': True, 'company': False, 'redirect_url': '/dashboard/'}), 200      
 
     
     print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta ou email/cpf incorreto.')

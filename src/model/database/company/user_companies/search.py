@@ -31,4 +31,4 @@ def db_search_user_company(search_data):
 
         if db_data == []:
             return False    
-        return True
+        return True, db_data

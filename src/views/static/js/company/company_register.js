@@ -161,7 +161,7 @@ document.getElementById('registroEmpresaForm').addEventListener('submit', functi
         "senha": password
     };
 
-    fetch('/company-register', {
+    fetch('/company-register', { /*NÃO FOI TESTADO!!!!!*/
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -170,11 +170,29 @@ document.getElementById('registroEmpresaForm').addEventListener('submit', functi
     })
     .then(response => response.json())
     .then(data => {
-        // Manipule a resposta do servidor aqui
-            
-        // Pode redirecionar ou mostrar uma mensagem de sucesso
+
+        if (data.register) {
+            window.location.href = '/dashboard/'; // Redirecionar em caso de sucesso
+            return;
+        }       
+        if (data.cnpj_error) {
+            displayError('cnpj', 'CNPJ já está registrado.');
+        }
+        
+        if (data.email_error) {
+            displayError('email', 'Email já está registrado.');
+        } 
+    })
+    .catch(error => console.error('Erro:', error));
     })
     .catch(error => {
         console.error('Erro:', error);
-    });
 });
+
+
+/*
+({"register": False, 
+"cnpj_error": cnpj_error, 
+"email_error": email_error}), 200
+*/
+
