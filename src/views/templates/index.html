@@ -15,7 +15,7 @@
         <div class="logo">BEESINESS</div>
         <div class="header-links">
             {% if current_user.is_authenticated %}
-                <a href="/user/login" class="dashboard">Dashboard</a>
+                <a href="/dashboard/" class="dashboard">Dashboard</a>
                 <a href="/user/logout" class="logout">Logout</a>
             {% else %}
                 <a href="/user/register" class="register">Registre-se</a>

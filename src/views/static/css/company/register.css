@@ -57,7 +57,7 @@ h1 {
 label {
     display: block;
     text-align: left;
-    margin-bottom: 0.5rem;
+    margin-top: 0.8rem;
     font-size: 0.75rem;
     color: #666;
     text-transform: uppercase;
@@ -71,7 +71,6 @@ input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 0.75rem;
-    margin-bottom: 0.75rem;
     border-radius: 0.625rem;
     border: 1px solid #ccc;
     background-color: #F2F2F2;
@@ -88,6 +87,7 @@ input[type="password"]:focus {
 
 /* Botão de registro */
 button[type="submit"] {
+    margin-top: 1rem;
     width: 100%;
     padding: 1rem;
     background-color: #000;
@@ -96,7 +96,7 @@ button[type="submit"] {
     border-radius: 0.625rem;
     font-size: 1rem;
     cursor: pointer;
-    margin-bottom: 0.75rem;
+    top: 0.75rem;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
@@ -122,6 +122,14 @@ button[type="submit"]:hover {
 
 .register-link a:hover {
     text-decoration: underline;
+}
+
+.error {
+    margin-bottom: 0,5px;
+    color: red;
+    font-size: 12px;
+    display: block;
+    text-align: left;
 }
 
 /* Dark Mode */

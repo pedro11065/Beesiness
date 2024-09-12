@@ -9,7 +9,7 @@ dashboard_request = Blueprint('auth_dashboard', __name__, template_folder='templ
 @dashboard_request.route('/') #no caso, tanto a api tanto o site usam o metodo get, então vou criar uma rota só para a API
 @login_required
 def dashboard():
-    return render_template('company/dashboard/dashboard.html')
+    return render_template('dashboard/dashboard.html')
 
 @dashboard_request.route('/api') #no caso, tanto a api tanto o site usam o metodo get, então vou criar uma rota só para a API
 @login_required

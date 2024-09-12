@@ -74,6 +74,7 @@ function clearErrors() {
 
 function displayError(fieldId, message) {
     var errorField = document.getElementById(fieldId + '-error');
+    console.log(errorField)
     if (errorField) {
         errorField.textContent = message;
     }
@@ -82,7 +83,7 @@ function displayError(fieldId, message) {
 function validateCompanyForm() {
     clearErrors(); // Limpa os erros antes de validar
 
-    var companyName = document.getElementById('nomeEmpresa').value.trim();
+    var nome = document.getElementById('name').value.trim();
     var email = document.getElementById('email').value.trim();
     var password = document.getElementById('password').value;
     var confirmPassword = document.getElementById('confirmPassword').value;
@@ -91,7 +92,7 @@ function validateCompanyForm() {
     var isValid = true;
 
     // Validação de nome da empresa
-    if (companyName.length < 3) {
+    if (nome.length < 3) {
         displayError('nomeEmpresa', 'Nome da empresa muito curto.');
         isValid = false;
     }
@@ -142,26 +143,27 @@ function validateCompanyForm() {
 document.getElementById('registroEmpresaForm').addEventListener('submit', function (e) {
     e.preventDefault(); // Impede o envio padrão do formulário
 
-    if (!validateCompanyForm()) {
-        return; // Não envia os dados se houver erros
-    }
+    //if (!validateCompanyForm()) {
+        //return; // Não envia os dados se houver erros
+    //}
     {
-        const companyName = document.getElementById('nomeEmpresa').value.trim();
-        const email= document.getElementById('email').value.trim();
-        const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
-        const password= document.getElementById('password').value;
-        const confirmPassword= document.getElementById('confirmPassword').value;
+        var nome = document.getElementById('name').value.trim();
+        var email= document.getElementById('email').value.trim();
+        var cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+        var password= document.getElementById('password').value;
+        var confirmPassword= document.getElementById('confirmPassword').value;
 
     }
+    console.log(nome,email,cnpj,password)
 
     const dados = {
-        "nome": companyName,
+        "nome": nome,
         "cnpj": cnpj,
         "email": email,
-        "senha": password
+        "password": password
     };
 
-    fetch('/company-register', { /*NÃO FOI TESTADO!!!!!*/
+    fetch('/company/register', { /*NÃO FOI TESTADO!!!!!*/
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -175,18 +177,24 @@ document.getElementById('registroEmpresaForm').addEventListener('submit', functi
             window.location.href = '/dashboard/'; // Redirecionar em caso de sucesso
             return;
         }       
-        if (data.cnpj_error) {
+        console.log(data)
+        if (data.cnpj_error == false && data.email_error == false) {
+            console.log("erro cnpj e email")
+            displayError('cnpj', 'CNPJ já está registrado.');
+            displayError('email', 'Email já está registrado.');
+        }
+
+        if (data.cnpj_error == false) {
+            console.log("erro cnpj")
             displayError('cnpj', 'CNPJ já está registrado.');
         }
         
-        if (data.email_error) {
+        if (data.email_error == false) {
+            console.log("erro email")
             displayError('email', 'Email já está registrado.');
         } 
     })
     .catch(error => console.error('Erro:', error));
-    })
-    .catch(error => {
-        console.error('Erro:', error);
 });
 
 

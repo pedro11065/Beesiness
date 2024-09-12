@@ -18,11 +18,12 @@ from src.model.validation.company.new_account  import verify_all
 
 def process_registration(data):
 
-    nome = data.get('nomeEmpresa')
+    nome = data.get('nome')
     email = data.get('email')
     cnpj = data.get('cnpj')
     senha = data.get('password')
 
+    print(nome,email,cnpj,senha)
     hashed_password = generate_password_hash(senha)
 
     print(Fore.GREEN + '\n[API Empresa - Registro] ' + Style.RESET_ALL +

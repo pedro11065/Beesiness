@@ -15,5 +15,5 @@ def register():
         return process_registration(data)
     
     else:
-        return render_template('company/company_register.html')
+        return render_template('company/register.html')
 
