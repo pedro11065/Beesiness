@@ -11,7 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <header>
+    <header>     
+    
+        <img class="mobile-image" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Imagem do Cabeçalho">
+
         <div class="logo">BEESINESS</div>
         <div class="header-links">
             {% if current_user.is_authenticated %}
@@ -19,7 +22,7 @@
                 <a href="/user/logout" class="logout">Logout</a>
             {% else %}
                 <a href="/user/register" class="register">Registre-se</a>
-                <a href="/user/login" class="login">Login</a>
+                <a href="/user/login" class="login">Login</a>           
             {% endif %}
         </div>
     </header>
