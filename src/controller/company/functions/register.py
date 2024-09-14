@@ -1,13 +1,5 @@
-
-""" PEDRO, PRESTE ATENÇÃO!!!
-
-    Este arquivo tem que estar igual ao dos usuários, o redirect tem que ser no javascript e nós devemos apenas retornar o json.
-    Caso tenha dúvidas, se baseie nos outros arquivos.
-
-"""
-
-from flask import Blueprint, request, redirect, render_template, jsonify
-from flask_login import login_user, current_user
+from flask import jsonify
+from flask_login import current_user
 
 from werkzeug.security import generate_password_hash
 from colorama import Fore, Style

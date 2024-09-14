@@ -1,12 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const registerForm = document.getElementById("registroForm"); // Ajuste o ID aqui para corresponder ao HTML
-    const registerButton = registerForm.querySelector(".register-btn"); // Verifique se o botão tem essa classe
-    
-    // Verifica se o formulário e o botão de registro foram encontrados
-    if (!registerForm || !registerButton) {
-        console.error("Formulário ou botão não encontrados.");
-        return;
-    }
+    const registerForm = document.getElementById("registroForm");
+    const registerButton = registerForm.querySelector(".register-btn");
 
     // Evento de envio do formulário
     registerForm.addEventListener('submit', async (event) => {
@@ -55,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
             if (data.register) {
-                window.location.href = '/user/login'; // Redirecionar em caso de sucesso
+                window.location.href = '/user/login'; // Redireciona em caso de sucesso
                 return;
             } else {
                 if (data.cpf_error) {
@@ -92,7 +86,6 @@ function displayError(fieldId, message) {
 }
 
 function validateForm() {
-    console.log('Entrou para validar')
     clearErrors(); // Limpa os erros antes de validar
 
     const name = document.getElementById('name').value.trim();
@@ -106,7 +99,6 @@ function validateForm() {
 
     // Validação de nome
     if (name.length < 3) {
-        console.log('entrou no nome')
         displayError('name', 'Nome muito curto.');
         isValid = false;
     }
@@ -114,7 +106,6 @@ function validateForm() {
     // Validação de e-mail
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(email)) {
-        console.log('entrou no email')
         displayError('email', 'E-mail inválido.');
         isValid = false;
     }
@@ -123,25 +114,21 @@ function validateForm() {
     birthDate = formatDateToBrazilian(birthDate); // Converter a data de nascimento YYYY/MM/DD para o formato DD/MM/YYYY
     const birthDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
     if (!birthDatePattern.test(birthDate)) {
-        console.log('entrou no birthDate')
         displayError('birthDate', 'Data de nascimento inválida. Use o formato DD/MM/YYYY.');
         isValid = false;
     }
 
     // Validação de CPF
     if (cpf.length !== 11 || !validaCPF(cpf)) {
-        console.log('entrou no cpf')
         displayError('cpf', 'CPF inválido.');
         isValid = false;
     }
 
     // Validação de senha
     if (password !== confirmPassword) {
-        console.log('entrou na senha ')
         displayError('confirmPassword', 'As senhas não coincidem.');
         isValid = false;
     } else {
-        console.log('entrou no resto')
         // Apenas o primeiro erro de senha será mostrado
         if (password.length < 8) {
             displayError('password', 'A senha deve ter um mínimo de 8 dígitos.');
@@ -189,7 +176,6 @@ function formatDateToBrazilian(dateStr) {
 }
 
 function validaCPF(strCPF) {
-    console.log('validou cpf')
     var Soma;
     var Resto;
     Soma = 0;

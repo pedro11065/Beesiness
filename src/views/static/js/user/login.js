@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
             if (data.login) {
-                window.location.href = data.redirect_url; // Redirecionamento
+                window.location.href = data.redirect_url; // Redirecionamento em caso de sucesso
             } else {
                 displayError('message', 'E-mail ou senha está incorreto.');
             }

@@ -1,5 +1,5 @@
-from flask import Blueprint, Flask, flash, get_flashed_messages, request, render_template, redirect, session, url_for
-from flask_login import login_user, logout_user, current_user, login_required
+from flask import Blueprint, render_template
+from flask_login import login_required
 from src.controller.dashboard.functions.user_companies import companies_info
 #tudo aqui é: /dashboard...
 
