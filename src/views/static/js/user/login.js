@@ -2,22 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("loginForm");
     const loginButton = loginForm.querySelector(".login-btn");
 
-    // Função para limpar mensagens de erro
-    function clearErrors() {
-        const errorFields = document.querySelectorAll('.error');
-        errorFields.forEach(function (errorField) {
-            errorField.textContent = ''; // Limpa os erros anteriores
-        });
-    }
-
-    // Função para exibir mensagem de erro
-    function displayError(fieldId, message) {
-        const errorField = document.getElementById(fieldId + '-error');
-        if (errorField) {
-            errorField.textContent = message;
-        }
-    }
-
     // Evento de envio do formulário
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault(); // Evita o envio padrão do formulário
@@ -57,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 displayError('message', 'E-mail ou senha está incorreto.');
             }
         } catch (error) {
-            console.error('Erro ao fazer login:', error);
+            console.error('Erro ao fazer login de usuário:', error);
             displayError('message', 'Um erro inesperado ocorreu, sentimos muito.');
         } finally {
             loginButton.disabled = false;
@@ -65,3 +49,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// Função para limpar mensagens de erro
+function clearErrors() {
+    const errorFields = document.querySelectorAll('.error');
+    errorFields.forEach(function (errorField) {
+        errorField.textContent = ''; // Limpa os erros anteriores
+    });
+}
+
+// Função para exibir mensagem de erro
+function displayError(fieldId, message) {
+    const errorField = document.getElementById(fieldId + '-error');
+    if (errorField) {
+        errorField.textContent = message;
+    }
+}

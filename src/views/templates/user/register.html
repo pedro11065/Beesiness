@@ -16,9 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-
 </head>
-
 <body>
     <!-- Dark Mode -->
     <button id="dark-mode-toggle">🌙</button>
@@ -26,6 +24,9 @@
     <!-- Registro -->
     <div class="container">
         <h1>Criar Nova Conta</h1>
+
+        <!-- Mostrar erro no topo do formulário, caso ocorra um erro grave -->
+        <p class="error" id="message-error"></p>
 
         <!-- Entrada de Dados -->
         <form id="registroForm" action="/user/register" method="post">
@@ -60,7 +61,7 @@
                 <input type="password" id="confirmPassword" name="confirmPassword" required>
                 <p class="error" id="confirmPassword-error"></p>
             </div>
-            <button type="submit">Registrar</button>
+            <button type="submit" class="register-btn">Registrar</button>
         </form>
 
         <!-- Voltar ao Login -->

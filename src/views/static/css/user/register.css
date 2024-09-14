@@ -166,6 +166,31 @@
   body.dark-mode button[type="submit"]:hover {
     background-color: #ffc107;
   }
+
+  /* Botão de login */
+.register-btn {
+  width: 100%;
+  padding: 1rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0.625rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.register-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;    /* Altera o cursor para indicar que o botão não está clicável */
+  pointer-events: none;   /* Remove a possibilidade de clicar no botão */
+}
+
+.register-btn:hover {
+  background-color: #333;
+  transform: scale(1.05);
+}
   
   /* Ajustes adicionais para responsividade */
   @media (max-width: 768px) {

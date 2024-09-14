@@ -1,114 +1,147 @@
-/*
-    Em breve a lógica do botão de envio será a mesma que a do login.js
-*/
-
-document.getElementById("registroForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Impede o comportamento padrão do formulário (evita o envio via GET)
-
-    // Verifica se o formulário é válido
-    if (!validateForm()) {
+document.addEventListener("DOMContentLoaded", function () {
+    const registerForm = document.getElementById("registroForm"); // Ajuste o ID aqui para corresponder ao HTML
+    const registerButton = registerForm.querySelector(".register-btn"); // Verifique se o botão tem essa classe
+    
+    // Verifica se o formulário e o botão de registro foram encontrados
+    if (!registerForm || !registerButton) {
+        console.error("Formulário ou botão não encontrados.");
         return;
     }
 
-    // Coleta os dados do formulário
-    const formData = new FormData(this);
-    const cpfSemMascara = formData.get('cpf').replace(/\D/g, '');
+    // Evento de envio do formulário
+    registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita o envio padrão do formulário
 
-    // Converte para um objeto para facilitar a manipulação
-    const dados = {
-        fullName: formData.get('fullName'),
-        email: formData.get('email'),
-        cpf: cpfSemMascara,
-        birthDate: formData.get('birthDate'),
-        password: formData.get('password'),
-        confirmPassword: formData.get('confirmPassword')
-    };
+        // Chama a função de validação
+        if (!validateForm()) {
+            return; // Se a validação falhar, interrompe o envio
+        }
 
-    // Faz a requisição POST
-    fetch('/user/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dados)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.register) {
-            window.location.href = '/user/login'; // Redirecionar em caso de sucesso
-            return;
+        // Desabilita o botão de envio e altera o texto para "Aguarde..."
+        registerButton.disabled = true;
+        registerButton.textContent = "Aguarde...";
+
+        clearErrors();
+
+        const fullName = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+        const birthDate = document.getElementById('birthDate').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        const registerData = {
+            fullName: fullName,
+            email: email,
+            cpf: cpf,
+            birthDate: birthDate,
+            password: password,
+            confirmPassword: confirmPassword
+        };
+
+        try {
+            const response = await fetch('/user/register', { // Faz a requisição POST
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(registerData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro na resposta da API: ' + response.statusText);
+            }
+
+            const data = await response.json();
+
+            if (data.register) {
+                window.location.href = '/user/login'; // Redirecionar em caso de sucesso
+                return;
+            } else {
+                if (data.cpf_error) {
+                    displayError('cpf', 'CPF já está registrado.');
+                }
+
+                if (data.email_error) {
+                    displayError('email', 'Email já está registrado.');
+                }
+            }
+
+        } catch (error) {
+            console.error('Erro ao registrar usuário:', error);
+            displayError('message', 'Um erro inesperado ocorreu, sentimos muito.');
+        } finally {
+            registerButton.disabled = false;
+            registerButton.textContent = "Registrar";
         }
-        
-        if (data.cpf_error) {
-            displayError('cpf', 'CPF já está registrado.');
-        }
-        
-        if (data.email_error) {
-            displayError('email', 'Email já está registrado.');
-        } 
-    })
-    .catch(error => console.error('Erro:', error));
+    });
 });
 
 function clearErrors() {
-    var errorFields = document.querySelectorAll('.error');
+    const errorFields = document.querySelectorAll('.error');
     errorFields.forEach(function (errorField) {
         errorField.textContent = ''; // Limpa os erros anteriores
     });
 }
 
 function displayError(fieldId, message) {
-    var errorField = document.getElementById(fieldId + '-error');
+    const errorField = document.getElementById(fieldId + '-error');
     if (errorField) {
         errorField.textContent = message;
     }
 }
 
-
 function validateForm() {
+    console.log('Entrou para validar')
     clearErrors(); // Limpa os erros antes de validar
 
-    var name = document.getElementById('name').value.trim();
-    var email = document.getElementById('email').value.trim();
-    var password = document.getElementById('password').value;
-    var confirmPassword = document.getElementById('confirmPassword').value;
-    var cpf = document.getElementById('cpf').value.replace(/\D/g, ''); // Remove a máscara
-    var birthDate = document.getElementById('birthDate').value; // Ajuste conforme necessário
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const cpf = document.getElementById('cpf').value.replace(/\D/g, ''); // Remove a máscara
+    var birthDate = document.getElementById('birthDate').value;
 
     var isValid = true;
 
     // Validação de nome
     if (name.length < 3) {
+        console.log('entrou no nome')
         displayError('name', 'Nome muito curto.');
         isValid = false;
     }
 
     // Validação de e-mail
-    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(email)) {
+        console.log('entrou no email')
         displayError('email', 'E-mail inválido.');
         isValid = false;
     }
 
     // Validação de data de nascimento no formato DD/MM/YYYY
     birthDate = formatDateToBrazilian(birthDate); // Converter a data de nascimento YYYY/MM/DD para o formato DD/MM/YYYY
-    var birthDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+    const birthDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
     if (!birthDatePattern.test(birthDate)) {
+        console.log('entrou no birthDate')
         displayError('birthDate', 'Data de nascimento inválida. Use o formato DD/MM/YYYY.');
         isValid = false;
     }
 
     // Validação de CPF
     if (cpf.length !== 11 || !validaCPF(cpf)) {
+        console.log('entrou no cpf')
         displayError('cpf', 'CPF inválido.');
         isValid = false;
     }
 
     // Validação de senha
     if (password !== confirmPassword) {
+        console.log('entrou na senha ')
         displayError('confirmPassword', 'As senhas não coincidem.');
         isValid = false;
     } else {
+        console.log('entrou no resto')
         // Apenas o primeiro erro de senha será mostrado
         if (password.length < 8) {
             displayError('password', 'A senha deve ter um mínimo de 8 dígitos.');
@@ -156,30 +189,31 @@ function formatDateToBrazilian(dateStr) {
 }
 
 function validaCPF(strCPF) {
-    var Soma; // Armazena a soma dos cálculos
-    var Resto; // Armazena o resto dos cálculos
+    console.log('validou cpf')
+    var Soma;
+    var Resto;
     Soma = 0;
 
-    if (strCPF == "00000000000") return false; //Verifica se é igual a 00000000000, se for retorna false
+    if (strCPF == "00000000000") return false;
 
-    for (var i = 1; i <= 9; i++) { // Inicia um for de 1 a 9, em que extrai o digito do cpf na posição i-1, converte para um inteiro que é multiplicado por (11-i)e o resultado é adicionado em Soma
+    for (var i = 1; i <= 9; i++) {
         Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
     }
- 
-    Resto = (Soma * 10) % 11; // Calcula o resto de Soma * 10 divido por 11 e armazena em Resto
 
-    if ((Resto == 10) || (Resto == 11)) Resto = 0; // Se Resto for igual a 10 ou 11, Resto vira 0
-    if (Resto != parseInt(strCPF.substring(9, 10))) return false; // Compara Resto com o décimo digito do cpf, se não é igual, retorna falso
+    Resto = (Soma * 10) % 11;
 
-    Soma = 0; //Soma vira 0 para a segunda validação
-    for (var i = 1; i <= 10; i++) { // Inicia um for de 1 a 10, em que extrai um digito do cpf na posição i-1, converte em inteiro que é multiplicado por (12-i), resultado é adicionado a Soma
+    if ((Resto == 10) || (Resto == 11)) Resto = 0;
+    if (Resto != parseInt(strCPF.substring(9, 10))) return false;
+
+    Soma = 0;
+    for (var i = 1; i <= 10; i++) {
         Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
     }
 
-    Resto = (Soma * 10) % 11; // Calcula o resto de Soma * 10 dividido por 11 e armazena em resto
+    Resto = (Soma * 10) % 11;
 
-    if ((Resto == 10) || (Resto == 11)) Resto = 0; // Verifica se Resto é igual a 10 ou 11, se for é definido como 0
-    if (Resto != parseInt(strCPF.substring(10, 11))) return false; // Compara resto com o digito 11 do cpf, se não for igual, retorna false
+    if ((Resto == 10) || (Resto == 11)) Resto = 0;
+    if (Resto != parseInt(strCPF.substring(10, 11))) return false;
 
-    return true; //Se o cpf passou por todas as verificações, é retornado true
+    return true;
 }

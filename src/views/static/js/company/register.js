@@ -1,17 +1,151 @@
-// Código para alternar o modo escuro/claro
-const toggleButton = document.getElementById('dark-mode-toggle');
-const body = document.body;
-
-toggleButton.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-
-    // Alterna o ícone do botão
-    if (body.classList.contains('dark-mode')) {
-        toggleButton.textContent = '☀️'; // Ícone de sol para Light Mode
-    } else {
-        toggleButton.textContent = '🌙'; // Ícone de lua para Dark Mode
+document.addEventListener("DOMContentLoaded", function () {
+    const registerForm = document.getElementById("registroEmpresaForm"); // Ajuste o ID aqui para corresponder ao HTML
+    const registerButton = registerForm.querySelector(".register-btn"); // Verifique se o botão tem essa classe
+    
+    // Verifica se o formulário e o botão de registro foram encontrados
+    if (!registerForm || !registerButton) {
+        console.error("Formulário ou botão não encontrados.");
+        return;
     }
+
+    // Evento de envio do formulário
+    registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Evita o envio padrão do formulário
+
+        // Chama a função de validação
+        if (!validateCompanyForm()) {
+            return; // Se a validação falhar, interrompe o envio
+        }
+
+        // Desabilita o botão de envio e altera o texto para "Aguarde..."
+        registerButton.disabled = true;
+        registerButton.textContent = "Aguarde...";
+
+        clearErrors();
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+        const password = document.getElementById('password').value;
+
+        const registerData = {
+            name: name,
+            email: email,
+            cnpj: cnpj,
+            password: password,
+        };
+
+        try {
+            const response = await fetch('/company/register', { // Faz a requisição POST
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(registerData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro na resposta da API: ' + response.statusText);
+            }
+
+            const data = await response.json();
+
+            if (data.register) {
+                window.location.href = '/dashboard/'; // Redirecionar em caso de sucesso
+                return;
+            } else {
+                if (data.cnpj_error) {
+                    displayError('cnpj', 'CNPJ já está registrado.');
+                }
+                
+                if (data.email_error) {
+                    displayError('email', 'Email já está registrado.');
+                } 
+            }
+
+        } catch (error) {
+            console.error('Erro ao registrar empresa:', error);
+            displayError('message', 'Um erro inesperado ocorreu, sentimos muito.');
+        } finally {
+            registerButton.disabled = false;
+            registerButton.textContent = "Registrar";
+        }
+    });
 });
+
+function clearErrors() {
+    var errorFields = document.querySelectorAll('.error');
+    errorFields.forEach(function (errorField) {
+        errorField.textContent = ''; // Limpa os erros anteriores
+    });
+}
+
+function displayError(fieldId, message) {
+    var errorField = document.getElementById(fieldId + '-error');
+    if (errorField) {
+        errorField.textContent = message;
+    }
+}
+
+function validateCompanyForm() {
+    clearErrors(); // Limpa os erros antes de validar
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+    const password = document.getElementById('password').value;
+    var confirmPassword = document.getElementById('confirmPassword').value;
+
+    var isValid = true;
+
+    // Validação de nome da empresa
+    if (name.length < 3) {
+        displayError('nomeEmpresa', 'Nome da empresa muito curto.');
+        isValid = false;
+    }
+
+    // Validação de e-mail
+    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+        displayError('email', 'E-mail inválido.');
+        isValid = false;
+    }
+
+    // Validação de CNPJ
+    if (cnpj.length !== 14 || !validaCNPJ(cnpj)) {
+        displayError('cnpj', 'CNPJ inválido.');
+        isValid = false;
+    }
+
+    // Validação de senha
+    if (password !== confirmPassword) {
+        displayError('confirmPassword', 'As senhas não coincidem.');
+        isValid = false;
+    } else {
+        // Apenas o primeiro erro de senha será mostrado
+        if (password.length < 8) {
+            displayError('password', 'A senha deve ter um mínimo de 8 dígitos.');
+            isValid = false;
+        } else if (!/[A-Z]/.test(password)) {
+            displayError('password', 'A senha deve conter ao menos uma letra maiúscula.');
+            isValid = false;
+        } else if (!/[a-z]/.test(password)) {
+            displayError('password', 'A senha deve conter ao menos uma letra minúscula.');
+            isValid = false;
+        } else if (!/[0-9]/.test(password)) {
+            displayError('password', 'A senha deve conter ao menos um número.');
+            isValid = false;
+        } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            displayError('password', 'A senha deve conter ao menos um caractere especial.');
+            isValid = false;
+        } else if (/\s/.test(password)) {
+            displayError('password', 'A senha não pode conter espaços.');
+            isValid = false;
+        }
+    }
+
+    return isValid;
+}
 
 function formatCNPJ(value) {
     value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
@@ -64,143 +198,3 @@ function validaCNPJ(cnpj) {
 
     return true;
 }
-
-function clearErrors() {
-    var errorFields = document.querySelectorAll('.error');
-    errorFields.forEach(function (errorField) {
-        errorField.textContent = ''; // Limpa os erros anteriores
-    });
-}
-
-function displayError(fieldId, message) {
-    var errorField = document.getElementById(fieldId + '-error');
-    console.log(errorField)
-    if (errorField) {
-        errorField.textContent = message;
-    }
-}
-
-function validateCompanyForm() {
-    clearErrors(); // Limpa os erros antes de validar
-
-    var nome = document.getElementById('name').value.trim();
-    var email = document.getElementById('email').value.trim();
-    var password = document.getElementById('password').value;
-    var confirmPassword = document.getElementById('confirmPassword').value;
-    var cnpj = document.getElementById('cnpj').value.replace(/\D/g, ''); // Remove a máscara
-
-    var isValid = true;
-
-    // Validação de nome da empresa
-    if (nome.length < 3) {
-        displayError('nomeEmpresa', 'Nome da empresa muito curto.');
-        isValid = false;
-    }
-
-    // Validação de e-mail
-    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
-        displayError('email', 'E-mail inválido.');
-        isValid = false;
-    }
-
-    // Validação de CNPJ
-    if (cnpj.length !== 14 || !validaCNPJ(cnpj)) {
-        displayError('cnpj', 'CNPJ inválido.');
-        isValid = false;
-    }
-
-    // Validação de senha
-    if (password !== confirmPassword) {
-        displayError('confirmPassword', 'As senhas não coincidem.');
-        isValid = false;
-    } else {
-        // Apenas o primeiro erro de senha será mostrado
-        if (password.length < 8) {
-            displayError('password', 'A senha deve ter um mínimo de 8 dígitos.');
-            isValid = false;
-        } else if (!/[A-Z]/.test(password)) {
-            displayError('password', 'A senha deve conter ao menos uma letra maiúscula.');
-            isValid = false;
-        } else if (!/[a-z]/.test(password)) {
-            displayError('password', 'A senha deve conter ao menos uma letra minúscula.');
-            isValid = false;
-        } else if (!/[0-9]/.test(password)) {
-            displayError('password', 'A senha deve conter ao menos um número.');
-            isValid = false;
-        } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-            displayError('password', 'A senha deve conter ao menos um caractere especial.');
-            isValid = false;
-        } else if (/\s/.test(password)) {
-            displayError('password', 'A senha não pode conter espaços.');
-            isValid = false;
-        }
-    }
-
-    return isValid;
-}
-
-document.getElementById('registroEmpresaForm').addEventListener('submit', function (e) {
-    e.preventDefault(); // Impede o envio padrão do formulário
-
-    //if (!validateCompanyForm()) {
-        //return; // Não envia os dados se houver erros
-    //}
-    {
-        var nome = document.getElementById('name').value.trim();
-        var email= document.getElementById('email').value.trim();
-        var cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
-        var password= document.getElementById('password').value;
-        var confirmPassword= document.getElementById('confirmPassword').value;
-
-    }
-    console.log(nome,email,cnpj,password)
-
-    const dados = {
-        "nome": nome,
-        "cnpj": cnpj,
-        "email": email,
-        "password": password
-    };
-
-    fetch('/company/register', { /*NÃO FOI TESTADO!!!!!*/
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dados)
-    })
-    .then(response => response.json())
-    .then(data => {
-
-        if (data.register) {
-            window.location.href = '/dashboard/'; // Redirecionar em caso de sucesso
-            return;
-        }       
-        console.log(data)
-        if (data.cnpj_error == false && data.email_error == false) {
-            console.log("erro cnpj e email")
-            displayError('cnpj', 'CNPJ já está registrado.');
-            displayError('email', 'Email já está registrado.');
-        }
-
-        if (data.cnpj_error == false) {
-            console.log("erro cnpj")
-            displayError('cnpj', 'CNPJ já está registrado.');
-        }
-        
-        if (data.email_error == false) {
-            console.log("erro email")
-            displayError('email', 'Email já está registrado.');
-        } 
-    })
-    .catch(error => console.error('Erro:', error));
-});
-
-
-/*
-({"register": False, 
-"cnpj_error": cnpj_error, 
-"email_error": email_error}), 200
-*/
-

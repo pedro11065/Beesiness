@@ -41,4 +41,3 @@
             pPressCount = 0;  // Reseta o contador após ativar o easter egg
         }
     });
-
