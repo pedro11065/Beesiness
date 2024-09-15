@@ -45,14 +45,6 @@ body {
     transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
 }
 
-/* Cabeçalho */
-h1 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    color: #000;
-    transition: color 0.5s ease;
-}
-
 /* Labels */
 label {
     display: block;
@@ -75,6 +67,7 @@ input[type="password"] {
     border: 1px solid #ccc;
     background-color: #F2F2F2;
     font-size: 0.875rem;
+    margin-bottom: 0.25rem;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -132,6 +125,20 @@ button[type="submit"]:hover {
     text-align: left;
 }
 
+/* Cabeçalho */
+h1 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: #000;
+    transition: color 0.5s ease;
+}
+
+/* Grupo de formulário */
+.form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
 /* Dark Mode */
 body.dark-mode {
     background-color: #1e1e1e;
@@ -168,6 +175,31 @@ body.dark-mode button[type="submit"] {
 body.dark-mode button[type="submit"]:hover {
     background-color: #FFC107;
 }
+
+  /* Botão de login */
+  .register-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 0.625rem;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 0.75rem;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .register-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;    /* Altera o cursor para indicar que o botão não está clicável */
+    pointer-events: none;   /* Remove a possibilidade de clicar no botão */
+  }
+  
+  .register-btn:hover {
+    background-color: #333;
+    transform: scale(1.05);
+  }
 
 /* Ajustes adicionais para responsividade */
 @media (max-width: 768px) {

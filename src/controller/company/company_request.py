@@ -11,9 +11,7 @@ company_request = Blueprint('auth_company', __name__, template_folder='templates
 def register():
     if request.method == 'POST':
         data = request.get_json()
-        print(data)
         return process_registration(data)
-    
     else:
         return render_template('company/register.html')
 

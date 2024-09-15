@@ -18,7 +18,6 @@ def process_registration(create_data):
     errors, cpf_error, email_error = validate_cpf_and_email(cpf, email)
 
     if errors: # Se houver erros, adicione-os ao flash e redirecione
-
         print(Fore.GREEN + '\n[API Usuário - Registro] ' + Fore.RED + f'Erro(s): {errors}' + Style.RESET_ALL) 
         return jsonify({"register": False, "cpf_error": cpf_error, "email_error": email_error}), 200
     

@@ -19,7 +19,6 @@ def validate_cpf_and_email(cpf, email):
 
     if errors == []:
         errors == False
-    
     else: 
         errors == True
     

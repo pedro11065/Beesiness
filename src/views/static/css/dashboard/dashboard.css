@@ -24,7 +24,6 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: #121212;
-    flex-wrap: wrap;
     width: 100%; /* Usa 'width' em vez de 'max-width' para garantir que o header ocupe a largura total */
 }
 

@@ -15,7 +15,7 @@ def process_login(data):
 
     user_data = db_search_user(email)
 
-    print(Fore.GREEN + '\n[API Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos: \nEmail_cpf: {email}\nSenha: {password}')
+    print(Fore.GREEN + '\n[API Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos: \nEmail/cpf: {email}\nSenha: {password}')
     print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Pesquisa iniciada')
 
     if user_data and check_password_hash(user_data['password_hash'], password):

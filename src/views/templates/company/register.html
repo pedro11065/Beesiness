@@ -27,6 +27,9 @@
     <div class="container">
         <h1>Registrar Empresa</h1>
 
+        <!-- Mostrar erro no topo do formulário, caso ocorra um erro grave -->
+        <p class="error" id="message-error"></p>
+
         <!-- Entrada de Dados -->
         <form id="registroEmpresaForm">
             <div class="form-group">
@@ -54,10 +57,11 @@
                 <input type="password" id="confirmPassword" name="confirmPassword" required>
                 <p class="error" id="confirmPassword-error"></p>
             </div>
-            <button type="submit">Registrar Empresa</button>
+            <button type="submit" class="register-btn">Registrar Empresa</button>
         </form>
         </div>
     </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/company/register.js') }}"></script>
 </body>
 
