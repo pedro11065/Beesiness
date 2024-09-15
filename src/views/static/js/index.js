@@ -1,5 +1,4 @@
-
-    let pPressCount = 0;
+     let pPressCount = 0;
 
     document.addEventListener('keydown', function(event) {
         // Verifica se a tecla pressionada é "P" ou "p"

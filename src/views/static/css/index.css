@@ -12,6 +12,7 @@ html {
 
 /* Configuração básica do corpo da página */
 body {
+    padding-top: 90px;
     font-family: Roboto Slab;
     overflow-x: hidden; 
 }
@@ -45,6 +46,11 @@ header {
     max-width: 100vw; 
     background-size: cover;
     background-position: center;
+    position: fixed; /* Mantém o menu fixo no topo */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; 
 }
 
 .mobile-image {
@@ -149,45 +155,70 @@ nav ul li a {
     background-color: #ffd900b7;
 }
 
+.hero p {
+    margin-top: 1.25rem;
+    font-size: 1.125rem; 
+    color: #000000;
+}
+
+.hero-button a{
+    margin-top: 1.25rem;
+    font-size: 1.125rem; 
+    color: #000000;
+}
+
+.hero-button a {
+    margin-top: 1.25rem;
+    font-size: 1.125rem; 
+    font-weight: 600;
+    color: #000000;
+}
+
 /* Estilo da seção hero */
 .hero {
-    position: relative;
+    position:relative;
     display: flex;
-    flex-direction: column;
+    padding: 0rem 0rem;
+    justify-content: center;
+    flex-direction:column;
     align-items: center;
-    padding: 3.75rem 1.25rem;
-    text-align: center; 
-    max-width: 150vw;
-    background-image: url('/static/images/index/abelha_desenho.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    text-align: center;
+    width:100%;
+    height:90vh;
+    background-image: url('/static/images/index/abelha_background_pc.png');
+    background-repeat: repeat-y;
+    background-size:100%; 
     z-index: 1;
+    animation: moveBackground 16s linear infinite;
 }
 
-/* Primeiro pseudo-elemento: filtro escuro */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.0); /* Cor preta com 0% de opacidade */
-    z-index: -2; /* Coloca o overlay atrás do conteúdo e do segundo pseudo-elemento */
+@keyframes moveBackground {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 100%;
+    }
 }
 
-/* Segundo pseudo-elemento: efeito de blur */
-.hero::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(0px); /* Aplica o desfoque */
-    z-index: -1; /* Coloca o efeito de blur atrás do filtro escuro */
+.hero-button {
+    display: inline-block;
+    padding: 0.55rem 2.25rem; 
+    margin: 2rem;
+    border-radius: 1rem;
+    background-color: #FFD700;
+    border: 1px solid #FFD700;
+    flex-wrap: wrap;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 7.5), 
+    0 0 25px rgba(0, 0, 0, 0.0), 
+    0 0 5px rgba(0, 0, 0, 0.0);
+    
 }
+
+.hero-button:hover {
+    background-color: #FFD700;
+}
+
 
 
 .hero h1 {
@@ -202,11 +233,7 @@ nav ul li a {
     color: #FFD700;
 }
 
-.hero p {
-    margin-top: 1.25rem;
-    font-size: 1.125rem; 
-    color: #000000;
-}
+
 
 /* Estilo do gráfico */
 .chart {
@@ -360,7 +387,6 @@ nav ul li a {
 /* Estilo responsivo para telas pequenas */
 @media (max-width: 40rem) { 
 
-
     a {
         color: #000;
         text-decoration: none;
@@ -370,7 +396,6 @@ nav ul li a {
     header {
         align-items: center;
         background-color: #111111;
-
     }
 
     .mobile-image {
@@ -410,12 +435,21 @@ nav ul li a {
     }
 
     .hero h1 {
-        font-size: 3rem; 
+        padding: 1rem 1rem;
+        font-size:3.5rem; 
     }
 
     .hero p {
         font-size: 1rem;
     }
+
+    .hero-button a {
+        margin-top: 1.25rem;
+        font-size: 1.125rem; 
+        font-weight: 600;
+        color: #000000;
+    }
+    
 
     .buttons {
         flex-direction: column;
@@ -436,21 +470,51 @@ nav ul li a {
         max-width: 100px;
     }
 
+
+    .hero {
+        position: relative;
+        display: flex;
+        padding: 0rem 0rem;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width:100%;
+        height:86vh;
+        background-image: url('/static/images/index/abelha_background_mobile.png');
+        background-repeat: repeat-y;
+        background-size:100%; 
+        z-index: 1;
+        animation: moveBackground 10s linear infinite;
+    }
+    
+    @keyframes moveBackground {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 0 100%;
+        }
+    }
+    
+    .hero-button {
+        display: inline-block;
+        padding: 0.15rem 1.25rem; 
+        margin: 1.7rem;
+        border-radius: 1rem;
+        background-color: #FFD700;
+        border: 1px solid #FFD700;
+        flex-wrap: wrap;
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 7.5), 
+        0 0 25px rgba(0, 0, 0, 0.0), 
+        0 0 5px rgba(0, 0, 0, 0.0);
+        
+    }
+    
+    .hero-button:hover {
+        background-color: #FFD700;
+    }
+    
+
 }
 
-@media (max-width: 25rem) { 
-
-    }
-    .register,.logout,.dashboard {
-        padding: 0.45rem 0.8rem; 
-        font-size: 13px;
-        border-radius: 0.1rem;
-        margin: 0 0.1rem; 
-    }
-    .login {
-        padding: 0.45rem 1.85rem; 
-        font-size: 13px;
-        border-radius: 0.1rem;
-        margin: 0 0.2rem; 
-    }
     
