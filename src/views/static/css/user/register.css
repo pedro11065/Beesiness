@@ -7,30 +7,32 @@
   
   /* Container geral */
   body {
-    background-color: #ffd400;
+    background-color: #FFD400;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px;
-    font-family: "Roboto Slab", serif;
+    height: 100vh;
+    font-family: 'Roboto Slab', serif;
     transition: background-color 0.5s ease, color 0.5s ease;
-  }
+}
   
   /* Container do formulário */
   .container {
     background-color: white;
     border-radius: 1.25rem;
     padding: 2rem;
+    margin-top: 60px;
+    margin-bottom: 80px ;
     text-align: center;
     box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 400px;
+    max-width: 400px; 
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
-  }
+}
   
   /* Cabeçalho */
   h1 {
