@@ -399,6 +399,10 @@ nav ul li a {
 /* Estilo responsivo para telas pequenas */
 @media (max-width: 40rem) { 
 
+    html {
+        scroll-padding-top: 70px;
+    }
+
     a {
         color: #000;
         text-decoration: none;
@@ -482,7 +486,6 @@ nav ul li a {
         max-width: 100px;
     }
 
-
     .hero {
         position: relative;
         display: flex;
@@ -491,7 +494,7 @@ nav ul li a {
         align-items: center;
         text-align: center;
         width:100%;
-        height:86vh;
+        height:90vh;
         background-image: url('/static/images/index/abelha_background_mobile.png');
         background-repeat: repeat-y;
         background-size:100%; 
@@ -525,7 +528,16 @@ nav ul li a {
     .hero-button:hover {
         background-color: #FFD700;
     }
-    
+
+    .features {
+        padding: 3.75rem 1.25rem; 
+        background-color: #111111;
+        color: #FFD700;
+        text-align: center;
+        max-width: 100%;
+        height: 231.5vh;
+        overflow: hidden; 
+    }
 
 }
 
