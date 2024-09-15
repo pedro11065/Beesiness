@@ -8,6 +8,7 @@
 /* Transição suave ao rolar a tela */
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
 }
 
 /* Configuração básica do corpo da página */
@@ -254,7 +255,8 @@ nav ul li a {
     background-color: #111111;
     color: #FFD700;
     text-align: center;
-    max-width: 100vw;
+    max-width: 100%;
+    height: 95vh;
     overflow: hidden; 
 }
 
@@ -262,11 +264,20 @@ nav ul li a {
     font-size: 1.9rem;
     margin-bottom: 2.5rem;
 }
+.features h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.7rem;
+}
+.features p{
+    font-size: 1.2rem;
+
+}
 
 .features-container {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    height: 60vh;
     max-width: 100%;
 }
 
@@ -279,12 +290,13 @@ nav ul li a {
     border-radius: 0.625rem;
     text-align: center;
     max-width: 100%;
-    height: 12rem;
+    height: 30vh;
     display: flex;
     flex-direction: column; 
     align-items: center; 
     justify-content: center; 
     font-size: 1.0rem;
+
 }
 
 /* Estilo da seção de equipe */
