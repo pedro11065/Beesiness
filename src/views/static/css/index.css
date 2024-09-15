@@ -319,6 +319,14 @@ nav ul li a {
     margin-bottom: 2.0rem;
 }
 
+.icon {
+
+    margin-top: 2px;
+    width: 36px !important;
+    height: 36px !important;
+    margin-right: 8px !important;
+}
+
 .team-member {
     flex: 1 1 30%;
     background-color: white;
