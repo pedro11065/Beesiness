@@ -1,7 +1,6 @@
 from src import create_app
 from flask_cors import CORS
 from flask import render_template
-import psycopg2
 
 app = create_app()
 

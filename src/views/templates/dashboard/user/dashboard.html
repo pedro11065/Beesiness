@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/user/dashboard.css') }}">
 
     <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
@@ -14,22 +14,43 @@
     <!-- Fontes do Google: Roboto Slab -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
 
   </head>
 
     <body>
 
-      <section class="header">
-        <h1>Dashboard</h1>      
-        <a href="/company/register" class="btn">Registrar Empresa</a>
-      </section>
+      <header class="header">  
 
-      <section class="dashboard">
-        <div class="msg_dashboard">
-          <a>Em desenvolvimento!</a>
-        </div>        
-      </section>
+        <div class="user">
+          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações"> 
+          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="Configurações"> 
+          <p>Miguel.M</p> <!-- Nome do usuário -->
+        </div>  
+
+        <div class="exit">
+          <a href="/" target="_blank">
+          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Configurações"> </a>
+        </div>
+
+      </header>
+
+      <main class="main">
+
+        <div class="box">
+
+          <div class="new_company">
+            <h1>Registrar empresa</h1>
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/public/next.png') }}" alt="Configurações"> </a>
+          </div>
+          
+          <div class="company">
+
+          </div>
+
+        </div>
+
+      </main>
 
     </body>
 
