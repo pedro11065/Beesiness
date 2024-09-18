@@ -11,15 +11,23 @@ dashboard_request = Blueprint('auth_dashboard', __name__, template_folder='templ
 def dashboard_user():
     return render_template('dashboard/user/dashboard.html')
 
+@dashboard_request.route('/user/api') 
+@login_required
+def dashboard_api():
+    return companies_info()
+
 @dashboard_request.route('/company') 
 @login_required
 def dashboard_company():
     return render_template('dashboard/company/dashboard.html')
 
-@dashboard_request.route('/user/api') 
+@dashboard_request.route('/register-asset') 
 @login_required
-def dashboard_api():
-    return companies_info()
+def register_asset():
+    return render_template('dashboard/company/assets/register.html')
+
+
+
 
 
 
