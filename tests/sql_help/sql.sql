@@ -44,3 +44,53 @@ user_access_level access_level); /*Faz a relação com o user_id na outra tabela
 CREATE TABLE table_log_all /*Não é necessario enviar que horas são, já commita sozinho a data, só mandar a descrição*/
 (log_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 log_description varchar(255));
+
+CREATE TABLE table_assets
+(asset_id UUID primary key,
+(company_id UUID REFERENCES table_companies(company_id),
+(user_id UUID REFERENCES table_users(user_id), 
+name varchar(100), 
+event varchar(50),
+class varchar(50),
+value varchar(25),
+location varchar (100),
+acsition_date date, /*formato = xx-xx-xxxx*/ 
+Description tinytext,
+status varchar(100));
+
+
+CREATE TABLE table_liabilities
+(liability_id UUID primary key,
+(company_id UUID REFERENCES table_companies(company_id),
+(user_id UUID REFERENCES table_users(user_id), 
+name varchar(100), 
+event varchar(50),
+class varchar(50),
+value varchar(25),
+creditor varchar(100),
+emission_date date, /*formato = xx-xx-xxxx*/ 
+expiration_date date, /*formato = xx-xx-xxxx*/ 
+payment_method varchar (50),
+decription tinytext),
+status varchar(100));
+
+CREATE table_assets_historic
+(asset_historic_id UUID primary key,
+asset_id REFERENCES table_assets(asset_id),
+company_id REFERENCES table_companies(company_id),
+user_id REFERENCES table_users(user_id),
+date date,
+description tinytext;
+
+CREATE table_liabilities_historic
+(liability_historic_id UUID primary key,
+liability_id REFERENCES table_liabilities(liability_id),
+company_id REFERENCES table_companies(company_id),
+user_id REFERENCES table_users(user_id),
+date date,
+description tinytext;
+
+
+
+
+
