@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, redirect
-from flask_login import logout_user, login_required
+from flask_login import logout_user, login_required, current_user
 
 from src.controller.user.functions.login import process_login
 from src.controller.user.functions.register import process_registration
@@ -35,6 +35,14 @@ def register():
 @user_request.route('/forget-password')
 def forget_password():
     return render_template("user/forget_password.html")
+
+# -------------------------------------------------------------------------------------
+
+@user_request.route('/settings')
+@login_required
+def settings():
+    print(current_user.id)
+    return render_template("user/settings.html", name=current_user.fullname, email=current_user.email, cpf=current_user.cpf)
 
 # -------------------------------------------------------------------------------------
 
