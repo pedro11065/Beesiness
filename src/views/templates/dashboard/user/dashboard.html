@@ -16,42 +16,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
 
+    <script src="{{ url_for('static', filename='js/dashboard/user/companies_data.js') }}"></script>
+
   </head>
-
     <body>
-
       <header class="header">  
 
         <div class="user">
           <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações"> 
-          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="Configurações"> 
-          <p>Miguel.M</p> <!-- Nome do usuário -->
+          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário"> 
+          <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
         </div>  
-
-        <div class="exit">
-          <a href="/" target="_blank">
-          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Configurações"> </a>
-        </div>
+  
+          <a href="/dashboard/user" class="exit">
+          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair"> </a>
 
       </header>
 
       <main class="main">
-
-        <div class="box">
-
-          <div class="new_company">
+        <div class="box" id="resultado">
+          <button id="newCompanyButton" class="new_company" type="button">
             <h1>Registrar empresa</h1>
-            <img class="icon" src="{{ url_for('static', filename='images/dashboard/public/next.png') }}" alt="Configurações"> </a>
-          </div>
-          
-          <div class="company">
-
-          </div>
-
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/public/next.png') }}" alt="next">
+          </button>   
+          <div id="loading">Carregando...</div>
         </div>
-
       </main>
-
+      
+      
     </body>
-
 </html>

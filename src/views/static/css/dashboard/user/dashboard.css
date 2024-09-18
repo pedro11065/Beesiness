@@ -21,9 +21,18 @@ body {
 }
 
 p {
+    font-family: inter;
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight:300;
+}
+
+#loading {
+    display: none;
+    font-size: 1.5em;
+    color: #000000;
+    text-align: center;
+    margin: 50px;
 }
 
 .header {
@@ -54,6 +63,7 @@ header .exit{
 }
 
 header .exit .icon {
+    background-color: #121212;
     margin-right: 20px;
     width: 30px;
     height: 30px;
@@ -73,11 +83,13 @@ header .exit .icon {
 .main h1 {
     color: white;
     margin-left: 2rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight:300;
 }
 .main p {
     color: white;
+    margin-top: 0.3rem;
+    margin-left: 2rem;
     font-size: 1.2rem;
     font-weight:300;
     text-shadow: #000 1px 1px 4px;
@@ -100,9 +112,10 @@ main .box {
     width: 60%;
     height: 90vh; 
     display: flex;
-    align-items: flex-start; 
-    justify-content: center;
-    border-radius: 2rem;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: flex-start;
+      border-radius: 2rem;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 
@@ -111,16 +124,142 @@ main .box {
 main .box .new_company {
     background-color: #2F7B00;
     margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     padding-right: 2rem;
-    width: 100vh;
+    width: 90%;
     height: 15vh; 
     display: flex;
     align-items: center; 
     justify-content: space-between;
     border-radius: 2rem;
+    border: none;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 
 }
 
+main .box .company {
+    background-color: #222222;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-right: 2rem;
+    width: 90%;
+    height: 20vh; 
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    border-radius: 2rem;
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+
+}
+
+main .box .company .company-data {
+    justify-content:flex-start;
+
+}
+
+main .box .company .company-data-error {
+    justify-content:center;
+
+}
+
+@media (max-width: 40rem) { 
+
+    p {
+        color: white;
+        margin-left: 0.6rem;
+        font-size: 0.9rem;
+        font-weight:300;
+    }
+
+    header .user {
+        display:flex;
+        align-items: center; 
+        gap: 0rem;
+        margin-left: 0.1rem;
+        
+    } 
+
+    header .user .icon {
+        margin-left: 0.4rem;
+        width: 30px;
+        height: 30px;
+    }
+
+    .main h1 {
+        font-family: inter;
+        color: white;
+        margin-left: 2rem;
+        font-size: 0.9rem;
+        font-weight:300;
+    }
+    .main p {
+        font-family: inter;
+        color: white;
+        margin-top: 0.3rem;
+        margin-left: 2rem;
+        font-size: 0.7rem;
+        font-weight:300;
+        text-shadow: #000 1px 1px 4px;
+    }
+    main .box .icon {
+        margin-left: 0.4rem;
+        width: 20px;
+        height: 20px;
+    }
+
+    main .box {
+        background-color: transparent;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 1rem;
+        padding-bottom: 2rem;
+        padding-left: 0;
+        padding-right: 0;
+        width: 95%;
+        height: 90vh; 
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        justify-content: flex-start;
+          border-radius: 2rem;
+        box-shadow: rgba(50, 50, 93, 0) 0px 13px 27px -5px, 
+        rgba(0, 0, 0, 0) 0px 8px 16px -8px;
+    
+    }
+
+    main .box .new_company {
+        margin-top: 0.3rem;
+        margin-bottom: 1rem;
+        padding-right: 1rem;
+        width: 90%;
+        height: 6vh; 
+        display: flex;
+        align-items: center; 
+        justify-content: space-between;
+        border-radius: 0.5rem;
+        border: none;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+        rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    
+    }
+    
+    main .box .company {
+        background-color: #222222;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        padding-right: 2rem;
+        width: 90%;
+        height: 10vh; 
+        display: flex;
+        align-items: center; 
+        justify-content: space-between;
+        border-radius: 0.5rem;
+        border: none;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+        rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    
+    }
+}

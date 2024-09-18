@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from flask_login import login_required
+from flask_login import login_required,current_user
 from src.controller.dashboard.user.user_companies import companies_info
 #tudo aqui é: /dashboard...
 

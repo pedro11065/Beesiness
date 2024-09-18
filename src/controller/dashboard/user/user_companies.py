@@ -68,22 +68,22 @@ def companies_info():
 
     qnt_relation = (len(data)) #quantidade de relações(linhas)  
 
-    names = [] ;  cnpjs = [] ; acess_levels = []
+    names = [] ;  cnpjs = [] ; access_levels = []
     print(data[0][0])
 
     for i in range(qnt_relation): #vai fazer essa mesma coisa a quantidade de relações
       data_company = db_search_company(data[i][0]) #pega os dados da empresa a partir do id dela
-      acess_level = data[i][2]
+      access_level = data[i][2]
       name = data_company[0][2]
       cnpj = data_company[0][4]
-      acess_levels.append(acess_level) #vai adicionar o nivel de acesso a uma lista com os niveis das empresas a qual o usuário é relacionado
+      access_levels.append(access_level) #vai adicionar o nivel de acesso a uma lista com os niveis das empresas a qual o usuário é relacionado
       names.append(name)#vai adicionar o nome a uma lista com os nomes das empresas a qual o usuário é relacionado
       cnpjs.append(cnpj)#vai adicionar o cnpj a uma lista com os cnpjs das empresas a qual o usuário é relacionado
 
 
     return jsonify({"relação":relation,
                     "Quantidade": qnt_relation,
-                    "nivel de acesso": acess_levels,
+                    "nivel de acesso": access_levels,
                     "nomes": names,
                     "cnpjs": cnpjs}), 200
  
