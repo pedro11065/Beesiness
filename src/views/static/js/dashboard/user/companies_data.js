@@ -4,10 +4,16 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const loadingElement = document.getElementById('loading');
     const container = document.getElementById('resultado');
+    const empresaDiv = document.createElement('div');
     const newCompanyButton = document.getElementById('newCompanyButton');
 
     // Exibe o elemento de carregamento
     loadingElement.style.display = 'block';
+
+    // Ação ao clicar no botão de nova empresa
+    newCompanyButton.addEventListener('click', function () {
+        window.location.href = '/company/register'; // Redireciona para a página de registro
+    });
 
     try {
         const response = await fetch('/dashboard/user/api');
@@ -21,7 +27,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (data.relação) {
             data.nomes.forEach((nome, index) => {
-                const empresaDiv = document.createElement('div');
                 empresaDiv.className = 'company';
                 empresaDiv.innerHTML = `
                     <div class="company-data">
@@ -55,11 +60,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         `;
         container.appendChild(errorDiv);
     }
-
-    // Ação ao clicar no botão de nova empresa
-    newCompanyButton.addEventListener('click', function () {
-        window.location.href = '/company/register'; // Redireciona para a página de registro
-    });
 });
 
     /*
