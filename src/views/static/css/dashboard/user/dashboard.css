@@ -160,8 +160,22 @@ main .box .company .company-data {
 
 }
 
-main .box .company .company-data-error {
-    justify-content:center;
+main .box .company-data-error {
+
+    background-color: #222222;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-right: 2rem;
+    width: 90%;
+    height: 20vh; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    text-align: center;
+    border-radius: 2rem;
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 
 }
 
@@ -247,19 +261,22 @@ main .box .company .company-data-error {
     }
     
     main .box .company {
-        background-color: #222222;
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
         padding-right: 2rem;
         width: 90%;
         height: 10vh; 
-        display: flex;
-        align-items: center; 
-        justify-content: space-between;
         border-radius: 0.5rem;
-        border: none;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-        rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    
+
+    }
+        
+    main .box .company-data-error {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        padding-right: 2rem;
+        width: 90%;
+        height: 10vh; 
+        border-radius: 0.5rem;
+
     }
 }

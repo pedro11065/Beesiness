@@ -36,7 +36,7 @@ def process_login(data):
             return jsonify({'login': True, 'company': True, 'redirect_url': '/dashboard/user'}), 200
         else:
             print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Usuário não está relacionado a uma empresa!')
-            return jsonify({'login': True, 'company': False, 'redirect_url': 'dashboard/user'}), 200      
+            return jsonify({'login': True, 'company': False, 'redirect_url': '/dashboard/user'}), 200      
 
     
     print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta ou email/cpf incorreto.')

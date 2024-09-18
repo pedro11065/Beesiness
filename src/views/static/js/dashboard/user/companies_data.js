@@ -28,22 +28,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     container.appendChild(empresaDiv);
                 });
             } else {
-                container.innerHTML = `
+                const empresaDiv = document.createElement('div');
+                empresaDiv.className = 'company-data-error';
+                empresaDiv.innerHTML = `
 
-                        <div class="company-data-error">
-                            <h1>Aparentemente você não está relacionado a nenhuma empresa! :(</h1>
+                        <div>
+                            <p>Aparentemente você não está relacionado a nenhuma empresa! :(</p>
                          </div>            
                     `;
+                    container.appendChild(empresaDiv);
             }
         })
         .catch(error => {
             console.error('Erro ao carregar os dados:', error);
-            document.getElementById('resultado').innerHTML = `
+            const empresaDiv = document.createElement('div');
+            empresaDiv.className = 'company';
+            empresaDiv.innerHTML = `
 
-                        <div class="company-data-error">
+                
+                        <div>
                             <h1>Erro ao pesquisar pelas empresas relacionadas a sua conta :(</h1>
                          </div>            
                     `;
+                    container.appendChild(empresaDiv);
         });
 
 
