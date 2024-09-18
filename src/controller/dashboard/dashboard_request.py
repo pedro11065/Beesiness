@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template
 from flask_login import login_required,current_user
-from src.controller.dashboard.user.user_companies import companies_info
-#tudo aqui é: /dashboard...
+from src.controller.dashboard.functions.user_companies import companies_info
+
+# Tudo aqui no url é: /dashboard, ou seja: 127.0.0.1:5000/dashboard/...
 
 dashboard_request = Blueprint('auth_dashboard', __name__, template_folder='templates', static_folder='static')
 

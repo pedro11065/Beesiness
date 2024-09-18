@@ -1,5 +1,5 @@
-from flask import Blueprint, Flask, flash, get_flashed_messages, request, render_template, redirect, session, url_for
-from flask_login import login_user, logout_user, current_user, login_required
+from flask import Blueprint, request, render_template
+from flask_login import login_required
 from src.controller.company.functions.register import process_registration
 
 #tudo aqui é: /company...
