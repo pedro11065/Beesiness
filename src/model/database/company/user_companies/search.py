@@ -3,6 +3,7 @@
 # Responsável por retornar a linha onde o email foi inserido.
 
 import psycopg2
+from colorama import Fore, Style
 from ...connect import connect_database
 
 def db_search_user_company(search_data):
@@ -19,6 +20,7 @@ def db_search_user_company(search_data):
         )
         cur = conn.cursor() # Cria um cursor no PostGreSQL
         
+        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando relação do usuário com empresas com o id de usuário: {search_data}')
         cur.execute("SELECT * FROM table_user_companies WHERE user_id = %s OR company_id = %s", (search_data, search_data))
         
         #---------------------------------------------------------------INDICES---------------------
@@ -29,6 +31,7 @@ def db_search_user_company(search_data):
         cur.close() # Fecha o cursor
         conn.close() # Fecha a conexão geral
 
-        if db_data == []:
-            return False    
-        return True, db_data
+        if not db_data:
+            return False
+        else:
+            return db_data

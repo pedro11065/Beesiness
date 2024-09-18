@@ -1,5 +1,5 @@
 /* Reset básico */
-* {
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -21,8 +21,8 @@
     background-color: white;
     border-radius: 1.25rem;
     padding: 2rem;
-    margin-top: 60px;
-    margin-bottom: 80px ;
+    margin-top: 0;
+    margin-bottom: 0;
     text-align: center;
     box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
     width: 100%;
