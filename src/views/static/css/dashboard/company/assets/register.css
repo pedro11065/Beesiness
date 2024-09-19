@@ -106,7 +106,7 @@ main .out-box {
     margin-bottom: 3rem;
     padding: 2rem;
     width: 90%;
-    height: 100vh;
+    height: 80vh;
     display: flex;
     flex-direction:column;
     align-items: flex-start;
@@ -128,6 +128,7 @@ main .form-group {
     background-color: transparent;
     align-items:flex-start;
     justify-content:flex-start;
+    columns: 25rem 2; /*erro 1*/
     width: 100%;
     height: 100%;
     margin-bottom: 2rem;
