@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template,request
 from flask_login import login_required
-from src.controller.dashboard.functions.user_companies import companies_info
+from src.controller.dashboard.user.user_companies import companies_info
+from src.controller.dashboard.company.register_asset import asset_registration
 
 # Tudo aqui no url é: /dashboard, ou seja: 127.0.0.1:5000/dashboard/...
 
@@ -24,8 +25,14 @@ def dashboard_company():
 
 @dashboard_request.route('/register-asset') 
 @login_required
-def register_asset():
+def register_asset_site():
     return render_template('dashboard/company/assets/register.html')
+
+@dashboard_request.route('/register-asset/api', methods=['POST'])
+@login_required
+def register_asset_api():
+    asset_data = request.get_json()
+    return asset_registration(asset_data)
 
 
 
