@@ -35,6 +35,12 @@ def register_asset_api():
     return asset_registration(asset_data)
 
 
+@dashboard_request.route('/reason')
+@login_required
+def reason(): #razão 
+    return render_template('dashboard/company/reason.html')
+
+
 
 
 
