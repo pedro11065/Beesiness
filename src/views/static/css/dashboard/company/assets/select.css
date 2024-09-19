@@ -31,8 +31,7 @@ select {
     position: relative;
     min-width: 19rem;
     max-width: 19rem;
-    border-radius: 0.25em;
-    border-width: 2px;
+    border-width: 1px;
     border-style: solid;
     border-color: black;
     padding: 0.7rem 4rem;
