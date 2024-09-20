@@ -4,7 +4,11 @@ from src.model.database.company.user_companies.search import db_search_user_comp
 from src.model.database.company.companies.search import db_search_company
 from colorama import Fore, Style
 
+from src import cache
+
+@cache.cached(timeout=30) # Guarda as informações por 30 segundos.
 def companies_info():
+    
     data = db_search_user_company(current_user.id)
 
     if data:

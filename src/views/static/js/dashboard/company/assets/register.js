@@ -27,11 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: description
         };
 
-        console.log(formData)
-
         try {
             // Envia os dados para a API
-            const response = await fetch('/dashboard/register-asset/api', {
+            const response = await fetch('/dashboard/register-asset', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
