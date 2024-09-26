@@ -52,5 +52,8 @@ def companies_info():
                 "relação": False,
             }), 200
     else:
+
+        current_user.set_cnpj(cnpj)
+
         print(f'{Fore.RED}Nenhuma relação encontrada!{Style.RESET_ALL}')
         return jsonify({"relação": False}), 200

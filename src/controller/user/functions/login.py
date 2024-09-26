@@ -1,7 +1,7 @@
 from werkzeug.security import check_password_hash
 from flask_login import login_user
 from flask_login import login_user, current_user
-from flask import request, redirect, render_template,jsonify
+from flask import jsonify
 
 from src.model.database.user.search import db_search_user
 from src.model.database.company.user_companies.search import db_search_user_company

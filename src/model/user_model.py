@@ -4,19 +4,29 @@ from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 
 class User(UserMixin):
-    def __init__(self, id, fullname, email, cpf, password_hash):
+    def __init__(self, id, fullname, email, cpf, password_hash, cnpj=None):
         self.id = id
         self.fullname = fullname
         self.email = email
         self.cpf = cpf
         self.password_hash = password_hash
+        self.cnpj =  cnpj
+
 
     def get_id(self):
         return str(self.id)  # Retorna o ID como string
+    
+    def set_cnpj(self, cnpj): #Adiciona o CNPJ ao usuário.
+        self.cnpj = cnpj
+    
+    def get_cnpj(self):
+        return str(self.cnpj)
 
     def check_password(self, password):
         """Verifica se a senha fornecida corresponde ao hash armazenado."""
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"User(id={self.id}, fullname={self.fullname}, email={self.email}, cpf={self.cpf})"
+        return f"User(id={self.id}, fullname={self.fullname}, email={self.email}, cpf={self.cpf}, cnpj={self.cnpj})"
+        
+
