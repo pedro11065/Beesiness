@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, abort
 from flask_login import login_required, current_user
-from src.controller.dashboard.user.user_companies import companies_info
+from src.controller.dashboard.functions.user_companies import companies_info
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
 
@@ -30,7 +30,6 @@ def dashboard_company(cnpj):
 @dashboard_request.route(f'/register/asset/<cnpj>', methods=['POST','GET']) 
 @login_required
 def register_asset_site(cnpj):
-
     if request.method == 'POST':
         asset_data = request.get_json()
         return asset_registration(asset_data)
@@ -80,5 +79,5 @@ def validate_cnpj(cnpj):
     company_id, user_id, user_access_level = user_company_relation[0]
 
     # Verifica o nível de acesso do usuário.
-    if user_access_level not in ['creator', 'admin']:
+    if user_access_level not in ['creator', 'editor', 'checker', 'viewer']:
         abort(403)
