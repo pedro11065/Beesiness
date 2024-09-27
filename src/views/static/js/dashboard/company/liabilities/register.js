@@ -16,25 +16,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const eventvalue = document.getElementById('event').value.trim();
         const classvalue = document.getElementById('class').value.trim();
-        const payment = document.getElementById('payment').value.trim();
+        const payment_method = document.getElementById('payment_method').value.trim();
         const status = document.getElementById('status').value.trim();
         const name = document.getElementById('name').value.trim();
         const value = document.getElementById('value').value.trim();
         const emission_date = document.getElementById('emission_date').value.trim();
-        const pay_date = document.getElementById('pay_date').value;
+        const expiration_date = document.getElementById('expiration_date').value;
         
         const description = document.getElementById('description').value.trim();
 
         const formData = {
             cnpj: cnpj,
             event: eventvalue,
-            class: classvalue,
-            payment: payment,
+            classe: classvalue,
+            payment_method: payment_method,
             status: status,
             name: name,
             value: value,
             emission_date: emission_date,
-            pay_date: pay_date,
+            expiration_date: expiration_date,
             description: description
         };
 

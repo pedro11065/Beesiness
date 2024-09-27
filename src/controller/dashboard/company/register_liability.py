@@ -1,19 +1,20 @@
-from flask_login import login_user
-from flask_login import login_user, current_user
-from flask import request, redirect, render_template,jsonify
+from flask_login import current_user
+from flask import jsonify
 
-"""
+from src.model.database.company.register_patrimony.liability.create import db_create_liability
 
-Por favor, peço que na próxima comente para que vai servir esse arquivo, valeu!
+def liability_registration(liability_data, company_id):
+    
+    name = liability_data.get('name')
+    event = liability_data.get('event')
+    classe = liability_data.get('classe')
+    payment_method = liability_data.get('payment_method')
+    status = liability_data.get('status')
+    value = liability_data.get('value')
+    emission_date = liability_data.get('emission_date')
+    expiration_date = liability_data.get('expiration_date')
+    description = liability_data.get('description')
 
-"""
+    db_create_liability(company_id, current_user.id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status)
 
-from src.model.database.user.search import db_search_user
-from src.model.database.company.user_companies.search import db_search_user_company
-from src.model.user_model import User
-
-from colorama import Fore, Style
-
-def liability_registration(liability_data):
-    print(liability_data)
-    return jsonify('ta funcionando'), 200
+    return jsonify('Liability registrado com sucesso!'), 200

@@ -15,21 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault(); // Evita o comportamento padrão do formulário
 
         const eventValue = document.getElementById('event').value.trim();
-        const classValue = document.getElementById('class').value.trim();
+        const classeValue = document.getElementById('classe').value.trim();
         const name = document.getElementById('Name').value.trim();
         const localization = document.getElementById('Localization').value.trim();
-        const acsitionDate = document.getElementById('acsition_date').value;
-        const acsitionValue = document.getElementById('acsition_value').value.trim();
+        const acquisitionDate = document.getElementById('acquisition_date').value;
+        const acquisitionValue = document.getElementById('acquisition_value').value.trim();
         const status = document.getElementById('status').value;
         const description = document.getElementById('description').value.trim();
 
         const formData = {
             event: eventValue,
-            class: classValue,
+            classe: classeValue,
             name: name,
             localization: localization,
-            acsitionDate: acsitionDate,
-            acsitionValue: acsitionValue,
+            acquisitionDate: acquisitionDate,
+            acquisitionValue: acquisitionValue,
             status: status,
             description: description
         };

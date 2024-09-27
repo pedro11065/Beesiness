@@ -1,19 +1,19 @@
-from flask_login import login_user
-from flask_login import login_user, current_user
-from flask import request, redirect, render_template,jsonify
+from flask_login import current_user
+from flask import jsonify
 
-"""
+from src.model.database.company.register_patrimony.asset.create import db_create_asset
 
-Por favor, peço que na próxima comente para que vai servir esse arquivo, valeu!
+def asset_registration(asset_data, company_id):
+    
+    event = asset_data.get('event')
+    classe = asset_data.get('classe')
+    name = asset_data.get('name')
+    location = asset_data.get('localization')
+    acquisition_date = asset_data.get('acquisitionDate')
+    acquisition_value = asset_data.get('acquisitionValue')
+    status = asset_data.get('status')
+    description = asset_data.get('description')
 
-"""
+    db_create_asset(company_id, current_user.id, name, event, classe, acquisition_value, location, acquisition_date, description, status);
 
-from src.model.database.user.search import db_search_user
-from src.model.database.company.user_companies.search import db_search_user_company
-from src.model.user_model import User
-
-from colorama import Fore, Style
-
-def asset_registration(asset_data):
-    print(asset_data)
-    return jsonify('ta funcionando'), 200
+    return jsonify('Asset registrado com sucesso!'), 200

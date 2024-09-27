@@ -54,7 +54,7 @@ event varchar(50),
 class varchar(50),
 value varchar(25),
 location varchar (100),
-acsition_date date, /*formato = xx-xx-xxxx*/ 
+acquisition_date date, /*formato = xx-xx-xxxx*/ 
 Description varchar (255)
 status varchar(100));
 

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, abort
+from flask import Blueprint, render_template, request, abort, session
 from flask_login import login_required, current_user
 from src.controller.dashboard.functions.user_companies import companies_info
 from src.controller.dashboard.company.register_asset import asset_registration
@@ -38,7 +38,9 @@ def dashboard_company(cnpj):
 def register_asset_site(cnpj):
     if request.method == 'POST':
         asset_data = request.get_json()
-        return asset_registration(asset_data)
+        company_id = session.get('company_id')
+
+        return asset_registration(asset_data, company_id)
     if request.method == 'GET':
         validate_cnpj(cnpj);
         return render_template('dashboard/company/assets/register.html', cnpj=cnpj)
@@ -51,7 +53,9 @@ def register_asset_site(cnpj):
 def register_liability_site(cnpj):
     if request.method == 'POST':
         asset_data = request.get_json()
-        return liability_registration(asset_data)
+        company_id = session.get('company_id')
+
+        return liability_registration(asset_data, company_id)
     if request.method == 'GET': 
         validate_cnpj(cnpj);
         return render_template('dashboard/company/liabilities/register.html', cnpj=cnpj)
@@ -92,3 +96,5 @@ def validate_cnpj(cnpj):
     # Verifica o nível de acesso do usuário.
     if user_access_level not in ['creator', 'editor', 'checker', 'viewer']:
         abort(403)
+
+    session['company_id'] = company_id
