@@ -20,7 +20,9 @@ def companies_info():
 
         for i in range(qnt_relation):
             data_company = db_search_company(data[i][0])  # Pega os dados da empresa a partir do id dela
-            
+            #print(f"Este foi o id pesquisado: {data[i][0]}")
+            #print("Os dados dela são: ", data_company)
+
             if not data_company:  # Verifica se data_company está vazio
                 print(f'{Fore.CYAN}[Busca de empresas]{Fore.RED} A empresa com ID {data[i][0]} foi encontrada na tabela de permissões de usuários mas seus dados não existem!{Style.RESET_ALL}')
                 continue  # Pula para a próxima iteração
@@ -28,8 +30,8 @@ def companies_info():
             access_level = data[i][2]
 
             try:
-                name = data_company[i][2]
-                cnpj = data_company[i][4]
+                name = data_company[0][2]
+                cnpj = data_company[0][4]
             except IndexError as e:
                 print(f'{Fore.CYAN}[Busca de empresas]{Fore.RED} Erro ao acessar dados da empresa com ID {data[i][0]}: {e}{Style.RESET_ALL}')
                 continue  # Pula para a próxima iteração

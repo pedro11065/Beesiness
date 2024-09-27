@@ -3,7 +3,7 @@
 -- Existem 3 tipos gerais de JOINS:
 -- INNER JOIN, OUTER JOIN E SELF - JOIN
 
--- PrimaryKey = É um valor que identifica nicamente aquela tabela.(Somente dela)
+-- PrimaryKey = É um valor que uidentifica nicamente aquela tabela.(Somente dela)
 -- ForeignKey = Um valor estrangeiro de outra tabela
 
 /*

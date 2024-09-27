@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, abort
 from flask_login import login_required, current_user
-from src.controller.dashboard.functions.user_companies import companies_info
+from src.controller.dashboard.user.user_companies import companies_info
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
 
