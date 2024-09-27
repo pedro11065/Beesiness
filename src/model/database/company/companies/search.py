@@ -1,5 +1,3 @@
-# Responsável por retornar a linha onde o email foi inserido.
-
 import psycopg2
 from colorama import Fore, Style
 
@@ -33,8 +31,9 @@ def db_search_company(search_data):
         print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados da empresa com id: {search_data}')
         cur.execute(f"SELECT * from table_companies WHERE company_id = '{data}';")
         db_data = cur.fetchall()
-        
-    conn.commit();
+    #---------------------------------------------------------------INDICES---------------------
+                   #                         0         1            2            3             4             5
+    conn.commit(); # Valores da linha: #company_id, user_id, company_name, company_email, company_cnpj, company_password
     cur.close();
     conn.close()
 

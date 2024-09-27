@@ -1,6 +1,4 @@
-#Pesquisa um valor na tabela "table_user_companies" que registra as relações entre os demais usuários de uma empresa, além do criador
-
-# Responsável por retornar a linha onde o email foi inserido.
+# Pesquisa um valor na tabela "table_user_companies" que registra as relações entre os demais usuários de uma empresa, além do criador
 
 import psycopg2
 from colorama import Fore, Style
@@ -29,14 +27,14 @@ def db_search_user_company(user_id, company_id):
             cur.execute(query, (user_id, company_id))
         
         #---------------------------------------------------------------INDICES---------------------
-                                                        #0         1             2     
-        db_data = cur.fetchall() #valores da linha: #company_id, user_id, user_access_level
+                                 #                        0         1             2     
+        db_data = cur.fetchall() # Valores da linha: #company_id, user_id, user_access_level
 
         conn.commit()
         cur.close() # Fecha o cursor
         conn.close() # Fecha a conexão geral
 
-        if not db_data:
-            return False
-        else:
+        if db_data:
             return db_data
+        else:
+            return False
