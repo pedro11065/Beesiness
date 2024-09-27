@@ -31,7 +31,7 @@ def process_login(data):
         id = user_data['id']
 
         
-        if db_search_user_company(id):
+        if db_search_user_company(id, None):
             print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Usuário está relacionado a uma empresa!')
             return jsonify({'login': True, 'company': True, 'redirect_url': '/dashboard/user'}), 200
         else:

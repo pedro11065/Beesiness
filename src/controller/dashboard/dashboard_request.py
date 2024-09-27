@@ -1,14 +1,15 @@
-from flask import Blueprint, render_template,request
-from flask_login import login_required, login_user, current_user
+from flask import Blueprint, render_template, request, abort
+from flask_login import login_required, current_user
 from src.controller.dashboard.functions.user_companies import companies_info
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
 
+from src.model.database.company.companies.search import db_search_company
+from src.model.database.company.user_companies.search import db_search_user_company
+
 # Tudo aqui no url é: /dashboard, ou seja: 127.0.0.1:5000/dashboard/...
 
-
 dashboard_request = Blueprint('auth_dashboard', __name__, template_folder='templates', static_folder='static')
-
 
 @dashboard_request.route('/user', methods=['POST','GET']) 
 @login_required
@@ -16,46 +17,36 @@ def dashboard_user():
     if request.method == 'POST':
         return companies_info()
     if request.method == 'GET':
-
         return render_template('dashboard/user/dashboard.html')
 
 
-@dashboard_request.route(f'/company/<cnpj>') 
+@dashboard_request.route(f'/company/<cnpj>', methods=['GET']) 
 @login_required
 def dashboard_company(cnpj):
+    if request.method == 'GET':
+        validate_cnpj(cnpj);
+        return render_template('dashboard/company/dashboard.html', cnpj=cnpj)
 
-    print("dashboard_request.py")
-    print(cnpj)
-    global global_cpnj
-    print(current_user)
-
-#Tentei. Tentei muito colocar o cnpj no current user, mas não dá, ´pq os dados do current user são 
-#tirados diretamente do db_search_user(user_id), e o cnpj não fica lá. E toda vez que o init é 
-#chamado(sempre) os dados do cpnj são apagados, então a solução é criar uma versão do 'user' em 
-#src\model\user_model.py chamada 'company', ai sim ia dar para guardar os dados da empresa e 
-#consultar o banco de dados e deixar a URL com cnpj em todos os cantos"""
-
-
-    return render_template('dashboard/company/dashboard.html')
-
-@dashboard_request.route(f'//register/asset', methods=['POST','GET']) 
+@dashboard_request.route(f'/register/asset/<cnpj>', methods=['POST','GET']) 
 @login_required
-def register_asset_site():
+def register_asset_site(cnpj):
+
     if request.method == 'POST':
         asset_data = request.get_json()
         return asset_registration(asset_data)
     if request.method == 'GET':
-        
-        return render_template('dashboard/company/assets/register.html')
+        validate_cnpj(cnpj);
+        return render_template('dashboard/company/assets/register.html', cnpj=cnpj)
 
-@dashboard_request.route(f'/register/liability', methods=['POST','GET']) 
+@dashboard_request.route(f'/register/liability/<cnpj>', methods=['POST','GET']) 
 @login_required
-def register_liability_site():
+def register_liability_site(cnpj):
     if request.method == 'POST':
         asset_data = request.get_json()
         return liability_registration(asset_data)
-    if request.method == 'GET':
-        return render_template('dashboard/company/liabilities/register.html')
+    if request.method == 'GET': 
+        validate_cnpj(cnpj);
+        return render_template('dashboard/company/liabilities/register.html', cnpj=cnpj)
     
     
 
@@ -63,3 +54,31 @@ def register_liability_site():
 @login_required
 def reason(): 
     return render_template('dashboard/company/reason.html')
+
+def validate_cnpj(cnpj):
+    # Estas verificações são necessárias para que os usuários não burlem as empresas pelo URL.
+    # Erro 404 - Página não encontrada
+    # Erro 403 - Falta de permissão para acesso.
+
+    # Verifica se o CNPJ na URL tem 14 caracteres
+    if len(cnpj) != 14:
+        abort(404)
+
+    # Verifica se a empresa existe
+    company = db_search_company(cnpj)
+    if not company:
+        abort(404)
+
+    # Busca as relações do usuário com a empresa usando o ID do usuário e o ID da empresa
+    user_company_relation = db_search_user_company(current_user.id, company[0][0])
+
+    # Se não houver relação encontrada, retorna erro 404
+    if not user_company_relation:
+        abort(403)
+
+    # Desestrutura a array para pegar o company_id, user_id e o nível de acesso
+    company_id, user_id, user_access_level = user_company_relation[0]
+
+    # Verifica o nível de acesso do usuário.
+    if user_access_level not in ['creator', 'admin']:
+        abort(403)

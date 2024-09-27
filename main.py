@@ -11,6 +11,10 @@ app.app_context().push()
 def page_not_found(e):
     return render_template('errors/404.html'), 404
 
+@app.errorhandler(403) # Manipulador para o erro 403
+def page_permission(e):
+    return render_template('errors/403.html'), 403
+
 if __name__ == '__main__':
     # Apenas irá rodar o aplicativo caso você inicie o arquivo main. 
     # Se não houvesse essa verificação, até mesmo uma importação desse arquivo iria rodar o programa.

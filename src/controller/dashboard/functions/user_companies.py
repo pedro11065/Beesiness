@@ -8,8 +8,7 @@ from src import cache
 
 @cache.cached(timeout=30) # Guarda as informações por 30 segundos.
 def companies_info():
-    
-    data = db_search_user_company(current_user.id)
+    data = db_search_user_company(current_user.id, None)
 
     if data:
         qnt_relation = len(data)  # Quantidade de relações (linhas)
@@ -23,7 +22,7 @@ def companies_info():
             data_company = db_search_company(data[i][0])  # Pega os dados da empresa a partir do id dela
             
             if not data_company:  # Verifica se data_company está vazio
-                print(f'{Fore.RED}[Busca de empresas]{Style.RESET_ALL} A empresa com ID {data[i][0]} foi encontrada na tabela de permissões de usuários mas seus dados não existem!')
+                print(f'{Fore.CYAN}[Busca de empresas]{Fore.RED} A empresa com ID {data[i][0]} foi encontrada na tabela de permissões de usuários mas seus dados não existem!{Style.RESET_ALL}')
                 continue  # Pula para a próxima iteração
 
             access_level = data[i][2]
@@ -32,7 +31,7 @@ def companies_info():
                 name = data_company[i][2]
                 cnpj = data_company[i][4]
             except IndexError as e:
-                print(f'{Fore.RED}[Busca de empresas]{Style.RESET_ALL} Erro ao acessar dados da empresa com ID {data[i][0]}: {e}')
+                print(f'{Fore.CYAN}[Busca de empresas]{Fore.RED} Erro ao acessar dados da empresa com ID {data[i][0]}: {e}{Style.RESET_ALL}')
                 continue  # Pula para a próxima iteração
 
             access_levels.append(access_level)
@@ -52,8 +51,5 @@ def companies_info():
                 "relação": False,
             }), 200
     else:
-
-        current_user.set_cnpj(cnpj)
-
         print(f'{Fore.RED}Nenhuma relação encontrada!{Style.RESET_ALL}')
         return jsonify({"relação": False}), 200

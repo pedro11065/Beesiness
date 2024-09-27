@@ -29,7 +29,7 @@ def db_search_company(search_data):
         cur.execute(f"SELECT * from table_companies WHERE company_email = '{data}';")
         db_data = cur.fetchall()
     
-    else: #company_id
+    else: # Company_id
         print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados da empresa com id: {search_data}')
         cur.execute(f"SELECT * from table_companies WHERE company_id = '{data}';")
         db_data = cur.fetchall()
@@ -39,11 +39,13 @@ def db_search_company(search_data):
     conn.close()
 
     try:
-
-        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados da empresa encontrados com sucesso!')
+        if db_data:
+            print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Dados da empresa encontrados com sucesso!')
+            return db_data
+        else:
+            print(Fore.CYAN + '[Banco de dados] ' + Fore.RED + 'Dados da empresa não foram encontrados!' + Style.RESET_ALL)
+            return None
     
-        return db_data
-
     except:
         print(Fore.CYAN + '[Banco de dados] ' + Fore.RED  + f'Erro ao responder dados solicitados.' + Style.RESET_ALL)
         return False

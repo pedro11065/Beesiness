@@ -168,11 +168,10 @@ main .box .company-data-error {
     margin-bottom: 0.5rem;
     padding-right: 2rem;
     width: 90%;
-    height: auto; 
+    height: 20vh; 
     display: flex;
-    align-items: center; 
-    justify-content: center;
-    text-align: center;
+    align-items: center;
+    justify-content: space-between;
     border-radius: 2rem;
     border: none;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
