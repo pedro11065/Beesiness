@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('AssetForm');
+    const form = document.getElementById('LiabilityForm');
     const submitButton = document.querySelector('.register-button');
 
     // Função para extrair o CNPJ da URL
@@ -14,28 +14,32 @@ document.addEventListener('DOMContentLoaded', () => {
     submitButton.addEventListener('click', async (event) => {
         event.preventDefault();
 
-        const eventValue = document.getElementById('event').value.trim();
-        const classValue = document.getElementById('class').value.trim();
-        const name = document.getElementById('Name').value.trim();
-        const localization = document.getElementById('Localization').value.trim();
-        const acsitionDate = document.getElementById('acsition_date').value;
-        const acsitionValue = document.getElementById('acsition_value').value.trim();
-        const status = document.getElementById('status').value;
+        const eventvalue = document.getElementById('event').value.trim();
+        const classvalue = document.getElementById('class').value.trim();
+        const payment = document.getElementById('payment').value.trim();
+        const status = document.getElementById('status').value.trim();
+        const name = document.getElementById('name').value.trim();
+        const value = document.getElementById('value').value.trim();
+        const emission_date = document.getElementById('emission_date').value.trim();
+        const pay_date = document.getElementById('pay_date').value;
+        
         const description = document.getElementById('description').value.trim();
 
         const formData = {
-            event: eventValue,
-            class: classValue,
-            name: name,
-            localization: localization,
-            acsitionDate: acsitionDate,
-            acsitionValue: acsitionValue,
+            cnpj: cnpj,
+            event: eventvalue,
+            class: classvalue,
+            payment: payment,
             status: status,
+            name: name,
+            value: value,
+            emission_date: emission_date,
+            pay_date: pay_date,
             description: description
         };
 
         try {
-            const response = await fetch(`/dashboard/register-asset/${cnpj}`, {
+            const response = await fetch(`/dashboard/register/liability/${cnpj}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

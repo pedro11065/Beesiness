@@ -11,6 +11,8 @@ from src.model.database.company.user_companies.search import db_search_user_comp
 
 dashboard_request = Blueprint('auth_dashboard', __name__, template_folder='templates', static_folder='static')
 
+#----------------------------------------------------------------------------------------- DASHBOARD DO USUÁRIO
+
 @dashboard_request.route('/user', methods=['POST','GET']) 
 @login_required
 def dashboard_user():
@@ -19,6 +21,8 @@ def dashboard_user():
     if request.method == 'GET':
         return render_template('dashboard/user/dashboard.html')
 
+#----------------------------------------------------------------------------------------- DASHBOARD DA EMPRESA
+
 
 @dashboard_request.route(f'/company/<cnpj>', methods=['GET']) 
 @login_required
@@ -26,6 +30,8 @@ def dashboard_company(cnpj):
     if request.method == 'GET':
         validate_cnpj(cnpj);
         return render_template('dashboard/company/dashboard.html', cnpj=cnpj)
+
+#----------------------------------------------------------------------------------------- REGISTRO DE ATIVOS
 
 @dashboard_request.route(f'/register/asset/<cnpj>', methods=['POST','GET']) 
 @login_required
@@ -38,6 +44,9 @@ def register_asset_site(cnpj):
         validate_cnpj(cnpj);
         return render_template('dashboard/company/assets/register.html', cnpj=cnpj)
 
+#----------------------------------------------------------------------------------------- REGISTRO DE PASSIVOS
+
+
 @dashboard_request.route(f'/register/liability/<cnpj>', methods=['POST','GET']) 
 @login_required
 def register_liability_site(cnpj):
@@ -48,12 +57,14 @@ def register_liability_site(cnpj):
         validate_cnpj(cnpj);
         return render_template('dashboard/company/liabilities/register.html', cnpj=cnpj)
     
-    
+#----------------------------------------------------------------------------------------- LIVRO DE RAZÃO (EXTRATO)
 
 @dashboard_request.route('/reason')
 @login_required
 def reason(): 
     return render_template('dashboard/company/reason.html')
+
+#-----------------------------------------------------------------------------------------
 
 def validate_cnpj(cnpj):
     # Estas verificações são necessárias para que os usuários não burlem as empresas pelo URL.
