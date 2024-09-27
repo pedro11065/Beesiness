@@ -38,75 +38,72 @@
 
                 <div class="left-box">
 
-                    <div class="title">        
-                        <h2>Registrar Passivo</h2>
-                    </div>
-                    <div class="double-select-box">
+                <div class="title">        
+                    <h2>Registrar Passivo</h2>
+                </div>
 
-                        <div class="form-container">
-                            <div class="msg-position"><p>Evento:</p></div>
-                            <select class="mini-select" id="event" name="event" required>
-                                <option>Compra</option>
-                                <option>Venda</option>
-                                <option>Herança</option>
-                                <option>Troca</option>
-                                <option>Leasing</option>
-                                <option>Incorporação</option>
-                                <option>Permuta</option>
-                                <option>Produção interna</option>
-                                <option>Concessão</option>
-                                <option>Financiamento</option>
-                                <option>Investimento</option>
-                                <option>Leilão</option>
-                                <option>Restituição judicial</option>
-                                <option>Aquisição</option>
-                                <option selected> - - - </option>
-                            </select>
-                        </div>
-
-                        <!-- Classe -->
-                        <div class="form-container">
-                            <p class="msg-position">Classe:</p>
-                            <select class="mini-select" id="class" name="class" required>
-                                <option>Caixa</option>
-                                <option>Contas a receber</option>
-                                <option>Estoque</option>
-                                <option>Matérias-Primas</option>
-                                <option>Investimento</option>
-                                <option>Imóveis</option>
-                                <option>Mobília</option>
-                                <option>Veículos</option>
-                                <option>Equipamentos</option>
-                                <option>Maquinário</option>
-                                <option>Patentes</option>
-                                <option>Ações</option>
-                                <option>Tecnologia e TI</option>
-                                <option>Intangíveis</option>
-                                <option>Infraestrutura</option>
-                                <option>Terreno</option>
-                                <option>Licenças</option>
-                                <option>Espaços</option>
-                                <option selected> - - - </option>
-                            </select>
-                        </div>
+                    <div class="form-container">
+                        <div class="msg-position"><p>Evento:</p></div>
+                        <select class="select" id="event" name="event" required>
+                            <option>Empréstimo</option>
+                            <option>Financiamento</option>
+                            <option>Leasing</option>
+                            <option>Multa</option>
+                            <option>Juros</option>
+                            <option>Impostos a pagar</option>
+                            <option>Salários a pagar</option>
+                            <option>Fornecedores</option>
+                            <option>Concessão de crédito</option>
+                            <option>Prestação de serviços</option>
+                            <option>Processos judiciais</option>
+                            <option selected> - - - </option>
+                        </select>
                     </div>
+
+                    <!-- Classe -->
+                    <div class="form-container">
+                        <p class="msg-position">Classe:</p>
+                        <select class="select" id="class" name="class" required>
+                            <option>Caixa</option>
+                            <option>Contas a receber</option>
+                            <option>Estoque</option>
+                            <option>Matérias-Primas</option>
+                            <option>Investimento</option>
+                            <option>Imóveis</option>
+                            <option>Mobília</option>
+                            <option>Veículos</option>
+                            <option>Equipamentos</option>
+                            <option>Maquinário</option>
+                            <option>Patentes</option>
+                            <option>Ações</option>
+                            <option>Tecnologia e TI</option>
+                            <option>Intangíveis</option>
+                            <option>Infraestrutura</option>
+                            <option>Terreno</option>
+                            <option>Licenças</option>
+                            <option>Espaços</option>
+                            <option selected> - - - </option>
+                        </select>
+                    </div>
+                    
                     <!-- Status -->
                     <div class="form-container">
                         <p class="msg-position">Forma de pagamento:</p>
                         <select class="select" id="payment" name="payment" required>
-                            <option value="1">Comprado</option>
-                            <option value="2">Apreendido</option>
-                            <option value="3">Em Uso</option>
-                            <option>Em Manutenção</option>
-                            <option>Vendido</option>
-                            <option>Alugado</option>
-                            <option>Disponível</option>
-                            <option>Obsoleto</option>
-                            <option>Danificado</option>
-                            <option>Perdido</option>
-                            <option>Doado</option>
-                            <option>Empenhado</option>
-                            <option>Leiloado</option>
+                            <option >Dinheiro em espécie</option>
+                            <option >Cartão de crédito</option>
+                            <option >Cartão de débito</option>
+                            <option>Pix</option>
+                            <option>Cheque</option>
+                            <option>Boleto bancário</option>
+                            <option>Criptomoedas</option>
+                            <option>Vale-alimentação</option>
+                            <option>Vale-refeição</option>
+                            <option>Vale-transporte</option>
+                            <option>Gift cards</option>
+                            <option>Carnê</option>
+                            <option>Carteira digital</option>
+                            <option>Transferência bancária</option>
                             <option selected> - - - </option>
                         </select>
                     </div>
@@ -114,9 +111,9 @@
                     <div class="form-container">
                         <p class="msg-position">Status:</p>
                         <select class="select" id="status" name="status" required>
-                            <option value="1">Comprado</option>
-                            <option value="2">Apreendido</option>
-                            <option value="3">Em Uso</option>
+                            <option >Comprado</option>
+                            <option >Apreendido</option>
+                            <option >Em Uso</option>
                             <option>Em Manutenção</option>
                             <option>Vendido</option>
                             <option>Alugado</option>
@@ -130,9 +127,8 @@
                             <option selected> - - - </option>
                         </select>
                     </div>
-
                 </div>
-
+                
                 <div class="right-box">
 
                     <div class="info-box">
