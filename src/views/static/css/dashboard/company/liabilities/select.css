@@ -4,9 +4,10 @@ select {
     appearance: none;
     background-color: transparent;
     border: none;
-    padding: 0.7rem 5rem;
+    padding: auto;
     margin: 0;
-    width: 5rem;
+    width: auto;
+    height: 5rem;
     font-family: inherit;
     font-size: inherit;
     text-align: center; /* Centraliza o texto quando o select está fechado */
@@ -15,12 +16,6 @@ select {
     line-height: inherit;
     z-index: 1;
     outline: none;
-  }
-  
-  select::-ms-expand {
-    align-items: center;
-    text-align: center;
-    display: none;
   }
   
   .select {
@@ -34,8 +29,7 @@ select {
     border-width: 1px;
     border-style: solid;
     border-color: black;
-    padding: 0.7rem 4rem;
-    font-size: 1.25rem;
+    font-size: 1.55rem;
     cursor: pointer;
     line-height: 1.1;
     background-color: #fff;
@@ -44,61 +38,18 @@ select {
                 rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   }
   
-  .select select, .select::after {
-    grid-area: select;
-    align-items: center;
-    text-align: center;
-  }
-  
-  label {
-    font-size: 1.125rem;
-    font-weight: 500;
-    text-align: center;
-  }
-  
-  .select + label {
-    margin-top: 4rem;
-    text-align: center;
-  }
-  
-
-
-
-  .mini-select {
-    display: grid;
-    grid-template-areas: "select";
-    align-items: center;
-    text-align: center;
-    position: relative;
+  .options {
+    display: none; /* Oculta as opções por padrão */
+    position: absolute;
+    top: 100%; /* Coloca as opções abaixo do elemento selecionado */
+    left: 0;
     width: 100%;
-    height: 4.5rem;
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
-    padding: 0.7rem 4rem;
-    font-size: 1.25rem;
-    cursor: pointer;
-    line-height: 1.1;
-    background-color: #fff;
-    background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-    box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
-                rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    max-height: 120px; /* Define uma altura máxima */
+    overflow-y: auto; /* Adiciona rolagem se necessário */
+    border: 1px solid #ccc;
+    background: #fff;
+    z-index: 10;
   }
-  
-  .mini-select select, .select::after {
-    grid-area: select;
-    align-items: center;
-    text-align: center;
-  }
-  
-  label {
-    font-size: 1.125rem;
-    font-weight: 500;
-    text-align: center;
-  }
-  
-  .mini-select + label {
-    margin-top: 4rem;
-    text-align: center;
-  }
+
+
   
