@@ -4,6 +4,8 @@ from src.controller.dashboard.functions.user_companies import companies_info
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
 
+from src.model.database.company.patrimony.search_all import db_search_liabilities_and_assets
+
 from src.model.database.company.companies.search import db_search_company
 from src.model.database.company.user_companies.search import db_search_user_company
 
@@ -67,22 +69,14 @@ def register_liability_site(cnpj):
 def register_reason_site(cnpj): 
     if request.method == 'GET': 
         validate_cnpj(cnpj)
-    return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
+
+        """company_id = session.get('company_id')
+        teste = db_search_liabilities_and_assets(company_id)
+        print(teste)"""
+        
+        return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
 
 #-----------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

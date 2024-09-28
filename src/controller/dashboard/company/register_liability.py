@@ -1,7 +1,7 @@
 from flask_login import current_user
 from flask import jsonify
 
-from src.model.database.company.register_patrimony.liability.create import db_create_liability
+from src.model.database.company.patrimony.liability.create import db_create_liability
 
 def liability_registration(liability_data, company_id):
     

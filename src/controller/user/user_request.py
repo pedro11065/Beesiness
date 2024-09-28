@@ -38,11 +38,15 @@ def forget_password():
 
 # -------------------------------------------------------------------------------------
 
-@user_request.route('/settings')
+@user_request.route('/settings', methods=['GET', 'POST'])
 @login_required
 def settings():
-    print(current_user.id)
-    return render_template("user/settings.html", name=current_user.fullname, email=current_user.email, cpf=current_user.cpf)
+    if request.method == 'POST':
+        settings = request.get_json()
+        print(settings)
+        return 1;
+    if request.method == 'GET':
+        return render_template("user/settings.html")
 
 # -------------------------------------------------------------------------------------
 

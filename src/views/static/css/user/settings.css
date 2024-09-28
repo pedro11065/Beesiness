@@ -1,98 +1,123 @@
-/*
-
-O CSS AINDA NÃO ESTÁ PRONTO, SENDO FEITO.
-
-*/
-
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: #FFD400;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  background-color: #FFD400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Roboto Slab', serif;
 }
 
 .container {
-    background-color: white;
-    border-radius: 1.25rem;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px;
-    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+  background-color: white;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+label:hover {
+  color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.625rem;
+  border: 1px solid #ccc;
+  background-color: #f2f2f2;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #ffd400;
+  background-color: #fff;
+  outline: none;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover {
+  border-color: #bbb;
+}
+
+.form-actions {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+button[type="submit"] {
+  padding: 0.75rem 1.5rem;
+  background-color: #ffd400;
+  color: white;
+  border: none;
+  border-radius: 0.625rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #e0b000;
+}
+
+/* Responsável por mostrar a mensagem de erro vermelha */
+.error {
+  color: red;
+  font-size: 12px;
+  display: block;
 }
 
 
-.form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
-  }
-  
-
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.875rem;
-    color: #666;
-    text-transform: uppercase;
-    font-weight: bold;
-    transition: color 0.3s ease;
-  }
-  
-  label:hover {
-    color: #333;
-  }
-  
-
+/* Ajustando para dispositivos menores */
+@media (max-width: 768px) {
   input[type="text"],
-  input[type="name"],
-  input[type="cpf"],
-  input[type="email"] {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 0.625rem;
-    border: 1px solid #ccc;
-    background-color: #f2f2f2;
-    font-size: 0.875rem;
-    margin-bottom: 0.25rem;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-  }
-  
-  input[type="text"]:focus,
-  input[type="name"]:focus,
-  input[type="cpf"]:focus,
-  input[type="email"]:focus {
-    border-color: #ffd400;
-    background-color: #fff;
-    outline: none;
-  }
-  
-
-  input[type="text"]:hover,
-  input[type="name"]:hover,
-  input[type="cpf"]:hover,
-  input[type="email"]:hover {
-    border-color: #bbb;
-  }
-  
-  /* Ajustando para dispositivos menores */
-  @media (max-width: 768px) {
-    input[type="text"],
-    input[type="name"],
-    input[type="cpf"],
-    input[type="email"] {
+  input[type="email"],
+  input[type="password"] {
       font-size: 1rem;
       padding: 1rem;
-    }
-  
-    label {
-      font-size: 0.875rem;
-    }
   }
+
+  label {
+      font-size: 0.875rem;
+  }
+
+  button[type="submit"] {
+      font-size: 1.125rem;
+  }
+}

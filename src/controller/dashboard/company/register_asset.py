@@ -1,7 +1,7 @@
 from flask_login import current_user
 from flask import jsonify
 
-from src.model.database.company.register_patrimony.asset.create import db_create_asset
+from src.model.database.company.patrimony.asset.create import db_create_asset
 
 def asset_registration(asset_data, company_id):
 
