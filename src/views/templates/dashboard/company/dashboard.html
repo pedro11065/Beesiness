@@ -14,8 +14,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet" />
 </head>
-<body>
+<body>   
+    <header class="header">
+
+        <div class="user">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
+            <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
+        </div>
+
+        <a href="/" class="exit">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
+        </a>
+    </header>
+
     <h1>Você entrou na aba da sua empresa! O CNPJ dela está na URL.</h1>
-    <a href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}" >Registrar ativo</a>
+    <a class="btn" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}" >Registrar ativo</a>
     <a href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}" >Registrar passivo</a>
+    <a href="{{ url_for('auth_dashboard.register_reason_site', cnpj=cnpj) }}" >razão</a>
 </body>

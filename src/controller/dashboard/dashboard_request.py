@@ -62,12 +62,32 @@ def register_liability_site(cnpj):
     
 #----------------------------------------------------------------------------------------- LIVRO DE RAZÃO (EXTRATO)
 
-@dashboard_request.route('/reason')
+@dashboard_request.route('/reason/<cnpj>', methods=['POST','GET'])
 @login_required
-def reason(): 
-    return render_template('dashboard/company/reason.html')
+def register_reason_site(cnpj): 
+    if request.method == 'GET': 
+        validate_cnpj(cnpj)
+    return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
 
 #-----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def validate_cnpj(cnpj):
     # Estas verificações são necessárias para que os usuários não burlem as empresas pelo URL.

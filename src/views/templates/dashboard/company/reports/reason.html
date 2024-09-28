@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razão</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/reason.css') }}">
+
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <script src="{{ url_for('static', filename='js/dashboard/company/reports/reason.js') }}" defer></script>
+</head>
+
+<body>
+    <header class="header">
+
+        <div class="user">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
+            <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
+        </div>
+
+        <a href="/" class="exit">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
+        </a>
+
+    </header>
+
+    <menu class="menu-container">
+
+        <div class="menu-box">
+            <a>Data</a>
+        </div>
+
+        <div class="menu-box">
+            <a>Evento</a>
+        </div>
+
+        <div class="menu-box">
+            <a>Classe</a>
+        </div>
+        
+    </menu>
+
+    <main class="main">
+
+        <section class="month-container">
+
+            <article  class="month-article">
+
+
+                <div class="mounth-box">
+                    <h1>Setembro</h1>
+                </div>  
+                <div class="mounth-box">        
+                    <h1>R$2.00</h1>
+                </div>
+
+            </article>
+
+            <div class="black-line"> </div>
+
+            <article class="day-container">
+
+                <header class="title-container">
+
+                    <div class = title-box>
+                        <h3>16 de setembro de 2024</h1>
+                    </div>
+
+                    <div class = title-box>
+                        <h3>R$2.00</h1>
+                    </div>
+
+                </header>
+
+                <header class="description-container">
+
+                    <descrition-box class="descrition-box">
+                        <h4>Compra - Cartão de crédito - Halls melancia</h4>
+                    </descrition-box>
+
+                    <descrition-box class="descrition-box">
+                        <h4>Pedro Henrique Silva Quixabeira - Dono</h4>
+                    </descrition-box>
+
+                </header>
+
+            </article>
+
+        </section>
+
+    </main>
+</body>

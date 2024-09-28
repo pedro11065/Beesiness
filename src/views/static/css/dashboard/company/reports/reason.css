@@ -1,0 +1,324 @@
+html {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    font-size: 16px; /* Melhor controle de fontes em responsividade */
+}
+
+/* Remove margem e padding padrão de todos os elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Configuração básica do corpo da página */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    height: auto;
+    width: 100%;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+h4 {
+    color: black;
+    font-size: 0.7rem;
+    display:block;
+    font-weight: 500;
+}
+
+h2 {
+    color: black;
+    font-size: 1.7rem;
+    display:block;
+    font-weight: 500;
+}
+
+p {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+#loading {
+    display: none;
+    font-size: 1.5rem;
+    color: #000000;
+    text-align: center;
+    margin: 50px;
+}
+
+.header {
+    background-color: #121212;
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header .user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header .user .icon {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+header .exit {
+    display: flex;
+    align-items: center;
+}
+
+header .exit .icon {
+    background-color: #121212;
+    margin-right: 20px;
+    width: 30px;
+    height: 30px;
+}
+
+.menu-container{
+    background-color: #D9D9D9;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    padding-left: 1rem;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+} 
+
+.menu-box{
+    background-color: white;
+    display: flex;
+    width: 6rem;
+    height: 40%;
+    margin-right: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+}
+
+.main{
+    display:inline-block;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+
+}
+
+.month-container{
+    display:inline-block;
+    width: 100%;
+    height: 10rem;
+    margin-top: 1.5rem;
+    padding-top: 0.3rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+    
+}
+
+.month-article{
+    display:flex;
+    justify-content: space-between;
+
+}
+
+.mounth-box{
+    margin-left: 1.3rem;
+    margin-right: 1.3rem;
+    margin-bottom: 0.3rem;
+}
+
+.black-line{
+    background-color: black;
+    width: 100%;
+    height: 0.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.day-container{
+    display:inline-block;
+    align-items: center;
+    margin-bottom: 1rem;
+    width: 100%;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    border-radius: 1rem;
+
+
+}
+
+.title-container{
+    background-color: #EDEDED;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 2rem;
+    font-size: small;
+    border-top-left-radius: 0.6rem;
+    border-top-right-radius: 0.6rem;
+}
+
+.title-box{
+    margin-left: 1.3rem;
+    margin-right: 1.3rem;
+    margin-bottom: 0.3rem;
+    margin-top: 0.3rem;
+
+}
+
+.description-container{
+    display: flex;
+    background-color: white;
+    font-size: small;
+    justify-content: space-between;
+    padding-left: 1.3rem;
+    padding-right: 1.3rem;
+    padding-bottom: 0.7rem;
+    padding-top: 0.3rem;
+    
+}
+
+
+
+
+
+
+
+
+
+@media (max-width: 40rem) { 
+
+    h4 {
+        color: black;
+        font-size: 0.8rem;
+        display:block;
+        font-weight: 500;
+    }
+
+    h2 {
+        color: black;
+        font-size: 1.7rem;
+        display:block;
+        font-weight: 500;
+    }
+
+
+    .menu-container{
+        background-color: #D9D9D9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 60px;
+        padding-left: 0;
+        box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+    } 
+
+    .menu-box{
+        background-color: white;
+        display: flex;
+        width: 6rem;
+        height: 40%;
+        margin-right: 1.5rem;
+        margin-left: 1.5rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 15px;
+        box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+    }
+
+    .month-container{
+        display:inline-block;
+        width: 100%;
+        height: 10rem;
+        margin-bottom:2rem;
+        padding-top: 0.3rem;
+        border-radius: 0.5rem;
+        justify-content: center;
+        
+    }
+
+    .month-article{
+        display:flex;
+        justify-content: space-between;
+
+    }
+
+    .mounth-box{
+        margin-left: 1.3rem;
+        margin-right: 1.3rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .black-line{
+        background-color: black;
+        width: 100%;
+        height: 0.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .day-container{
+        display:inline-block;
+        margin-top: 0.2rem;
+        margin-bottom: 1rem;
+        align-items: center;
+        width: 100%;
+        height: auto;
+        border-radius: 0.6rem;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
+
+    }
+
+    .title-container{
+        background-color: #EDEDED;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 2rem;
+        font-size:smaller;
+        border-top-left-radius: 0.6rem;
+        border-top-right-radius: 0.6rem;
+    }
+
+    .title-box{
+        margin-left: 1.3rem;
+        margin-right: 1.3rem;
+        margin-bottom: 0.3rem;
+        margin-top: 0.3rem;
+
+    }
+
+    .description-container{
+        display:inline-block;
+        background-color: white;
+        font-size: small;
+        border-radius: 0.6rem;
+        justify-content: space-between;
+        
+    }
+
+    .descrition-box{
+        width: 100%;
+        margin-left: 1.3rem;
+        margin-right: 1.3rem;
+        margin-bottom: 0.3rem;
+        margin-top: 0.3rem;
+    }
+
+}
