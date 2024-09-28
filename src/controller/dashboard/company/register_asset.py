@@ -4,6 +4,8 @@ from flask import jsonify
 from src.model.database.company.register_patrimony.asset.create import db_create_asset
 
 def asset_registration(asset_data, company_id):
+
+    print(f"dados recebidos: {asset_data}")
     
     event = asset_data.get('event')
     classe = asset_data.get('classe')
@@ -17,3 +19,6 @@ def asset_registration(asset_data, company_id):
     db_create_asset(company_id, current_user.id, name, event, classe, acquisition_value, location, acquisition_date, description, status);
 
     return jsonify('Asset registrado com sucesso!'), 200
+
+#ideia: ao inves de criar uma outra tabela só para coisas deletadas, é só mudar o campo status para detado,
+#  depois criar uma verificação para se caso o status seja igual a deletado, não mostrar para o usuário.
