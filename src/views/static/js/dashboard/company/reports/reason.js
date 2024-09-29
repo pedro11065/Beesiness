@@ -97,11 +97,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
-function formatDateToBrazilian(dateStr) {
-    // Converte de YYYY-MM-DD para DD/MM/YYYY
+function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
     const date = new Date(dateStr);
     const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear()
+    return `${day} de ${month} de ${year}`;
 }
