@@ -1,8 +1,10 @@
 from flask_login import current_user
 from flask import jsonify
+
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
 def info_reason(company_id, cnpj):
+
     info = db_search_historic(company_id)
 
     if info is False:
@@ -23,3 +25,7 @@ def info_reason(company_id, cnpj):
         'redirect_url': f'/dashboard/reason/{cnpj}',
         'historic': info
     })
+
+
+    
+
