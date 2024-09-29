@@ -6,6 +6,21 @@ from src.model.database.company.patrimony.historic.search import db_search_histo
 def info_reason(company_id, cnpj):
 
     info = db_search_historic(company_id)
+    
+    """
+        "historic_id": data[0],
+        "company_id": data[1],
+        "user_id": data[2],
+        "patrimony_id": data[3],
+        "name": data[4],
+        "event": data[5],
+        "class": data[6],
+        "value": data[7],
+        "date": data[8],
+        "type": data[9],
+        "creation_date": data[10],
+        "creation_time": data[11]
+    """
 
     if info is False:
         return jsonify({'message': 'Erro ao pesquisar no banco de dados, tente mais tarde.'}), 500

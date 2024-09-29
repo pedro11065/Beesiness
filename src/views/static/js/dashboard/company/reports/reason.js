@@ -32,6 +32,22 @@ document.addEventListener('DOMContentLoaded', async function () {
             data.historic.forEach((item) => {
                 // Dados retornados pelo data.historic fazendo um forEach por cada item:
                 console.log(item)
+
+                /* item:
+
+                "historic_id": item[0],
+                "company_id": item[1],
+                "user_id": item[2],
+                "patrimony_id": item[3],
+                "name": item[4],
+                "event": item[5],
+                "class": item[6],
+                "value": item[7],
+                "date": item[8],
+                "type": item[9],
+                "creation_date": item[10],
+                "creation_time": item[11]
+                */
                 
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'day-container';
@@ -44,10 +60,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 dayDiv.innerHTML = `
                     <header class="title-container">
                         <div class="title-box">
-                            <h3>${formatDateToBrazilian(item.creation_date)}</h3>
+                            <h3>${formatDateToBrazilian(item.creation_date)} - ${item.creation_time}</h3>
                         </div>
                         <div class="title-box">
-                            <h3>R$ ${item.value}</h3>
+                            <h3>${item.value}</h3>
                         </div>
                     </header>
             

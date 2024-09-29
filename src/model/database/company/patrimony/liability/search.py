@@ -15,7 +15,7 @@ def db_search_liability(company_id):
 
     print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando liabilities para a empresa com company_id: {company_id}')
 
-    cur.execute(f"SELECT * FROM table_liabilities WHERE company_id = '{company_id}';")
+    cur.execute(f"SELECT * FROM table_liabilities WHERE company_id = '{company_id}' ORDER BY criation_date DESC, criation_time DESC;;")
     db_data = cur.fetchall()
 
     conn.commit()
@@ -37,7 +37,10 @@ def db_search_liability(company_id):
             "expiration_date": data[8],
             "payment_method": data[9],
             "description": data[10],
-            "status": data[11]
+            "status": data[11],
+            "creation_date":data[11],
+            "creation_time": data[12]
+            
         } for data in db_data]
         
     except Exception as error:

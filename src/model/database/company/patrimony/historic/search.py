@@ -14,8 +14,8 @@ def db_search_historic(company_id):
     cur = conn.cursor()
 
     print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando histórico de entradas e saídas para a empresa com company_id: {company_id}')
-    try:
-        cur.execute("SELECT * FROM table_historic WHERE company_id = %s;", (company_id,))
+    try:                                                                #Para deixar o dado mais recente primeiro
+        cur.execute("SELECT * FROM table_historic WHERE company_id = %s ORDER BY criation_date DESC, criation_time DESC;", (company_id,))
         historic_data = cur.fetchall()
 
         if not historic_data:

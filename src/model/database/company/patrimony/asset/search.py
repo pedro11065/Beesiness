@@ -15,7 +15,7 @@ def db_search_asset(company_id):
 
     print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando assets para a empresa com company_id: {company_id}')
 
-    cur.execute(f"SELECT * FROM table_assets WHERE company_id = '{company_id}';")
+    cur.execute(f"SELECT * FROM table_assets WHERE company_id = '{company_id}' ORDER BY criation_date DESC, criation_time DESC;")
     db_data = cur.fetchall()
 
     conn.commit()
@@ -36,7 +36,10 @@ def db_search_asset(company_id):
             "location": data[7],
             "acquisition_date": data[8],
             "description": data[9],
-            "status": data[10]
+            "status": data[10],
+            "creation_date":data[11],
+            "creation_time": data[12]
+
         } for data in db_data]
         
     except Exception as error:
