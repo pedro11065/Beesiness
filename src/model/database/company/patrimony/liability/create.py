@@ -32,9 +32,12 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
 
     # Define dados
     liability_id = uuid.uuid4()
+    historic_id = uuid.uuid4()
 
+    type="liability"
     # Insere os dados principais do usuário para armazenar na tabela
     cur.execute(f"INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status) VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', '{value}', '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}');")  
+    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', '{value}', '{emission_date}', '{type}');")  
 
     # Confirma as mudanças
     conn.commit()

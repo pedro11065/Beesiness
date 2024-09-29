@@ -55,8 +55,10 @@ class varchar(50),
 value varchar(25),
 location varchar (100),
 acquisition_date date, /*formato = xx-xx-xxxx*/ 
-Description varchar (255)
-status varchar(100));
+Description varchar (255),
+status varchar(100),
+criation_date DATE DEFAULT CURRENT_DATE,
+criation_time TIME DEFAULT CURRENT_TIME);
 
 
 CREATE TABLE table_liabilities
@@ -67,28 +69,28 @@ name varchar(100),
 event varchar(50),
 class varchar(50),
 value varchar(25),
-creditor varchar(100),
 emission_date date, /*formato = xx-xx-xxxx*/ 
 expiration_date date, /*formato = xx-xx-xxxx*/ 
 payment_method varchar (50),
 description varchar (255),
-status varchar(100));
+status varchar(100),
+criation_date DATE DEFAULT CURRENT_DATE,
+criation_time TIME DEFAULT CURRENT_TIME);
 
-CREATE TABLE table_assets_historic
-(asset_historic_id UUID primary key,
-asset_id UUID REFERENCES table_assets(asset_id),
+CREATE TABLE table_historic
+(historic_id UUID primary key,
 company_id UUID REFERENCES table_companies(company_id),
 user_id UUID REFERENCES table_users(user_id),
-date date,
-Description varchar (255));
-
-CREATE TABLE table_liabilities_historic
-(liability_historic_id UUID primary key,
-liability_id UUID REFERENCES table_liabilities(liability_id),
-company_id UUID REFERENCES table_companies(company_id),
-user_id UUID REFERENCES table_users(user_id),
-date date,
-description varchar (255));
+patrimony_id UUID,
+name varchar(100), 
+event varchar(50),
+class varchar(50),
+value varchar(25),
+date varchar(10),
+type varchar(25),
+criation_date DATE DEFAULT CURRENT_DATE,
+criation_time TIME DEFAULT CURRENT_TIME
+);
 
 
 

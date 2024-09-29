@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Registrar ativo</title>
+    <title>Registrar Passivo</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/register.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/select.css') }}">
@@ -50,12 +50,14 @@
                             <option>Leasing</option>
                             <option>Multa</option>
                             <option>Juros</option>
+                            <option>conta a pagar</option>
                             <option>Impostos a pagar</option>
                             <option>Salários a pagar</option>
                             <option>Fornecedores</option>
                             <option>Concessão de crédito</option>
                             <option>Prestação de serviços</option>
                             <option>Processos judiciais</option>
+                            <option>Outro</option>
                             <option selected> - - - </option>
                         </select>
                     </div>
@@ -64,27 +66,31 @@
                     <div class="form-container">
                         <p class="msg-position">Classe:</p>
                         <select class="select" id="class" name="class" required>
-                            <option>Caixa</option>
-                            <option>Contas a receber</option>
-                            <option>Estoque</option>
-                            <option>Matérias-Primas</option>
-                            <option>Investimento</option>
-                            <option>Imóveis</option>
-                            <option>Mobília</option>
-                            <option>Veículos</option>
-                            <option>Equipamentos</option>
-                            <option>Maquinário</option>
-                            <option>Patentes</option>
-                            <option>Ações</option>
-                            <option>Tecnologia e TI</option>
-                            <option>Intangíveis</option>
-                            <option>Infraestrutura</option>
-                            <option>Terreno</option>
-                            <option>Licenças</option>
-                            <option>Espaços</option>
                             <option selected> - - - </option>
+                            <option>INSS</option>
+                            <option>IPTU</option>
+                            <option>Conta de Luz</option>
+                            <option>Conta de Água</option>
+                            <option>Conta de Telefone</option>
+                            <option>Aluguel</option>
+                            <option>Seguro de Carro</option>
+                            <option>Seguro Residencial</option>
+                            <option>Financiamento Imobiliário</option>
+                            <option>Financiamento de Veículo</option>
+                            <option>Parcelamento de Compras</option>
+                            <option>Empréstimo Pessoal</option>
+                            <option>Taxa de Condomínio</option>
+                            <option>Multa de Trânsito</option>
+                            <option>Juros Bancários</option>
+                            <option>Fatura de Cartão de Crédito</option>
+                            <option>Contribuição Sindical</option>
+                            <option>Mensalidade Escolar</option>
+                            <option>Pagamento de funcionário</option>
+                            <option>conta</option>
+                            <option>Outros</option>
                         </select>
                     </div>
+                    
                     
                     <!-- Status -->
                     <div class="form-container">
@@ -111,19 +117,12 @@
                     <div class="form-container">
                         <p class="msg-position">Status:</p>
                         <select class="select" id="status" name="status" required>
-                            <option >Comprado</option>
-                            <option >Apreendido</option>
-                            <option >Em Uso</option>
-                            <option>Em Manutenção</option>
-                            <option>Vendido</option>
-                            <option>Alugado</option>
-                            <option>Disponível</option>
-                            <option>Obsoleto</option>
-                            <option>Danificado</option>
-                            <option>Perdido</option>
-                            <option>Doado</option>
-                            <option>Empenhado</option>
-                            <option>Leiloado</option>
+                            <option>Pendente</option>
+                            <option>Pago</option>
+                            <option>Em atraso</option>
+                            <option>Parcelado</option>
+                            <option>Em negociação</option>
+                            <option>Cancelado</option>
                             <option selected> - - - </option>
                         </select>
                     </div>

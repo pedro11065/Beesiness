@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
             status: status,
             name: name,
             value: value,
-            emission_date: formatDateToBrazilian(emission_date),
-            expiration_date: formatDateToBrazilian(expiration_date),
+            emission_date: emission_date,
+            expiration_date: expiration_date,
             description: description
         };
 
@@ -60,11 +60,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
-    const date = new Date(dateStr);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-}

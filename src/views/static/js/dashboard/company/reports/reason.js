@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const cnpj = getCnpjFromUrl();
     // Exibe o elemento de carregamento
-    loadingElement.style.display = 'block';
     try {
         const response = await fetch(`/dashboard/reason/${cnpj}`, {
             method: 'POST',

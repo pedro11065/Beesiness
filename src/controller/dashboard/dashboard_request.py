@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, abort, session
 from flask_login import login_required, current_user
+
+from src.controller.dashboard.company.info_reason import  info_reason
 from src.controller.dashboard.functions.user_companies import companies_info
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
@@ -8,6 +10,8 @@ from src.model.database.company.patrimony.search_all import db_search_liabilitie
 
 from src.model.database.company.companies.search import db_search_company
 from src.model.database.company.user_companies.search import db_search_user_company
+
+
 
 # Tudo aqui no url é: /dashboard, ou seja: 127.0.0.1:5000/dashboard/...
 
@@ -54,27 +58,27 @@ def register_asset_site(cnpj):
 @login_required
 def register_liability_site(cnpj):
     if request.method == 'POST':
-        asset_data = request.get_json()
+        liability_data = request.get_json()
         company_id = session.get('company_id')
-
-        return liability_registration(asset_data, company_id)
+    
+        return liability_registration(liability_data, company_id)
     if request.method == 'GET': 
         validate_cnpj(cnpj);
         return render_template('dashboard/company/liabilities/register.html', cnpj=cnpj)
     
 #----------------------------------------------------------------------------------------- LIVRO DE RAZÃO (EXTRATO)
 
-@dashboard_request.route('/reason/<cnpj>', methods=['POST','GET'])
+@dashboard_request.route('/reason/<cnpj>', methods=['GET'])
 @login_required
 def register_reason_site(cnpj): 
-    if request.method == 'GET': 
-        validate_cnpj(cnpj)
 
-        """company_id = session.get('company_id')
-        teste = db_search_liabilities_and_assets(company_id)
-        print(teste)"""
-        
-        return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
+    validate_cnpj(cnpj)
+
+    company_id = session.get('company_id')
+    info_reason(company_id, cnpj)
+
+    return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
+    
 
 #-----------------------------------------------------------------------------------------
 

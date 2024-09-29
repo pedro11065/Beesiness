@@ -21,9 +21,13 @@ def db_create_asset(company_id, user_id, name, event, classe, value, location, a
 
     # Define dados
     asset_id = uuid.uuid4()
+    historic_id =  uuid.uuid4()
+    type =  "asset"
+
 
     # Insere os dados principais do usuário para armazenar na tabela
-    cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status) VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', '{value}', '{location}', '{acquisition_date}', '{description}', '{status}');")  
+    cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status) VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', '{value}', '{location}', '{acquisition_date}', '{description}', '{status}');")
+    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', '{value}', '{acquisition_date}', '{type}');")  
 
     # Confirma as mudanças
     conn.commit()

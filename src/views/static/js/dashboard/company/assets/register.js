@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
             classe: classeValue,
             name: name,
             localization: localization,
-            acquisitionDate: formatDateToBrazilian(acquisitionDate),
-            acquisitionValue: formatDateToBrazilian(acquisitionValue),
+            acquisitionDate: acquisitionDate,
+            acquisitionValue: acquisitionValue,
             status: status,
             description: description
         };
@@ -56,11 +56,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
-    const date = new Date(dateStr);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-}
