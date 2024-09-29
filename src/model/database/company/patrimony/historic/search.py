@@ -23,7 +23,7 @@ def db_search_historic(company_id):
 
     except Exception as error:
         print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do histórico não encontrados: {error}')
-        return False
+        return None
 
 
     # Fecha o cursor e encerra a conexão.
@@ -33,7 +33,7 @@ def db_search_historic(company_id):
     # Retorna uma lista de liabilities e assets
     
     if historic_data == []:
-        return None
+        return False
     
     else:
         historic_id = [] ; company_id = [] ; user_id = [] ; patrimony_id = []

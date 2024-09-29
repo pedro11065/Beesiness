@@ -7,12 +7,19 @@ def info_reason(company_id, cnpj):
 
     info = db_search_historic(company_id)
 
-    if info == False:
-        return  jsonify('Nenhum dado registro no banco de dados.'), 200
+    if info == False: #Se o histórico dessa emprsa estiver vazio
+        print("historic: False")
+        print("Error: False")
 
-    if info == None:
-        return  jsonify('Erro algo pesquisar  no banco de dados, tente mais tarde.'), 500
+        return  jsonify({'historic':False, 'error':False}), 200
 
+    if info == None: #Se der algum erro
+        print("historic: False")
+        print("Error: True")
+        return  jsonify({'historic':False, 'error':True}), 500
+
+    #Se tiver algo no histórico
+    
     historic_id = info.get('historic_id')
     company_id = info.get('company_id')
     user_id = info.get('user_id')
@@ -30,7 +37,8 @@ def info_reason(company_id, cnpj):
 
     print("\nestou em: src\controller\dashboard\company\info_reason.py ")
     print("Print de demostração ")
-    print(f"\n\nhistoric_id: {historic_id}")
+    print(f'\n\nredirect_url: /dashboard/reason/{cnpj}')
+    print(f"historic_id: {historic_id}")
     print(f"company_id: {company_id}")
     print(f"user_id: {user_id}")
     print(f"patrimony_id: {patrimony_id}")
@@ -42,8 +50,12 @@ def info_reason(company_id, cnpj):
     print(f"type: {type}")
     print(f"creation_date: {creation_date}")
     print(f"creation_time: {creation_time}\n\n")
+    print("historic: True")
+    print("Error: False")
 
     return jsonify({
+        'historic':True, 
+        'error':False,
         'redirect_url': f'/dashboard/reason/{cnpj}',
         'historic_id': historic_id,
         'company_id': company_id,

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
+    const main = document.getElementById('main');
     const loadingElement = document.getElementById('loading');
-    const container = document.getElementById('resultado');
+    const container = document.getElementById('monthContainer');
 
     function getCnpjFromUrl() {
         const url = window.location.pathname;
@@ -24,25 +25,75 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
-        /* O data já está retornando os dados!
-
-        {'liabilities': [{'liability_id': '3ae51350-2c72-4fba-8376-ee42fc91bb3f', 'company_id': '6f5d426b-e51d-414c-977d-7018a0f24d22', 'user_id': '0bd67ec8-be32-4e12-928f-b0a445241bf3',
-        'name': 'Um bagulho', 'event': 'Leilão', 'class': 'Veículos', 'value': '5 reais e um brinde', 'emission_date': datetime.date(2024, 5, 23),
-        'expiration_date': datetime.date(2034, 10, 23), 'payment_method': 'Doado', 'description': 'Um bagulho muito louco!', 'status': 'Danificado'}],
-        'assets': [{'asset_id': '0288e336-803e-4882-b94f-951be1efe021', 'company_id': '6f5d426b-e51d-414c-977d-7018a0f24d22', 'user_id': '0bd67ec8-be32-4e12-928f-b0a445241bf3',
-        'name': 'Terrenão tops mil grau', 'event': 'Leilão', 'class': 'Terreno', 'value': '50 milhões', 'location': 'Caixa prego, 123',
-        'acquisition_date': datetime.date(6666, 6, 6), 'description': 'Terreno muito louco no caixa prego.', 'status': 'Vendido'}]}
-                                                                                                                                                                            */
-        
-        // Trate os dados nessa região, fazendo um if se existe liabilities e assets. (data.liabilities.length e data.assets.length)
-
         loadingElement.style.display = 'none';
+        main.style.display = 'inline-block';
+        if (data.historic) {   
 
-        const noDataDiv = document.createElement('div');
-        noDataDiv.innerHTML = `<h1>Sem dados disponíveis.</h1>`;
-        container.appendChild(noDataDiv);
+            data.name.forEach((i, index) => {
+                console.log(i,index);
+            });
+
+            for (let i = 0; i < data.name.length; i++) { //para cada valor dentro de name(poderia ser qualquer outro valor, é só para saber a quantidade )
+                
+                const empresaDiv = document.createElement('div');  // Pega o CNPJ correspondente
+                const class_ = data.class_[i];
+                const company_id = data.company_id[i];
+                const creation_date = data.creation_date[i];
+                const creation_time = data.creation_time[i];
+                const date = data.date[i];
+                const error = data.error[i];
+                const event_ = data.event[i];
+                const historic = data.historic[i];
+                const historic_id = data.historic_id[i];
+                //const name = data.name[i]; não pode ser declado novamente
+                const patrimony_id = data.patrimony_id[i];
+                const redirect_url = data.redirect_url[i];
+                const type = data.type[i];
+                const user_id = data.user_id[i];
+                const value = data.value[i];
+                
+                const dayDiv = document.createElement('div');
+
+                dayDiv.className = 'day-container';
+                dayDiv.style.cursor = 'pointer';
+
+                empresaDiv.addEventListener('click', function (){
+                    window.location.href = `/dashboard/${type}/${patrimony_id}` });
+
+                dayDiv.innerHTML = `
+                    <header class="title-container">
+                        <div class="title-box">
+                            <h3>${creation_date}</h3>
+                        </div>
+                        <div class="title-box">
+                            <h3>${value}</h3>
+                        </div>
+                    </header>
+        
+                    <div class="description-container">
+                        <div class="description-box">
+                            <h4>${event_} - ${class_} - ${name}</h4>
+                        </div>
+                        <div class="description-box">
+                            <h4>Pedro Henrique Silva Quixabeira - Dono</h4>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(dayDiv); // Adiciona o div ao container
+            };
+
+        }
+        
+        else{
+            container.style.display = 'none';
+            const noDataDiv = document.createElement('div');
+            noDataDiv.innerHTML = `<div class="error"><h1>Sem dados disponíveis.</h1></div>`;
+            main.appendChild(noDataDiv);
+        }
+
     } catch (error) {
-        console.error('Erro ao carregar os dados:', error);
+        console.error('Erro ao carregar os dados',error);
         loadingElement.style.display = 'none';
 
         const errorDiv = document.createElement('div');

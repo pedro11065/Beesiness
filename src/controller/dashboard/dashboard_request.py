@@ -68,16 +68,18 @@ def register_liability_site(cnpj):
     
 #----------------------------------------------------------------------------------------- LIVRO DE RAZÃO (EXTRATO)
 
-@dashboard_request.route('/reason/<cnpj>', methods=['GET'])
+@dashboard_request.route('/reason/<cnpj>', methods=['POST','GET'])
 @login_required
 def register_reason_site(cnpj): 
 
     validate_cnpj(cnpj)
+    
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        return info_reason(company_id, cnpj)
 
-    company_id = session.get('company_id')
-    info_reason(company_id, cnpj)
-
-    return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
+    if request.method == 'GET': 
+        return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
     
 
 #-----------------------------------------------------------------------------------------
