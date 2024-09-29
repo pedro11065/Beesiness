@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const event_ = data.event[i];
                 const historic = data.historic[i];
                 const historic_id = data.historic_id[i];
-                //const name = data.name[i]; não pode ser declado novamente
+                const name = data.name[i]; 
                 const patrimony_id = data.patrimony_id[i];
                 const redirect_url = data.redirect_url[i];
                 const type = data.type[i];
