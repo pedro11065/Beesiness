@@ -95,9 +95,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     } catch (error) {
         console.error('Erro ao carregar os dados',error);
         loadingElement.style.display = 'none';
-
+        main.style.display = 'inline-block'
+        container.style.display = 'none';
         const errorDiv = document.createElement('div');
-        errorDiv.innerHTML = `<h1>Erro ao carregar informações.</h1>`;
-        container.appendChild(errorDiv);
+        errorDiv.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
+        main.appendChild(errorDiv);
     }
 });

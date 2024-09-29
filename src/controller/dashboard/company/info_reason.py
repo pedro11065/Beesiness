@@ -1,8 +1,10 @@
 from flask_login import current_user
 from flask import jsonify
+
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
 def info_reason(company_id, cnpj):
+
     info = db_search_historic(company_id)
 
     if info == False: #Se o histórico dessa emprsa estiver vazio
@@ -55,5 +57,20 @@ def info_reason(company_id, cnpj):
         'historic':True, 
         'error':False,
         'redirect_url': f'/dashboard/reason/{cnpj}',
-        'historic': info
+        'historic_id': historic_id,
+        'company_id': company_id,
+        'user_id': user_id,
+        'patrimony_id': patrimony_id,
+        'name': name,
+        'event': event,
+        'class_': class_,
+        'value': value,
+        'date': date,
+        'type': type,
+        'creation_date': creation_date,
+        'creation_time': creation_time
     })
+
+
+    
+
