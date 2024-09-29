@@ -25,8 +25,10 @@ def db_create_asset(company_id, user_id, name, event, classe, value, location, a
     type =  "asset"
 
 
-    # Insere os dados principais do usuário para armazenar na tabela
+    # Guarda os dados na tabela de assets:
     cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status) VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', '{value}', '{location}', '{acquisition_date}', '{description}', '{status}');")
+   
+    # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
     cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', '{value}', '{acquisition_date}', '{type}');")  
 
     # Confirma as mudanças
