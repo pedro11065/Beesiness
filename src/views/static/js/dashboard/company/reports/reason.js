@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
+
+        loadingElement.style.display = 'none';
+        container.innerHTML = ''; // Limpa o conteúdo anterior
+
         /* O data já está retornando os dados!
 
         {'liabilities': [{'liability_id': '3ae51350-2c72-4fba-8376-ee42fc91bb3f', 'company_id': '6f5d426b-e51d-414c-977d-7018a0f24d22', 'user_id': '0bd67ec8-be32-4e12-928f-b0a445241bf3',
@@ -36,11 +40,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         
         // Trate os dados nessa região, fazendo um if se existe liabilities e assets. (data.liabilities.length e data.assets.length)
 
-        loadingElement.style.display = 'none';
+       if (data.message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `<h1>${data.message}</h1>`;
+            container.appendChild(messageDiv);
+        } else {
+            // Trata os resultados aqui dentro
 
-        const noDataDiv = document.createElement('div');
-        noDataDiv.innerHTML = `<h1>Sem dados disponíveis.</h1>`;
-        container.appendChild(noDataDiv);
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `<h1>Seus dados foram encontrados, agora falta o html ser feito!</h1>`;
+            container.appendChild(messageDiv);
+        }
     } catch (error) {
         console.error('Erro ao carregar os dados:', error);
         loadingElement.style.display = 'none';
