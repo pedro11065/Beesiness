@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 alert('Ativo registrado com sucesso!');
-                form.reset(); // Opcional: Reseta o formulário
+                window.location.href = `/dashboard/company/${cnpj}`;
             } else {
                 const errorData = await response.json();
                 alert(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);

@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const main = document.getElementById('main');
-    const loadingElement = document.getElementById('loading');
-    const container = document.getElementById('monthContainer');
+
 
     function getCnpjFromUrl() {
         const url = window.location.pathname;
@@ -9,8 +8,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         return parts[parts.length - 1];
     }
 
+    function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
+        const date = new Date(dateStr);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear()
+        return `${day} de ${month} de ${year}`;
+    }
+
+    function formatValueToMoney(valueStr) {
+        const valueNum = parseFloat(valueStr);
+        return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
     const cnpj = getCnpjFromUrl();
-    loadingElement.style.display = 'block';
+    loading.style.display = 'block';
 
     try {
         const response = await fetch(`/dashboard/reason/${cnpj}`, {
@@ -25,31 +37,53 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
-        loadingElement.style.display = 'none';
+
+                /* item:
+
+        "historic_id": item[0],
+        "company_id": item[1],
+        "user_id": item[2],
+        "patrimony_id": item[3],
+        "name": item[4],
+        "event": item[5],
+        "class": item[6],
+        "value": item[7],
+        "date": item[8],
+        "type": item[9],
+        "creation_date": item[10],
+        "creation_time": item[11]
+        */
+
+        loading.style.display = 'none';
         main.style.display = 'inline-block';
 
         if (data.historic) {
+
+            const monthDiv = document.createElement('section');
+            monthDiv.className = 'month-container';
+            monthDiv.id = 'monthContainer';
+
+            monthDiv.innerHTML = `
+
+            <article class="month-article">
+                <div class="month-box">
+                    <h1>Setembro</h1>
+                </div>
+                <div class="month-box">
+                    <h1>R$------</h1>
+                </div>
+            </article>
+    
+            <div class="black-line" id="black-line"></div>`
+
+            main.appendChild(monthDiv);
+            
             data.historic.forEach((item) => {
                 // Dados retornados pelo data.historic fazendo um forEach por cada item:
                 console.log(item)
 
-                /* item:
-
-                "historic_id": item[0],
-                "company_id": item[1],
-                "user_id": item[2],
-                "patrimony_id": item[3],
-                "name": item[4],
-                "event": item[5],
-                "class": item[6],
-                "value": item[7],
-                "date": item[8],
-                "type": item[9],
-                "creation_date": item[10],
-                "creation_time": item[11]
-                */
                 
-                const dayDiv = document.createElement('div');
+                const dayDiv = document.createElement('article');
                 dayDiv.className = 'day-container';
                 dayDiv.style.cursor = 'pointer';
 
@@ -63,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             <h3>${formatDateToBrazilian(item.creation_date)} - ${item.creation_time}</h3>
                         </div>
                         <div class="title-box">
-                            <h3>${item.value}</h3>
+                            <h3>${formatValueToMoney(item.value)}</h3>
                         </div>
                     </header>
             
@@ -77,10 +111,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     </div>
                 `;
         
-                container.appendChild(dayDiv);
+                monthContainer.appendChild(dayDiv);
             });
         } else {
-            container.style.display = 'none';
+            month.style.display = 'none';
             const noDataDiv = document.createElement('div');
             noDataDiv.innerHTML = `<div class="error"><h1>Sem dados disponíveis.</h1></div>`;
             main.appendChild(noDataDiv);
@@ -88,19 +122,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     } catch (error) {
         console.error('Erro ao carregar os dados',error);
-        loadingElement.style.display = 'none';
+        loading.style.display = 'none';
         main.style.display = 'inline-block'
-        container.style.display = 'none';
+        month.style.display = 'none';
         const errorDiv = document.createElement('div');
         errorDiv.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
         main.appendChild(errorDiv);
     }
 });
 
-function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
-    const date = new Date(dateStr);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = date.toLocaleString('default', { month: 'long' });
-    const year = date.getFullYear()
-    return `${day} de ${month} de ${year}`;
-}
+

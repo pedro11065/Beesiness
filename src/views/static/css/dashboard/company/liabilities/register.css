@@ -14,7 +14,7 @@ body {
 
 h2 {
     color: black;
-    font-size: 3rem;
+    font-size: 2rem;
     display:flex;
     text-align: center;
     align-items: center;
@@ -88,8 +88,8 @@ header .exit .icon {
 .main p {
     color: black;
     margin-bottom: 0.5rem;
-    font-size: 2rem;
-    font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 400;
 }
 
 .error{
@@ -209,7 +209,7 @@ main .info-box{
     font-weight: 500;
     text-align: center;
     width: 95%;
-    height: 4.5rem;
+    height: 3.5rem;
     margin: 0;
     border-color: #000;
     box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
@@ -221,12 +221,11 @@ main .info-box{
 .form-box-description {
     display: flex;
     background-color:transparent;
-    width: 95%;
-    height: 16rem; 
+    width: 97%;
+    height: 10.3rem; 
     font-size: 1.55rem;
     font-weight: 500;
     text-align: start;
-    margin-left: 0.7rem; /* Adiciona algum espaço interno ao redor do texto */
     border: 1px solid #000; /* Adiciona uma borda para visibilidade */
     box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
                 rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
