@@ -40,48 +40,11 @@ def db_search_historic(company_id):
         } for data in historic_data]
 
     except Exception as error:
-        print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do histórico não encontrados: {error}')
-        return None
+        print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Erro ao buscar dados do histórico: {error}')
+        return False
 
     finally:
         cur.close()
         conn.close()
 
-    # Retorna uma lista de liabilities e assets
-    
-    if historic_data == []:
-        return False
-    
-    else:
-        historic_id = [] ; company_id = [] ; user_id = [] ; patrimony_id = []
-        name = []; event = [] ; class_ = [] ; value = [] ; date = [] ; type = []
-        creation_date = [] ; creation_time = []
-
-        for data in historic_data:
-            historic_id.append(data[0]) 
-            company_id.append(data[1])
-            user_id.append(data[2])
-            patrimony_id.append(data[3])
-            name.append(data[4])
-            event.append(data[5])
-            class_.append(data[6])
-            value.append(data[7])
-            date.append(data[8])
-            type.append(data[9])
-            creation_date.append(data[10])
-            creation_time.append(data[11])
-
-    return {
-        'historic_id': historic_id,
-        'company_id': company_id,
-        'user_id': user_id,
-        'patrimony_id': patrimony_id,
-        'name': name,
-        'event': event,
-        'class_': class_,
-        'value': value,
-        'date': date,
-        'type': type,
-        'creation_date': creation_date,
-        'creation_time': creation_time
-    }
+    return historic

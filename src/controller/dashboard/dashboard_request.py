@@ -71,14 +71,12 @@ def register_liability_site(cnpj):
 @dashboard_request.route('/reason/<cnpj>', methods=['POST','GET'])
 @login_required
 def register_reason_site(cnpj): 
-
-    validate_cnpj(cnpj)
-    
     if request.method == 'POST':
         company_id = session.get('company_id')
         return info_reason(company_id, cnpj)
 
     if request.method == 'GET': 
+        validate_cnpj(cnpj)
         return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
     
 
