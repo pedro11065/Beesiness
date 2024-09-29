@@ -1,10 +1,13 @@
-from flask import Blueprint, request, render_template, redirect
+from flask import Blueprint, request, render_template, redirect, jsonify
 from flask_login import logout_user, login_required, current_user
+
+from werkzeug.security import check_password_hash
+from src.model.database.user.search import db_search_user
 
 from src.controller.user.functions.login import process_login
 from src.controller.user.functions.register import process_registration
 
-#tudo aqui é: /user...
+# Tudo aqui é: /user...
 
 user_request = Blueprint('auth_user', __name__, template_folder='templates', static_folder='static')
 
@@ -43,8 +46,17 @@ def forget_password():
 def settings():
     if request.method == 'POST':
         settings = request.get_json()
-        print(settings)
-        return 1;
+        password = settings['password']
+
+        password_db = db_search_user(current_user.id)
+        password_hash = password_db['password_hash']
+
+        check_status = check_password_hash(password_hash, password)
+
+        if check_status:
+            return jsonify({"success": True, "message": "Senha correta"}), 200
+        else:
+            return jsonify({"success": False, "message": "Senha incorreta"}), 200
     if request.method == 'GET':
         return render_template("user/settings.html")
 

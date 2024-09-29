@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const loadingElement = document.getElementById('loading');
     const container = document.getElementById('resultado');
-    const newCompanyButton = document.getElementById('newCompanyButton');
 
-        function getCnpjFromUrl() {
-        const url = window.location.pathname;  // Obtém o caminho da url.
-        const parts = url.split('/');  // Divide a url pelas barras.
-        return parts[parts.length - 1];  // Vai retornar a última parte dividida.
+    function getCnpjFromUrl() {
+        const url = window.location.pathname;
+        const parts = url.split('/');
+        return parts[parts.length - 1];
     }
 
     const cnpj = getCnpjFromUrl();
-    // Exibe o elemento de carregamento
+    loadingElement.style.display = 'block';
+
     try {
         const response = await fetch(`/dashboard/reason/${cnpj}`, {
             method: 'POST',
@@ -24,52 +24,29 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
-        loadingElement.style.display = 'none'; // Esconde o loader
+        /* O data já está retornando os dados!
 
-        if (data.relação) {
-            data.nomes.forEach((nome, index) => {
-                const empresaDiv = document.createElement('div');
-                const cnpj = data.cnpjs[index];  // Pega o CNPJ correspondente
+        {'liabilities': [{'liability_id': '3ae51350-2c72-4fba-8376-ee42fc91bb3f', 'company_id': '6f5d426b-e51d-414c-977d-7018a0f24d22', 'user_id': '0bd67ec8-be32-4e12-928f-b0a445241bf3',
+        'name': 'Um bagulho', 'event': 'Leilão', 'class': 'Veículos', 'value': '5 reais e um brinde', 'emission_date': datetime.date(2024, 5, 23),
+        'expiration_date': datetime.date(2034, 10, 23), 'payment_method': 'Doado', 'description': 'Um bagulho muito louco!', 'status': 'Danificado'}],
+        'assets': [{'asset_id': '0288e336-803e-4882-b94f-951be1efe021', 'company_id': '6f5d426b-e51d-414c-977d-7018a0f24d22', 'user_id': '0bd67ec8-be32-4e12-928f-b0a445241bf3',
+        'name': 'Terrenão tops mil grau', 'event': 'Leilão', 'class': 'Terreno', 'value': '50 milhões', 'location': 'Caixa prego, 123',
+        'acquisition_date': datetime.date(6666, 6, 6), 'description': 'Terreno muito louco no caixa prego.', 'status': 'Vendido'}]}
+                                                                                                                                                                            */
+        
+        // Trate os dados nessa região, fazendo um if se existe liabilities e assets. (data.liabilities.length e data.assets.length)
 
-                empresaDiv.className = 'company';
-                empresaDiv.style.cursor = 'pointer';
+        loadingElement.style.display = 'none';
 
-                // Ação ao clicar no botão de alguma empresa
-                empresaDiv.addEventListener('click', function () {
-                    window.location.href = `/dashboard/company/${cnpj}`;  // Redireciona para a URL com o CNPJ
-                });
-
-                empresaDiv.innerHTML = `
-                    <div class="company-data">
-                        <h1>${nome}</h1>
-                        <p>Cargo: ${data['nivel de acesso'][index]}</p>
-                    </div>
-                    <img class="icon" src="/static/images/dashboard/public/next.png" alt="Configurações">
-                `;
-
-                container.appendChild(empresaDiv); // Adiciona o div ao container
-            });
-        } else {
-            const noRelationDiv = document.createElement('div');
-            noRelationDiv.className = 'company-data-error';
-            noRelationDiv.innerHTML = `
-                <div>
-                    <h1>Aparentemente você não está relacionado a nenhuma empresa! :(</h1>
-                </div>
-            `;
-            container.appendChild(noRelationDiv);
-        }
+        const noDataDiv = document.createElement('div');
+        noDataDiv.innerHTML = `<h1>Sem dados disponíveis.</h1>`;
+        container.appendChild(noDataDiv);
     } catch (error) {
         console.error('Erro ao carregar os dados:', error);
-        loadingElement.style.display = 'none'; // Esconde o loader em caso de erro
+        loadingElement.style.display = 'none';
 
         const errorDiv = document.createElement('div');
-        errorDiv.className = 'company';
-        errorDiv.innerHTML = `
-            <div>
-                <h1>Erro ao pesquisar pelas empresas relacionadas à sua conta, sentimos muito :(</h1>
-            </div>
-        `;
+        errorDiv.innerHTML = `<h1>Erro ao carregar informações.</h1>`;
         container.appendChild(errorDiv);
     }
 });

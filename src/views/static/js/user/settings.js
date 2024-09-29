@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const data = await response.json();
+            
             if (data.success) {
                 alert("Alterações salvas com sucesso!");
                 window.location.reload();
