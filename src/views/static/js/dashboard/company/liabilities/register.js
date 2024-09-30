@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const payment_method = document.getElementById('payment_method').value.trim();
         const status = document.getElementById('status').value.trim();
         const name = document.getElementById('name').value.trim();
-        const value = document.getElementById('value').value.trim();
+        const value = document.getElementById('value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.');
         const emission_date = document.getElementById('emission_date').value.trim();
-        const expiration_date = document.getElementById('expiration_date').value;
+        const expiration_date = document.getElementById('expiration_date').value.trim();
         
         const description = document.getElementById('description').value.trim();
 
@@ -60,3 +60,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function formatMoney(value) {
+    value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    value = (value / 100).toFixed(2); // Converte para duas casas decimais
+    value = value.replace('.', ',');
+    return `R$ ${value}`;
+}
+
+document.getElementById('value').addEventListener('input', function (e) {
+    this.value = formatMoney(this.value);
+});
+
+/*
+function clearErrors() {
+    const errorFields = document.querySelectorAll('.error');
+    errorFields.forEach(function (errorField) {
+        errorField.textContent = ''; // Limpa os erros anteriores
+    });
+}
+
+function displayError(fieldId, message) {
+    const errorField = document.getElementById(fieldId + '-error');
+    if (errorField) {
+        errorField.textContent = message;
+    }
+}
+
+function validateForm() {
+    clearErrors(); // Limpa os erros antes de validar
+
+    const emission_date = document.getElementById('emission_date').value.trim();
+    const expiration_date = document.getElementById('expiration_date').value.trim();
+
+    var isValid = true
+
+    emission_date = formatDateToBrazilian(emission_date); // Converter a data de nascimento YYYY/MM/DD para o formato DD/MM/YYYY
+    expiration_date = formatDateToBrazilian(emission_date); // Converter a data de nascimento YYYY/MM/DD para o formato DD/MM/YYYY
+    const birthDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    if (!birthDatePattern.test(emission_date)) {
+        displayError('emission_date', 'Data de nascimento inválida. Use o formato DD/MM/YYYY.');
+        isValid = false;
+    }
+
+    if (!birthDatePattern.test(expiration_date)) {
+        displayError('expiration_date', 'Data de nascimento inválida. Use o formato DD/MM/YYYY.');
+        isValid = false;
+    }
+
+    return isValid;
+
+    function formatDateToBrazilian(dateStr) {
+        // Converte de YYYY-MM-DD para DD/MM/YYYY
+        const date = new Date(dateStr);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }    
+}
+
+*/
