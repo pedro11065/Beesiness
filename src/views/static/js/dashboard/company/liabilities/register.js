@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                alert('Ativo registrado com sucesso!');
+                alert('Passivo registrado com sucesso!');
                 window.location.href = `/dashboard/company/${cnpj}`;
             } else {
                 const errorData = await response.json();
-                alert(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);
+                alert(`Erro: ${errorData.message || 'Não foi possível registrar o passivo.'}`);
             }
         } catch (error) {
             console.error('Erro ao enviar dados:', error);
