@@ -10,6 +10,7 @@ body {
     height: 100vh;
     width: 100vw;
     margin: 0;
+    
 }
 
 h2 {
@@ -76,6 +77,7 @@ header .exit .icon {
     align-items: center;
     justify-content: center;
     margin: 0; 
+    transform: scale(0.9);
 }
 
 .main h1 {
@@ -104,7 +106,6 @@ main .out-box {
     align-items:center;
     justify-content:center;
     background-color: white;
-    margin-top: 3rem;
     margin-bottom: 3rem;
     padding: 2rem;
     width: 90%;
@@ -273,9 +274,6 @@ h3{
 
 
 
-
-
-/* Estilos responsivos */
 @media (max-width: 40rem) {
 
     h2 {
@@ -305,93 +303,150 @@ h3{
         height: 30px;
     }
 
-    .main p {
-        color: black;
-        margin-top: 0.3rem;
-        margin-left: 0.2rem;
-        font-size: 1rem;
-        font-weight: 500;
-    }
-    .main h1 {
-        color: white;
-        margin-left: 2rem;
-        font-size: 0.9rem;
-        font-weight: 300;
-    }
-
-    .main h3 {
-        font-family: 'Inter';
-        color: rgb(0, 0, 0);
-        font-size: 1.5rem;
-        font-weight: 700;
-    }
-
-    main .out-box {
-        background-color: white;
-        margin-top: 3rem;
-        margin-bottom: 3rem;
+    .main {
+        background-color: #FFD700;
+        width: 100%;
+        height: auto;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
+        margin: 0; 
+        transform: scale(1);
+    }
+
+    
+    main .out-box {
+        align-items:center;
+        transform: scale(0.8);
+        justify-content:center;
+        background-color: white;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        width: 90%;
+        height: auto;
+        display: flex;
         border-radius: 2rem;
-        margin: 2rem 2rem;
-        padding: 1rem 2rem;
-        width: 95%;
-        height: 100%;
         box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
                     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-
     }
-
-    main .title {
-        background-color: #F3F3F3;
-        display:inline;
-        text-align: center;
-        margin-top: 0.5rem;
-        padding: 1rem 4rem;
-        border-radius: 1rem;
-    }
-
+    
+    
+    
     main .form-group {
         background-color: transparent;
+        align-items:center;
+        justify-content:center;
+        column-count: 1;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .title {
+        background-color: #F3F3F3;
+        display: flex;
         align-items: center;
         justify-content: center;
-        width: 25rem;
-        margin-bottom: 2rem;
-        padding: 0 3rem;
-    }
-    
-    main .form-container {
-        background-color: transparent;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        margin: 1.7rem 0;
-    }
-    
-    main .form-box {
-        background-color: transparent;
-        justify-content: center;
-        font-size: 1.125rem;
-        font-weight: 500;
-        text-align: center;
+        padding: 1rem 2rem;
+        border-radius: 1rem;
+        border: none;
         width: 100%;
-        height: 3rem;
-        border-color: #000;
+        height: 100%;
+        margin: 0;
+        padding: 0;
         box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
                     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     }
     
-    main .form-box-description {
+    .left-box{
+        padding: 2rem;
+        height: 90%;
         background-color: transparent;
+    }
+    
+    .double-select-box{
+        display: flex;
+        flex-wrap:nowrap;
+        flex-direction: row;
+        background-color: transparent;  
+    }
+    
+    .double-select-box .form-container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
         width: 100%;
-        min-height: 7rem; /* Define uma altura mínima */
-        font-size: 1.125rem;
+        height: 50%;
+        margin: 0;
+        padding: 0;
+        
+    }
+    
+    .right-box{
+        padding: 2rem;
+        padding-top: 0;
+        width: 80%;
+        height: 90%;
+        background-color: transparent;
+    
+    }
+    
+    main .info-box{
+        display: flex;
+        flex-wrap:nowrap;
+        flex-direction: unset;
+        justify-content:center;
+        background-color: transparent;  
+        align-content: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+    
+        
+    
+    }
+    .info-box .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        height: 50%;
+        margin: 0;
+        padding: 0;
+        
+    }
+    
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+    
+    .form-box {
+        background-color: transparent;
+        justify-content: center;
+        font-size: 1.55rem;
+        font-weight: 500;
+        text-align: center;
+        width: 92%;
+        height: 3.5rem;
+        margin: 0;
+        border: 1px solid #000;
+        box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
+                    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    }
+    
+    
+    
+    .form-box-description {
+        display: flex;
+        background-color:transparent;
+        width: 87%;
+        height: 10.3rem; 
+        font-size: 1.55rem;
         font-weight: 500;
         text-align: start;
-        padding: 0.5rem; /* Adiciona algum espaço interno ao redor do texto */
         border: 1px solid #000; /* Adiciona uma borda para visibilidade */
         box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
                     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
@@ -401,15 +456,29 @@ h3{
         line-height: 1.5; /* Define a altura da linha para melhorar a legibilidade */
     }
     
+    h3{
+        color: black;
+        font-size: 2.5rem;
+        align-self: center;
+        display:flex;
+        text-align: center;
+        align-items: center;
+        font-weight: 500;
+    }
+    
     
     .register-button {
         background-color: #FFD700;
-        margin-top: 2rem;
+        align-self: center;
+        display:flex;
+        justify-content: center;
+        text-align: center;
         padding: 0.4rem 3.6rem;
+        margin-top: 2rem;
         border-radius: 1rem;
         border: none;
-        width: 100%;
-        height: 4rem;
+        width: 96%;
+        height: 6rem;
         box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
                     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
         transition: background-color 0.3s ease;
@@ -422,5 +491,5 @@ h3{
     .register-button:focus {
         outline: 2px solid #FFD700;
     }
-
+    
 }
