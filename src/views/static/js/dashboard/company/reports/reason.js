@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const main = document.getElementById('main');
 
-
     function getCnpjFromUrl() {
         const url = window.location.pathname;
         const parts = url.split('/');
@@ -12,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const date = new Date(dateStr);
         const day = date.getDate().toString().padStart(2, '0');
         const month = date.toLocaleString('default', { month: 'long' });
-        const year = date.getFullYear()
+        const year = date.getFullYear();
         return `${day} de ${month} de ${year}`;
     }
 
@@ -35,100 +34,98 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!response.ok) {
             throw new Error('Erro na resposta da API: ' + response.statusText);
         }
-
+        
         const data = await response.json();
-
-                /* item:
-
-        "historic_id": item[0],
-        "company_id": item[1],
-        "user_id": item[2],
-        "patrimony_id": item[3],
-        "name": item[4],
-        "event": item[5],
-        "class": item[6],
-        "value": item[7],
-        "date": item[8],
-        "type": item[9],
-        "creation_date": item[10],
-        "creation_time": item[11]
-        */
-
         loading.style.display = 'none';
         main.style.display = 'inline-block';
 
         if (data.historic) {
+            // Agrupar os itens por mês
+            const groupedByMonth = {};
 
-            const monthDiv = document.createElement('section');
-            monthDiv.className = 'month-container';
-            monthDiv.id = 'monthContainer';
-
-            monthDiv.innerHTML = `
-
-            <article class="month-article">
-                <div class="month-box">
-                    <h1>Setembro</h1>
-                </div>
-                <div class="month-box">
-                    <h1>R$------</h1>
-                </div>
-            </article>
-    
-            <div class="black-line" id="black-line"></div>`
-
-            main.appendChild(monthDiv);
-            
-            data.historic.forEach((item) => {
-                // Dados retornados pelo data.historic fazendo um forEach por cada item:
-                console.log(item)
-
-                
-                const dayDiv = document.createElement('article');
-                dayDiv.className = 'day-container';
-                dayDiv.style.cursor = 'pointer';
-
-                dayDiv.addEventListener('click', function (){
-                    window.location.href = `/dashboard/${item.type}/${item.patrimony_id}`;
-                });
-                
-                dayDiv.innerHTML = `
-                    <header class="title-container">
-                        <div class="title-box">
-                            <h3>${formatDateToBrazilian(item.creation_date)} - ${item.creation_time}</h3>
-                        </div>
-                        <div class="title-box">
-                            <h3>${formatValueToMoney(item.value)}</h3>
-                        </div>
-                    </header>
-            
-                    <div class="description-container">
-                        <div class="description-box">
-                            <h4>${item.event} - ${item.class} - ${item.name}</h4>
-                        </div>
-                        <div class="description-box">
-                            <h4>${item.user_id} - Dono</h4>
-                        </div>
-                    </div>
-                `;
-        
-                monthContainer.appendChild(dayDiv);
+            data.historic.forEach(item => {
+                const month = new Date(item.creation_date).toLocaleString('default', { month: 'long' });
+                if (!groupedByMonth[month]) {
+                    groupedByMonth[month] = [];
+                }
+                groupedByMonth[month].push(item);
             });
+
+            // Criar month-container para cada mês
+            Object.keys(groupedByMonth).forEach(month => {
+                const monthDiv = document.createElement('section');
+                monthDiv.className = 'month-container';
+
+                console.log(groupedByMonth[0])
+
+                let MonthValue = 0; 
+
+                groupedByMonth[month].forEach(item => {
+                    MonthValue += parseFloat(item.value); 
+                });
+
+                const value = formatValueToMoney(MonthValue);
+
+                monthDiv.innerHTML = `
+                <article class="month-article">
+                    <div class="month-box">
+                        <h1>${month}</h1>
+                    </div>
+                    <div class="month-box">
+                        <h1>${value}</h1>
+                    </div>
+                </article>
+                <div class="black-line" id="black-line"></div>`;
+
+                // Adicionar os dias desse mês
+                groupedByMonth[month].forEach(item => {
+
+                    const dayDiv = document.createElement('article');
+                    dayDiv.className = 'day-container';
+                    dayDiv.style.cursor = 'pointer';
+
+                    dayDiv.addEventListener('click', function () {
+                        window.location.href = `/dashboard/${item.type}/${item.patrimony_id}`;
+                    });
+
+                    dayDiv.innerHTML = `
+                        <header class="title-container">
+                            <div class="title-box">
+                                <h3>${formatDateToBrazilian(item.creation_date)} - ${item.creation_time}</h3>
+                            </div>
+                            <div class="title-box">
+                                <h3>${formatValueToMoney(item.value)}</h3>
+                            </div>
+                        </header>
+                
+                        <div class="description-container">
+                            <div class="description-box">
+                                <h4>${item.event} - ${item.class} - ${item.name}</h4>
+                            </div>
+                            <div class="description-box">
+                                <h4>${item.user_id} - Dono</h4>
+                            </div>
+                        </div>
+                    `;
+
+                    monthDiv.appendChild(dayDiv);
+                });
+
+                main.appendChild(monthDiv);
+            });
+
         } else {
-            month.style.display = 'none';
             const noDataDiv = document.createElement('div');
             noDataDiv.innerHTML = `<div class="error"><h1>Sem dados disponíveis.</h1></div>`;
             main.appendChild(noDataDiv);
         }
 
     } catch (error) {
-        console.error('Erro ao carregar os dados',error);
+        console.error('Erro ao carregar os dados', error);
         loading.style.display = 'none';
-        main.style.display = 'inline-block'
-        month.style.display = 'none';
+        main.style.display = 'inline-block';
         const errorDiv = document.createElement('div');
         errorDiv.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
         main.appendChild(errorDiv);
     }
 });
-
-
