@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             expiration_date: expiration_date,
             description: description
         };
-
+        console.log(formData)
         try {
             const response = await fetch(`/dashboard/register/liability/${cnpj}`, {
                 method: 'POST',
