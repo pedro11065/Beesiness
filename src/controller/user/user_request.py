@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect
+from flask import Blueprint, request, render_template, redirect, session
 from flask_login import logout_user, login_required, current_user
 from src import cache
 
@@ -49,7 +49,6 @@ def settings():
         
     if request.method == 'GET':
         cache.delete(f'user_{current_user.id}')
-
         return render_template("user/settings.html")
 
 # -------------------------------------------------------------------------------------
@@ -57,6 +56,8 @@ def settings():
 @user_request.route('/logout')
 @login_required
 def logout():
+    cache.delete(f'user_{current_user.id}') # Deletar as entradas relacionadas ao usuário
+    session.clear() # Limpa a sessão
     logout_user()
     return redirect('/')  
 

@@ -1,12 +1,11 @@
 from flask import Blueprint, render_template, request, abort, session
 from flask_login import login_required, current_user
+from src import cache
 
 from src.controller.dashboard.company.info_reason import  info_reason
 from src.controller.dashboard.functions.user_companies import companies_info
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
-
-from src.model.database.company.patrimony.search_all import db_search_liabilities_and_assets
 
 from src.model.database.company.companies.search import db_search_company
 from src.model.database.company.user_companies.search import db_search_user_company
@@ -83,10 +82,6 @@ def register_reason_site(cnpj):
 #-----------------------------------------------------------------------------------------
 
 
-
-
-
-
 def validate_cnpj(cnpj):
     # Estas verificações são necessárias para que os usuários não burlem as empresas pelo URL.
     # Erro 404 - Página não encontrada
@@ -96,20 +91,27 @@ def validate_cnpj(cnpj):
     if len(cnpj) != 14:
         abort(404)
 
-    # Verifica se a empresa existe
-    company = db_search_company(cnpj)
-    if not company:
-        abort(404)
+    cached_relation = cache.get(f'relation_{current_user.id}_{cnpj}')
+    if cached_relation:
+        company_id, user_access_level = cached_relation
+    else:
+        # Verifica se a empresa existe
+        company = db_search_company(cnpj)
+        if not company:
+            abort(404)
 
-    # Busca as relações do usuário com a empresa usando o ID do usuário e o ID da empresa
-    user_company_relation = db_search_user_company(current_user.id, company[0][0])
+        # Busca as relações do usuário com a empresa usando o ID do usuário e o ID da empresa
+        user_company_relation = db_search_user_company(current_user.id, company[0][0])
 
-    # Se não houver relação encontrada, retorna erro 404
-    if not user_company_relation:
-        abort(403)
+        # Se não houver relação encontrada, retorna erro 404
+        if not user_company_relation:
+            abort(403)
 
-    # Desestrutura a array para pegar o company_id, user_id e o nível de acesso
-    company_id, user_id, user_access_level = user_company_relation[0]
+        # Desestrutura a array para pegar o company_id, user_id e o nível de acesso
+        company_id, _, user_access_level = user_company_relation[0]
+
+        # Armazena a relação no cache
+        cache.set(f'relation_{current_user.id}_{cnpj}', (company_id, user_access_level), timeout=600)
 
     # Verifica o nível de acesso do usuário.
     if user_access_level not in ['creator', 'editor', 'checker', 'viewer']:

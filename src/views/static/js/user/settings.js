@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Impede o envio do formulário automaticamente
     settingsForm.addEventListener('submit', (event) => {
-        event.preventDefault(); // Impede o envio padrão do formulário
+        event.preventDefault();
     });
 
     saveButton.addEventListener('click', async () => {
@@ -87,9 +87,17 @@ async function sendData() {
         if (data.success) {
             window.location.reload();
         } else {
-            displayError('password', 'Senha incorreta.');
+            if (data.cpf_error) {
+                displayError('cpf', 'CPF já está registrado.');
+            }
 
-            // Precisa de outros erros aqui, e-mail ou cpf já cadastrado.
+            if (data.email_error) {
+                displayError('email', 'Email já está registrado.');
+            }
+
+            if (data.email_error) {
+                displayError('password_error', 'Senha incorreta.');
+            }
         }
             
         
@@ -121,21 +129,26 @@ function validateForm() {
 
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
-    const cpf = document.getElementById('cpf').value.trim().replace(/\D/g, '');
+    const cpf = document.getElementById('cpf').value.trim().replace(/\D/g, ''); // Remove a máscara
     const password = document.getElementById('password').value;
     const new_password = document.getElementById('new_password').value;
     const confirm_password = document.getElementById('confirm_password').value;
 
     let isValid = true;
 
-    // Valida se os campos estão vázios
-    if (password.length == 0 || new_password.length == 0 || confirm_password.length == 0 || cpf.length == 0 || email.length == 0 || name.length == 0) {
+    // Verifica se os campos obrigatórios estão vazios
+    if (!name || !email || !cpf || !password) {
         isValid = false;
     }
 
     // Validação de nome
     if (name.length < 3) {
         displayError('name', 'Nome muito curto.');
+        isValid = false;
+    }
+
+    if (name.length > 255) {
+        displayError('name', 'Nome muito longo.');
         isValid = false;
     }
 
@@ -152,10 +165,33 @@ function validateForm() {
         isValid = false;
     }
 
-    // Validação de senha nova e confirmação de senha
-    if (new_password && confirm_password && new_password !== confirm_password) {
-        displayError('new_password', 'As senhas não coincidem.');
-        isValid = false;
+    // Validação de senha nova (se informada)
+    if (new_password) {
+        if (new_password.length < 8) {
+            displayError('new_password', 'A senha deve ter no mínimo 8 caracteres.');
+            isValid = false;
+        } else if (!/[A-Z]/.test(new_password)) {
+            displayError('new_password', 'A senha deve conter ao menos uma letra maiúscula.');
+            isValid = false;
+        } else if (!/[a-z]/.test(new_password)) {
+            displayError('new_password', 'A senha deve conter ao menos uma letra minúscula.');
+            isValid = false;
+        } else if (!/[0-9]/.test(new_password)) {
+            displayError('new_password', 'A senha deve conter ao menos um número.');
+            isValid = false;
+        } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(new_password)) {
+            displayError('new_password', 'A senha deve conter ao menos um caractere especial.');
+            isValid = false;
+        } else if (/\s/.test(new_password)) {
+            displayError('new_password', 'A senha não pode conter espaços.');
+            isValid = false;
+        }
+
+        // Validação de confirmação de senha
+        if (new_password !== confirm_password) {
+            displayError('new_password', 'As senhas não coincidem.');
+            isValid = false;
+        }
     }
 
     return isValid;
@@ -166,7 +202,7 @@ function verifyCPF(strCPF) {
     let Resto;
     Soma = 0;
 
-    if (strCPF === "00000000000") return false;
+    if(/(.)\1{10}/.test(strCPF)) return false;
 
     for (let i = 1; i <= 9; i++) {
         Soma += parseInt(strCPF.substring(i - 1, i)) * (11 - i);

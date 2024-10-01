@@ -2,13 +2,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const registerForm = document.getElementById("registroForm");
     const registerButton = registerForm.querySelector(".register-btn");
 
-    // Evento de envio do formulário
     registerForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Evita o envio padrão do formulário
+        event.preventDefault();
 
         // Chama a função de validação
         if (!validateForm()) {
-            return; // Se a validação falhar, interrompe o envio
+            return;
         }
 
         // Desabilita o botão de envio e altera o texto para "Aguarde..."
@@ -60,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     displayError('email', 'Email já está registrado.');
                 }
             }
-
         } catch (error) {
             console.error('Erro ao registrar usuário:', error);
             displayError('message', 'Um erro inesperado ocorreu, sentimos muito.');
@@ -103,6 +101,11 @@ function validateForm() {
         isValid = false;
     }
 
+    if (name.length > 255) {
+        displayError('name', 'Nome muito longo.');
+        isValid = false;
+    }
+
     // Validação de e-mail
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(email)) {
@@ -119,7 +122,7 @@ function validateForm() {
     }
 
     // Validação de CPF
-    if (cpf.length !== 11 || !validaCPF(cpf)) {
+    if (cpf.length !== 11 || !verifyCPF(cpf)) {
         displayError('cpf', 'CPF inválido.');
         isValid = false;
     }
@@ -175,12 +178,12 @@ function formatDateToBrazilian(dateStr) {
     return `${day}/${month}/${year}`;
 }
 
-function validaCPF(strCPF) {
+function verifyCPF(strCPF) {
     var Soma;
     var Resto;
     Soma = 0;
 
-    if (strCPF == "00000000000") return false;
+    if(/(.)\1{10}/.test(strCPF)) return false;
 
     for (var i = 1; i <= 9; i++) {
         Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);

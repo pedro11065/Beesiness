@@ -10,11 +10,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Evento de envio do formulário
     registerForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Evita o envio padrão do formulário
+        event.preventDefault(); 
 
-        // Chama a função de validação
+
         if (!validateCompanyForm()) {
-            return; // Se a validação falhar, interrompe o envio
+            return;
         }
 
         // Desabilita o botão de envio e altera o texto para "Aguarde..."
@@ -101,6 +101,11 @@ function validateCompanyForm() {
     // Validação de nome da empresa
     if (name.length < 3) {
         displayError('nomeEmpresa', 'Nome da empresa muito curto.');
+        isValid = false;
+    }
+
+    if (name.length > 40) {
+        displayError('nomeEmpresa', 'Nome da empresa muito longo.');
         isValid = false;
     }
 
