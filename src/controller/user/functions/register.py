@@ -7,13 +7,11 @@ from colorama import Fore, Style
 
 def process_registration(create_data):
      
-    name = create_data.get('fullname')
+    name = create_data.get('fullName')
     cpf = create_data.get('cpf')
     email = create_data.get('email')
     password = create_data.get('password')
-    data_nascimento = create_data.get('bithDate')
-
-    # Transformando a data de 2006-04-29 para 29/04/2006
+    data_nascimento = create_data.get('birthDate')
 
     errors, cpf_error, email_error = validate_cpf_and_email(cpf, email)
 
