@@ -20,8 +20,8 @@ def db_delete_company(delete_data):
     cur = conn.cursor()
 
     # Deleta os dados encontrados naquele e-mail.
-    cur.execute("DELETE FROM table_companies WHERE company_cnpj = %s", (delete_data,))
-    
+    cur.execute("DELETE FROM table_companies WHERE company_cnpj = %s", (delete_data))
+    cur.execute("DELETE FROM table_user_companies WHERE company_cnpj = %s", (delete_data))
     # Atualiza as informações.
     conn.commit()
 
