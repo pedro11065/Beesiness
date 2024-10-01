@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
             if (data.register) {
-                window.location.href = '/dashboard/'; // Redirecionar em caso de sucesso
+                window.location.href = '/dashboard/user'; // Redirecionar em caso de sucesso
                 return;
             } else {
                 if (data.cnpj_error) {

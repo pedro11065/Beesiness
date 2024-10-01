@@ -4,7 +4,7 @@ from colorama import Fore, Style
 
 from ....connect import connect_database
 
-def db_update_user(user_id, fullname, cpf, email, password_hash):
+def db_update_user(update_data,asset_id):
     db_login = connect_database() 
     
     conn = psycopg2.connect(
@@ -14,11 +14,13 @@ def db_update_user(user_id, fullname, cpf, email, password_hash):
         password=db_login[3]
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
+    
 
     print(Fore.GREEN + '[Alteração de dados] ' + Style.RESET_ALL + f'Alterando dados do usuário com user_id: {user_id}')
     try:
-        print(Fore.GREEN + '[Alteração de dados] ' + Style.RESET_ALL + f'Ação realizada com sucesso!') 
-        cur.execute("UPDATE table_users SET user_fullname = %s, user_cpf = %s, user_email = %s, user_password = %s WHERE user_id = %s;", (fullname, cpf, email, password_hash, user_id))
+
+        cur.execute("UPDATE table_assets SET value = %sd = %s WHERE asset_id = %s;", (update_data,asset_id))
+   
     except:
         print(Fore.RED + '[Alteração de dados] ' + Style.RESET_ALL + f'Dados do usuário não encontrados')
         return False

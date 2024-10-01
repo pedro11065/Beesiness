@@ -16,8 +16,18 @@ def asset_registration(asset_data, company_id):
     status = asset_data.get('status')
     description = asset_data.get('description')
 
-    db_create_asset(company_id, current_user.id, name, event, classe, acquisition_value, location, acquisition_date, description, status)
+    if event in ["Compra","Herança","Leasing","Financiamento"]:
+        print(event)
+        update_cash=True
+        print("update cash: True")
+    else: 
+        update_cash=False
+        print("update cash: False")
+
+    db_create_asset(company_id, current_user.id, name, event, classe, acquisition_value, location, acquisition_date, description, status, update_cash)
     
+    
+
 
     return jsonify('Asset registrado com sucesso!'), 200
 
