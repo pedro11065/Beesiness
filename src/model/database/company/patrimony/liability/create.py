@@ -41,7 +41,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
     cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', '{value}', '{emission_date}', '{type}');")  
 
-    cur.execute(f"UPDATE table_assets SET value = ('{value}') WHERE asset_id = '#!@cash@!#';", )
+    cur.execute(f"UPDATE table_assets SET value = ('{value}') WHERE name = '#!@cash@!#';", )
 
     # Confirma as mudanças
     conn.commit()
