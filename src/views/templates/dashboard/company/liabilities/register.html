@@ -39,90 +39,92 @@
                     <h2>Registrar Passivo</h2>
                 </div>
 
-                    <div class="form-container">
-                        <div class="msg-position"><p>Evento:</p></div>
-                        <select class="select" id="event" name="event" required>
-                            <option>Empréstimo</option>
-                            <option>Financiamento</option>
-                            <option>Leasing</option>
-                            <option>Multa</option>
-                            <option>Juros</option>
-                            <option>conta a pagar</option>
-                            <option>Impostos a pagar</option>
-                            <option>Salários a pagar</option>
-                            <option>Fornecedores</option>
-                            <option>Concessão de crédito</option>
-                            <option>Prestação de serviços</option>
-                            <option>Processos judiciais</option>
-                            <option>Outro</option>
-                            <option selected> - - - </option>
-                        </select>
+                <div class="form-container">
+                    <div class="msg-position">
+                        <p>Evento:</p>
                     </div>
-
-                    <!-- Classe -->
-                    <div class="form-container">
-                        <p class="msg-position">Classe:</p>
-                        <select class="select" id="class" name="class" required>
-                            <option selected> - - - </option>
-                            <option>INSS</option>
-                            <option>IPTU</option>
-                            <option>Conta de Luz</option>
-                            <option>Conta de Água</option>
-                            <option>Conta de Telefone</option>
-                            <option>Aluguel</option>
-                            <option>Seguro de Carro</option>
-                            <option>Seguro Residencial</option>
-                            <option>Financiamento Imobiliário</option>
-                            <option>Financiamento de Veículo</option>
-                            <option>Parcelamento de Compras</option>
-                            <option>Empréstimo Pessoal</option>
-                            <option>Taxa de Condomínio</option>
-                            <option>Multa de Trânsito</option>
-                            <option>Juros Bancários</option>
-                            <option>Fatura de Cartão de Crédito</option>
-                            <option>Contribuição Sindical</option>
-                            <option>Mensalidade Escolar</option>
-                            <option>Pagamento de funcionário</option>
-                            <option>conta</option>
-                            <option>Outros</option>
-                        </select>
-                    </div>
-                    
-                    
-                    <!-- Status -->
-                    <div class="form-container">
-                        <p class="msg-position">Forma de pagamento:</p>
-                        <select class="select" id="payment_method" name="payment_method" required>
-                            <option>Dinheiro em espécie</option>
-                            <option>Cartão de crédito</option>
-                            <option>Cartão de débito</option>
-                            <option>Pix</option>
-                            <option>Cheque</option>
-                            <option>Boleto bancário</option>
-                            <option>Criptomoedas</option>
-                            <option>Vale-alimentação</option>
-                            <option>Vale-refeição</option>
-                            <option>Vale-transporte</option>
-                            <option>Gift cards</option>
-                            <option>Carnê</option>
-                            <option>Carteira digital</option>
-                            <option>Transferência bancária</option>
-                            <option selected> - - - </option>
-                        </select>
-                    </div>
-
-                    <div class="form-container">
-                        <p class="msg-position">Status:</p>
-                        <select class="select" id="status" name="status" required>
-                            <option>Pendente</option>
-                            <option>Pago</option>
-                            <option>Em atraso</option>
-                            <option>Parcelado</option>
-                            <option>Em negociação</option>
-                            <option>Cancelado</option>
-                            <option selected> - - - </option>
-                        </select>
-                    </div>
+                    <select class="select" id="event" name="event" required>
+                        <option value="" disabled selected>- - -</option>
+                        <option>Empréstimo</option>
+                        <option>Financiamento</option>
+                        <option>Leasing</option>
+                        <option>Multa</option>
+                        <option>Juros</option>
+                        <option>Conta a pagar</option>
+                        <option>Impostos a pagar</option>
+                        <option>Salários a pagar</option>
+                        <option>Fornecedores</option>
+                        <option>Concessão de crédito</option>
+                        <option>Prestação de serviços</option>
+                        <option>Processos judiciais</option>
+                        <option>Outro</option>
+                    </select>
+                </div>
+                
+                <!-- Classe -->
+                <div class="form-container">
+                    <p class="msg-position">Classe:</p>
+                    <select class="select" id="class" name="class" required>
+                        <option value="" disabled selected>- - -</option>
+                        <option>INSS</option>
+                        <option>IPTU</option>
+                        <option>Conta de Luz</option>
+                        <option>Conta de Água</option>
+                        <option>Conta de Telefone</option>
+                        <option>Aluguel</option>
+                        <option>Seguro de Carro</option>
+                        <option>Seguro Residencial</option>
+                        <option>Financiamento Imobiliário</option>
+                        <option>Financiamento de Veículo</option>
+                        <option>Parcelamento de Compras</option>
+                        <option>Empréstimo Pessoal</option>
+                        <option>Taxa de Condomínio</option>
+                        <option>Multa de Trânsito</option>
+                        <option>Juros Bancários</option>
+                        <option>Fatura de Cartão de Crédito</option>
+                        <option>Contribuição Sindical</option>
+                        <option>Mensalidade Escolar</option>
+                        <option>Pagamento de Funcionário</option>
+                        <option>Conta</option>
+                        <option>Outros</option>
+                    </select>
+                </div>
+                
+                <!-- Forma de Pagamento -->
+                <div class="form-container">
+                    <p class="msg-position">Forma de Pagamento:</p>
+                    <select class="select" id="payment_method" name="payment_method" required>
+                        <option value="" disabled selected>- - -</option>
+                        <option>Dinheiro em espécie</option>
+                        <option>Cartão de Crédito</option>
+                        <option>Cartão de Débito</option>
+                        <option>Pix</option>
+                        <option>Cheque</option>
+                        <option>Boleto Bancário</option>
+                        <option>Criptomoedas</option>
+                        <option>Vale-Alimentação</option>
+                        <option>Vale-Refeição</option>
+                        <option>Vale-Transporte</option>
+                        <option>Gift Cards</option>
+                        <option>Carnê</option>
+                        <option>Carteira Digital</option>
+                        <option>Transferência Bancária</option>
+                    </select>
+                </div>
+                
+                <!-- Status -->
+                <div class="form-container">
+                    <p class="msg-position">Status:</p>
+                    <select class="select" id="status" name="status" required>
+                        <option value="" disabled selected>- - -</option>
+                        <option>Pendente</option>
+                        <option>Pago</option>
+                        <option>Em Atraso</option>
+                        <option>Parcelado</option>
+                        <option>Em Negociação</option>
+                        <option>Cancelado</option>
+                    </select>
+                </div>
                 </div> 
                 
                 <div class="right-box">
@@ -139,20 +141,20 @@
                         <div class="form-container">
                             <p class="msg">Valor:</p>
                             <input class="form-box" id="value" type="text" name="value" required>
-                            <p class="error" id="Value-error"></p>
+                            <p class="error" id="value-error"></p>
                         </div>
 
                         <!-- Data de Aquisição -->
                         <div class="form-container">
                             <p class="msg">Data de Emissão:</p>
-                            <input class="form-box" type="date" id="emission_date" name="emission_date" required>
+                            <input class="form-box" type="date" id="emission_date" min="1924-01-01" max="2999-12-31" name="emission_date" required>
                             <p class="error" id="emission_date-error"></p>
                         </div>
 
                         <!-- Valor de Aquisição -->
                         <div class="form-container">
                             <p class="msg">Data de vencimento:</p>
-                            <input class="form-box" type="date" id="expiration_date" name="expiration_date" required>
+                            <input class="form-box" type="date" id="expiration_date"  min="1924-01-01" max="2999-12-31" name="expiration_date" required>
                             <p class="error" id="expiration_date-error"></p>
                         </div>
 
