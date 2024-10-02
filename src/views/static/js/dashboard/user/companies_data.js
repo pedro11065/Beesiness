@@ -27,6 +27,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         loadingElement.style.display = 'none'; // Esconde o loader
 
         if (data.relação) {
+            const simbolosAcesso = {
+                'creator': '/static/images/dashboard/public/crown.png', 
+                'editor': '/static/images/dashboard/public/employee.png', 
+                'checker': '/static/images/dashboard/public/employee.png', 
+                'viewer': '/static/images/dashboard/public/employee.png'
+            };
+
+            
             data.nomes.forEach((nome, index) => {
                 const empresaDiv = document.createElement('div');
                 const cnpj = data.cnpjs[index];  // Pega o CNPJ correspondente
@@ -39,10 +47,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                     window.location.href = `/dashboard/company/${cnpj}`;  // Redireciona para a URL com o CNPJ
                 });
 
+                const nivelAcesso = data['nivel de acesso'][index]
+                const simbolosImagem = simbolosAcesso[nivelAcesso]
                 empresaDiv.innerHTML = `
                     <div class="company-data">
-                        <h1>${nome}</h1>
-                        <p>Cargo: ${data['nivel de acesso'][index]}</p>
+                        <img src="${simbolosImagem}" alt="${nivelAcesso} icon" class="icon-simbolo"/>
+                        <h1 class="nome-empresa">${nome}</h1>
                     </div>
                     <img class="icon" src="/static/images/dashboard/public/next.png" alt="Configurações">
                 `;
