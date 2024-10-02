@@ -12,19 +12,22 @@ def asset_registration(asset_data, company_id):
     name = asset_data.get('name')
     location = asset_data.get('localization')
     acquisition_date = asset_data.get('acquisitionDate')
-    acquisition_value = asset_data.get('acquisitionValue')
+    value = asset_data.get('acquisitionValue')
     status = asset_data.get('status')
     description = asset_data.get('description')
 
-    if event in ["Compra","Herança","Leasing","Financiamento"]:
-        print(event)
-        update_cash=True
-        print("update cash: True")
-    else: 
-        update_cash=False
-        print("update cash: False")
+    if event == 'Compra':
+        print('Saída')
+        update_cash='less'
 
-    db_create_asset(company_id, current_user.id, name, event, classe, acquisition_value, location, acquisition_date, description, status, update_cash)
+
+    elif event in ["Entrada de caixa","Venda","Herança"]:
+        print('Entrada')
+        update_cash='more'
+
+    print(value)
+    value = float(value)
+    db_create_asset(company_id, current_user.id, name, event, classe, value, location, acquisition_date, description, status, update_cash)
     
     
 

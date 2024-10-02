@@ -52,14 +52,13 @@ user_id UUID REFERENCES table_users(user_id),
 name varchar(100), 
 event varchar(50),
 class varchar(50),
-value varchar(25),
+value double precision,
 location varchar (100),
 acquisition_date date, /*formato = xx-xx-xxxx*/ 
 Description varchar (255),
 status varchar(100),
 criation_date DATE DEFAULT CURRENT_DATE,
 criation_time TIME DEFAULT CURRENT_TIME);
-
 
 CREATE TABLE table_liabilities
 (liability_id UUID primary key,
@@ -68,7 +67,7 @@ user_id UUID REFERENCES table_users(user_id),
 name varchar(100), 
 event varchar(50),
 class varchar(50),
-value varchar(25),
+value double precision,
 emission_date date, /*formato = xx-xx-xxxx*/ 
 expiration_date date, /*formato = xx-xx-xxxx*/ 
 payment_method varchar (50),
@@ -85,7 +84,7 @@ patrimony_id UUID,
 name varchar(100), 
 event varchar(50),
 class varchar(50),
-value varchar(25),
+value double precision,
 date varchar(10),
 type varchar(25),
 criation_date DATE DEFAULT CURRENT_DATE,

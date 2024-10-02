@@ -36,12 +36,12 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     type="liability"
 
     # Guarda os usuários na tabela de liabilities:
-    cur.execute(f"INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status) VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', '{value}', '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}');")  
+    cur.execute(f"INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status) VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}');")  
     
     # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
-    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', '{value}', '{emission_date}', '{type}');")  
+    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{type}');")  
 
-    cur.execute(f"UPDATE table_assets SET value = ('{value}') WHERE name = '#!@cash@!#';", )
+    cur.execute(f"UPDATE table_assets SET value = value  - {value} WHERE name = '#!@cash@!#';", )
 
     # Confirma as mudanças
     conn.commit()

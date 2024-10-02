@@ -15,6 +15,7 @@ def liability_registration(liability_data, company_id):
     expiration_date = liability_data.get('expiration_date')
     description = liability_data.get('description')
 
+    value = float(value)
     db_create_liability(company_id, current_user.id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status)
 
     return jsonify('Liability registrado com sucesso!'), 200
