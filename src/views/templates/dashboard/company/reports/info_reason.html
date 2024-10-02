@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informação do Patrimônio</title>
+    <link rel="stylesheet" href="../../../../../views/static/css/dashboard/company/reports/info_reason.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="user-info">
+                <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
+                <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
+                <p>{{ current_user.fullname }}</p>
+            </div>
+            <div class="logout">
+                <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
+            </div>
+        </header>
+
+        <main>
+            <section class="info-card">
+                <h1 id="nome-patrimonio">Nome do Patrimônio</h1> 
+
+                <div class="info-item">
+                    <label>Valor 💲</label>
+                    <div id="valor" class="value">R$</div>
+                </div>
+
+                <div class="info-item">
+                    <label>Status</label>
+                    <div id="status"></div>
+                </div>
+                <div class="info-item">
+                    <label>Classe</label>
+                    <div id="classe"></div>
+                </div>
+
+                <div class="info-item">
+                    <label>Data 📅</label>
+                    <div id="data"></div>
+                </div>
+
+                <div class="info-item">
+                    <label>Localização 📍</label>
+                    <div id="localizacao"></div>
+                </div>
+
+                <div class="info-item">
+                    <label>Descrição</label>
+                    <div id="descricao"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="info_reason.js"></script>
+</body>
+</html>
