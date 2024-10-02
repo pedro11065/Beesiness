@@ -81,6 +81,13 @@ header .exit .icon {
     flex-direction:row;
 }
 
+.box-article {
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: center;
+}
+
 .btn-box{
     background-color: #000000;
     padding: 2rem;
@@ -90,11 +97,23 @@ header .exit .icon {
     border-radius: 1rem;
     text-align: center;
     align-self: center;
+    font-size: 1rem;
     color: white;
     text-decoration: none;
+    cursor: pointer;
+    /* Adicionando a transição suave */
+    transition: background-color 0.3s ease, color 0.3s ease;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
+.btn-box:hover {
+    background-color: #e0af0c;
+    color: rgb(0, 0, 0);
+    box-shadow:inset rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+
 
 .box-article{
 
