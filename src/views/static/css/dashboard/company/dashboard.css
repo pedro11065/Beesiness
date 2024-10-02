@@ -14,7 +14,7 @@ html {
 
 /* Configuração básica do corpo da página */
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter';
     background-color: #FFD700;
     height: auto;
     width: auto;
@@ -73,4 +73,73 @@ header .exit .icon {
     margin-right: 20px;
     width: 30px;
     height: 30px;
+}
+
+.main{
+    display:grid;
+    margin-top: 3rem;
+    flex-direction:row;
+}
+
+.btn-box{
+    background-color: #000000;
+    padding: 2rem;
+    width: 13rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    border-radius: 1rem;
+    text-align: center;
+    align-self: center;
+    color: white;
+    text-decoration: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.box-article{
+
+    width: 100%;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+}
+.value-article{
+
+    width: 100%;
+    height: 14rem;
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items: center;
+}
+
+.value-containner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 6rem;
+    background-color: #e0bf00;
+
+    margin: 0.7rem;
+    text-align: center;
+    align-content: center;
+    color: black;
+    font-size: 0.9rem;
+    font-weight: 300;
+    justify-content: center;
+    border-radius: 2rem;
+    box-shadow: inset rgba(50, 50, 93, 0.7) 4px 4px 10px -5px, 
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+
+.value-box{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    align-content: center;
+    font-size: 1rem;
+    color: black;
+
 }

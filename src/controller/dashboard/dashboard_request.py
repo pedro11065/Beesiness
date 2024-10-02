@@ -3,7 +3,9 @@ from flask_login import login_required, current_user
 from src import cache
 
 from src.controller.dashboard.company.info_reason import  info_reason
-from src.controller.dashboard.functions.user_companies import companies_info
+from src.controller.dashboard.company.info_balance import  info_balance
+from src.controller.dashboard.company.dashboard_info import dashboard_info
+from src.controller.dashboard.user.user_companies import companies_info
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
 
@@ -23,17 +25,22 @@ dashboard_request = Blueprint('auth_dashboard', __name__, template_folder='templ
 def dashboard_user():
     if request.method == 'POST':
         return companies_info()
+    
     if request.method == 'GET':
         return render_template('dashboard/user/dashboard.html')
 
 #----------------------------------------------------------------------------------------- DASHBOARD DA EMPRESA
 
 
-@dashboard_request.route(f'/company/<cnpj>', methods=['GET']) 
+@dashboard_request.route(f'/company/<cnpj>', methods=['POST','GET']) 
 @login_required
 def dashboard_company(cnpj):
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        return dashboard_info(company_id)
+    
     if request.method == 'GET':
-        validate_cnpj(cnpj);
+        validate_cnpj(cnpj)
         return render_template('dashboard/company/dashboard.html', cnpj=cnpj)
 
 #----------------------------------------------------------------------------------------- REGISTRO DE ATIVOS
@@ -81,6 +88,19 @@ def register_reason_site(cnpj):
 
 #-----------------------------------------------------------------------------------------
 
+@dashboard_request.route('/balance/<cnpj>', methods=['POST','GET'])
+@login_required
+def balance_site(cnpj): 
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        return info_balance(company_id, cnpj)
+
+    if request.method == 'GET': 
+        validate_cnpj(cnpj)
+        return render_template('dashboard/company/reports/balance.html',cnpj=cnpj)
+
+
+#-----------------------------------------------------------------------------------------
 
 def validate_cnpj(cnpj):
     # Estas verificações são necessárias para que os usuários não burlem as empresas pelo URL.
