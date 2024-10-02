@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             const groupedByMonth = {};
 
             data.historic.forEach(item => {
-                const month = new Date(item.creation_date).toLocaleString('default', { month: 'long' });
+                const month = new Date(item.creation_date).toLocaleString('pt-BR', { month: 'long' });
                 if (!groupedByMonth[month]) {
                     groupedByMonth[month] = [];
                 }

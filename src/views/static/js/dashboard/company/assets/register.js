@@ -58,11 +58,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function formatMoney(value) {
-    value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
-    value = (value / 100).toFixed(2); // Converte para duas casas decimais
-    value = value.replace('.', ',');
-    return `R$ ${value}`;
+    value = value.replace(/\D/g, '');
+    const numericValue = parseFloat(value) / 100;
+
+    if (isNaN(numericValue)) {
+        return 'R$ 0,00';
+    }
+
+    const result = new Intl.NumberFormat('pt-BR', { 
+        style: 'currency', 
+        currency: 'BRL', 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+    }).format(numericValue);
+
+    return result;
 }
+
 
 document.getElementById('acquisition_value').addEventListener('input', function (e) {
     this.value = formatMoney(this.value);

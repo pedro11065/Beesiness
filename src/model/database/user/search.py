@@ -47,6 +47,6 @@ def db_search_user(search_data):
         "password_hash": db_data[0][3]
     }
         
-    except:
-            print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário não encontrados')
+    except Exception as error:
+            print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Houve um erro: {error}')
             return False

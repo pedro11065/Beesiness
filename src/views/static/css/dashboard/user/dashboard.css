@@ -158,7 +158,6 @@ main .box .company {
 
 main .box .company .company-data {
     justify-content:flex-start;
-
 }
 
 main .box .company-data-error {
@@ -179,8 +178,28 @@ main .box .company-data-error {
 
 }
 
-@media (max-width: 40rem) { 
+.icon-simbolo {
+    width: 60px;
+    height: 60px;
+    margin-left: 15px; /* Reduzi o espaçamento */
+}
 
+.nome-empresa {
+    color: white;
+    font-size: 24px; /* Diminuí o tamanho da fonte */
+    font-weight: bold;
+    margin-left: 20px; /* Adicionei um espaçamento entre o ícone e o nome */
+}
+
+.company-data {
+    display: flex;
+    align-items: center; /* Mantém o alinhamento vertical */
+    justify-content: flex-start; /* Garante que o ícone e o nome fiquem alinhados à esquerda */
+    padding: 10px; /* Adiciona um pequeno padding para espaçamento interno */
+}
+
+
+@media (max-width: 40rem) { 
     p {
         color: white;
         margin-left: 0.6rem;
@@ -279,5 +298,133 @@ main .box .company-data-error {
         height: 10vh; 
         border-radius: 0.5rem;
 
+    }
+
+    .icon-simbolo {
+        width: 4rem;
+        height: 4rem;
+        margin-left: 1rem;
+    }
+    
+    .nome-empresa {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-left: 1rem;
+    }
+    
+    .company-data {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px;
+    }
+    
+    @media (max-width: 40rem) { 
+        p {
+            color: white;
+            margin-left: 0.6rem;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+    
+        header .user {
+            display: flex;
+            align-items: center; 
+            gap: 0rem;
+            margin-left: 0.1rem;
+        } 
+    
+        header .user .icon {
+            margin-left: 0.4rem;
+            width: 30px;
+            height: 30px;
+        }
+    
+        .main h1 {
+            font-family: inter;
+            color: white;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+    
+        .main p {
+            font-family: inter;
+            color: white;
+            margin-top: 0.3rem;
+            margin-left: 2rem;
+            font-size: 0.7rem;
+            font-weight: 300;
+            text-shadow: #000 1px 1px 4px;
+        }
+    
+        main .box .icon {
+            margin-left: 0.4rem;
+            width: 20px;
+            height: 20px;
+        }
+    
+        main .box {
+            max-width: 800px;
+            background-color: transparent;
+            margin: 0; /* Unifica margens */
+            padding: 1rem 0; /* Reduz a margem vertical */
+            width: 95%;
+            height: 90vh; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: flex-start;
+            border-radius: 2rem;
+            box-shadow: rgba(50, 50, 93, 0) 0px 13px 27px -5px, 
+                        rgba(0, 0, 0, 0) 0px 8px 16px -8px;
+        }
+    
+        main .box .new_company {
+            margin-top: 0.3rem;
+            margin-bottom: 1rem;
+            padding-right: 1rem;
+            width: 90%;
+            height: 6vh; 
+            display: flex;
+            align-items: center; 
+            justify-content: space-between;
+            border-radius: 0.5rem;
+            border: none;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+                        rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+        }
+        
+        main .box .company, main .box .company-data-error {
+            margin: 0.5rem 0;
+            padding-right: 2rem;
+            width: 90%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+    
+        .icon-simbolo {
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+        }
+        
+        .nome-empresa {
+            font-size: 1.2rem;
+            margin-left: 0.5rem;
+        }
+    
+        .main .box .company {
+            height: auto; /* Permite ajuste dinâmico */
+        }
+    
+        .main .box .company-data {
+            flex-direction: row; /* Alterado para linha */
+            align-items: center; /* Alinhamento central */
+            justify-content: flex-start; /* Mantém alinhamento à esquerda */
+            width: 100%; /* Adiciona largura total */
+            padding: 5px; /* Reduz padding */
+        }
     }
 }

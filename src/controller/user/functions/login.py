@@ -15,8 +15,7 @@ def process_login(data):
 
     user_data = db_search_user(email)
 
-    print(Fore.GREEN + '\n[API Usuário - Registro] ' + Style.RESET_ALL + f'Dados recebidos: \nEmail/cpf: {email}\nSenha: {password}')
-    print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Pesquisa iniciada')
+    print(Fore.GREEN + '\n[API Login] ' + Style.RESET_ALL + f'Dados recebidos: \nEmail/cpf: {email}\nSenha: {password}')
 
     if user_data and check_password_hash(user_data['password_hash'], password):
         user = User(
@@ -39,5 +38,5 @@ def process_login(data):
             return jsonify({'login': True, 'company': False, 'redirect_url': '/dashboard/user'}), 200      
 
     
-    print(Fore.GREEN + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, senha incorreta ou email/cpf incorreto.')
+    print(Fore.RED + '[API Login] ' + Style.RESET_ALL + f'Login mal sucedido, a senha ou email/cpf está incorreto.')
     return jsonify({'login': False}), 200

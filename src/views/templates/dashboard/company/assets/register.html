@@ -32,41 +32,40 @@
     </header>
 
     <main class="main">
-        <div class="out-box">
-           
+        <div class="out-box">  
             <form class="form-group" id="AssetForm">
 
                 <div class="left-box">
-
                     <div class="title">
                         <h2>Registrar Ativo</h2>
                     </div>
-
+                
                     <div class="form-container">
-                        <div class="msg-position"><p>Evento:</p></div>
+                        <p class="msg-position">Evento:</p>
                         <select class="select" id="event" name="event" required>
+                            <option value="" disabled selected>- - -</option>
                             <option>Compra</option>
                             <option>Venda</option>
                             <option>Herança</option>
                             <option>Troca</option>
                             <option>Incorporação</option>
                             <option>Permuta</option>
-                            <option>Produção interna</option>
+                            <option>Produção Interna</option>
                             <option>Concessão</option>             
                             <option>Investimento</option>
                             <option>Leilão</option>
-                            <option>Restituição judicial</option>
+                            <option>Restituição Judicial</option>
                             <option>Aquisição</option>
-                            <option>Entrada de caixa</option>
-                            <option selected> - - - </option>
+                            <option>Entrada de Caixa</option>
                         </select>
                     </div>
-
+                
                     <!-- Classe -->
                     <div class="form-container">
                         <p class="msg-position">Classe:</p>
                         <select class="select" id="classe" name="classe" required>
-                            <option>Contas a receber</option>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Contas a Receber</option>
                             <option>Estoque</option>
                             <option>Matérias-Primas</option>
                             <option>Investimento</option>
@@ -84,17 +83,17 @@
                             <option>Licenças</option>
                             <option>Espaços</option>
                             <option>Caixa</option>
-                            <option selected> - - - </option>
                         </select>
                     </div>
-
+                
                     <!-- Status -->
                     <div class="form-container">
                         <p class="msg-position">Status:</p>
                         <select class="select" id="status" name="status" required>
-                            <option >Comprado</option>
-                            <option >Apreendido</option>
-                            <option >Em Uso</option>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Comprado</option>
+                            <option>Apreendido</option>
+                            <option>Em Uso</option>
                             <option>Em Manutenção</option>
                             <option>Vendido</option>
                             <option>Alugado</option>
@@ -105,10 +104,10 @@
                             <option>Doado</option>
                             <option>Empenhado</option>
                             <option>Leiloado</option>
-                            <option selected> - - - </option>
                         </select>
                     </div>
                 </div>
+                
 
                 <div class="right-box">
                     <div class="info-box">
@@ -153,11 +152,9 @@
                     <div class="form-container">
                         <button type="submit" class="register-button"><h3>Registrar</h3></button>
                     </div>
-
                 </div>
             </form>
         </div>
     </main>
 </body>
-
 </html>
