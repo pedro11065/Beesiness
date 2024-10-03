@@ -6,7 +6,7 @@ from src.model.database.company.user_companies.search_all import db_search_user_
 from src import cache
 
 @cache.cached(timeout=30)  # Guarda as informações por 30 segundos
-def companies_info():
+def info_user_companies():
     data = db_search_user_companies_with_company_info(current_user.id)
     
     if data:

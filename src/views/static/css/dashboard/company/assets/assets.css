@@ -1,0 +1,201 @@
+html {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    font-size: 16px; /* Melhor controle de fontes em responsividade */
+}
+
+/* Remove margem e padding padrão de todos os elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Configuração básica do corpo da página */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    height: auto;
+    width: 100%;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+h4 {
+    color: black;
+    font-size: 0.7rem;
+    display:block;
+    font-weight: 500;
+}
+
+h2 {
+    color: black;
+    font-size: 1.7rem;
+    display:block;
+    font-weight: 500;
+}
+
+h1 {
+    color: rgb(0, 0, 0);
+    font-size: 1rem;
+    display:block;
+    font-weight: 600;
+}
+
+p {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+#loading {
+    display: none;
+    font-size: 1.5rem;
+    color: #000000;
+    text-align: center;
+    margin: 50px;
+}
+
+.header {
+    background-color: #121212;
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header .user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header .user .icon {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+header .exit {
+    display: flex;
+    align-items: center;
+}
+
+header .exit .icon {
+    background-color: #121212;
+    margin-right: 20px;
+    width: 30px;
+    height: 30px;
+}
+
+.menu-container{
+    background-color: #FFD700;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    padding-left: 1rem;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+} 
+
+.register-box{
+    background-color: #272727;
+    color:white;
+    display: flex;
+    width: 7rem;
+    height: 70%;
+    margin-right: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.7rem;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.register-box:hover {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color:#7e7e7e;
+    box-shadow:inset rgba(50, 50, 93, 0.55) 17px 13px 17px -5px, 
+    rgba(0, 0, 0, 0.3) 17px 8px 26px -8px;
+}
+
+.info-box{
+    background-color: #D9B805;
+    color:black;
+    display: flex;
+    width: 7rem;
+    height: 70%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.7rem;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: rgb(0, 0, 0,0.25) 0px 4px 4px 0px inset}
+
+.main{
+    display:flex;  
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+
+}
+
+.titles-container{
+    background-color: aquamarine;
+    display:flex;  
+    flex-direction: row;
+    width: 100%;
+    height: 3rem;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 0.5rem;
+
+}
+
+.box-title-p{
+    background-color: antiquewhite;
+    display:flex;  
+    margin-left: 2rem;
+    margin-right: 2rem;
+    width: 4rem;
+    height: 1.5rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.box-title-m{
+    background-color: bisque;
+    display:flex; 
+    margin-left: 2rem;
+    margin-right: 2rem; 
+    padding-left:7rem;
+    padding-right:7rem;
+    width: 4rem;
+    height: 1.5rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.box-title-g{
+    background-color: blanchedalmond;
+    display:flex;  
+    margin-left: 2rem;
+    margin-right: 2rem;
+    width: 4rem;
+    height: 1.5rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}

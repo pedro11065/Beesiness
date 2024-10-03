@@ -2,18 +2,19 @@ from flask import Blueprint, render_template, request, abort, session
 from flask_login import login_required, current_user
 from src import cache
 
+from src.controller.dashboard.company.info_assets import info_assets
 from src.controller.dashboard.company.info_reason import  info_reason
 from src.controller.dashboard.company.info_balance import  info_balance
-from src.controller.dashboard.company.dashboard_info import dashboard_info
-from src.controller.dashboard.user.user_companies import companies_info
+from src.controller.dashboard.company.info_dashboard import info_dashboard
+from src.controller.dashboard.company.info_liabilities import info_liabilities
+from src.controller.dashboard.user.info_user_companies import info_user_companies
+
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
 
 from src.model.database.company.companies.search import db_search_company
 from src.model.database.company.user_companies.search import db_search_user_company
 
-from src.model.database.company.patrimony.liability.search import db_search_liability
-from src.model.database.company.patrimony.asset.search import db_search_asset
 
 
 
@@ -27,7 +28,7 @@ dashboard_request = Blueprint('auth_dashboard', __name__, template_folder='templ
 @login_required
 def dashboard_user():
     if request.method == 'POST':
-        return companies_info()
+        return info_user_companies()
     
     if request.method == 'GET':
         return render_template('dashboard/user/dashboard.html')
@@ -40,7 +41,7 @@ def dashboard_user():
 def dashboard_company(cnpj):
     if request.method == 'POST':
         company_id = session.get('company_id')
-        return dashboard_info(company_id)
+        return info_dashboard(company_id)
     
     if request.method == 'GET':
         validate_cnpj(cnpj)
@@ -119,6 +120,41 @@ def asset_information(cnpj, type, uuid):
 
 #-----------------------------------------------------------------------------------------
 
+@dashboard_request.route('assets/<cnpj>', methods=['POST','GET'])
+@login_required
+def assets_site(cnpj): 
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        return info_assets(company_id)
+
+    if request.method == 'GET': 
+        validate_cnpj(cnpj)
+        return render_template('dashboard/company/assets/assets.html',cnpj=cnpj)
+
+#-----------------------------------------------------------------------------------------
+#   
+@dashboard_request.route('liabilities/<cnpj>', methods=['POST','GET'])
+@login_required
+def liabilities_site(cnpj): 
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        return info_liabilities(company_id)
+
+    if request.method == 'GET': 
+        validate_cnpj(cnpj)
+        return render_template('dashboard/company/liabilities/liabilities.html',cnpj=cnpj)
+    
+#-----------------------------------------------------------------------------------------
+"""
+@dashboard_request.route('/company/<cnpj>/authorization', methods=['POST','GET'])
+@login_required
+def authorization_site(cnpj):
+    if request.method == 'GET': 
+        validate_cnpj(cnpj)
+
+        return render_template('dashboard/company/authorization/authorization.html')
+"""
+#-----------------------------------------------------------------------------------------
 
 def validate_cnpj(cnpj):
     # Estas verificações são necessárias para que os usuários não burlem as empresas pelo URL.
