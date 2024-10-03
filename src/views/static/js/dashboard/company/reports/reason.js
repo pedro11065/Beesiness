@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const cnpj = getCnpjFromUrl();
+    main.style.display = 'none';
     loading.style.display = 'block';
 
     try {
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         
         const data = await response.json();
         loading.style.display = 'none';
-        main.style.display = 'inline-block';
+        main.style.display = 'flex';
 
         if (data.historic) {
             // Agrupar os itens por mês
@@ -67,15 +68,24 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const value = formatValueToMoney(MonthValue);
 
                 monthDiv.innerHTML = `
-                <article class="month-article">
-                    <div class="month-box">
-                        <h1>${month}</h1>
-                    </div>
-                    <div class="month-box">
-                        <h1>${value}</h1>
-                    </div>
-                </article>
-                <div class="black-line" id="black-line"></div>`;
+             
+                <header class="month-title-container" id="month-title-container">
+            
+                    <article class="month-title-box">
+        
+                        <div class="month-box">
+                            <h1>${month}</h1>
+                        </div>
+        
+                        <div class="month-box">
+                            <h1>${value}</h1>
+                        </div>
+        
+                    </article>
+    
+                </header>
+        
+                `;
 
                 // Adicionar os dias desse mês
                 groupedByMonth[month].forEach(item => {

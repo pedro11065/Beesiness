@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         return parts[parts.length - 1];
     }
 
+    function formatValueToMoney(valueStr) {
+        const valueNum = parseFloat(valueStr);
+        return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
     const cnpj = getCnpjFromUrl();
     try {
         const response = await fetch(`/dashboard/company/${cnpj}`, {
@@ -28,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         ValueDiv.innerHTML = `
             <div class="value-box">
-                <div class="value"><h3>Caixa atual: R$${data.value}</h3></div>
+                <div class="value"><h3>Caixa atual: ${formatValueToMoney(data.value)}</h3></div>
             </div>
         `;
 

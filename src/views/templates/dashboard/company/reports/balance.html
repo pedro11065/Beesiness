@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Razão</title>
+    <title>Balancete</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/reason.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/balance.css') }}">
 
     <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
@@ -14,10 +14,11 @@
     <!-- Fonte Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
 
-    <script src="{{ url_for('static', filename='js/dashboard/company/reports/reason.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/dashboard/company/reports/balance.js') }}" defer></script>
 </head>
 
 <body>
+
     <header class="header">
 
         <div class="user">
@@ -31,3 +32,122 @@
         </a>
 
     </header>
+
+    <menu class="menu-container" id="menuContainer">
+        <div class="menu-box">
+            <a>Dia</a>
+        </div>
+        <div class="menu-box">
+            <a>Mês</a>
+        </div>
+        <div class="menu-box">
+            <a>Ano</a>
+        </div>
+    </menu>
+    
+    <main class="main" id="main"> 
+
+    <section class="month-container" id="month-container">
+
+        <header class="month-title-container" id="month-title-container">
+            
+            <article class="month-title-box">
+
+                <div class="month-box">
+                    <h1>Setembro</h1>
+                </div>
+
+                <div class="month-box">
+                    <h1>R$600.00</h1>
+                </div>
+
+            </article>
+
+        </header>
+
+
+        <article class="day-container" id="day-container">
+
+            <header class="day-title-container">
+
+                <div class="title-box">
+                    <h3>16 de setembro de 2024</h3>
+                </div>
+
+                <div class="title-box">
+                    <h3>R$600.00</h3>
+                </div>
+
+            </header>
+
+            <main class="balance-container" id="balance-container">
+
+                <section class="accounts-container" id="account-name">
+
+                    <header class="account-title" id="account-title">
+                        <h1>Contas</h1>
+                    </header>
+
+                    <div class="data_box">
+                        Empréstimo
+                    </div>
+                    
+                    <div class="data_box">
+                        Caixa
+                    </div>
+
+                    <div class="data_box">
+                        Total
+                    </div>
+
+                </section>
+
+                <section class="accounts-container" id="account-debtor">
+
+                    <header class="debtor-title" id="debtor-title">
+                        <h1>Saldo devedor</h1>
+                    </header>
+
+                    <div class="data_box">
+                        R$400,00
+                    </div>
+                    
+                    <div class="data_box">
+                        R$ - - - -
+                    </div>
+
+                    <div class="data_box">
+                        R$400,00
+                    </div>
+
+                </section>
+
+                <section class="accounts-container" id="accounts-creditor">
+
+                    <header class="creditor-title" id="creditor-title">
+                        <h1>Saldo credor</h1>
+                    </header>
+
+                    <div class="data_box">
+                        R$ - - - -
+                    </div>
+                    
+                    <div class="data_box">
+                        R$1000,00
+                    </div>
+
+                    <div class="data_box">
+                        R$1000,00
+                    </div>
+
+                </section>
+
+            </main>
+
+        </article>
+        
+    </section>
+
+    </main>
+
+<body>

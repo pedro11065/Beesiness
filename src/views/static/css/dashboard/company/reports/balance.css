@@ -30,6 +30,13 @@ h4 {
     font-weight: 500;
 }
 
+h3 {
+    color: black;
+    font-size: 1rem;
+    display:block;
+    font-weight: 500;
+}
+
 h2 {
     color: black;
     font-size: 1.7rem;
@@ -39,9 +46,9 @@ h2 {
 
 h1 {
     color: black;
-    font-size: 1.7rem;
+    font-size: 1.3rem;
     display:block;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 p {
@@ -89,4 +96,227 @@ header .exit .icon {
     margin-right: 20px;
     width: 30px;
     height: 30px;
+}
+
+
+.menu-container{
+    background-color: #FFD700;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    padding-left: 1rem;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+} 
+
+.menu-box{
+    background-color: white;
+    display: flex;
+    width: 6rem;
+    height: 40%;
+    margin-right: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+}
+
+.menu-box:hover {
+    background-color: rgb(34, 34, 34);
+    color: white;
+    box-shadow:inset rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.main{
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+
+}
+
+.error{
+    display:flex;
+    width: 100%;
+    height: 100%;
+    margin-top: 5rem;
+    align-items: center;
+    justify-content: center;
+}
+.month-container{
+    display:inline-block;
+    width: 95%;
+    height: auto;
+    margin-top: 1.5rem;
+    padding-top: 0.3rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+    
+}
+
+.month-title-container{
+    display: flex;
+    background-color: #EDEDED;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.4rem;
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.month-title-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 2.3rem;
+
+}
+
+.month-box{
+    display: flex;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding-bottom: 0.2rem;
+    align-items: center;
+}
+
+
+.day-container{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    margin-bottom: 3rem;
+    width: 100%;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    border-radius: 1rem;
+
+
+}
+
+.day-title-container{
+    background-color: #FBFBFB;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 2rem;
+    font-size: small;
+    padding-top: 0.5rem;
+    border-top-left-radius: 0.6rem;
+    border-top-right-radius: 0.6rem;
+}
+
+.title-box{
+    margin-left: 1.3rem;
+    margin-right: 1.3rem;
+    margin-bottom: 0.7rem;
+    margin-top: 0.3rem;
+
+}
+
+.balance-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-height: 10rem;
+    width: 95%;
+    column-count: 3;
+    column-rule: #000000;
+    column-rule-width: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.accounts-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    width: 33.33%;
+    height: auto;
+}
+
+.accounts-container:nth-child(2) {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+  }
+
+.account-title{
+    background-color: #FFD700;
+    display: flex;
+    width: 80%;
+    height: 2.5rem;
+    margin-bottom: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+}
+
+.debtor-title{
+    background-color: #DC5D5D;
+    display: flex;
+    width: 80%;
+    height: 2.5rem;;
+    margin-bottom: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+}
+
+.creditor-title{
+    background-color: #71E167;
+    display: flex;
+    width: 80%;
+    height: 2.5rem;
+    margin-bottom: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    color: #000000;
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+}
+
+
+.data_box{
+    display: flex;
+    width: 100%;
+    height: 3rem; 
+    border-bottom: 1px solid black;
+    font-weight: 600;
+    font-size: 17px;
+    color: #000000;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    
+}
+
+.accounts-container .data_box:first-of-type {
+    border-top: 1px solid black; /* Borda superior apenas na primeira caixa */
+}
+
+.accounts-container .data_box:last-of-type {
+    border-bottom: 0px solid black; /* Borda superior apenas na primeira caixa */
+    margin-bottom: 1=0.8rem;
 }
