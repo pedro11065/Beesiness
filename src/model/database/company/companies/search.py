@@ -40,7 +40,7 @@ def db_search_company(search_data):
 
     try:
         if db_data:
-            print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Dados da empresa encontrados com sucesso!')
+            print(Fore.CYAN + '[Banco de dados] ' + Fore.GREEN + 'Dados da empresa encontrados com sucesso!' + Style.RESET_ALL)
 
             cache.set(f'company_{search_data}', db_data, timeout=600) # Armazena a empresa no cache
             return db_data

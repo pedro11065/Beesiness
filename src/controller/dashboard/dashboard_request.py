@@ -111,6 +111,10 @@ def asset_information(cnpj, type, uuid):
     if request.method == 'GET': 
         validate_cnpj(cnpj)
         
+        # Se formos fazer desta forma mesmo, temos algumas coisas para resolver: 
+        # 1. O db_search_liability e db_search_asset busca apenas o uuid de empresas e esse uuid é do asset ou liability, precisamos mudar o código de search do banco de dados.
+        # 2. Caso info não exista, provavelmente dará erro, podemos fazer um if e elif para evitar que isso ocorra, se existir dado: manda pra página, se não houver: ?
+        
         return render_template('dashboard/company/reports/info_reason.html')
 
 #-----------------------------------------------------------------------------------------

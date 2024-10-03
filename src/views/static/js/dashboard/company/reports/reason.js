@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         
         const data = await response.json();
+
         loading.style.display = 'none';
         main.style.display = 'flex';
 
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     <article class="month-title-box">
         
                         <div class="month-box">
-                            <h1>${month}</h1>
+                            <h1>${month.charAt(0).toUpperCase() + month.slice(1)}</h1>
                         </div>
         
                         <div class="month-box">
@@ -69,7 +70,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 // Adicionar os dias desse mês
                 groupedByMonth[month].forEach(item => {
-
                     const dayDiv = document.createElement('article');
                     dayDiv.className = 'day-container';
                     dayDiv.style.cursor = 'pointer';
@@ -131,7 +131,7 @@ function getCnpjFromUrl() {
 function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
     const date = new Date(dateStr);
     const day = date.getDate().toString().padStart(2, '0');
-    const month = date.toLocaleString('default', { month: 'long' });
+    const month = date.toLocaleString('pt-BR', { month: 'long' });
     const year = date.getFullYear();
     return `${day} de ${month} de ${year}`;
 }

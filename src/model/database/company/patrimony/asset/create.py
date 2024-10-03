@@ -31,7 +31,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, location, a
     # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
     cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value}, '{acquisition_date}', '{type}');")  
 
-    print(update_cash)
+    print(f'O dinheiro atual é: {update_cash}')
     if update_cash=='more':
         cur.execute(f"UPDATE table_assets SET value = value + {value} WHERE name = '#!@cash@!#'")
     
