@@ -21,7 +21,7 @@ def asset_registration(asset_data, company_id):
         update_cash='less'
 
 
-    elif event in ["Entrada de caixa","Venda","Herança"]:
+    elif event in ["Entrada de Caixa","Venda","Herança"]:
         print('Entrada')
         update_cash='more'
 
