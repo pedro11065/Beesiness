@@ -181,21 +181,21 @@ main .box .company-data-error {
 .icon-simbolo {
     width: 60px;
     height: 60px;
-    margin-left: 15px; /* Reduzi o espaçamento */
+    margin-left: 15px;
 }
 
 .nome-empresa {
     color: white;
-    font-size: 24px; /* Diminuí o tamanho da fonte */
+    font-size: 24px;
     font-weight: bold;
-    margin-left: 20px; /* Adicionei um espaçamento entre o ícone e o nome */
+    margin-left: 20px;
 }
 
 .company-data {
     display: flex;
-    align-items: center; /* Mantém o alinhamento vertical */
-    justify-content: flex-start; /* Garante que o ícone e o nome fiquem alinhados à esquerda */
-    padding: 10px; /* Adiciona um pequeno padding para espaçamento interno */
+    align-items: center;
+    justify-content: flex-start; 
+    padding: 10px;
 }
 
 
@@ -368,8 +368,8 @@ main .box .company-data-error {
         main .box {
             max-width: 800px;
             background-color: transparent;
-            margin: 0; /* Unifica margens */
-            padding: 1rem 0; /* Reduz a margem vertical */
+            margin: 0; 
+            padding: 1rem 0;
             width: 95%;
             height: 90vh; 
             display: flex;
@@ -416,15 +416,15 @@ main .box .company-data-error {
         }
     
         .main .box .company {
-            height: auto; /* Permite ajuste dinâmico */
+            height: auto; 
         }
     
         .main .box .company-data {
-            flex-direction: row; /* Alterado para linha */
-            align-items: center; /* Alinhamento central */
-            justify-content: flex-start; /* Mantém alinhamento à esquerda */
-            width: 100%; /* Adiciona largura total */
-            padding: 5px; /* Reduz padding */
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            padding: 5px;
         }
     }
 }

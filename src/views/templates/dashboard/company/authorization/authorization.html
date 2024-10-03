@@ -1,0 +1,45 @@
+
+<!-- Se puder na próxima explicar para que vai servir o arquivo com a palavra batata, eu agradeceria, valeu! -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/authorization/authorization.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <script src="{{ url_for('static', filename='js/dashboard/company/authorization/authorization.js') }}" defer></script>
+</head>
+<body>   
+    <header class="header">
+
+        <div class="user">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
+            <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
+        </div>
+
+        <a href="/" class="exit">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
+        </a>
+    </header>
+
+    <main class="main">
+        <form id="registroForm" action="/user/register" method="post">
+            <div class="form-group">
+                <label for="cpf">CPF</label>
+                <input type="text" id="name" name="cpf" required>
+                <p class="error" id="name-error"></p>
+            </div>
+        </form>
+
+        <section class="container">
+            <div class="add_box">Adicionar</div>
+        </section>
+    </main>
+</body>
