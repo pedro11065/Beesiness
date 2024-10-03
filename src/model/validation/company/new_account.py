@@ -17,8 +17,6 @@ def email_check(email):
     return False
 
 def verify_all(cnpj, email):
-    print(Fore.MAGENTA + '[Verificação - Empresa] ' + Style.RESET_ALL + 'Iniciando verificação dos dados!\n')
-
     # Realiza as verificações
     email_error = email_check(email)
     cnpj_error = cnpj_check(cnpj)

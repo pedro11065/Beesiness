@@ -22,7 +22,7 @@ def db_search_user_company(user_id, company_id):
             cur.execute(query, (user_id,))
         else:
             # Se company_id for fornecido, busque a relação específica
-            print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando relação do usuário com a empresa com o id de usuário: {user_id} e company_id: {company_id}')
+            print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Buscando relação do usuário ({user_id}) com a empresa ({company_id})...  ')
             query = "SELECT * FROM table_user_companies WHERE user_id = %s AND company_id = %s"
             cur.execute(query, (user_id, company_id))
         

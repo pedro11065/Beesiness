@@ -1,25 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const main = document.getElementById('main');
 
-    function getCnpjFromUrl() {
-        const url = window.location.pathname;
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-    }
-
-    function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
-        const date = new Date(dateStr);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = date.toLocaleString('default', { month: 'long' });
-        const year = date.getFullYear();
-        return `${day} de ${month} de ${year}`;
-    }
-
-    function formatValueToMoney(valueStr) {
-        const valueNum = parseFloat(valueStr);
-        return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
     const cnpj = getCnpjFromUrl();
     main.style.display = 'none';
     loading.style.display = 'block';
@@ -84,7 +65,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                     </article>
     
                 </header>
-        
                 `;
 
                 // Adicionar os dias desse mês
@@ -95,7 +75,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                     dayDiv.style.cursor = 'pointer';
 
                     dayDiv.addEventListener('click', function () {
-                        window.location.href = `/dashboard/${item.type}/${item.patrimony_id}`;
+                        sessionStorage.setItem('patrimonioData', JSON.stringify(item)); 
+
+                        window.location.href = `/dashboard/${cnpj}/${item.type}/${item.patrimony_id}`;
                     });
 
                     dayDiv.innerHTML = `
@@ -139,3 +121,22 @@ document.addEventListener('DOMContentLoaded', async function () {
         main.appendChild(errorDiv);
     }
 });
+
+function getCnpjFromUrl() {
+    const url = window.location.pathname;
+    const parts = url.split('/');
+    return parts[parts.length - 1];
+}
+
+function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
+    const date = new Date(dateStr);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    return `${day} de ${month} de ${year}`;
+}
+
+function formatValueToMoney(valueStr) {
+    const valueNum = parseFloat(valueStr);
+    return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}

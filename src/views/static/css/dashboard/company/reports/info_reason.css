@@ -10,7 +10,8 @@ body {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 100%;
+    width: 400px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -26,15 +27,14 @@ header {
 }
 
 .user-info {
-
     display: flex;
-    background-color: black;
     align-items: center;
+    background-color: black;
 }
 
 .user-info img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     margin-right: 10px;
 }
@@ -44,12 +44,17 @@ header {
     color: white;
 }
 
-.logout a {
-    text-decoration: none;
-    color: white;
-    font-size: 1.2rem;
+header .exit {
+    display: flex;
+    align-items: center;
 }
 
+header .exit .icon {
+    background-color: #121212;
+    margin-right: 20px;
+    width: 29px;
+    height: 29px;
+}
 
 main {
     background-color: white;
@@ -70,7 +75,7 @@ main {
     margin-bottom: 10px;
     padding: 0;
     background-color: #f0f0f0;
-    border-radius: 0 0 5px 5px;
+    border-radius: 5px;
     overflow: hidden;
     min-height: 50px;
     transition: height 0.3s ease;
@@ -109,13 +114,33 @@ main {
     margin-top: 5px;
 }
 
-
+/* Responsividade para telas menores */
 @media (max-width: 768px) {
     .container {
         padding: 10px;
+        width: 100%; 
     }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .user-info img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .info-card h1 {
+        font-size: 1.2rem;
+    }
+
     .info-item .value {
         font-size: calc(1rem + 0.2vw); 
         line-height: 1.4;
+    }
+
+    .info-item label {
+        font-size: 1rem;
     }
 }

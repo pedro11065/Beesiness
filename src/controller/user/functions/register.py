@@ -22,5 +22,5 @@ def process_registration(create_data):
     else:
         hashed_password = generate_password_hash(password)
         db_create_user(name, cpf, email, hashed_password, data_nascimento)
-        print(Fore.GREEN + '[API Usuário - Registro] ' + Style.RESET_ALL + 'Registrado com sucesso!')
+        print(Fore.GREEN + '[API Usuário - Registro] ' + Style.RESET_ALL + 'Cadastro realizado com sucesso!')
         return jsonify({"register": True}), 200

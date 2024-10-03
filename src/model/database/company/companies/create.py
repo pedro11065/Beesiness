@@ -6,7 +6,7 @@ from ...connect import connect_database
 
 def db_create_company(nome, user_id, email, cnpj, hashed_password): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     
-    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando nova empresa - create_company')
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando a empresa no banco de dados...')
 
     db_login = connect_database() # Coleta os dados para conexão
     

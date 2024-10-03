@@ -5,7 +5,7 @@ from colorama import Fore, Style
 from ..connect import connect_database
 
 def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
-    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando novo usuário - create_user')
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando novo usuário...')
     
     db_login = connect_database() # Coleta os dados para conexão
     
@@ -32,5 +32,3 @@ def db_create_user(fullname, cpf, email, password, birthday): # Cria um usuário
     # Fecha o cursor e encerra a conexão.
     cur.close()
     conn.close()
-
-    print(Fore.GREEN + '[Banco de dados] ' + Style.RESET_ALL + 'Usuário registrado com sucesso!')

@@ -5,7 +5,7 @@ from ...connect import connect_database
 
 def db_delete_company(delete_data):
 
-    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Registrando nova empresa - create_company')
+    print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Deletando empresa - delete_company')
 
     db_login = connect_database() # Coleta os dados para conexão
 

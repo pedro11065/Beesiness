@@ -17,13 +17,11 @@ def db_search_user(search_data):
 
     if len(search_data) == 11 and search_data.isdigit() : # CPF
         print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário com cpf ou email: {search_data}')
-
         cur.execute(f"SELECT * from table_users WHERE user_cpf = '{search_data}' or user_email = '{search_data}';")
         db_data = cur.fetchall()
     
     elif '@' in search_data and not search_data.isdigit():  # Email
         print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando dados do usuário via e-mail: {search_data}')
-
         cur.execute(f"SELECT * from table_users WHERE user_email = '{search_data}';")
         db_data = cur.fetchall()
     
@@ -37,8 +35,11 @@ def db_search_user(search_data):
     conn.close();
 
     try:
-        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados do usuário encontrados com sucesso!')
-
+        if not db_data:
+            print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + 'Nenhum usuário encontrado.')
+            return False
+    
+        print(Fore.CYAN + '[Banco de dados] ' + Fore.GREEN + f'Dados do usuário encontrados com sucesso!' + Style.RESET_ALL)
         return {
         "id": db_data[0][0],
         "fullname": db_data[0][1],
