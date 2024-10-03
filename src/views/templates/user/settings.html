@@ -27,24 +27,24 @@
         <h1>Configurações da Conta</h1>
         <form id="settingsForm" action="/user/settings" method="post">
             <div class="form-group">
-                <label for="name">Nome</label>
+                <label for="name">Nome <a>*</a></label>
                 <input type="text" id="name" name="name" value="{{ current_user.fullname }}" required>
                 <p class="error" id="name-error"></p>
             </div>
 
             <div class="form-group">
-                <label for="email">E-mail</label>
+                <label for="email">E-mail <a>*</a></label>
                 <input type="email" id="email" name="email" value="{{ current_user.email }}" required>
             </div>
 
             <div class="form-group">
-                <label for="cpf">CPF</label>
+                <label for="cpf">CPF <a>*</a></label>
                 <input type="text" id="cpf" name="cpf" value="{{ current_user.cpf }}" maxlength="14" required>
                 <p class="error" id="cpf-error"></p>
             </div>
 
             <div class="form-group">
-                <label for="password">Senha atual</label>
+                <label for="password">Senha atual <a>*</a></label>
                 <input type="password" id="password" name="password" placeholder="Digite sua senha atual" required>
                 <p class="error" id="password-error"></p>
             </div>
@@ -56,7 +56,7 @@
             </div>
 
             <div class="form-group">
-                <label for="confirm_password">Confirmar nova senha</label>
+                <label for="confirm_password">Confirmar nova senha</label> 
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirme a nova senha">
             </div>
 

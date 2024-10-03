@@ -8,12 +8,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beesiness</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/authorization/authorization.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-    <script src="{{ url_for('static', filename='js/dashboard/company/dashboard.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/dashboard/company/authorization/authorization.js') }}" defer></script>
 </head>
 <body>   
     <header class="header">
@@ -30,43 +30,16 @@
     </header>
 
     <main class="main">
+        <form id="registroForm" action="/user/register" method="post">
+            <div class="form-group">
+                <label for="cpf">CPF</label>
+                <input type="text" id="name" name="cpf" required>
+                <p class="error" id="name-error"></p>
+            </div>
+        </form>
 
-        <article class="box-article" id="buttons-article">
-
-            <a class="btn-box" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}">
-                Registrar ativo
-            </a>
-        
-            <a class="btn-box" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}">
-                Registrar passivo
-            </a>
-        
-            <a class="btn-box" href="{{ url_for('auth_dashboard.register_reason_site', cnpj=cnpj) }}">
-                Razão
-            </a>
-        
-            <a class="btn-box" href="{{ url_for('auth_dashboard.balance_site', cnpj=cnpj) }}">
-                Balancete
-            </a>
-
-            <a class="btn-box" href="{{ url_for('auth_dashboard.authorization_site', cnpj=cnpj) }}">
-                Permissão
-            </a>
-        
-        </article>
-        
-
-        
-        <article class="value-article" id="value-article">
-
-
-            
-        </article>
-        
+        <section class="container">
+            <div class="add_box">Adicionar</div>
+        </section>
     </main>
-
-    
-    
-    
-    
 </body>

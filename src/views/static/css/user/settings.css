@@ -19,8 +19,8 @@ body {
   padding: 2rem;
   text-align: center;
   box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 400px;
+  width: auto;
+  max-width: auto;
   transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
 }
 
@@ -30,8 +30,14 @@ h1 {
   color: #333;
 }
 
+a {
+  justify-content: center;
+  align-items: center;
+  color: red
+}
+
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.7rem;
   text-align: left;
 }
 
