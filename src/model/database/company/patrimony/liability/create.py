@@ -15,7 +15,7 @@ from colorama import Fore, Style
 from ....connect import connect_database
 
 
-def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
+def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
 
     db_login = connect_database() # Coleta os dados para conexão
     
@@ -41,7 +41,13 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
     cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{type}');")  
 
-    cur.execute(f"UPDATE table_assets SET value = value  - {value} WHERE name = '#!@cash@!#';", )
+    if update_cash=='more':
+        cur.execute(f"UPDATE table_assets SET value = value + {value} WHERE name = '#!@cash@!#'")
+    
+
+    if update_cash=='less':
+        cur.execute(f"UPDATE table_assets SET value = value - {value} WHERE name = '#!@cash@!#'")
+
 
     # Confirma as mudanças
     conn.commit()
