@@ -15,7 +15,7 @@ def db_search_liability(company_id):
 
     print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando liabilities para a empresa com company_id: {company_id}')
 
-    cur.execute(f"SELECT * FROM table_liabilities WHERE company_id = '{company_id}' ORDER BY criation_date DESC, criation_time DESC;;")
+    cur.execute(f"SELECT * FROM table_liabilities WHERE company_id = '{company_id}' ORDER BY creation_date DESC, creation_time DESC;;")
     db_data = cur.fetchall()
 
     conn.commit()

@@ -57,8 +57,8 @@ location varchar (100),
 acquisition_date date, /*formato = xx-xx-xxxx*/ 
 Description varchar (255),
 status varchar(100),
-criation_date DATE DEFAULT CURRENT_DATE,
-criation_time TIME DEFAULT CURRENT_TIME);
+creation_date DATE DEFAULT CURRENT_DATE,
+creation_time TIME DEFAULT CURRENT_TIME);
 
 CREATE TABLE table_liabilities
 (liability_id UUID primary key,
@@ -73,8 +73,8 @@ expiration_date date, /*formato = xx-xx-xxxx*/
 payment_method varchar (50),
 description varchar (255),
 status varchar(100),
-criation_date DATE DEFAULT CURRENT_DATE,
-criation_time TIME DEFAULT CURRENT_TIME);
+creation_date DATE DEFAULT CURRENT_DATE,
+creation_time TIME DEFAULT CURRENT_TIME);
 
 CREATE TABLE table_historic
 (historic_id UUID primary key,
@@ -87,8 +87,8 @@ class varchar(50),
 value double precision,
 date varchar(10),
 type varchar(25),
-criation_date DATE DEFAULT CURRENT_DATE,
-criation_time TIME DEFAULT CURRENT_TIME
+creation_date DATE DEFAULT CURRENT_DATE,
+creation_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo'
 );
 
 
