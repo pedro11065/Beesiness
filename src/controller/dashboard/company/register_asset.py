@@ -25,6 +25,9 @@ def asset_registration(asset_data, company_id):
         print('Entrada')
         update_cash='more'
 
+    else:
+        update_cash = 'none'
+
     print(value)
     value = float(value)
     db_create_asset(company_id, current_user.id, name, event, classe, value, location, acquisition_date, description, status, update_cash)
