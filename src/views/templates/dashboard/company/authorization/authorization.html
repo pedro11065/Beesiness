@@ -25,6 +25,7 @@
         </a>
     </header>
 
+    <!-- Box de busca -->
     <div class="controls-container">
         <div class="search-box">
             <input type="text" placeholder="Digite o CPF" id="cpf-search" maxlength="14">
@@ -37,6 +38,70 @@
             <button id="add-button">Adicionar</button>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configuração de permissão</h2>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" readonly>
+
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" name="cpf" readonly>
+
+                <label for="permission">Permissão:</label>
+                <select id="permission" name="permission" required>
+                    <!-- <option value="creator">Creator</option> -->
+                    <option value="editor">Editor</option>
+                    <option value="checker">Checker</option>
+                    <option value="viewer">Viewer</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button class="btn confirmar">Confirmar</button>
+                <button class="btn cancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+        <!-- Modal de Aviso -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Aviso</h2>
+            </div>
+            <div class="modal-body">
+                <p id="alert-message">Mensagem de aviso</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirmação</h2>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja deletar este usuário?</p>
+            </div>
+            <div class="button-group">
+                <button class="btn sim">Sim</button>
+                <button class="btn nao">Não</button>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- Tabela de Autorização -->
     <main class="main">
         <section class="container">
@@ -51,41 +116,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Exemplo de linha - pode ser preenchida dinamicamente com JS -->
+                    {% for user in users %}
                     <tr>
-                        <td>1</td>
-                        <td>Giovanna Ribeiro Cavalcanti Carvalho de Souza</td>
-                        <td>498.920.740-84</td>
-                        <td>EDITOR</td>
+                        <td>{{ user[0] }}</td>
+                        <td>{{ user[2] }}</td>
+                        <td>{{ user[3]}}</td>
+                        <td>{{ user[1] }}</td>
                         <td>
-                            <button class="options-button">
-                                <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
-                            </button>
+                            {% if user[3] == current_user.cpf %}
+                                <button class="options-button" disabled style="cursor: not-allowed;">
+                                    <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
+                                </button>
+                            {% else %}
+                                <button class="options-button" onclick="toggleDropdown(event)">
+                                    <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
+                                </button>
+                                <div class="dropdown-menu" style="display:none;">
+                                    <button class="dropdown-item" onclick="openEditModal('{{ user[2] }}', '{{ user[3] }}', '{{ user[1] }}')">Editar</button>
+                                    <button class="dropdown-item" onclick="deleteUser('{{ user[3] }}')">Deletar</button>
+                                </div>
+                            {% endif %}
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Matilde Martins Barbosa</td>
-                        <td>123.159.430-60</td>
-                        <td>VISUALIZADOR</td>
-                        <td>
-                            <button class="options-button">
-                                <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>3</td>
-                        <td>Isabella Correia Almeida</td>
-                        <td>577.458.800-92</td>
-                        <td>VISUALIZADOR</td>
-                        <td>
-                            <button class="options-button">
-                                <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
-                            </button>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </section>

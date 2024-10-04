@@ -2,8 +2,8 @@ import psycopg2
 
 from ...connect import connect_database
 
-def db_create_user_company(company_id, user_id, user_access_level): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
-    db_login = connect_database() # Coleta os dados para conexão
+def db_create_user_company(company_id, user_id, user_access_level):
+    db_login = connect_database()  # Coleta os dados para conexão
     
     # Conecta ao banco de dados
     conn = psycopg2.connect(
@@ -15,14 +15,16 @@ def db_create_user_company(company_id, user_id, user_access_level): # Cria um us
 
     # Cria um cursor
     cur = conn.cursor()
+
+    try:
+        cur.execute("""INSERT INTO table_user_companies (company_id, user_id, user_access_level) VALUES (%s, %s, %s);""", (company_id, user_id, user_access_level))
+
+        conn.commit()
+        print(f'Usuário {user_id} adicionado à empresa {company_id} com permissão {user_access_level}.')
     
-    # Insere os dados principais do usuário para armazenar na tabela
-    cur.execute(
-    f"INSERT INTO table_user_companies (uuid_company, uuid_user, user_access_level) VALUES ('{company_id}', {user_id}, {user_access_level});")
-    # Confirma as mudanças
-    conn.commit()
-
-    # Fecha o cursor e encerra a conexão.
-    cur.close()
-    conn.close()
-
+    except Exception as e:
+        print(f"Erro ao inserir dados no banco de dados: {e}")
+    
+    finally:
+        cur.close()
+        conn.close()

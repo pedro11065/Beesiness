@@ -15,6 +15,7 @@ def validate_cpf_and_email(cpf, email):
                 cpf_error = True
         else:
             errors.append('CPF já cadastrado.')
+            cpf_error = True
 
     # Verifica se o e-mail já existe no banco e compara com o e-mail do usuário atual
     existing_email = db_search_user(email)
@@ -25,6 +26,7 @@ def validate_cpf_and_email(cpf, email):
                 email_error = True
         else:
             errors.append('E-mail já cadastrado.')
+            email_error = True
 
     if errors == []:
         errors == False

@@ -4,7 +4,7 @@ from colorama import Fore, Style
 
 from ....connect import connect_database
 
-def db_update_user(update_data,asset_id):
+def db_update_user(update_data, asset_id):
     db_login = connect_database() 
     
     conn = psycopg2.connect(
@@ -16,18 +16,19 @@ def db_update_user(update_data,asset_id):
     cur = conn.cursor() # Cria um cursor no PostGreSQL
     
 
-    print(Fore.GREEN + '[Alteração de dados] ' + Style.RESET_ALL + f'Alterando dados do usuário com user_id: {user_id}')
+    print(Fore.GREEN + '[Atualização de asset] ' + Style.RESET_ALL + f'Procurando informações do asset: {asset_id}')
     try:
 
         cur.execute("UPDATE table_assets SET value = %sd = %s WHERE asset_id = %s;", (update_data,asset_id))
    
     except:
-        print(Fore.RED + '[Alteração de dados] ' + Style.RESET_ALL + f'Dados do usuário não encontrados')
+        print(Fore.RED + '[Atualização de asset] ' + Style.RESET_ALL + f'Dados do usuário não encontrados')
         return False
     
-    conn.commit();
-    cur.close();
-    conn.close();
+    finally:
+        conn.commit();
+        cur.close();
+        conn.close();
 
     
         
