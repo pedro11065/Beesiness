@@ -2,9 +2,11 @@ from flask import Blueprint, render_template, request, abort, session
 from flask_login import login_required, current_user
 from src import cache
 
+
+from src.controller.dashboard.company.info_authorization import info_authorization
 from src.controller.dashboard.company.info_assets import info_assets
-from src.controller.dashboard.company.info_reason import  info_reason
-from src.controller.dashboard.company.info_balance import  info_balance
+from src.controller.dashboard.company.info_reason import info_reason
+from src.controller.dashboard.company.info_balance import info_balance
 from src.controller.dashboard.company.info_dashboard import info_dashboard
 from src.controller.dashboard.company.info_liabilities import info_liabilities
 from src.controller.dashboard.user.info_user_companies import info_user_companies
@@ -14,7 +16,7 @@ from src.controller.dashboard.company.register_liability import liability_regist
 
 from src.model.database.company.companies.search import db_search_company
 from src.model.database.company.user_companies.search import db_search_user_company
-
+from src.model.database.company.user_companies.search_users import db_search_users_in_company
 
 
 
@@ -44,7 +46,7 @@ def dashboard_company(cnpj):
         return info_dashboard(company_id)
     
     if request.method == 'GET':
-        validate_cnpj(cnpj)
+        validate_cnpj_access(cnpj)
         return render_template('dashboard/company/dashboard.html', cnpj=cnpj)
 
 #----------------------------------------------------------------------------------------- REGISTRO DE ATIVOS
@@ -58,7 +60,7 @@ def register_asset_site(cnpj):
 
         return asset_registration(asset_data, company_id)
     if request.method == 'GET':
-        validate_cnpj(cnpj);
+        validate_cnpj_access(cnpj);
         return render_template('dashboard/company/assets/register.html', cnpj=cnpj)
 
 #----------------------------------------------------------------------------------------- REGISTRO DE PASSIVOS
@@ -73,7 +75,7 @@ def register_liability_site(cnpj):
     
         return liability_registration(liability_data, company_id)
     if request.method == 'GET': 
-        validate_cnpj(cnpj);
+        validate_cnpj_access(cnpj);
         return render_template('dashboard/company/liabilities/register.html', cnpj=cnpj)
     
 #----------------------------------------------------------------------------------------- LIVRO DE RAZÃO (EXTRATO)
@@ -86,7 +88,7 @@ def register_reason_site(cnpj):
         return info_reason(company_id, cnpj)
 
     if request.method == 'GET': 
-        validate_cnpj(cnpj)
+        validate_cnpj_access(cnpj)
         return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
     
 
@@ -100,7 +102,7 @@ def balance_site(cnpj):
         return info_balance(company_id, cnpj)
 
     if request.method == 'GET': 
-        validate_cnpj(cnpj)
+        validate_cnpj_access(cnpj)
         return render_template('dashboard/company/reports/balance.html',cnpj=cnpj)
 
 
@@ -110,7 +112,8 @@ def balance_site(cnpj):
 @login_required
 def asset_information(cnpj, type, uuid):
     if request.method == 'GET': 
-        validate_cnpj(cnpj)
+        print('entrou no asset_information')
+        validate_cnpj_access(cnpj)
         
         # Se formos fazer desta forma mesmo, temos algumas coisas para resolver: 
         # 1. O db_search_liability e db_search_asset busca apenas o uuid de empresas e esse uuid é do asset ou liability, precisamos mudar o código de search do banco de dados.
@@ -128,7 +131,7 @@ def assets_site(cnpj):
         return info_assets(company_id)
 
     if request.method == 'GET': 
-        validate_cnpj(cnpj)
+        validate_cnpj_access(cnpj)
         return render_template('dashboard/company/assets/assets.html',cnpj=cnpj)
 
 #-----------------------------------------------------------------------------------------
@@ -141,7 +144,7 @@ def liabilities_site(cnpj):
         return info_liabilities(company_id)
 
     if request.method == 'GET': 
-        validate_cnpj(cnpj)
+        validate_cnpj_access(cnpj)
         return render_template('dashboard/company/liabilities/liabilities.html',cnpj=cnpj)
     
 #-----------------------------------------------------------------------------------------
@@ -149,14 +152,21 @@ def liabilities_site(cnpj):
 @dashboard_request.route('/company/<cnpj>/authorization', methods=['POST','GET'])
 @login_required
 def authorization_site(cnpj):
-    if request.method == 'GET': 
-        validate_cnpj(cnpj)
+    company_id = session.get('company_id')
 
-        return render_template('dashboard/company/authorization/authorization.html')
+    if request.method == 'POST':
+        data = request.get_json()
+        company_id = session.get('company_id')
+        return info_authorization(data, company_id)
     
+    if request.method == 'GET':
+        validate_creator_access(cnpj)
+        users = db_search_users_in_company(company_id)
+
+        return render_template('dashboard/company/authorization/authorization.html', users=users)
 #-----------------------------------------------------------------------------------------
 
-def validate_cnpj(cnpj):
+def validate_cnpj_access(cnpj):
     # Estas verificações são necessárias para que os usuários não burlem as empresas pelo URL.
     # Erro 404 - Página não encontrada
     # Erro 403 - Falta de permissão para acesso.
@@ -186,4 +196,19 @@ def validate_cnpj(cnpj):
     if user_access_level not in ['creator', 'editor', 'checker', 'viewer']:
         abort(403)
 
+    session['company_id'] = company_id
+
+def validate_creator_access(cnpj):
+    cached_relation = cache.get(f'relation_{current_user.id}_{cnpj}')
+    
+    if not cached_relation:
+        validate_cnpj_access(cnpj)
+        cached_relation = cache.get(f'relation_{current_user.id}_{cnpj}')
+
+    company_id, user_access_level = cached_relation
+
+    if user_access_level != 'creator':
+        abort(403)
+
+    # Armazena o company_id na sessão
     session['company_id'] = company_id
