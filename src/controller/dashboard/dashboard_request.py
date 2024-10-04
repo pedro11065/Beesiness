@@ -164,7 +164,24 @@ def authorization_site(cnpj):
         users = db_search_users_in_company(company_id)
 
         return render_template('dashboard/company/authorization/authorization.html', users=users)
+    
 #-----------------------------------------------------------------------------------------
+
+@dashboard_request.route('/company/<cnpj>/settings', methods=['POST','GET'])
+@login_required
+def settings_site(cnpj):
+    company_id = session.get('company_id')
+
+    if request.method == 'POST':
+        data = request.get_json()
+        company_id = session.get('company_id')
+        #return info_authorization(data, company_id)
+    
+    if request.method == 'GET':
+        validate_creator_access(cnpj)
+
+        return render_template('dashboard/company/settings.html')
+
 
 def validate_cnpj_access(cnpj):
     # Estas verificações são necessárias para que os usuários não burlem as empresas pelo URL.

@@ -170,7 +170,7 @@ a{
 .titles-container{
     display:flex;  
     flex-direction: row;
-    width: auto;
+    width: 100%;
     height: 3rem;
     align-items: center;
     justify-content: flex-start;

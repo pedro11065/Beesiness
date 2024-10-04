@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Beesiness</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/settings.css') }}"> <!-- Tem que alterar -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js" defer></script>
+</head>
+<body>
+    <section class="container">
+        <h1>Configurações da Empresa</h1>
+        <form id="settingsForm" action="/user/settings" method="post"> <!-- Tem que alterar -->
+            <div class="form-group">
+                <label for="name">Nome <a>*</a></label>
+                <input type="text" id="name" name="name" value="nome da empresa" required>
+                <p class="error" id="name-error"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="cnpj">CNPJ <a>*</a></label>
+                <input type="cnpj" id="cnpj" name="cnpj" value="cnpj da empresa" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha atual <a>*</a></label>
+                <input type="password" id="password" name="password" placeholder="Digite sua senha atual" required>
+                <p class="error" id="password-error"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="new_password">Nova senha</label>
+                <input type="password" id="new_password" name="new_password" placeholder="Digite a nova senha">
+                <p class="error" id="new_password-error"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirmar nova senha</label> 
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirme a nova senha">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="save-btn">Salvar Alterações</button>
+            </div>
+        </form>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/user/settings.js') }}" defer></script>
+</body>
+</html>
