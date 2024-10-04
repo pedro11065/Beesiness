@@ -84,7 +84,6 @@ header .exit .icon {
 .box-article {
     display: flex;
     flex-wrap: wrap;
-
     justify-content: center;
 }
 
@@ -92,8 +91,8 @@ header .exit .icon {
     background-color: #000000;
     padding: 2rem;
     width: 13rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 1rem;
     text-align: center;
     align-self: center;
@@ -101,7 +100,6 @@ header .exit .icon {
     color: white;
     text-decoration: none;
     cursor: pointer;
-    /* Adicionando a transição suave */
     transition: background-color 0.3s ease, color 0.3s ease;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
