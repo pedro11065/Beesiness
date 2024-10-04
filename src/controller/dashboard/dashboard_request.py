@@ -145,7 +145,7 @@ def liabilities_site(cnpj):
         return render_template('dashboard/company/liabilities/liabilities.html',cnpj=cnpj)
     
 #-----------------------------------------------------------------------------------------
-"""
+
 @dashboard_request.route('/company/<cnpj>/authorization', methods=['POST','GET'])
 @login_required
 def authorization_site(cnpj):
@@ -153,7 +153,7 @@ def authorization_site(cnpj):
         validate_cnpj(cnpj)
 
         return render_template('dashboard/company/authorization/authorization.html')
-"""
+
 #-----------------------------------------------------------------------------------------
 
 def validate_cnpj(cnpj):

@@ -14,8 +14,8 @@
     <!-- Fonte Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
 
-   <!-- <script src="{{ url_for('static', filename='js/dashboard/company/assets/assets.j') }}" defer></script>
--->
+   <script src="{{ url_for('static', filename='js/dashboard/company/assets/assets.js') }}" defer></script>
+
 </head>
 
 <body>
@@ -35,10 +35,10 @@
 
     <menu class="menu-container" id="menuContainer">
         <div class="register-box">
-            <a>Registrar</a>
+            <a href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}">Registrar</a>
         </div>
         <div class="info-box">
-            <a>Lista ativos</a>
+            Lista ativos
         </div>
 
     </menu>
@@ -50,16 +50,53 @@
     <main class="main" id="main">
    
         <header class="titles-container">
-            <div class="box-title-p"><h1>ID</h1></div>
-            <div class="box-title-p"><h1>Nome</h1></div>
-            <div class="box-title-p"><h1>Evento</h1></div>
-            <div class="box-title-p"><h1>Categoria</h1></div>
-            <div class="box-title-p"><h1>Valor</h1></div>
-            <div class="box-title-p"><h1>Localização</h1></div>
-            <div class="box-title-m"><h1>Data de acquisição</h1></div>
-            <div class="box-title-p"><h1>Status</h1></div>
-            <div class="box-title-g"><h1>Descrição</h1></div>
+            <div class="title-box"><h1>ID</h1></div>
+            <div class="title-box"><h1>Nome</h1></div>
+            <div class="title-box"><h1>Evento</h1></div>
+            <div class="title-box"><h1>Categoria</h1></div>
+            <div class="title-box"><h1>Valor</h1></div>
+            <div class="title-box"><h1>Localização</h1></div>
+            <div class="title-box"><h1>D. de acquisição</h1></div>
+            <div class="title-box"><h1>Status</h1></div>
+            <div class="title-box"><h1>Descrição</h1></div>
         </header>
+
+        <article id="data-container">
+            
+            <section class="data-group" style="cursor: pointer;">
+                <div class="data-out-box"><div class="data-box"><p>0bc50f1e-d53d-4f9d-8c4e-3c519ac39884</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Madeira</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Compra</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Matérias-Primas</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>R$50.000.00</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>2023-08-03</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Floresta</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Comprado</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>5 toneladas de madeira</p></div></div>
+            </section>
+
+            <section class="data-group" style="cursor: pointer;">
+                <div class="data-out-box"><div class="data-box"><p>b41cd0f5-93a6-4a78-9f83-76319f791b00</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Toyota Corola 2012</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Compra</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Veículos</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>R$50.000.00</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>2024-10-03</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Casa</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Comprado</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Carro para a minha esposa</p></div></div>
+            </section>
+
+
+        </article>
+
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeModalBtn">&times;</span>
+
+        </div>
+
 
     </main>
 </body>

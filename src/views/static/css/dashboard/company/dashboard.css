@@ -77,7 +77,6 @@ header .exit .icon {
 
 .main{
     display:grid;
-    margin-top: 3rem;
     flex-direction:row;
 }
 
@@ -91,7 +90,8 @@ header .exit .icon {
 .btn-box{
     background-color: #000000;
     padding: 2rem;
-    width: 13rem;
+    width: 16rem;
+    margin-top: 3rem;
     margin-left: 1rem;
     margin-right: 1rem;
     border-radius: 1rem;

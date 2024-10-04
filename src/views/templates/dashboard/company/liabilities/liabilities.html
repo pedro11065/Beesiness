@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Razão</title>
+    <title>Passivos</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/liabilities.css') }}">
 
@@ -14,7 +14,8 @@
     <!-- Fonte Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
 
-    <script src="{{ url_for('static', filename='js/dashboard/company/liabilities/liabilities.j') }}" defer></script>
+   <script src="{{ url_for('static', filename='js/dashboard/company/liabilities/liabilities.js') }}" defer></script>
+
 </head>
 
 <body>
@@ -33,15 +34,13 @@
     </header>
 
     <menu class="menu-container" id="menuContainer">
-        <div class="menu-box">
-            <a>Dia</a>
+        <div class="register-box">
+            <a href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}">Registrar</a>
         </div>
-        <div class="menu-box">
-            <a>Mês</a>
+        <div class="info-box">
+            Lista passivos
         </div>
-        <div class="menu-box">
-            <a>Ano</a>
-        </div>
+
     </menu>
     
      <div id="loading" style="display: none;">Carregando...
@@ -49,48 +48,45 @@
     </div>
 
     <main class="main" id="main">
-        
-    
-        <section class="month-container" id="monthContainer">
+   
+        <header class="titles-container">
+            <div class="title-box"><h1>ID</h1></div>
+            <div class="title-box"><h1>Nome</h1></div>
+            <div class="title-box"><h1>Evento</h1></div>
+            <div class="title-box"><h1>Categoria</h1></div>
+            <div class="title-box"><h1>Valor</h1></div>
+            <div class="title-box"><h1>D de emissão</h1></div>
+            <div class="title-box"><h1>D. de vencimento</h1></div>
+            <div class="title-box"><h1>F. de pagamento</h1></div>
+            <div class="title-box"><h1>Status</h1></div>
+            <div class="title-box"><h1>Descrição</h1></div>
+        </header>
 
-            <!-- 
-            <header class="month-title-container" id="month-title-container">
+        <article id="data-container">
             
-                <article class="month-title-box">
-    
-                    <div class="month-box">
-                        <h1>Setembro</h1>
-                    </div>
-    
-                    <div class="month-box">
-                        <h1>R$600.00</h1>
-                    </div>
-    
-                </article>
-    
-            </header>
+            <section class="data-group" style="cursor: pointer;">
+                <div class="data-out-box"><div class="data-box"><p>c6f4601f-cce1-4482-b7eb-9e8980871f20</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Conta de luz</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Empréstimo</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Conta de Luz</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>R$5000.00</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>2024-08-03</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>2024-12-03</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Cartão de Crédito</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Parcelado</p></div></div>
+                <div class="data-out-box"><div class="data-box"><p>Conta de luz"</p></div></div>
+            </section>
 
-            <article class="day-container">
-                <header class="title-container">
-                    <div class="title-box">
-                        <h3>16 de setembro de 2024</h3>
-                    </div>
-                    <div class="title-box">
-                        <h3>R$2.00</h3>
-                    </div>
-                </header>
-    
-                <div class="description-container">
-                    <div class="description-box">
-                        <h4>Compra - Cartão de crédito - Halls melancia</h4>
-                    </div>
-                    <div class="description-box">
-                        <h4>Pedro Henrique Silva Quixabeira - Dono</h4>
-                    </div>
-                </div>
-            </article>
-            -->
-        </section>
+        </article>
+
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeModalBtn">&times;</span>
+
+        </div>
+
+
     </main>
 </body>
 
