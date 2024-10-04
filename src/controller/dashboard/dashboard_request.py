@@ -153,7 +153,7 @@ def authorization_site(cnpj):
         validate_cnpj(cnpj)
 
         return render_template('dashboard/company/authorization/authorization.html')
-
+    
 #-----------------------------------------------------------------------------------------
 
 def validate_cnpj(cnpj):

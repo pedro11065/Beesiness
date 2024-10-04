@@ -1,9 +1,5 @@
-
-<!-- Se puder na próxima explicar para que vai servir o arquivo com a palavra batata, eu agradeceria, valeu! -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,9 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
     <script src="{{ url_for('static', filename='js/dashboard/company/authorization/authorization.js') }}" defer></script>
 </head>
-<body>   
+<body>
+    <!-- Cabeçalho -->
     <header class="header">
-
         <div class="user">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
@@ -29,17 +25,70 @@
         </a>
     </header>
 
-    <main class="main">
-        <form id="registroForm" action="/user/register" method="post">
-            <div class="form-group">
-                <label for="cpf">CPF</label>
-                <input type="text" id="name" name="cpf" required>
-                <p class="error" id="name-error"></p>
-            </div>
-        </form>
+    <div class="controls-container">
+        <div class="search-box">
+            <input type="text" placeholder="Digite o CPF" id="cpf-search" maxlength="14">
+            <button type="button" id="search-button">
+                <img src="{{ url_for('static', filename='images/dashboard/public/search.png') }}" alt="Buscar">
+            </button>
+        </div>
 
+        <div class="add-box">
+            <button id="add-button">Adicionar</button>
+        </div>
+    </div>
+    <!-- Tabela de Autorização -->
+    <main class="main">
         <section class="container">
-            <div class="add_box">Adicionar</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Permissão</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Exemplo de linha - pode ser preenchida dinamicamente com JS -->
+                    <tr>
+                        <td>1</td>
+                        <td>Giovanna Ribeiro Cavalcanti Carvalho de Souza</td>
+                        <td>498.920.740-84</td>
+                        <td>EDITOR</td>
+                        <td>
+                            <button class="options-button">
+                                <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Matilde Martins Barbosa</td>
+                        <td>123.159.430-60</td>
+                        <td>VISUALIZADOR</td>
+                        <td>
+                            <button class="options-button">
+                                <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>Isabella Correia Almeida</td>
+                        <td>577.458.800-92</td>
+                        <td>VISUALIZADOR</td>
+                        <td>
+                            <button class="options-button">
+                                <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </main>
 </body>
+</html>
