@@ -17,17 +17,16 @@ body {
   background-color: white;
   border-radius: 1.25rem;
   padding: 2rem;
+  margin: 0;
   text-align: center;
   box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
-  width: auto;
-  max-width: auto;
+  width: 100%;
+  max-width: 400px; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
-}
-
-h1 {
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  color: #333;
 }
 
 a {
@@ -36,8 +35,15 @@ a {
   color: red
 }
 
+h1 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #000;
+  transition: color 0.5s ease;
+}
+
 .form-group {
-  margin-bottom: 0.7rem;
+  margin-bottom: 1rem;
   text-align: left;
 }
 
@@ -48,11 +54,7 @@ label {
   color: #666;
   text-transform: uppercase;
   font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-label:hover {
-  color: #333;
+  transition: color 0.5s ease;
 }
 
 input[type="text"],
@@ -72,14 +74,7 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
   border-color: #ffd400;
-  background-color: #fff;
   outline: none;
-}
-
-input[type="text"]:hover,
-input[type="email"]:hover,
-input[type="password"]:hover {
-  border-color: #bbb;
 }
 
 .form-actions {
@@ -90,7 +85,7 @@ input[type="password"]:hover {
 button[type="submit"] {
   padding: 0.75rem 1.5rem;
   background-color: #ffd400;
-  color: white;
+  color: #000000;
   border: none;
   border-radius: 0.625rem;
   font-size: 1rem;

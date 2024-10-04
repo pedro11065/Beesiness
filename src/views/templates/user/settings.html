@@ -7,22 +7,12 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/user/settings.css')}}">
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png')}}">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="modalBackdropSettings" class="modal-backdrop">
-        <div id="dialog" class="dialog">
-            <p>Você tem certeza que deseja continuar?</p>
-            <div class="dialog-buttons">
-                <button id="confirmBtn">Confirmar</button>
-                <button id="cancelBtn">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
     <section class="container">
         <h1>Configurações da Conta</h1>
         <form id="settingsForm" action="/user/settings" method="post">

@@ -1,14 +1,3 @@
-/*
-
-ALTERAÇÕES QUE AINDA FALTAM:
-É necessário confirmar a autenticidade do CPF.
-
-Caso a pessoa deseje alterar outros dados, será necessário inserir a nova senha de qualquer forma?
-
-Também é preciso verificar se o CPF e o e-mail informados já estão registrados no site.
-*/
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const settingsForm = document.getElementById("settingsForm");
     const saveButton = document.querySelector(".save-btn");
@@ -31,29 +20,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     saveButton.addEventListener('click', async () => {
         const isValid = await validateForm();
-
-        if (isValid) {
-            dialog.setAttribute('open', true);
-            modalBackdropSettings.style.display = "flex"; 
-        }
-    });
-    
-    // Botão de cancelar
-    cancelBtn.addEventListener('click', () => {
-        modalBackdropSettings.style.display = "none";
-    });
-
-    // Botão de confirmar
-    confirmBtn.addEventListener('click', async () => {
-        modalBackdropSettings.style.display = "none";
-        await sendData();
-    });
-
-    // Ele fecha o modal se clicar no fundo
-    modalBackdropSettings.addEventListener('click', (event) => {
-        if (event.target === modalBackdropSettings) {
-            modalBackdropSettings.style.display = "none";
-        }
+        if(!isValid) return;
+        Swal.fire({
+            text: "Você deseja continuar?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#71E167",
+            cancelButtonColor: "#DC5D5D",
+            confirmButtonText: "Sim",
+            cancelButtonText: "Cancelar"
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                    await sendData();
+            }
+          });
     });
 });
 
@@ -63,6 +43,8 @@ async function sendData() {
     const saveButton = document.querySelector(".save-btn");
     saveButton.disabled = true;
     saveButton.textContent = "Salvando...";
+    saveButton.style.cursor = 'not-allowed';
+    saveButton.style.opacity = '0.5';
 
     const settingsData = {
         name: document.getElementById('name').value.trim(),
@@ -85,6 +67,13 @@ async function sendData() {
 
         const data = await response.json();
         if (data.success) {
+            Swal.fire({
+                icon: "success",
+                text: "Os dados foram salvos com sucesso.",
+                showConfirmButton: false,
+                timer: 5000
+              });
+
             window.location.reload();
         } else {
             if (data.cpf_error) {
