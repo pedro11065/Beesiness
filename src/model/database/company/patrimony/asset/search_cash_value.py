@@ -13,7 +13,7 @@ def db_search_cash(company_id):
     )
     cur = conn.cursor()  # Cria um cursor no PostGreSQL
 
-    cur.execute("SELECT * FROM table_assets WHERE company_id = %s AND name = %s", (company_id, '#!@cash@!#'))
+    cur.execute("SELECT value FROM table_assets WHERE company_id = %s AND name = %s", (company_id, '#!@cash@!#'))
     db_data = cur.fetchall()
 
     conn.commit()

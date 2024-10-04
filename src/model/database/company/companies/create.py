@@ -28,7 +28,7 @@ def db_create_company(nome, user_id, email, cnpj, hashed_password): # Cria um us
     
     asset_id = uuid.uuid4()
 
-    cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status) VALUES ('{asset_id}', '{company_id}', '{user_id}', '#!@cash@!#', 'entrada de caixa', 'caixa', '0', '----', '01-01-2024', '----', 'Em uso');")
+    cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit) VALUES ('{asset_id}', '{company_id}', '{user_id}', '#!@cash@!#', 'entrada de caixa', 'caixa', '0', '----', '01-01-2024', '----', 'Em uso','0' ,'0');")
     
     user_access_level = 'creator' # Nivel do usuário
     

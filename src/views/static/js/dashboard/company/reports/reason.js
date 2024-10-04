@@ -44,7 +44,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 let MonthValue = 0; 
 
                 groupedByMonth[month].forEach(item => {
-                    MonthValue += parseFloat(item.value); 
+                    // Verifica se o item.name não é igual a '#!@cash@!#'
+                    if (item.name !== '#!@cash@!#') {
+                        MonthValue += parseFloat(item.value); 
+                    }
                 });
 
                 const value = formatValueToMoney(MonthValue);
@@ -70,37 +73,40 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 // Adicionar os dias desse mês
                 groupedByMonth[month].forEach(item => {
-                    const dayDiv = document.createElement('article');
-                    dayDiv.className = 'day-container';
-                    dayDiv.style.cursor = 'pointer';
+                    if(item.name != '#!@cash@!#'){
 
-                    dayDiv.addEventListener('click', function () {
-                        sessionStorage.setItem('patrimonioData', JSON.stringify(item)); 
-
-                        window.location.href = `/dashboard/${cnpj}/${item.type}/${item.patrimony_id}`;
-                    });
-
-                    dayDiv.innerHTML = `
-                        <header class="title-container">
-                            <div class="title-box">
-                                <h3>${formatDateToBrazilian(item.creation_date)} - ${item.creation_time}</h3>
+                        const dayDiv = document.createElement('article');
+                        dayDiv.className = 'day-container';
+                        dayDiv.style.cursor = 'pointer';
+    
+                        dayDiv.addEventListener('click', function () {
+                            sessionStorage.setItem('patrimonioData', JSON.stringify(item)); 
+    
+                            window.location.href = `/dashboard/${cnpj}/${item.type}/${item.patrimony_id}`;
+                        });
+    
+                        dayDiv.innerHTML = `
+                            <header class="title-container">
+                                <div class="title-box">
+                                    <h3>${formatDateToBrazilian(item.creation_date)} - ${item.creation_time}</h3>
+                                </div>
+                                <div class="title-box">
+                                    <h3>${formatValueToMoney(item.value)}</h3>
+                                </div>
+                            </header>
+                    
+                            <div class="description-container">
+                                <div class="description-box">
+                                    <h4>${item.event} - ${item.class} - ${item.name}</h4>
+                                </div>
+                                <div class="description-box">
+                                    <h4>${item.user_id} - Dono</h4>
+                                </div>
                             </div>
-                            <div class="title-box">
-                                <h3>${formatValueToMoney(item.value)}</h3>
-                            </div>
-                        </header>
-                
-                        <div class="description-container">
-                            <div class="description-box">
-                                <h4>${item.event} - ${item.class} - ${item.name}</h4>
-                            </div>
-                            <div class="description-box">
-                                <h4>${item.user_id} - Dono</h4>
-                            </div>
-                        </div>
-                    `;
-
-                    monthDiv.appendChild(dayDiv);
+                        `;
+    
+                        monthDiv.appendChild(dayDiv);
+                    }                 
                 });
 
                 main.appendChild(monthDiv);

@@ -16,26 +16,38 @@ def asset_registration(asset_data, company_id):
     status = asset_data.get('status')
     description = asset_data.get('description')
 
+    value = float(value)
+    
     if event == 'Compra':
-        print('Saída')
-        update_cash='less'
+
+        update_cash = 'less' 
+
+        cash_debit = 0
+        cash_credit = value    
+        asset_debit = value    
+        asset_credit = 0
 
 
     elif event in ["Entrada de Caixa","Venda","Herança"]:
-        print('Entrada')
-        update_cash='more'
 
+        update_cash = 'more' 
+
+        cash_debit = value   
+        cash_credit = 0
+        asset_debit = 0
+        asset_credit = value     
+             
     else:
+
         update_cash = 'none'
+        
+        cash_debit = value   
+        cash_credit = 0
+        asset_debit = 0
+        asset_credit = value   
 
-    print(value)
-    value = float(value)
-    db_create_asset(company_id, current_user.id, name, event, classe, value, location, acquisition_date, description, status, update_cash)
     
     
-
+    db_create_asset(company_id, current_user.id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash)
 
     return jsonify('Asset registrado com sucesso!'), 200
-
-#ideia: ao inves de criar uma outra tabela só para coisas deletadas, é só mudar o campo status para detado,
-#  depois criar uma verificação para se caso o status seja igual a deletado, não mostrar para o usuário.

@@ -36,7 +36,10 @@ def db_search_historic(company_id):
             "date": data[8],
             "type": data[9],
             "creation_date": data[10],
-            "creation_time": data[11]
+            "creation_time": data[11],
+            "debit": data[12],
+            "credit": data[13],
+
         } for data in historic_data]
 
     except Exception as error:

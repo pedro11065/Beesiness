@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_login import current_user
 from colorama import Fore, Style
-from src.model.database.company.patrimony.asset.search_cash import db_search_cash
+from src.model.database.company.patrimony.asset.search_cash_value import db_search_cash
 
 from src import cache
 
