@@ -1,5 +1,6 @@
 import psycopg2
 from colorama import Fore, Style
+from datetime import time
 from ....connect import connect_database
 
 def db_search_cash(company_id):

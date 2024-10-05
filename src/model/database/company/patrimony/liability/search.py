@@ -1,5 +1,7 @@
 import psycopg2
 from colorama import Fore, Style
+from datetime import date
+import datetime
 from ....connect import connect_database
 
 def db_search_liability(company_id):
@@ -33,13 +35,13 @@ def db_search_liability(company_id):
             "event": data[4],
             "class": data[5],
             "value": data[6],
-            "emission_date": data[7],
-            "expiration_date": data[8],
+            "emission_date": data[7].strftime("%d/%m/%Y") if isinstance(data[7], datetime.date) else data[7],
+            "expiration_date": data[8].strftime("%d/%m/%Y") if isinstance(data[8], datetime.date) else data[8],
             "payment_method": data[9],
             "description": data[10],
             "status": data[11],
-            "creation_date":data[11],
-            "creation_time": data[12]
+            "creation_date":data[11].strftime("%d/%m/%Y") if isinstance(data[11], datetime.date) else data[11],
+            "creation_time": data[12].strftime('%H:%M:%S') if isinstance(data[12], datetime.time) else data[12]  # Convertendo time para string
             
         } for data in db_data]
         

@@ -1,5 +1,7 @@
 import psycopg2
 from colorama import Fore, Style
+from datetime import date
+import datetime
 from ....connect import connect_database
 
 def db_search_asset(company_id):
@@ -22,26 +24,19 @@ def db_search_asset(company_id):
     cur.close()
     conn.close()
 
-    try:
-        print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados dos assets encontrados com sucesso!')
+    return [{
+        'asset_id': data[0],
+        'company_id': data[1],
+        'user_id': data[2],
+        'name': data[3],
+        'event': data[4],
+        'class': data[5],
+        'value': data[6],
+        'location': data[7],
+        'acquisition_date': data[8].strftime("%d/%m/%Y") if isinstance(data[8], datetime.date) else data[8],
+        'description': data[9],
+        'status': data[10],
+        'creation_date': data[11].strftime("%d/%m/%Y") if isinstance(data[11], datetime.date) else data[11],
+        'creation_time': data[12].strftime('%H:%M:%S') if isinstance(data[12], datetime.time) else data[12]  # Convertendo time para string
+    } for data in db_data]
 
-        return [{
-            "asset_id": data[0],
-            "company_id": data[1] ,
-            "user_id": data[2],
-            "name": data[3],
-            "event": data[4],
-            "class": data[5],
-            "value": data[6],
-            "location": data[7],
-            "acquisition_date": data[8],
-            "description": data[9],
-            "status": data[10],
-            "creation_date":data[11],
-            "creation_time": data[12]
-
-        } for data in db_data]
-        
-    except Exception as error:
-        print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Dados dos assets não encontrados: {error}')
-        return False

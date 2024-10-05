@@ -9,6 +9,5 @@ from src import cache
 def info_assets(company_id):
 
     data = db_search_asset(company_id)
-    print(data)
-    
-    return jsonify({"value": data}), 200
+
+    return jsonify({'value': data}), 200

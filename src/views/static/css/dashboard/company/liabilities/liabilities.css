@@ -206,9 +206,15 @@ a{
     height: 3rem;
     align-items: center;
     justify-content: flex-start;
+    transition: background-color 0.3s ease, color 0.3s ease;
     box-shadow: rgba(0, 0, 0, 0.6) 0px 2px 8px -4px inset;
     position: relative; 
     
+}
+
+.data-group:hover {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color:#dddbdb;
 }
 
 .data-out-box{
