@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         balanceDiv.innerHTML = `
                             <section class="accounts-container">
                                 <header class="account-title">
-                                    <h1>Conta</h1>
+                                    <h2>Conta</h2>
                                 </header>
                                 ${groupedByMonth[month][day].map(item => `
                                     <div class="data_box">${CashName(item.name)}</div>
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                             <section class="accounts-container">
                                 <header class="debtor-title">
-                                    <h1>Débito</h1>
+                                    <h2>Débito</h2>
                                 </header>
                                 ${groupedByMonth[month][day].map(item => `
                                     <div class="data_box">${formatValueToMoney(0,item.debit)}</div>
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                             <section class="accounts-container">
                                 <header class="creditor-title">
-                                    <h1>Crédito</h1>
+                                    <h2>Crédito</h2>
                                 </header>
                                 ${groupedByMonth[month][day].map(item => `
                                     <div class="data_box">${formatValueToMoney(0,item.credit)}</div>
