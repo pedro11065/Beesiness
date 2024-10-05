@@ -7,6 +7,7 @@ from src.controller.dashboard.company.info_authorization import info_authorizati
 from src.controller.dashboard.company.info_assets import info_assets
 from src.controller.dashboard.company.info_reason import info_reason
 from src.controller.dashboard.company.info_balance import info_balance
+from src.controller.dashboard.company.info_razonete import info_razonete
 from src.controller.dashboard.company.info_dashboard import info_dashboard
 from src.controller.dashboard.company.info_liabilities import info_liabilities
 from src.controller.dashboard.user.info_user_companies import info_user_companies
@@ -147,6 +148,20 @@ def liabilities_site(cnpj):
         validate_cnpj_access(cnpj)
         return render_template('dashboard/company/liabilities/liabilities.html',cnpj=cnpj)
     
+#-----------------------------------------------------------------------------------------
+
+@dashboard_request.route('razonete/<cnpj>', methods=['POST','GET'])
+@login_required
+def razonete_site(cnpj): 
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        return info_razonete(company_id)
+
+    if request.method == 'GET': 
+        validate_cnpj_access(cnpj)
+        return render_template('dashboard/company/reports/razonete.html',cnpj=cnpj)
+
+
 #-----------------------------------------------------------------------------------------
 
 @dashboard_request.route('/company/<cnpj>/authorization', methods=['POST','GET'])

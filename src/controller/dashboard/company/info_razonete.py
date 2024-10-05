@@ -3,7 +3,7 @@ from flask import jsonify
 
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
-def info_balance(company_id, cnpj):
+def info_razonete(company_id, cnpj):
 
     info = db_search_historic(company_id)
 
