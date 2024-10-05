@@ -200,8 +200,6 @@ header .exit .icon {
     height: auto;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     border-radius: 1rem;
-
-
 }
 
 .day-title-container{
@@ -224,19 +222,17 @@ header .exit .icon {
 
 }
 
-.balance-container{
+.balance-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    min-height: 10rem;
+    min-height: 10rem; 
     width: 95%;
-    column-count: 3;
-    column-rule: #000000;
-    column-rule-width: 1rem;
-    margin-top: 0.5rem;
+    margin-top: 0.5rem; 
     margin-bottom: 1rem;
 }
+
 
 .accounts-container{
     display: flex;
@@ -308,8 +304,6 @@ header .exit .icon {
     text-align: center;
     justify-content: center;
     align-items: center;
-
-    
 }
 
 .accounts-container .data_box:first-of-type {
@@ -319,4 +313,152 @@ header .exit .icon {
 .accounts-container .data_box:last-of-type {
     border-bottom: 0px solid black; /* Borda superior apenas na primeira caixa */
     margin-bottom: 1=0.8rem;
+}
+
+
+/* Código do container das contas */
+.class-name {
+    background-color: #FFD700;
+    display: flex;
+    width: 80%;
+    height: 2.5rem;
+    margin-bottom: 1rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+}
+
+.class-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+    width: 300px;
+    min-height: 150px;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    border-radius: 1rem;
+    background-color: #f9f9f9;
+    padding: 1rem; 
+    overflow: hidden;
+}
+
+.values-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.debit-container, .credit-container {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    padding: 0 10px;
+}
+
+.value-item {
+    margin: 0;
+    padding: 5px;
+    box-sizing: border-box;
+    min-height: 20px;
+}
+
+.debit {
+    text-align: right;
+}
+
+.credit {
+    text-align: left;
+}
+
+.values-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background-color: black;
+}
+
+.total-line-above {
+    border-top: 1px solid black;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.total-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.total-values-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.debit-total-container, .credit-total-container {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    padding: 0 10px;
+}
+
+.total-values {
+    margin: 0;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.total-values-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background-color: black;
+}
+
+
+.total-values-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background-color: black;
+}
+
+.debit-total {
+    text-align: right;
+}
+
+.credit-total {
+    text-align: left;
+}
+
+.difference-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.difference-value {
+    color: green;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.total-line {
+    border-top: 1px solid black;
+    margin-bottom: 5px;
 }

@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', async function () {
-
+document.addEventListener('DOMContentLoaded', async function () { 
     const main = document.getElementById('main');
 
     function getCnpjFromUrl() {
@@ -16,29 +15,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         return `${day} de ${month} de ${year}`;
     }
 
-    function formatValueToMoney(mode,valueStr) {
-        if (valueStr != 0 && mode == 0) {
-            const valueNum = parseFloat(valueStr);
-            return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-        if(mode == 1){
-            const valueNum = parseFloat(valueStr);
-            return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-        return '----';
-    }
-
-    function CashName(nameStr) {
-        return nameStr == '#!@cash@!#' ? 'Caixa' : nameStr;
+    function formatValueToMoney(valueStr) {
+        const valueNum = parseFloat(valueStr);
+        return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
     const cnpj = getCnpjFromUrl();
-
     loading.style.display = 'block';
     main.style.display = 'none';
 
     try {
-        const response = await fetch(`/dashboard/balance/${cnpj}`, {
+        const response = await fetch(`/dashboard/razonete/${cnpj}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,125 +35,132 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!response.ok) {
             throw new Error('Erro na resposta da API: ' + response.statusText);
         }
-        
-        const data = await response.json();
 
+        const data = await response.json();
         loading.style.display = 'none';
         main.style.display = 'flex';
 
         if (data.historic) {
-
             const groupedByMonth = {};
 
             data.historic.forEach(item => {
-                const month = new Date(item.creation_date).toLocaleString('pt-BR', { month: 'long' });
+                const date = new Date(item.creation_date);
+                const month = date.toLocaleString('pt-BR', { month: 'long' });
                 const day = formatDateToBrazilian(item.creation_date);
 
+                // Agrupando por mês
                 if (!groupedByMonth[month]) {
                     groupedByMonth[month] = {};
                 }
 
+                // Agrupando por dia
                 if (!groupedByMonth[month][day]) {
-                    groupedByMonth[month][day] = [];
+                    groupedByMonth[month][day] = { items: [], groupedByClass: {} };
                 }
 
-                groupedByMonth[month][day].push(item);
+                groupedByMonth[month][day].items.push(item);
+
+                // Agrupando por classe
+                if (!groupedByMonth[month][day].groupedByClass[item.class]) {
+                    groupedByMonth[month][day].groupedByClass[item.class] = {
+                        credit: 0,
+                        debit: 0,
+                        items: []
+                    };
+                }
+                groupedByMonth[month][day].groupedByClass[item.class].credit += item.credit;
+                groupedByMonth[month][day].groupedByClass[item.class].debit += item.debit;
+
+                // Armazenando item para exibição futura
+                if (item.credit > 0) {
+                    groupedByMonth[month][day].groupedByClass[item.class].items.push({ type: 'credit', value: item.credit });
+                } else {
+                    groupedByMonth[month][day].groupedByClass[item.class].items.push({ type: 'debit', value: item.debit });
+                }
             });
 
             Object.keys(groupedByMonth).forEach(month => {
                 const monthDiv = document.createElement('section');
                 monthDiv.className = 'month-container';
 
-                    monthDiv.innerHTML = `
+                monthDiv.innerHTML = 
+                    `<header class="month-title-container">
+                        <article class="month-title-box">
+                            <div class="month-box">
+                                <h1>${month}</h1>
+                            </div>
+                        </article>
+                    </header>`;
 
-                        <header class="month-title-container" id="month-title-container">
-                            
-                            <article class="month-title-box">
+                Object.keys(groupedByMonth[month]).forEach(day => {
+                    const dayDiv = document.createElement('article');
+                    dayDiv.className = 'day-container';
 
-                                <div class="month-box">
-                                    <h1>${month}</h1>
-                                </div>
+                    dayDiv.innerHTML = 
+                        `<header class="day-title-container">
+                            <div class="title-box">
+                                <h3>${day}</h3>
+                            </div>
+                        </header>`;
 
-                                <div class="month-box">
-                                    <h1>R$ ----</h1>
-                                </div>
+                    const balanceDiv = document.createElement('main');
+                    balanceDiv.className = 'balance-container';
 
-                            </article>
+                    // Agrupando por classe e mostrando créditos e débitos
+                    for (const className in groupedByMonth[month][day].groupedByClass) {
+                        const classData = groupedByMonth[month][day].groupedByClass[className];
 
-                        </header>
-                    `;
+                        const classDiv = document.createElement('div');
+                        classDiv.className = 'class-container';
 
-                    let totalConta = 0, totalDebito = 0, totalCredito = 0;
+                        const totalCredit = classData.items.filter(item => item.type === 'credit').reduce((acc, item) => acc + item.value, 0);
+                        const totalDebit = classData.items.filter(item => item.type === 'debit').reduce((acc, item) => acc + item.value, 0);
+                        const difference = totalCredit - totalDebit >= 0 ? totalCredit - totalDebit : totalDebit - totalCredit;
 
-                    Object.keys(groupedByMonth[month]).forEach(day => {
-
-                        const dayDiv = document.createElement('article');
-                        dayDiv.className = 'day-container';
-
-                        const dailyDebito = groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.debit), 0);
-                        const dailyCredito = groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.credit), 0);
-
-                        totalDebito += dailyDebito;
-                        totalCredito += dailyCredito;
-
-                        dayDiv.innerHTML = `
-                            <header class="day-title-container">
-                                <div class="title-box">
-                                    <h3>${day}</h3>
-                                </div>
-                                <div class="title-box">
-                                    <h3>${formatValueToMoney(1,groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.debit), 0) - groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.credit), 0))}</h3>
-                                </div>
-                            </header>
+                        classDiv.innerHTML = `
+                        <h4 class="class-name">${className}</h4>
+                        <div class="values-container">
+                            <div class="debit-container">
+                                ${classData.items.filter(item => item.type === 'debit').map(item => `
+                                    <div class="value-item debit">${formatValueToMoney(item.value)}</div>
+                                `).join('')}
+                            </div>
+                            <div class="credit-container">
+                                ${classData.items.filter(item => item.type === 'credit').map(item => `
+                                    <div class="value-item credit">${formatValueToMoney(item.value)}</div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="total-line-above"></div>
+                        <div class="total-container">
+                            <div class="total-values-container">
+                            <div class="debit-total-container">
+                                <div class="total-values debit-total">${formatValueToMoney(totalDebit)}</div>
+                            </div>
+                            <div class="credit-total-container">
+                                <div class="total-values credit-total">${formatValueToMoney(totalCredit)}</div>
+                            </div>
+                        </div>
+                             <div class="difference-container">
+                                <div class="difference-value">${formatValueToMoney(difference)}</div>
+                            </div>
+                        </div>
                         `;
 
-                        const balanceDiv = document.createElement('main');
-                        balanceDiv.className = 'balance-container';
+                        balanceDiv.appendChild(classDiv);
+                    }
 
-                        balanceDiv.innerHTML = `
-                            <section class="accounts-container">
-                                <header class="account-title">
-                                    <h2>Conta</h2>
-                                </header>
-                                ${groupedByMonth[month][day].map(item => `
-                                    <div class="data_box">${CashName(item.name)}</div>
-                                `).join('')}
-                                <!-- Adicionar linha final para total da Conta -->
-                                <div class="data_box total-row">Total</div>
-                            </section>
-
-                            <section class="accounts-container">
-                                <header class="debtor-title">
-                                    <h2>Débito</h2>
-                                </header>
-                                ${groupedByMonth[month][day].map(item => `
-                                    <div class="data_box">${formatValueToMoney(0,item.debit)}</div>
-                                `).join('')}
-                                <!-- Adicionar linha final para total de Débito -->
-                                <div class="data_box total-row">${formatValueToMoney(0,dailyDebito)}</div>
-                            </section>
-
-                            <section class="accounts-container">
-                                <header class="creditor-title">
-                                    <h2>Crédito</h2>
-                                </header>
-                                ${groupedByMonth[month][day].map(item => `
-                                    <div class="data_box">${formatValueToMoney(0,item.credit)}</div>
-                                `).join('')}
-                                <div class="data_box total-row">${formatValueToMoney(0,dailyCredito)}</div>
-                            </section>
-                        `;
-
-                        dayDiv.appendChild(balanceDiv);
+                    dayDiv.appendChild(balanceDiv);
                     monthDiv.appendChild(dayDiv);
                 });
 
                 main.appendChild(monthDiv);
             });
-        } else {
-            console.error('Nenhum ativo encontrado!');
         }
     } catch (error) {
-        console.error('Erro ao carregar os dados:', error);
+        console.error(error);
+        loading.style.display = 'none';
+        main.style.display = 'flex';
+        main.innerHTML = '<p>Erro ao carregar os dados.</p>';
     }
 });

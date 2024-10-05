@@ -5,7 +5,7 @@ from src import cache
 
 from src.controller.dashboard.company.info_authorization import info_authorization
 from src.controller.dashboard.company.info_assets import info_assets
-from src.controller.dashboard.company.info_reason import info_reason
+from src.controller.dashboard.company.info_journal import info_journal
 from src.controller.dashboard.company.info_balance import info_balance
 from src.controller.dashboard.company.info_razonete import info_razonete
 from src.controller.dashboard.company.info_dashboard import info_dashboard
@@ -81,16 +81,16 @@ def register_liability_site(cnpj):
     
 #----------------------------------------------------------------------------------------- LIVRO DE RAZÃO (EXTRATO)
 
-@dashboard_request.route('/reason/<cnpj>', methods=['POST','GET'])
+@dashboard_request.route('/journal/<cnpj>', methods=['POST','GET'])
 @login_required
-def register_reason_site(cnpj): 
+def register_journal_site(cnpj): 
     if request.method == 'POST':
         company_id = session.get('company_id')
-        return info_reason(company_id, cnpj)
+        return info_journal(company_id, cnpj)
 
     if request.method == 'GET': 
         validate_cnpj_access(cnpj)
-        return render_template('dashboard/company/reports/reason.html',cnpj=cnpj)
+        return render_template('dashboard/company/reports/journal.html',cnpj=cnpj)
     
 
 #----------------------------------------------------------------------------------------- BALANÇO PATRIMONIAL
@@ -107,7 +107,20 @@ def balance_site(cnpj):
         return render_template('dashboard/company/reports/balance.html',cnpj=cnpj)
 
 
-#-----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------- RAZONETE
+
+@dashboard_request.route('razonete/<cnpj>', methods=['POST','GET'])
+@login_required
+def razonete_site(cnpj): 
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        return info_razonete(company_id, cnpj)
+
+    if request.method == 'GET': 
+        validate_cnpj_access(cnpj)
+        return render_template('dashboard/company/reports/razonete.html', cnpj=cnpj)
+
+#----------------------------------------------------------------------------------------- RESUMO DE ATIVO E PASSIVO
 
 @dashboard_request.route('<cnpj>/<type>/<uuid>', methods=['POST','GET'])
 @login_required
@@ -147,19 +160,6 @@ def liabilities_site(cnpj):
     if request.method == 'GET': 
         validate_cnpj_access(cnpj)
         return render_template('dashboard/company/liabilities/liabilities.html',cnpj=cnpj)
-    
-#-----------------------------------------------------------------------------------------
-
-@dashboard_request.route('razonete/<cnpj>', methods=['POST','GET'])
-@login_required
-def razonete_site(cnpj): 
-    if request.method == 'POST':
-        company_id = session.get('company_id')
-        return info_razonete(company_id)
-
-    if request.method == 'GET': 
-        validate_cnpj_access(cnpj)
-        return render_template('dashboard/company/reports/razonete.html',cnpj=cnpj)
 
 
 #-----------------------------------------------------------------------------------------

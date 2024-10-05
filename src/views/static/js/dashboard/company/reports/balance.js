@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', async function () {
-
     const main = document.getElementById('main');
 
     function getCnpjFromUrl() {
@@ -50,17 +49,36 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         
         const data = await response.json();
+        console.log(data)
 
         loading.style.display = 'none';
         main.style.display = 'flex';
 
         if (data.historic) {
 
+            const groupedByClass = {};
+
+            // Agrupar dados por class e somar debit e credit
+            data.historic.forEach(item => {
+                if (!groupedByClass[item.class]) {
+                    groupedByClass[item.class] = {
+                        credit: 0,
+                        debit: 0,
+                        name: CashName(item.class),
+                        events: []
+                    };
+                }
+                groupedByClass[item.class].credit += parseFloat(item.credit);
+                groupedByClass[item.class].debit += parseFloat(item.debit);
+                groupedByClass[item.class].events.push(item);
+            });
+
             const groupedByMonth = {};
 
-            data.historic.forEach(item => {
-                const month = new Date(item.creation_date).toLocaleString('pt-BR', { month: 'long' });
-                const day = formatDateToBrazilian(item.creation_date);
+            Object.values(groupedByClass).forEach(item => {
+                const creationDate = item.events[0].creation_date; // Usa a data do primeiro evento para o agrupamento
+                const month = new Date(creationDate).toLocaleString('pt-BR', { month: 'long' });
+                const day = formatDateToBrazilian(creationDate);
 
                 if (!groupedByMonth[month]) {
                     groupedByMonth[month] = {};
@@ -70,96 +88,101 @@ document.addEventListener('DOMContentLoaded', async function () {
                     groupedByMonth[month][day] = [];
                 }
 
-                groupedByMonth[month][day].push(item);
+                groupedByMonth[month][day].push({
+                    class: item.name,
+                    credit: item.credit,
+                    debit: item.debit
+                });
             });
 
             Object.keys(groupedByMonth).forEach(month => {
                 const monthDiv = document.createElement('section');
                 monthDiv.className = 'month-container';
 
-                    monthDiv.innerHTML = `
+                monthDiv.innerHTML = `
+                    <header class="month-title-container" id="month-title-container">
+                        <article class="month-title-box">
+                            <div class="month-box">
+                                <h1>${month}</h1>
+                            </div>
+                            <div class="month-box">
+                                <h1>R$ - - -</h1>
+                            </div>
+                        </article>
+                    </header>
+                `;
 
-                        <header class="month-title-container" id="month-title-container">
-                            
-                            <article class="month-title-box">
+                let totalDebito = 0, totalCredito = 0;
 
-                                <div class="month-box">
-                                    <h1>${month}</h1>
-                                </div>
+                Object.keys(groupedByMonth[month]).forEach(async day => {
+                    const dayDiv = document.createElement('article');
+                    dayDiv.className = 'day-container';
 
-                                <div class="month-box">
-                                    <h1>R$ ----</h1>
-                                </div>
+                    const dailyDebito = groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.debit), 0);
+                    const dailyCredito = groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.credit), 0);
 
-                            </article>
+                    totalDebito += dailyDebito;
+                    totalCredito += dailyCredito;
 
+                    dayDiv.innerHTML = `
+                        <header class="day-title-container">
+                            <div class="title-box">
+                                <h3>${day}</h3>
+                            </div>
+                            <div class="title-box">
+                                <h3>${formatValueToMoney(1, dailyDebito - dailyCredito)}</h3>
+                            </div>
                         </header>
                     `;
 
-                    let totalConta = 0, totalDebito = 0, totalCredito = 0;
+                    const balanceDiv = document.createElement('main');
+                    balanceDiv.className = 'balance-container';
 
-                    Object.keys(groupedByMonth[month]).forEach(day => {
+                    const a = await groupedByMonth[month][day].map(item => console.log(item))
+                    console.log(a)
 
-                        const dayDiv = document.createElement('article');
-                        dayDiv.className = 'day-container';
-
-                        const dailyDebito = groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.debit), 0);
-                        const dailyCredito = groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.credit), 0);
-
-                        totalDebito += dailyDebito;
-                        totalCredito += dailyCredito;
-
-                        dayDiv.innerHTML = `
-                            <header class="day-title-container">
-                                <div class="title-box">
-                                    <h3>${day}</h3>
-                                </div>
-                                <div class="title-box">
-                                    <h3>${formatValueToMoney(1,groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.debit), 0) - groupedByMonth[month][day].reduce((acc, item) => acc + parseFloat(item.credit), 0))}</h3>
-                                </div>
+                    balanceDiv.innerHTML = `
+                        <section class="accounts-container">
+                            <header class="account-title">
+                                <h2>Conta</h2>
                             </header>
-                        `;
+                            ${groupedByMonth[month][day].map(item =>`
+                                <div class="data_box">${item.class}</div>
+                            `).join('')}
+                            <div class="data_box total-row">Total</div>
+                        </section>
 
-                        const balanceDiv = document.createElement('main');
-                        balanceDiv.className = 'balance-container';
+                        <section class="accounts-container">
+                            <header class="debtor-title">
+                                <h2>Débito</h2>
+                            </header>
+                            ${groupedByMonth[month][day].map(item => `
+                                <div class="data_box">${formatValueToMoney(0, item.debit)}</div>
+                            `).join('')}
+                            <div class="data_box total-row">${formatValueToMoney(0, dailyDebito)}</div>
+                        </section>
 
-                        balanceDiv.innerHTML = `
-                            <section class="accounts-container">
-                                <header class="account-title">
-                                    <h2>Conta</h2>
-                                </header>
-                                ${groupedByMonth[month][day].map(item => `
-                                    <div class="data_box">${CashName(item.name)}</div>
-                                `).join('')}
-                                <!-- Adicionar linha final para total da Conta -->
-                                <div class="data_box total-row">Total</div>
-                            </section>
+                        <section class="accounts-container">
+                            <header class="creditor-title">
+                                <h2>Crédito</h2>
+                            </header>
+                            ${groupedByMonth[month][day].map(item => `
+                                <div class="data_box">${formatValueToMoney(0, item.credit)}</div>
+                            `).join('')}
+                            <div class="data_box total-row">${formatValueToMoney(0, dailyCredito)}</div>
+                        </section>
+                    `;
 
-                            <section class="accounts-container">
-                                <header class="debtor-title">
-                                    <h2>Débito</h2>
-                                </header>
-                                ${groupedByMonth[month][day].map(item => `
-                                    <div class="data_box">${formatValueToMoney(0,item.debit)}</div>
-                                `).join('')}
-                                <!-- Adicionar linha final para total de Débito -->
-                                <div class="data_box total-row">${formatValueToMoney(0,dailyDebito)}</div>
-                            </section>
-
-                            <section class="accounts-container">
-                                <header class="creditor-title">
-                                    <h2>Crédito</h2>
-                                </header>
-                                ${groupedByMonth[month][day].map(item => `
-                                    <div class="data_box">${formatValueToMoney(0,item.credit)}</div>
-                                `).join('')}
-                                <div class="data_box total-row">${formatValueToMoney(0,dailyCredito)}</div>
-                            </section>
-                        `;
-
-                        dayDiv.appendChild(balanceDiv);
+                    dayDiv.appendChild(balanceDiv);
                     monthDiv.appendChild(dayDiv);
                 });
+
+                // Cálculo do saldo final do mês: Débito - Crédito
+                const saldoMes = totalDebito - totalCredito;
+
+                // Atualizar o valor no segundo month-box
+                const monthBoxes = monthDiv.querySelectorAll('.month-box h1');
+                monthBoxes[1].textContent = formatValueToMoney(1, saldoMes);
 
                 main.appendChild(monthDiv);
             });

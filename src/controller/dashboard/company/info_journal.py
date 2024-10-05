@@ -3,7 +3,7 @@ from flask import jsonify
 
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
-def info_reason(company_id, cnpj):
+def info_journal(company_id, cnpj):
 
     info = db_search_historic(company_id)
 
@@ -22,7 +22,7 @@ def info_reason(company_id, cnpj):
             record['creation_time'] = record['creation_time'].strftime('%H:%M:%S')  # Formato HH:MM:SS
 
     return jsonify({
-        'redirect_url': f'/dashboard/reason/{cnpj}',
+        'redirect_url': f'/dashboard/daily/{cnpj}',
         'historic': info
     })
 

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     loading.style.display = 'block';
 
     try {
-        const response = await fetch(`/dashboard/reason/${cnpj}`, {
+        const response = await fetch(`/dashboard/journal/${cnpj}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
