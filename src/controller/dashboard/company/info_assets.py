@@ -7,7 +7,6 @@ from src import cache
 
 @cache.cached(timeout=30)  # Guarda as informações por 30 segundos
 def info_assets(company_id):
-
     data = db_search_asset(company_id)
 
     return jsonify({'value': data}), 200
