@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
-
-    try {
+loading.style.display = 'block';
+main.style.display = 'none';
+    try {    
         const cnpj = getCnpjFromUrl(); // Obter o CNPJ da URL
         const response = await fetch(`/dashboard/liabilities/${cnpj}`, {
             method: 'POST',
@@ -14,6 +15,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
+
+        loading.style.display = 'none';
+        main.style.display = 'flex';
 
         if (data.value.length > 0) {
             console.log(data.value);
@@ -38,6 +42,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     <div class="data-out-box"><div class="data-box"><p>${liabilities.payment_method}</p></div></div>
                     <div class="data-out-box"><div class="data-box"><p>${liabilities.status}</p></div></div>
                     <div class="data-out-box"><div class="data-box"><p>${liabilities.description}</p></div></div>
+                    <div class="data-out-box"><div class="data-box"><p>${liabilities.creation_date}</p></div></div>
+                    <div class="data-out-box"><div class="data-box"><p>${liabilities.creation_time}</p></div></div>
                 `;
 
                 // Adicionar o AssetDiv ao container
@@ -60,6 +66,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                                 <div class="model-box"><h5>Forma de Pagamento: ${details[7]}</h5></div>
                                 <div class="model-box"><h5>Status: ${details[8]}</h5></div>
                                 <div class="model-box"><h5>Descrição: ${details[9]}</h5></div>
+                                <div class="model-box"><h5>Data de criação: ${details[10]}</h5></div>
+                                <div class="model-box"><h5>Horário de criação: ${details[11]}</h5></div>
                             </article>
                         </main>
                     `;

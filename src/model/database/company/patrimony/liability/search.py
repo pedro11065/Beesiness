@@ -40,8 +40,8 @@ def db_search_liability(company_id):
             "payment_method": data[9],
             "description": data[10],
             "status": data[11],
-            "creation_date":data[11].strftime("%d/%m/%Y") if isinstance(data[11], datetime.date) else data[11],
-            "creation_time": data[12].strftime('%H:%M:%S') if isinstance(data[12], datetime.time) else data[12]  # Convertendo time para string
+            "creation_date":data[12].strftime("%d/%m/%Y") if isinstance(data[12], datetime.date) else data[12],
+            "creation_time": data[13].strftime('%H:%M:%S') if isinstance(data[13], datetime.time) else data[13]  # Convertendo time para string
             
         } for data in db_data]
         

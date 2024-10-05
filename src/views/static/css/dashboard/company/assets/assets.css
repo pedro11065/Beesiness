@@ -170,7 +170,7 @@ a{
 .titles-container{
     display:flex;  
     flex-direction: row;
-    width: 100%;
+    width: auto;
     height: 3rem;
     align-items: center;
     justify-content: flex-start;
@@ -200,7 +200,7 @@ a{
     background-color: #e6e6e69c;
     display:flex;  
     flex-direction: row;
-    width: 100%;
+    width: auto;
     height: 3rem;
     align-items: center;
     justify-content: flex-start;

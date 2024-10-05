@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
-
+    loading.style.display = 'block';
+    main.style.display = 'none';
     try {
         const cnpj = getCnpjFromUrl(); // Obter o CNPJ da URL
         const response = await fetch(`/dashboard/assets/${cnpj}`, {
@@ -15,8 +16,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const data = await response.json();
 
+        loading.style.display = 'none';
+        main.style.display = 'flex';
+
         if (data.value && data.value.length > 0) {
-            console.log(data.value.acquisition_date);
+            console.log(data.value);
 
             const dataContainer = document.getElementById('data-container');
             dataContainer.innerHTML = ''; // Limpar o conteúdo anterior, se houver
@@ -37,6 +41,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     <div class="data-out-box"><div class="data-box"><p>${asset.acquisition_date}</p></div></div>
                     <div class="data-out-box"><div class="data-box"><p>${asset.status}</p></div></div>
                     <div class="data-out-box"><div class="data-box"><p>${asset.description}</p></div></div>
+                    <div class="data-out-box"><div class="data-box"><p>${asset.creation_date}</p></div></div>
+                    <div class="data-out-box"><div class="data-box"><p>${asset.creation_time}</p></div></div>
                 `;
 
                 // Adicionar o AssetDiv ao container
@@ -58,6 +64,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                                 <div class="model-box"><h5>Localização: ${details[6]}</h5></div>
                                 <div class="model-box"><h5>Status: ${details[7]}</h5></div>
                                 <div class="model-box"><h5>Descrição: ${details[8]}</h5></div>
+                                <div class="model-box"><h5>Data de criação: ${details[9]}</h5></div>
+                                <div class="model-box"><h5>Horário de criação: ${details[10]}</h5></div>
                             </article>
                         </main>
                     `;
