@@ -58,6 +58,7 @@ header .exit .icon {
     margin: 0;
     box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
     gap: 1rem;
+    box-sizing: border-box;
 } 
 
 .register-box {

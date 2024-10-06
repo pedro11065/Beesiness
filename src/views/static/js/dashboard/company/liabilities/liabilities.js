@@ -72,13 +72,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error('Erro ao carregar os dados:', error);
     }
 
-    // Configurações do modal
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    closeModalBtn.addEventListener('click', function () {
-        const modal = document.getElementById('modal');
-        modal.style.display = 'none';
-    });
-
     // Fechar o modal ao clicar fora dele
     window.addEventListener('click', function (event) {
         const modal = document.getElementById('modal');
