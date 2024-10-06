@@ -148,6 +148,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         `;
 
                         balanceDiv.appendChild(classDiv);
+
                     }
 
                     dayDiv.appendChild(balanceDiv);
