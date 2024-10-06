@@ -31,6 +31,37 @@
         </a>
     </header>
 
+    <!-- Modal de Sucesso -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sucesso!</h2>
+            </div>
+            <div class="modal-body">
+                <p id="success-message">Registro realizado com sucesso!</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Aviso -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Aviso</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="alert-message">Mensagem de aviso</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <main class="main">
         <div class="out-box">  
             <form class="form-group" id="AssetForm">
@@ -114,14 +145,14 @@
                         <!-- Nome -->
                         <div class="form-container">
                             <p class="msg">Nome:</p>
-                            <input class="form-box" id="Name" type="text" name="Name" required>
+                            <input class="form-box" id="name" type="text" name="name" required>
                             <p class="error" id="name-error"></p>
                         </div>
 
                         <!-- Localização -->
                         <div class="form-container">
                             <p class="msg">Localização:</p>
-                            <input class="form-box" id="Localization" type="text" name="Localization" required>
+                            <input class="form-box" id="localization" type="text" name="localization" required>
                             <p class="error" id="localization-error"></p>
                         </div>
 

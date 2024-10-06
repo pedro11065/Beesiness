@@ -6,24 +6,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function getCnpjFromUrl() {
         const url = window.location.pathname;  // Obtém o caminho da url.
         const parts = url.split('/');  // Divide a url pelas barras.
-        return parts[parts.length - 1];  // Vai retornar a última parte dividida.
+        return parts[parts.length - 1];  // Retorna a última parte dividida.
     }
 
     const cnpj = getCnpjFromUrl();
 
     submitButton.addEventListener('click', async (event) => {
-        event.preventDefault(); // Evita o comportamento padrão do formulário
+        event.preventDefault();
+
+        if (!validateForm()) {
+            return; // Se a validação falhar, não envia o formulário
+        }
 
         const eventValue = document.getElementById('event').value.trim();
         const classeValue = document.getElementById('classe').value.trim();
-        const name = document.getElementById('Name').value.trim();
-        const localization = document.getElementById('Localization').value.trim();
-        const acquisitionDate = document.getElementById('acquisition_date').value;
-        const acquisitionValue = document.getElementById('acquisition_value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.');
-        const status = document.getElementById('status').value;
+        const name = document.getElementById('name').value.trim();
+        const localization = document.getElementById('localization').value.trim();
+        const acquisitionDate = document.getElementById('acquisition_date').value.trim();
+        const acquisitionValue = document.getElementById('acquisition_value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.'); 
+        const status = document.getElementById('status').value.trim();
         const description = document.getElementById('description').value.trim();
 
         const formData = {
+            cnpj: cnpj,
             event: eventValue,
             classe: classeValue,
             name: name,
@@ -44,38 +49,122 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                alert('Ativo registrado com sucesso!');
+                openSuccessModal('Ativo registrado com sucesso!');
                 window.location.href = `/dashboard/company/${cnpj}`;
             } else {
                 const errorData = await response.json();
-                alert(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);
+                openAlertModal(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);
             }
         } catch (error) {
             console.error('Erro ao enviar dados:', error);
-            alert('Erro ao enviar dados. Tente novamente mais tarde.');
+            openAlertModal('Erro ao enviar dados. Tente novamente mais tarde.');
         }
     });
-});
 
-function formatMoney(value) {
-    value = value.replace(/\D/g, '');
-    const numericValue = parseFloat(value) / 100;
+    function validateForm() {
+        const eventValue = document.getElementById('event').value.trim();
+        const classeValue = document.getElementById('classe').value.trim();
+        const name = document.getElementById('name').value.trim();
+        const localization = document.getElementById('localization').value.trim();
+        const acquisitionDate = document.getElementById('acquisition_date').value.trim();
+        const acquisitionValue = document.getElementById('acquisition_value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.');
+        const status = document.getElementById('status').value.trim();
+        const description = document.getElementById('description').value.trim();
 
-    if (isNaN(numericValue)) {
-        return 'R$ 0,00';
+        // Verifica se os campos obrigatórios estão vazios
+        if (!eventValue || !classeValue || !name || !localization || !acquisitionDate || !acquisitionValue || !status || !description) {
+            openAlertModal('Campo obrigatório não preenchido.');
+            return false;
+        }
+
+        // Validação de nome
+        if (name.length < 3) {
+            openAlertModal('Nome muito curto.');
+            return false;
+        } else if (name.length > 255) {
+            openAlertModal('Nome muito longo.');
+            return false;
+        }
+
+        // Validação de valor (precisa ser um número)
+        if (isNaN(acquisitionValue) || acquisitionValue <= 0) {
+            openAlertModal('Valor inválido.');
+            return false;
+        }
+
+        // Validação de descrição
+        if (description.length > 500) { // Limite de caracteres para descrição
+            openAlertModal(`Descrição muito longa (máx. 500 caracteres).\nVocê digitou ${description.length} caracteres!`);
+            return false;
+        }
+
+        return true; // Todos os campos são válidos
     }
 
-    const result = new Intl.NumberFormat('pt-BR', { 
-        style: 'currency', 
-        currency: 'BRL', 
-        minimumFractionDigits: 2, 
-        maximumFractionDigits: 2 
-    }).format(numericValue);
+    function formatMoney(value) {
+        value = value.replace(/\D/g, '');
+        const numericValue = parseFloat(value) / 100;
 
-    return result;
-}
+        if (isNaN(numericValue)) {
+            return 'R$ 0,00';
+        }
+
+        const result = new Intl.NumberFormat('pt-BR', { 
+            style: 'currency', 
+            currency: 'BRL', 
+            minimumFractionDigits: 2, 
+            maximumFractionDigits: 2 
+        }).format(numericValue);
+
+        return result;
+    }
+
+    document.getElementById('acquisition_value').addEventListener('input', function (e) {
+        this.value = formatMoney(this.value);
+    });
+
+    function openAlertModal(message) {
+        const modal = document.getElementById('alert-modal');
+        const modalMessage = document.getElementById('alert-message');
+
+        modalMessage.textContent = message;
+        modal.style.display = 'block';
+
+        // Fecha ao clicar fora da área do modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+    }
+
+    // Função para abrir o modal de sucesso
+    function openSuccessModal(message) {
+        const modal = document.getElementById('success-modal');
+        const successMessage = document.getElementById('success-message');
+
+        successMessage.textContent = message;
+        modal.style.display = 'block';
+
+        // Fecha ao clicar fora da área do modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+    }
 
 
-document.getElementById('acquisition_value').addEventListener('input', function (e) {
-    this.value = formatMoney(this.value);
+    function closeModal() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.style.display = 'none';
+        });
+    }
+
+    document.querySelectorAll('.fechar').forEach(button => {
+        button.addEventListener('click', closeModal);
+    });
+
+    document.querySelector('.close').addEventListener('click', closeModal);
 });

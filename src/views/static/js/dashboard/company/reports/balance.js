@@ -193,3 +193,22 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error('Erro ao carregar os dados:', error);
     }
 });
+
+function generatePDF() {
+    /*
+        Há um pequeno problema: Os traços, as vezes eles são tão grandes que vão sozinhos para outra página do pdf.
+    */
+    const element = document.getElementById('main'); // O elemento que desejamos converter em PDF
+    const options = {
+        margin:       0.5,
+        filename:     'balancete.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().from(element).set(options).save();
+
+    
+    //Botão chamando função: <button onclick="generatePDF()">Gerar PDF</button>
+}

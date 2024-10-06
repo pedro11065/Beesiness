@@ -257,6 +257,7 @@ h3{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
                 rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     transition: background-color 0.3s ease;
+    cursor: pointer
 }
 
 .register-button:hover {
@@ -267,20 +268,81 @@ h3{
     outline: 2px solid #FFD700;
 }
 
+/* Modal de Aviso */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
 
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30rem;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+}
 
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #d3d3d3;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
 
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center; 
+    flex: 1;
+}
 
+.modal-header .close {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+}
 
+.modal-body {
+    padding: 10px;
+}
 
+#alert-message {
+    color: black;
+    text-align: center; 
+}
 
+.modal-body p {
+    font-size: 1.1rem;
+}
 
+.button-group {
+    text-align: center;
+}
 
+.btn {
+    padding: 10px 20px;
+    background-color: #FFC300;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
 
-
-
-
-
+.btn:hover {
+    background-color: #FFD700;
+}
 
 
 @media (max-width: 40rem) {
