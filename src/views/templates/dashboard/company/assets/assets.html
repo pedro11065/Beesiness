@@ -7,15 +7,9 @@
     <title>Ativos</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/assets/assets.css') }}">
-
-    <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-
-    <!-- Fonte Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-
-   <script src="{{ url_for('static', filename='js/dashboard/company/assets/assets.js') }}" defer></script>
-
+    <script src="{{ url_for('static', filename='js/dashboard/company/assets/assets.js') }}" defer></script>
 </head>
 
 <body>
@@ -31,6 +25,66 @@
         </a>
     </header>
 
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalhes do ativo</h2>
+
+                 <button class="options-button" onclick="toggleDropdown(event)">
+                    <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
+                </button>
+
+                <!--
+                <div class="dropdown-menu" style="display:none;">
+                    <button class="dropdown-item" onclick="openEditModal()">Editar</button>
+                    <button class="dropdown-item" onclick="deleteUser()">Deletar</button>
+                </div>
+                -->
+            </div>
+
+            
+            <div class="form-group">
+                <label>Nome:</label>
+                <p id="name"></p>
+    
+                <label>Valor:</label>
+                <p id="value"></p>
+    
+                <label>Descrição:</label>
+                <p id="description"></p>
+    
+                <label>Localização:</label>
+                <p id="location"></p>
+    
+                <label>Data de Aquisição:</label>
+                <p id="acquisition_date"></p>
+            </div>
+            
+            <div class="event-class-status">
+                <div>
+                    <label>Evento:</label>
+                    <p id="event"></p>
+                </div>
+                <div>
+                    <label>Classe:</label>
+                    <p id="class"></p>
+                </div>
+                <div>
+                    <label>Status:</label>
+                    <p id="status"></p>
+                </div>
+            </div>
+            
+            <footer class="footer">
+                <div class="footer-right">
+                    <p id="creation"></p>
+                    <p id="uuid"></p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+
     <menu class="menu-container" id="menuContainer">
         <div class="register-box">
             <a href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}">Registrar</a>
@@ -38,66 +92,33 @@
         <div class="info-box">
             Lista ativos
         </div>
-
     </menu>
-    
-     <div id="loading" style="display: none;">Carregando...
-        <div id="resultado" ></div>
-    </div>
 
     <main class="main" id="main">
-   
-        <header class="titles-container">
-            <div class="title-box"><h1>ID</h1></div>
-            <div class="title-box"><h1>Nome</h1></div>
-            <div class="title-box"><h1>Evento</h1></div>
-            <div class="title-box"><h1>Categoria</h1></div>
-            <div class="title-box"><h1>Valor</h1></div>
-            <div class="title-box"><h1>Localização</h1></div>
-            <div class="title-box"><h1>D. de acquisição</h1></div>
-            <div class="title-box"><h1>Status</h1></div>
-            <div class="title-box"><h1>Descrição</h1></div>
-            <div class="title-box"><h1>D. de criação</h1></div>
-            <div class="title-box"><h1>H. de criação</h1></div>
-        </header>
-
-        <article id="data-container">     
-            <!-- 
-            <section class="data-group" style="cursor: pointer;">
-                <div class="data-out-box"><div class="data-box"><p>0bc50f1e-d53d-4f9d-8c4e-3c519ac39884</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Madeira</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Compra</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Matérias-Primas</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>R$50.000.00</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>2023-08-03</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Floresta</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Comprado</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>5 toneladas de madeira</p></div></div>
-            </section>
-
-            <section class="data-group" style="cursor: pointer;">
-                <div class="data-out-box"><div class="data-box"><p>b41cd0f5-93a6-4a78-9f83-76319f791b00</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Toyota Corola 2012</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Compra</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Veículos</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>R$50.000.00</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>2024-10-03</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Casa</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Comprado</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Carro para a minha esposa</p></div></div>
-            </section>
-            -->
-
-        </article>
-
-
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="closeModalBtn">&times;</span>
-
-        </div>
-
-
+        <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Evento</th>
+                    <th>Classe</th>
+                    <th>Valor</th>
+                    <th>Localização</th>
+                    <th>D. de aquisição</th>
+                    <th>Status</th>
+                    <th>Descrição</th>
+                    <th>D. de criação</th>
+                    <th>H. de criação</th>
+                </tr>
+            </thead>
+            <div id="loading" style="display: none;">Carregando...
+                <div id="resultado" ></div>
+            </div>
+        
+            <tbody id="data-container"></tbody>
+        </table>
+    </div>
     </main>
 </body>
-
+</html>

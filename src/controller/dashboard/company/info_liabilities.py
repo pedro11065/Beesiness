@@ -11,6 +11,5 @@ import datetime
 def info_liabilities(company_id):
 
     data = db_search_liability(company_id)
-    print(data)
     
     return jsonify({'value': data}), 200

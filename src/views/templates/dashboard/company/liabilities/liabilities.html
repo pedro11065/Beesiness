@@ -7,15 +7,9 @@
     <title>Passivos</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/liabilities.css') }}">
-
-    <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-
-    <!-- Fonte Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-
-   <script src="{{ url_for('static', filename='js/dashboard/company/liabilities/liabilities.js') }}" defer></script>
-
+    <script src="{{ url_for('static', filename='js/dashboard/company/liabilities/liabilities.js') }}" defer></script>
 </head>
 
 <body>
@@ -23,13 +17,78 @@
         <div class="user">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
-            <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
+            <p>{{ current_user.fullname }}</p>
         </div>
         
         <a href="/" class="exit">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
         </a>
     </header>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalhes do passivo</h2>
+
+                 <button class="options-button" onclick="toggleDropdown(event)">
+                    <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
+                </button>
+
+                <!--
+                <div class="dropdown-menu" style="display:none;">
+                    <button class="dropdown-item" onclick="openEditModal()">Editar</button>
+                    <button class="dropdown-item" onclick="deleteUser()">Deletar</button>
+                </div>
+                -->
+            </div>
+            <div class="form-group">
+                <label>Nome:</label>
+                <p id="name"></p>
+    
+                <label>Valor:</label>
+                <p id="value"></p>
+
+                <label>Forma de pagamento:</label>
+                <p id="payment_method"></p>
+    
+                <label>Descrição:</label>
+                <p id="description"></p>
+    
+                <div class="emission-class-expiration">
+                    <div>
+                        <label>Data de Emissão:</label>
+                        <p id="emission_date"></p>
+                    </div>
+                    <div>
+                        <label>Data de Vencimento:</label>
+                        <p id="expiration_date"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="event-class-status">
+                <div>
+                    <label>Evento:</label>
+                    <p id="event"></p>
+                </div>
+                <div>
+                    <label>Classe:</label>
+                    <p id="class"></p>
+                </div>
+                <div>
+                    <label>Status:</label>
+                    <p id="status"></p>
+                </div>
+            </div>
+            
+            <footer class="footer">
+                <div class="footer-right">
+                    <p id="creation"></p>
+                    <p id="uuid"></p>
+                </div>
+            </footer>
+        </div>
+    </div>
 
     <menu class="menu-container" id="menuContainer">
         <div class="register-box">
@@ -38,55 +97,34 @@
         <div class="info-box">
             Lista passivos
         </div>
-
     </menu>
     
-     <div id="loading" style="display: none;">Carregando...
+    <div id="loading" style="display: none;">Carregando...
         <div id="resultado" ></div>
     </div>
 
     <main class="main" id="main">
-   
-        <header class="titles-container">
-            <div class="title-box"><h1>ID</h1></div>
-            <div class="title-box"><h1>Nome</h1></div>
-            <div class="title-box"><h1>Evento</h1></div>
-            <div class="title-box"><h1>Categoria</h1></div>
-            <div class="title-box"><h1>Valor</h1></div>
-            <div class="title-box"><h1>D de emissão</h1></div>
-            <div class="title-box"><h1>D. de vencimento</h1></div>
-            <div class="title-box"><h1>F. de pagamento</h1></div>
-            <div class="title-box"><h1>Status</h1></div>
-            <div class="title-box"><h1>Descrição</h1></div>
-            <div class="title-box"><h1>D. de criação</h1></div>
-            <div class="title-box"><h1>H. de criação</h1></div>
-        </header>
-
-        <article id="data-container">
-             <!-- Fonte Inter 
-            <section class="data-group" style="cursor: pointer;">
-                <div class="data-out-box"><div class="data-box"><p>c6f4601f-cce1-4482-b7eb-9e8980871f20</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Conta de luz</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Empréstimo</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Conta de Luz</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>R$5000.00</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>2024-08-03</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>2024-12-03</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Cartão de Crédito</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Parcelado</p></div></div>
-                <div class="data-out-box"><div class="data-box"><p>Conta de luz"</p></div></div>
-            </section>
-            -->
-        </article>
-
-
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="closeModalBtn">&times;</span>
-
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Evento</th>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                        <th>D. de Emissão</th>
+                        <th>D. de Vencimento</th>
+                        <th>F. de Pagamento</th>
+                        <th>Status</th>
+                        <th>Descrição</th>
+                        <th>D. de Criação</th>
+                        <th>H. de Criação</th>
+                    </tr>
+                </thead>
+                <tbody id="data-container"></tbody>
+            </table>
         </div>
-
-
     </main>
 </body>
-
+</html>
