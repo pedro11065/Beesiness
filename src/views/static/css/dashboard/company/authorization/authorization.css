@@ -146,25 +146,6 @@ tr:hover {
     background-color: #f9f9f9;
 }
 
-.options-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: #555;
-    display: flex;
-}
-
-.options-button img {
-    width: 2rem;
-    height: 2rem;
-    display: block;
-}
-
-.options-button:hover {
-    color: #000;
-}
-
 .add-box {
     display: flex;
     justify-content: flex-end;
@@ -280,6 +261,24 @@ select {
     color: white;
 }
 
+.options-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #555;
+    display: flex;
+}
+
+.options-button img {
+    width: 2rem;
+    height: 2rem;
+    display: block;
+}
+
+.options-button:hover {
+    color: #000;
+}
 
 .dropdown-menu {
     position: absolute;

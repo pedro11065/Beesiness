@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Validação de descrição
-        if (description.length > 500) { // Limite de caracteres para descrição
-            openAlertModal('Descrição muito longa (máx. 500 caracteres).');
+        if (description.length > 255) { // Limite de caracteres para descrição
+            openAlertModal('Descrição muito longa (máx. 255 caracteres).');
             return false;
         }
 

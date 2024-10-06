@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
-loading.style.display = 'block';
-main.style.display = 'none';
+    loading.style.display = 'block';
+    main.style.display = 'none';
+    
     try {    
         const cnpj = getCnpjFromUrl(); // Obter o CNPJ da URL
         const response = await fetch(`/dashboard/liabilities/${cnpj}`, {
@@ -20,67 +21,52 @@ main.style.display = 'none';
         main.style.display = 'flex';
 
         if (data.value.length > 0) {
-            console.log(data.value);
-
             const dataContainer = document.getElementById('data-container');
             dataContainer.innerHTML = ''; // Limpar o conteúdo anterior, se houver
 
             data.value.forEach(liabilities => {
-                const LiabilitiesDiv = document.createElement('section');
-                LiabilitiesDiv.className = 'data-group';
-                LiabilitiesDiv.style.cursor = 'pointer';
-
-                // Preencher o conteúdo do AssetDiv com os dados do ativo
-                LiabilitiesDiv.innerHTML = `
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.liability_id}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${CashName(liabilities.name)}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.event}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.class}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${formatValueToMoney(liabilities.value)}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.emission_date}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.expiration_date}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.payment_method}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.status}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.description}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.creation_date}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${liabilities.creation_time}</p></div></div>
+                const row = document.createElement('tr');
+                
+                // Preencher o conteúdo do AssetDiv com os dados do passivo
+                row.innerHTML = `
+                    <td>${liabilities.liability_id}</td>
+                    <td class="limited-text name">${CashName(liabilities.name)}</td>
+                    <td>${liabilities.event}</td>
+                    <td>${liabilities.class}</td>
+                    <td>${formatValueToMoney(liabilities.value)}</td>
+                    <td>${liabilities.emission_date}</td>
+                    <td>${liabilities.expiration_date}</td>
+                    <td>${liabilities.payment_method}</td>
+                    <td>${liabilities.status}</td>
+                    <td class="limited-text">${liabilities.description}</td>
+                    <td>${liabilities.creation_date}</td>
+                    <td>${liabilities.creation_time}</td>
                 `;
 
-                // Adicionar o AssetDiv ao container
-                dataContainer.appendChild(LiabilitiesDiv);
+                dataContainer.appendChild(row);
 
-                // Adiciona evento de clique ao AssetDiv para abrir o modal
-                LiabilitiesDiv.addEventListener('click', function () {
-                    const details = Array.from(LiabilitiesDiv.children).map(child => child.innerText);
-                    const modalContent = `
-                        <main class="model-main">
-                            <header class="model-header">Detalhes do Ativo</header>
-                            <article class="model-container">
-                                <div class="model-box"><h5>ID: ${details[0]}</h5></div>
-                                <div class="model-box"><h5>Nome: ${details[1]}</h5></div>
-                                <div class="model-box"><h5>Evento: ${details[2]}</h5></div>
-                                <div class="model-box"><h5>Categoria: ${details[3]}</h5></div>
-                                <div class="model-box"><h5>Valor: ${details[4]}</h5></div>
-                                <div class="model-box"><h5>Data de Emissão: ${details[5]}</h5></div>
-                                <div class="model-box"><h5>Data de Vencimento: ${details[6]}</h5></div>
-                                <div class="model-box"><h5>Forma de Pagamento: ${details[7]}</h5></div>
-                                <div class="model-box"><h5>Status: ${details[8]}</h5></div>
-                                <div class="model-box"><h5>Descrição: ${details[9]}</h5></div>
-                                <div class="model-box"><h5>Data de criação: ${details[10]}</h5></div>
-                                <div class="model-box"><h5>Horário de criação: ${details[11]}</h5></div>
-                            </article>
-                        </main>
-                    `;
+                // Adiciona evento de clique ao row para abrir o modal
+                row.addEventListener('click', function () {
+                    const details = Array.from(row.children).map(child => child.innerText);
 
-                    // Limpa o conteúdo anterior do modal e exibe o novo conteúdo
-                    const modal = document.getElementById('modal');
-                    modal.querySelector('.modal-content').innerHTML = modalContent;
-                    modal.style.display = 'block';
+                    document.getElementById('uuid').innerText = details[0]; // ID
+                    document.getElementById('name').innerText = details[1]; // Nome
+                    document.getElementById('event').innerText = details[2]; // Evento
+                    document.getElementById('class').innerText = details[3]; // Classe
+                    document.getElementById('value').innerText = details[4]; // Valor
+                    document.getElementById('emission_date').innerText = details[5]; // Data de Emissão
+                    document.getElementById('expiration_date').innerText = details[6]; // Data de Vencimento
+                    document.getElementById('payment_method').innerText = details[7]; // Forma de Pagamento
+                    document.getElementById('status').innerText = details[8]; // Status
+                    document.getElementById('description').innerText = details[9]; // Descrição
+                    document.getElementById('creation').innerText = `${details[10]} - ${details[11]}`; // Data e Horário de Criação
+
+                    document.getElementById('modal').style.display = 'block';
                 });
             });
 
         } else {
-            console.error('Nenhum ativo encontrado!');
+            console.error('Nenhum passivo encontrado!');
         }
     } catch (error) {
         console.error('Erro ao carregar os dados:', error);
@@ -107,13 +93,6 @@ function getCnpjFromUrl() {
     const url = window.location.pathname;
     const parts = url.split('/');
     return parts[parts.length - 1];
-}
-function formatDateToBrazilian(dateStr) {
-    const date = new Date(dateStr);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = date.toLocaleString('pt-BR', { month: 'long' });
-    const year = date.getFullYear();
-    return `${day} de ${month} de ${year}`;
 }
 
 function formatValueToMoney(valueStr) {

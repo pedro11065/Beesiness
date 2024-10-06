@@ -17,79 +17,56 @@ document.addEventListener('DOMContentLoaded', async function () {
         const data = await response.json();
 
         loading.style.display = 'none';
-        main.style.display = 'flex';
+        main.style.display = 'block';
 
         if (data.value && data.value.length > 0) {
-            console.log(data.value);
-
             const dataContainer = document.getElementById('data-container');
             dataContainer.innerHTML = ''; // Limpar o conteúdo anterior, se houver
 
             data.value.forEach(asset => {
-                const AssetDiv = document.createElement('section');
-                AssetDiv.className = 'data-group';
-                AssetDiv.style.cursor = 'pointer';
+                const row = document.createElement('tr');
 
-                // Preencher o conteúdo do AssetDiv com os dados do ativo
-                AssetDiv.innerHTML = `
-                    <div class="data-out-box"><div class="data-box"><p>${asset.asset_id}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${CashName(asset.name)}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${asset.event}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${asset.class}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${formatValueToMoney(asset.value)}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${asset.location}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${asset.acquisition_date}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${asset.status}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${asset.description}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${asset.creation_date}</p></div></div>
-                    <div class="data-out-box"><div class="data-box"><p>${asset.creation_time}</p></div></div>
+                row.innerHTML = `
+                    <td>${asset.asset_id}</td>
+                    <td class="limited-text name">${CashName(asset.name)}</td>
+                    <td>${asset.event}</td>
+                    <td>${asset.class}</td>
+                    <td>${formatValueToMoney(asset.value)}</td>
+                    <td class="limited-text">${asset.location}</td>
+                    <td>${asset.acquisition_date}</td>
+                    <td>${asset.status}</td>
+                    <td class="limited-text">${asset.description}</td>
+                    <td>${asset.creation_date}</td>
+                    <td>${asset.creation_time}</td>
                 `;
 
-                // Adicionar o AssetDiv ao container
-                dataContainer.appendChild(AssetDiv);
+                dataContainer.appendChild(row);
 
-                // Adiciona evento de clique ao AssetDiv para abrir o modal
-                AssetDiv.addEventListener('click', function () {
-                    const details = Array.from(AssetDiv.children).map(child => child.innerText);
-                    const modalContent = `
-                        <main class="model-main">
-                            <header class="model-header">Detalhes do Ativo</header>
-                            <article class="model-container">
-                                <div class="model-box"><h5>ID: ${details[0]}</h5></div>
-                                <div class="model-box"><h5>Nome: ${details[1]}</h5></div>
-                                <div class="model-box"><h5>Evento: ${details[2]}</h5></div>
-                                <div class="model-box"><h5>Categoria: ${details[3]}</h5></div>
-                                <div class="model-box"><h5>Valor: ${details[4]}</h5></div>
-                                <div class="model-box"><h5>Data de Aquisição: ${details[5]}</h5></div>
-                                <div class="model-box"><h5>Localização: ${details[6]}</h5></div>
-                                <div class="model-box"><h5>Status: ${details[7]}</h5></div>
-                                <div class="model-box"><h5>Descrição: ${details[8]}</h5></div>
-                                <div class="model-box"><h5>Data de criação: ${details[9]}</h5></div>
-                                <div class="model-box"><h5>Horário de criação: ${details[10]}</h5></div>
-                            </article>
-                        </main>
-                    `;
-
-                    // Limpa o conteúdo anterior do modal e exibe o novo conteúdo
-                    const modal = document.getElementById('modal');
-                    modal.querySelector('.modal-content').innerHTML = modalContent;
-                    modal.style.display = 'block';
+                // Evento de clique para abrir o modal
+                row.addEventListener('click', function () {
+                    const details = Array.from(row.children).map(child => child.innerText);
+                    console.log(details)
+                
+                    document.getElementById('uuid').innerText = details[0];
+                    document.getElementById('name').innerText = details[1];
+                    document.getElementById('event').innerText = details[2];
+                    document.getElementById('class').innerText = details[3];
+                    document.getElementById('value').innerText = details[4];
+                    document.getElementById('location').innerText = details[5];
+                    document.getElementById('acquisition_date').innerText = details[6];
+                    document.getElementById('status').innerText = details[7];
+                    document.getElementById('description').innerText = details[8];
+                    document.getElementById('creation').innerText = `${details[9]} - ${details[10]}`;
+                
+                    document.getElementById('modal').style.display = 'block';
                 });
             });
-
         } else {
             console.error('Nenhum ativo encontrado!');
         }
     } catch (error) {
         console.error('Erro ao carregar os dados:', error);
     }
-
-    // Configurações do modal
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    closeModalBtn.addEventListener('click', function () {
-        const modal = document.getElementById('modal');
-        modal.style.display = 'none';
-    });
 
     // Fechar o modal ao clicar fora dele
     window.addEventListener('click', function (event) {
@@ -122,3 +99,23 @@ function formatValueToMoney(valueStr) {
 function CashName(nameStr) {
     return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
 }
+
+
+// document.addEventListener('click', function (event) {
+//     const dropdowns = document.querySelectorAll('.dropdown-menu');
+    
+//     dropdowns.forEach(dropdown => {
+//         if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) { // Verifica se o clique foi fora do dropdown ou do botão
+//             dropdown.style.display = 'none';
+//         }
+//     });
+// });
+
+// function toggleDropdown(event) {
+//     event.stopPropagation();
+
+//     const dropdown = event.currentTarget.nextElementSibling; // Pega o próximo elemento que é o dropdown
+//     if (dropdown) {
+//         dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
+//     }
+// }
