@@ -88,6 +88,7 @@ body {
 main  {
     display: grid;
     width: 100%;
+    background-color: #e3c10036;
 
 }
 
@@ -146,7 +147,7 @@ h1{
   align-items: center;
   width: 80%;
   height: 2.5rem;
-  background-color: #FFD700;
+  background-color: #e3c10070;
   margin: 0.7rem;
   text-align: center;
   align-content: center;
@@ -165,11 +166,12 @@ h1{
 
 .carousel-container {
   display: flex;
-  background-color: #E3C000;
+  background-color: #e3c1002c;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   overflow:visible;
+  position: relative; 
 }
 
 .carousel-wrapper {
@@ -181,7 +183,7 @@ h1{
 
 .buttons_container {
   display: flex;
-  background-color: #E3C000;
+  background-color: #e3c1005b;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
@@ -189,6 +191,7 @@ h1{
   padding-left: 2rem;
   overflow: visible;
   overflow:visible;
+  position: relative; 
   box-shadow: rgba(50, 50, 93, 0.7) 4px 4px 10px -5px, 
               rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
@@ -281,13 +284,13 @@ h1{
 
 .carousel-prev,
 .carousel-next {
-  background-color: transparent;
+  background-color: #e3c1005b;
   padding: 1rem 1rem;
   height: 100%;
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #333;
+  color: #000000c9;
   overflow:visible;
 }
 
