@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beesiness</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/dashboard.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMs4T2oW9mA0xZ1Iz1An6CktwCQE2s2A0BlC1Xs" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Adicionando Chart.js -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,26 +30,90 @@
         <!-- <button class="btn logout" onclick="toggleModal()"><i class="fas fa-right-from-bracket"></i></button> -->
     </header>
 
-    <div class="actions">
-        <button class="btn action" onclick="goToAssets()">Área de Ativos</button>
-        <button class="btn action" onclick="goToLiabilities()">Área de Passivos</button>
-    </div>
+    <article class="values_container_mobile" id="values_container_mobile">
 
-    <div class="container">
-        <div class="chart" id="balanceChart">
+        <section class="values_group_mobile" id="values_group_mobile">
+            <div class="value" id="value"><h5>R$----</h5></div>
+            <div class="value" id="value"><h5>R$----</h5></div>
+            <div class="value" id="value"><h5>R$----</h5></div>
+        </section>
+
+        <section class="values_group_mobile" id="values_group_mobile">
+
+            <div class="value_type" id="value_type"><h5>Dia</h5></div>
+            <div class="value_type" id="value_type"><h5>Semana</h5></div>
+            <div class="value_type" id="value_type"><h5>Mês</h5></div>
+            
+        </section>
+
+    </article>
+
+    <article class="values_container_pc" id="values_container_pc">
+
+        <section class="values_group_pc" id="values_group_pc">
+
+            <div class="value" id="value">R$ ----</div>
+            <div class="value_type" id="value_type">Dia</div>
+            <div class="value" id="value">R$ ----</div>
+            <div class="value_type" id="value_type">Semana</div>
+            <div class="value" id="value">R$ ----</div>
+            <div class="value_type" id="value_type">Mês</div>
+
+        </section>
+
+        <img class="beesiness_img" src="{{ url_for('static', filename='images/dashboard/public/beesiness_logo_black.png') }}" alt="Beesiness logo"></img>
+        
+    </article>
+
+    <article class="carousel-container">
+        <button class="carousel-prev" onclick="scrollCarousel(-1)">&#10094;</button>
+        <section class="carousel-wrapper">
+            <nav class="buttons_container" id="buttons_container">
+                <a class="button_box_green" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}">Registrar Ativo</a>
+                <a class="button_box_red" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}">Registrar Passivo</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}">Ativos</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}">Passivos</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=cnpj) }}">Diário</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.balance_site', cnpj=cnpj) }}">Balancete</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.razonete_site', cnpj=cnpj) }}">Razonete</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.authorization_site', cnpj=cnpj) }}">Permissão</a>
+            </nav>
+        </section>
+        <button class="carousel-next" onclick="scrollCarousel(1)">&#10095;</button>
+    </article>
+    
+    <article class="charts-container">
+
+        <section class="chart-box" id="balanceChart">
+
             <div class="chart-buttons">
                 <button class="btn chart-option" onclick="showWeekly()">Semanal</button>
                 <button class="btn chart-option" onclick="showMonthly()">Mensal</button>
                 <button class="btn chart-option" onclick="showYearly()">Anual</button>
             </div>
-            <canvas id="balanceChartCanvas"></canvas> <!-- Canvas para o gráfico de saldo -->
-        </div>
-        <div class="chart" id="assetsLiabilitiesChart">
-            <canvas id="assetsLiabilitiesChartCanvas"></canvas> <!-- Canvas para o gráfico de ativos e passivos -->
-        </div>
-    </div>
 
-    <!-- Modal para confirmação de logout -->
+            <canvas id="balanceChartCanvas"></canvas> <!-- Canvas para o gráfico de saldo -->
+
+        </section>
+
+        <section class="chart-box" id="assetsLiabilitiesChart">
+
+            <canvas id="assetsLiabilitiesChartCanvas"></canvas> <!-- Canvas para o gráfico de ativos e passivos -->
+
+        </section>
+
+    </article>
+
+
+
+
+
+
+
+
+
+
+
     <div id="logoutModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="toggleModal()">&times;</span>
@@ -62,44 +125,7 @@
 
     <script src="{{ url_for('static', filename='js/dashboard/company/dashboard.js') }}" defer></script>
 
-    
 
-    <!-- 
-        PARTE APENAS PARA ACESSO DAS OUTRAS ABAS, NÃO VAI EXISTIR NO FUTURO!!!!!! 
-    -->
-    <article class="box-article" id="buttons-article">
-        <a class="btn-box" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}">
-            Registrar ativo
-        </a>
-    
-        <a class="btn-box" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}">
-            Registrar passivo
-        </a>
 
-        <a class="btn-box" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}">
-            Ativos
-        </a>
-
-        <a class="btn-box" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}">
-            Passivos
-        </a>
-    
-        <a class="btn-box" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=cnpj) }}">
-            Diário
-        </a>
-    
-        <a class="btn-box" href="{{ url_for('auth_dashboard.balance_site', cnpj=cnpj) }}">
-            Balancete
-        </a>
-
-        <a class="btn-box" href="{{ url_for('auth_dashboard.razonete_site', cnpj=cnpj) }}">
-            Razonete
-        </a>
-
-        <a class="btn-box" href="{{ url_for('auth_dashboard.authorization_site', cnpj=cnpj) }}">
-            Permissão
-        </a>
-    
-    </article>
 </body>
 </html>

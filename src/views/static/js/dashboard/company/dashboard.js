@@ -4,6 +4,17 @@ const assetsLiabilitiesChartCanvas = document.getElementById('assetsLiabilitiesC
 let balanceChart;
 let assetsLiabilitiesChart;
 
+function scrollCarousel(direction) {
+    const carousel = document.querySelector(".carousel-wrapper"); // Ajuste aqui: selecione corretamente o contêiner que rola
+    const scrollAmount = 400; // Define uma quantidade fixa para rolagem (200px)
+
+    // Rolar horizontalmente com base na direção
+    if (direction === 1) {
+        carousel.scrollLeft += scrollAmount; // Rola para a direita
+    } else {
+        carousel.scrollLeft -= scrollAmount; // Rola para a esquerda
+    }
+}
 // Função para criar o gráfico de saldo
 function createBalanceChart(data) {
     const chartData = {
