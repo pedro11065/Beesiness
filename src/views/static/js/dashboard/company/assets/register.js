@@ -21,11 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const eventValue = document.getElementById('event').value.trim();
         const classeValue = document.getElementById('classe').value.trim();
         const name = document.getElementById('name').value.trim();
-        const localization = document.getElementById('localization').value.trim();
+        const localization = document.getElementById('localization').value.trim() || 'Descrição não adicionada.';
         const acquisitionDate = document.getElementById('acquisition_date').value.trim();
         const acquisitionValue = document.getElementById('acquisition_value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.'); 
         const status = document.getElementById('status').value.trim();
-        const description = document.getElementById('description').value.trim();
+        const description = document.getElementById('description').value.trim() || 'Descrição não adicionada.';
 
         const formData = {
             cnpj: cnpj,
@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 openSuccessModal('Ativo registrado com sucesso!');
-                window.location.href = `/dashboard/company/${cnpj}`;
             } else {
                 const errorData = await response.json();
                 openAlertModal(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const description = document.getElementById('description').value.trim();
 
         // Verifica se os campos obrigatórios estão vazios
-        if (!eventValue || !classeValue || !name || !localization || !acquisitionDate || !acquisitionValue || !status || !description) {
+        if (!eventValue || !classeValue || !name || !acquisitionDate || !acquisitionValue || !status ) {
             openAlertModal('Campo obrigatório não preenchido.');
             return false;
         }
@@ -146,10 +145,17 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.textContent = message;
         modal.style.display = 'block';
 
+        const closeButton = modal.querySelector('.fechar');
+        closeButton.onclick = function() {
+            closeModal();
+            window.location.href = `/dashboard/company/${cnpj}`;
+        };
+
         // Fecha ao clicar fora da área do modal
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
+                window.location.href = `/dashboard/company/${cnpj}`;
             }
         };
     }

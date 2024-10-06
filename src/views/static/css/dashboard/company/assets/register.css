@@ -317,6 +317,11 @@ h3{
     padding: 10px;
 }
 
+.modal-body #success-message {
+    color: black;
+    text-align: center; 
+}
+
 #alert-message {
     color: black;
     text-align: center; 

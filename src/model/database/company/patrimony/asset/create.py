@@ -56,6 +56,8 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
         """)
         
     new_historic_id =  uuid.uuid4()
+
+    # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
     cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset', {cash_debit}, {cash_credit});")
 
     # Confirma as mudanças

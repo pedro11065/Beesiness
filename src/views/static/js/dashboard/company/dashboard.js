@@ -1,45 +1,101 @@
-document.addEventListener('DOMContentLoaded', async function () {
+const balanceChartCanvas = document.getElementById('balanceChartCanvas').getContext('2d');
+const assetsLiabilitiesChartCanvas = document.getElementById('assetsLiabilitiesChartCanvas').getContext('2d');
 
-    function getCnpjFromUrl() {
-        const url = window.location.pathname;
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-    }
+let balanceChart;
+let assetsLiabilitiesChart;
 
-    function formatValueToMoney(valueStr) {
-        const valueNum = parseFloat(valueStr);
-        return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
+// Função para criar o gráfico de saldo
+function createBalanceChart(data) {
+    const chartData = {
+        labels: data.labels,
+        datasets: [{
+            label: 'Saldo',
+            data: data.values,
+            backgroundColor: 'rgba(255, 204, 0, 0.5)', // Cor do fundo do gráfico
+            borderColor: 'rgba(255, 204, 0, 1)', // Cor da linha do gráfico
+            borderWidth: 1
+        }]
+    };
 
-    const cnpj = getCnpjFromUrl();
-    try {
-        const response = await fetch(`/dashboard/company/${cnpj}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+    const config = {
+        type: 'bar', // Tipo do gráfico (pode ser 'line', 'bar', etc.)
+        data: chartData,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true // Iniciar o eixo Y em zero
+                }
             }
-        });
-
-        if (!response.ok) {
-            throw new Error('Erro na resposta da API: ' + response.statusText);
         }
+    };
 
-        const data = await response.json();
+    balanceChart = new Chart(balanceChartCanvas, config); // Criar o gráfico
+}
 
-        const container = document.getElementById('value-article'); // Seleciona o elemento container pelo ID
-        const ValueDiv = document.createElement('div');
+// Função para criar o gráfico de ativos e passivos
+function createAssetsLiabilitiesChart(data) {
+    const chartData = {
+        labels: data.labels,
+        datasets: [{
+            label: 'Ativos',
+            data: data.assets,
+            backgroundColor: 'rgba(0, 255, 0, 0.5)', // Cor do fundo dos ativos
+            borderColor: 'rgba(0, 255, 0, 1)', // Cor da linha dos ativos
+            borderWidth: 1
+        }, {
+            label: 'Passivos',
+            data: data.liabilities,
+            backgroundColor: 'rgba(255, 0, 0, 0.5)', // Cor do fundo dos passivos
+            borderColor: 'rgba(255, 0, 0, 1)', // Cor da linha dos passivos
+            borderWidth: 1
+        }]
+    };
 
-        ValueDiv.className = 'value-containner';
+    const config = {
+        type: 'line', // Tipo do gráfico
+        data: chartData,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
 
-        ValueDiv.innerHTML = `
-            <div class="value-box">
-                <div class="value"><h3>Caixa atual: ${formatValueToMoney(data.value)}</h3></div>
-            </div>
-        `;
+    assetsLiabilitiesChart = new Chart(assetsLiabilitiesChartCanvas, config);
+}
 
-        container.appendChild(ValueDiv); // Adiciona o div ao container
+// Dados de exemplo para os gráficos
+const balanceData = {
+    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio'], // Meses ou períodos
+    values: [1200, 1900, 3000, 5000, 7000] // Valores do saldo
+};
 
-    } catch (error) {
-        console.error('Erro ao carregar os dados:', error);
-    }
-});
+const assetsLiabilitiesData = {
+    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio'],
+    assets: [3000, 4000, 2500, 4500, 5000], // Valores dos ativos
+    liabilities: [1000, 1500, 2000, 1000, 1500] // Valores dos passivos
+};
+
+// Inicializar os gráficos com os dados de exemplo
+createBalanceChart(balanceData);
+createAssetsLiabilitiesChart(assetsLiabilitiesData);
+
+// Funções para alternar entre gráficos
+function showWeekly() {
+    // Atualizar dados do gráfico semanal
+    alert("Mostrando gráfico semanal.");
+}
+
+function showMonthly() {
+    // Atualizar dados do gráfico mensal
+    alert("Mostrando gráfico mensal.");
+}
+
+function showYearly() {
+    // Atualizar dados do gráfico anual
+    alert("Mostrando gráfico anual.");
+}

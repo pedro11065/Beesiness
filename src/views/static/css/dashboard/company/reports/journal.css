@@ -161,6 +161,7 @@ header .exit .icon {
 .month-container:first-of-type {
     margin-top:0rem;
 }
+
 .month-title-container{
     display: flex;
     background-color: #3b3b3b;
@@ -190,8 +191,6 @@ header .exit .icon {
     align-items: center;
 }
 
-
-
 .day-container{
     display:inline-block;
     align-items: center;
@@ -202,6 +201,7 @@ header .exit .icon {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     border-radius: 1rem;
 }
+
 .day-container:hover {
 
     .title-container{
@@ -249,14 +249,6 @@ header .exit .icon {
     transition: background-color 0.3s ease, color 0.3s ease;
     
 }
-
-
-
-
-
-
-
-
 
 @media (max-width: 40rem) { 
 

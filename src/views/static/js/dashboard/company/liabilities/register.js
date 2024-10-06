@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const value = document.getElementById('value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.');
         const emission_date = document.getElementById('emission_date').value.trim();
         const expiration_date = document.getElementById('expiration_date').value.trim();
-        const description = document.getElementById('description').value.trim();
+        const description = document.getElementById('description').value.trim() || 'Descrição não adicionada.';
 
         const formData = {
             cnpj: cnpj,
@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 openSuccessModal('Passivo registrado com sucesso!');
-                window.location.href = `/dashboard/company/${cnpj}`;
             } else {
                 const errorData = await response.json();
                 openAlertModal(`Erro: ${errorData.message || 'Não foi possível registrar o passivo.'}`);
@@ -75,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const description = document.getElementById('description').value.trim();
 
         // Verifica se os campos obrigatórios estão vazios
-        if (!eventvalue || !classvalue || !payment_method || !status || !name || !value || !emission_date || !expiration_date || !description) {
-            openAlertModal('Campo obrigatório não preenchido.');
+        if (!eventvalue || !classvalue || !payment_method || !status || !name || !value || !emission_date || !expiration_date ) {
+            openSuccessModal('Campo obrigatório não preenchido.');
             return false;
         }
 
@@ -156,10 +155,17 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.textContent = message;
         modal.style.display = 'block';
 
+        const closeButton = modal.querySelector('.fechar');
+        closeButton.onclick = function() {
+            closeModal();
+            window.location.href = `/dashboard/company/${cnpj}`;
+        };
+
         // Fecha ao clicar fora da área do modal
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
+                window.location.href = `/dashboard/company/${cnpj}`;
             }
         };
     }

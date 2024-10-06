@@ -75,21 +75,129 @@ header .exit .icon {
     height: 30px;
 }
 
-.main{
-    display:grid;
-    flex-direction:row;
-}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .actions .btn.action {
+    background-color: #ffcc00;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 10px; 
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
+  .chart {
+    background-color: white;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 45%; 
+    height: 300px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .chart-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; 
+  }
+  
+  .chart-option {
+    background-color: #ffcc00;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Estilos do modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .confirm, .cancel {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .confirm {
+    background-color: #ffcc00; 
+  }
+  
+  .cancel {
+    background-color: #ccc;
+  }
 
-.box-article {
+  .box-article {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
+
+/* BOTÕES TEMPORÁRIOS!!!!!! */
 .btn-box{
     background-color: #000000;
     padding: 2rem;
-    width: 16rem;
+    width: 10rem;
     margin-top: 3rem;
     margin-left: 1rem;
     margin-right: 1rem;
@@ -111,52 +219,10 @@ header .exit .icon {
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-
-
 .box-article{
 
     width: 100%;
     display:flex;
     flex-direction:row;
     justify-content: space-between;
-}
-.value-article{
-
-    width: 100%;
-    height: 14rem;
-    display:flex;
-    flex-direction:row;
-    justify-content: center;
-    align-items: center;
-}
-
-.value-containner{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30%;
-    height: 6rem;
-    background-color: #e0bf00;
-
-    margin: 0.7rem;
-    text-align: center;
-    align-content: center;
-    color: black;
-    font-size: 0.9rem;
-    font-weight: 300;
-    justify-content: center;
-    border-radius: 2rem;
-    box-shadow: inset rgba(50, 50, 93, 0.7) 4px 4px 10px -5px, 
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-}
-
-
-.value-box{
-    display: flex;
-    align-items: center;
-    text-align: center;
-    align-content: center;
-    font-size: 1rem;
-    color: black;
-
 }
