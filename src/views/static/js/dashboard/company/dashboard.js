@@ -4,6 +4,8 @@ const assetsLiabilitiesChartCanvas = document.getElementById('assetsLiabilitiesC
 let balanceChart;
 let assetsLiabilitiesChart;
 
+
+
 function scrollCarousel(direction) {
     const carousel = document.querySelector(".carousel-wrapper"); // Ajuste aqui: selecione corretamente o contêiner que rola
     const scrollAmount = 400; // Define uma quantidade fixa para rolagem (200px)

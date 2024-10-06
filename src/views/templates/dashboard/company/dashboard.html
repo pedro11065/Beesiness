@@ -33,9 +33,9 @@
     <article class="values_container_mobile" id="values_container_mobile">
 
         <section class="values_group_mobile" id="values_group_mobile">
-            <div class="value" id="value"><h5>R$----</h5></div>
-            <div class="value" id="value"><h5>R$----</h5></div>
-            <div class="value" id="value"><h5>R$----</h5></div>
+            <div class="value" id="value"><h5>R$----</h5></div> <!-- valor movimentado no dia -->
+            <div class="value" id="value"><h5>R$----</h5></div> <!-- Svalor movimentado na semana -->
+            <div class="value" id="value"><h5>R$----</h5></div> <!-- valor movimentado no mes -->
         </section>
 
         <section class="values_group_mobile" id="values_group_mobile">
@@ -52,11 +52,11 @@
 
         <section class="values_group_pc" id="values_group_pc">
 
-            <div class="value" id="value">R$ ----</div>
+            <div class="value" id="value">R$ ----</div> <!-- valor movimentado no dia -->
             <div class="value_type" id="value_type">Dia</div>
-            <div class="value" id="value">R$ ----</div>
+            <div class="value" id="value">R$ ----</div> <!-- Svalor movimentado na semana -->
             <div class="value_type" id="value_type">Semana</div>
-            <div class="value" id="value">R$ ----</div>
+            <div class="value" id="value">R$ ----</div> <!-- valor movimentado no mes -->
             <div class="value_type" id="value_type">Mês</div>
 
         </section>
@@ -82,27 +82,96 @@
         <button class="carousel-next" onclick="scrollCarousel(1)">&#10095;</button>
     </article>
     
-    <article class="charts-container">
+    <main>
 
-        <section class="chart-box" id="balanceChart">
+        <article class="info_box_container" id="info_box_container">
+            
+            <section class="info_box_group" id="info_box_group">
 
-            <div class="chart-buttons">
-                <button class="btn chart-option" onclick="showWeekly()">Semanal</button>
-                <button class="btn chart-option" onclick="showMonthly()">Mensal</button>
-                <button class="btn chart-option" onclick="showYearly()">Anual</button>
-            </div>
+                <div class="info_box">
+                    <!-- Saldo atual -->
+                    <div class="info_box_title">
+                        Saldo Atual
+                    </div>
 
-            <canvas id="balanceChartCanvas"></canvas> <!-- Canvas para o gráfico de saldo -->
+                    <div class="info_box_description">
+                        R$ 1000,00
+                    </div>
+                </div>
+                
+                <div class="info_box">
+                    <!-- Quantidade de ativos -->
+                    <div class="info_box_title">
+                        Quantidade de Ativos
+                    </div>
 
-        </section>
+                    <div class="info_box_description">
+                        10
+                    </div>
+                </div>
+                
+                <div class="info_box">
+                    <!-- Quantidade de passivos -->
+                    <div class="info_box_title">
+                        Quantidade de Passivos
+                    </div>
 
-        <section class="chart-box" id="assetsLiabilitiesChart">
+                    <div class="info_box_description">
+                        5
+                    </div>
+                </div>
+                
+                <div class="info_box">
+                    <!-- Patrimônio -->
+                    <div class="info_box_title">
+                        Patrimônio
+                    </div>
 
-            <canvas id="assetsLiabilitiesChartCanvas"></canvas> <!-- Canvas para o gráfico de ativos e passivos -->
+                    <div class="info_box_description">
+                        R$ 26.000,00
+                    </div>
 
-        </section>
+                </div>
 
-    </article>
+                <div class="info_box">
+                    <!-- Desempenho mensal -->
+                    <div class="info_box_title">
+                        Desempenho mensal
+                    </div>
+
+                    <div class="info_box_description">
+                        +15%
+                    </div>
+
+                </div>
+                
+            </section>
+
+        </article>
+
+        <article class="charts-container">
+
+            <section class="chart-box" id="balanceChart">
+
+                <div class="chart-buttons">
+                    <button class="btn chart-option" onclick="showWeekly()">Semanal</button>
+                    <button class="btn chart-option" onclick="showMonthly()">Mensal</button>
+                    <button class="btn chart-option" onclick="showYearly()">Anual</button>
+                </div>
+
+                <canvas id="balanceChartCanvas"></canvas> <!-- Canvas para o gráfico de saldo -->
+
+            </section>
+
+            <section class="chart-box" id="assetsLiabilitiesChart">
+
+                <canvas id="assetsLiabilitiesChartCanvas"></canvas> <!-- Canvas para o gráfico de ativos e passivos -->
+
+            </section>
+
+        </article>
+
+    </main>
 
 
 
@@ -113,15 +182,18 @@
 
 
 
+rticle
 
-    <div id="logoutModal" class="modal">
-        <div class="modal-content">
+
+
+    <article id="logoutModal" class="modal">
+        <section class="modal-content">
             <span class="close" onclick="toggleModal()">&times;</span>
             <p>Você realmente deseja sair?</p>
             <button class="btn confirm" onclick="logout()">Sair</button>
             <button class="btn cancel" onclick="toggleModal()">Cancelar</button>
-        </div>
-    </div>
+        </section>
+    </article>
 
     <script src="{{ url_for('static', filename='js/dashboard/company/dashboard.js') }}" defer></script>
 
