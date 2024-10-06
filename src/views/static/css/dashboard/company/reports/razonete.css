@@ -65,6 +65,7 @@ p {
     margin: 50px;
 }
 
+/* Header */
 .header {
     background-color: #121212;
     width: 100%;
@@ -150,6 +151,8 @@ header .exit .icon {
     align-items: center;
     justify-content: center;
 }
+
+/* Box do mês */
 .month-container{
     display:inline-block;
     width: 95%;
@@ -191,6 +194,7 @@ header .exit .icon {
 }
 
 
+/* Box do dia */
 .day-container{
     display:flex;
     flex-direction:column;
@@ -307,14 +311,13 @@ header .exit .icon {
 }
 
 .accounts-container .data_box:first-of-type {
-    border-top: 1px solid black; /* Borda superior apenas na primeira caixa */
+    border-top: 1px solid black;
 }
 
 .accounts-container .data_box:last-of-type {
-    border-bottom: 0px solid black; /* Borda superior apenas na primeira caixa */
+    border-bottom: 0px solid black;
     margin-bottom: 1=0.8rem;
 }
-
 
 /* Código do container das contas */
 .class-name {
@@ -354,10 +357,11 @@ header .exit .icon {
 }
 
 .debit-container, .credit-container {
-    display: flex;
-    flex-direction: column;
-    width: 45%;
-    padding: 0 10px;
+    margin: 0;
+    padding: 5px;
+    box-sizing: border-box;
+    min-height: 20px;
+    flex: 1 1 30%;
 }
 
 .value-item {
@@ -407,8 +411,9 @@ header .exit .icon {
 .debit-total-container, .credit-total-container {
     display: flex;
     flex-direction: column;
-    width: 45%;
+    width: 100%;
     padding: 0 10px;
+    box-sizing: border-box;
 }
 
 .total-values {

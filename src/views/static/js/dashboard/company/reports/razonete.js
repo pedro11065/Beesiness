@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     `<header class="month-title-container">
                         <article class="month-title-box">
                             <div class="month-box">
-                                <h1>${month}</h1>
+                                <h1>${month.charAt(0).toUpperCase() + month.slice(1)}</h1>
                             </div>
                         </article>
                     </header>`;
