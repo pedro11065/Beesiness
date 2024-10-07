@@ -1,5 +1,6 @@
 from flask_login import current_user
 from flask import jsonify
+from datetime import datetime
 
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
@@ -16,7 +17,9 @@ def info_razonete(company_id, cnpj):
     # Busca todos os dados, filtra pelos que estão com 'creation_date' e formata pelo horário correto.
     for record in info:
         if 'creation_date' in record:
-            record['creation_date'] = record['creation_date'].strftime('%Y-%m-%d')  # Formato YYYY-MM-DD
+            # Converte a string no formato DD/MM/YYYY para um objeto datetime
+            record['creation_date'] = datetime.strptime(record['creation_date'], '%d/%m/%Y').strftime('%Y-%m-%d')  # Formato YYYY-MM-DD
+        
         
         if 'creation_time' in record:
             record['creation_time'] = record['creation_time'].strftime('%H:%M:%S')  # Formato HH:MM:SS
