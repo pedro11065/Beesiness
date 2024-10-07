@@ -138,7 +138,8 @@ h1{
   font-family: 'Inter';
   display: flex;
   align-items: center;
-  width: 80%;
+  width: auto;
+  padding: 0rem 1rem;
   height: 2.5rem;
   background-color: #111111;
   margin: 0.7rem;
