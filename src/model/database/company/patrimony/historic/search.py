@@ -1,5 +1,6 @@
 import psycopg2
 from colorama import Fore, Style
+import datetime
 from ....connect import connect_database
 
 def db_search_historic(company_id):
@@ -35,8 +36,8 @@ def db_search_historic(company_id):
             "value": data[7],
             "date": data[8],
             "type": data[9],
-            "creation_date": data[10],
-            "creation_time": data[11],
+            "creation_date": data[10].strftime("%d/%m/%Y") if isinstance(data[10], datetime.date) else data[10],
+            "creation_time": data[11].strftime('%H:%M:%S') if isinstance(data[11], datetime.time) else data[11],
             "debit": data[12],
             "credit": data[13],
 

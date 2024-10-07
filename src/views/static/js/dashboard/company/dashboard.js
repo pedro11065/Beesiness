@@ -1,14 +1,12 @@
 const balanceChartCanvas = document.getElementById('balanceChartCanvas').getContext('2d');
 const assetsLiabilitiesChartCanvas = document.getElementById('assetsLiabilitiesChartCanvas').getContext('2d');
 
-
 let balanceChart;
 let assetsLiabilitiesChart;
 
-
 function scrollCarousel(direction) {
     const carousel = document.querySelector(".carousel-wrapper"); // Ajuste aqui: selecione corretamente o contêiner que rola
-    const scrollAmount = 400; // Define uma quantidade fixa para rolagem (200px)
+    const scrollAmount = 400; // Define uma quantidade fixa para rolagem
 
     // Rolar horizontalmente com base na direção
     if (direction === 1) {
@@ -33,14 +31,14 @@ function CashName(nameStr) {
     return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
 }
 
-
 document.addEventListener('DOMContentLoaded', async function () {
-
     const main = document.getElementById('main');
     const info_box_container = document.getElementById('info_box_container');
-    
+    const loading = document.getElementById('loading'); // Certifique-se de que a variável loading está definida
+
     loading.style.display = 'block';
     main.style.display = 'none';
+
     try {
         const cnpj = getCnpjFromUrl(); // Obter o CNPJ da URL
         const response = await fetch(`/dashboard/company/${cnpj}`, {
@@ -55,87 +53,83 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
-
         loading.style.display = 'none';
         main.style.display = 'block';
- 
-            const info_box_group = document.createElement('section');
-            info_box_group.className = 'info_box_group';
-            info_box_group.innerHTML = `
-            
 
-                <div class="info_box">
-                    <!-- Saldo atual -->
-                    <div class="info_box_title">
-                        Saldo Atual
-                    </div>
-
-                    <div class="info_box_description">
-                        ${formatValueToMoney(data.cash)}
-                    </div>
+        // Preencher a seção de informações
+        const info_box_group = document.createElement('section');
+        info_box_group.className = 'info_box_group';
+        info_box_group.innerHTML = `
+            <div class="info_box">
+                <!-- Saldo atual -->
+                <div class="info_box_title">
+                    Saldo Atual
                 </div>
-                
-                <div class="info_box" id="liabilities_box">
-                    <!-- Quantidade de ativos -->
-                    <div class="info_box_title">
-                        Quantidade de Ativos
-                    </div>
-
-                    <div class="info_box_description">
-                        ${data.assets_quant}
-                    </div>
+                <div class="info_box_description">
+                    ${formatValueToMoney(data.cash_now)}
                 </div>
-                
-                <div class="info_box" id="assets_box" >
-                    <!-- Quantidade de passivos -->
-                    <div class="info_box_title">
-                        Quantidade de Passivos
-                    </div>
-
-                    <div class="info_box_description">
-                        ${data.liabilities_quant}
-                    </div>
+            </div>
+            <div class="info_box" id="liabilities_box">
+                <!-- Quantidade de ativos -->
+                <div class="info_box_title">
+                    Quantidade de Ativos
                 </div>
-                
-                <div class="info_box" >
-                    <!-- Patrimônio -->
-                    <div class="info_box_title">
-                        Patrimônio
-                    </div>
-
-                    <div class="info_box_description">
+                <div class="info_box_description">
+                    ${data.assets_quant}
+                </div>
+            </div>
+            <div class="info_box" id="assets_box">
+                <!-- Quantidade de passivos -->
+                <div class="info_box_title">
+                    Quantidade de Passivos
+                </div>
+                <div class="info_box_description">
+                    ${data.liabilities_quant}
+                </div>
+            </div>
+            <div class="info_box">
+                <!-- Patrimônio -->
+                <div class="info_box_title">
+                    Patrimônio
+                </div>
+                <div class="info_box_description">
                     ${formatValueToMoney(data.patrimony)}
-                    </div>
-
                 </div>
-            
-            `;
-
+            </div>
+        `;
         info_box_container.appendChild(info_box_group);
 
-
         const liabilities_box = document.getElementById('liabilities_box');
-
-        liabilities_box.addEventListener('click', function () { 
+        liabilities_box.addEventListener('click', function () {
             window.location.href = `/dashboard/assets/${cnpj}`;
         });
-    
+
         const assets_box = document.getElementById('assets_box');
-    
-        assets_box .addEventListener('click', function () { 
+        assets_box.addEventListener('click', function () {
             window.location.href = `/dashboard/liabilities/${cnpj}`;
         });
+
+        // Criar o gráfico de fluxo de caixa com base nos dias da semana
+        const balanceData = {
+            labels: Object.keys(data.cash_historic), // Dias da semana
+            values: Object.values(data.cash_historic) // Valores do fluxo de caixa por dia
+        };
+
+        // Chamar a função que cria o gráfico de saldo
+        createBalanceChart(balanceData);
 
     } catch (error) {
         console.error('Erro ao carregar os dados:', error);
     }
-
 });
 
-
 // Função para criar o gráfico de saldo
-
 function createBalanceChart(data) {
+    // Verifique se o gráfico já existe e, se sim, destrua-o
+    if (balanceChart) {
+        balanceChart.destroy(); // Destrói o gráfico existente
+    }
+
     const chartData = {
         labels: data.labels,
         datasets: [{
@@ -216,13 +210,13 @@ createAssetsLiabilitiesChart(assetsLiabilitiesData);
 
 // Funções para alternar entre gráficos
 function showWeekly() {
-
+    // Lógica para mostrar gráficos semanais
 }
 
 function showMonthly() {
-
+    // Lógica para mostrar gráficos mensais
 }
 
 function showYearly() {
-
+    // Lógica para mostrar gráficos anuais
 }

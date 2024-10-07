@@ -1,6 +1,9 @@
 from flask import jsonify
 from flask_login import current_user
 from colorama import Fore, Style
+import datetime
+import locale
+from datetime import datetime
 
 from src.model.database.company.patrimony.asset.search_cash_value import db_search_cash
 from src.model.database.company.patrimony.asset.search import db_search_asset
@@ -53,13 +56,34 @@ def info_dashboard(company_id):
 
 #---------------------------------------------------------------------------
 
-    
+    #dados das tabelas de saldo
 
+    dates_list = [] ; values_list = []
 
+    historic_data = db_search_historic(company_id)
 
+    historic_lenght = len(historic_data)
+    print(historic_lenght)
 
+    for i in range(historic_lenght):
+        date = historic_data[i].get('creation_date')
+        dates_list.append(date)
 
+        value = historic_data[i].get('value')
+        values_list.append(value)
 
+    print(dates_list)
+    print(values_list)
+
+    cash_data_historic = {}
+    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+
+    for data, value in zip(dates_list, values_list):
+        # Converte a string para um objeto de data
+        days_of_week = datetime.strptime(data, '%d/%m/%Y').strftime('%A')  # Nome do dia da semana
+        if days_of_week not in cash_data_historic:
+            cash_data_historic[days_of_week] = 0
+        cash_data_historic[days_of_week] += value
 
 
 
@@ -67,12 +91,14 @@ def info_dashboard(company_id):
 
 #---------------------------------------------------------------------------
 
-    return jsonify({'cash': cash_data,
-                    'assets_quant':assets_quant,
-                    'liabilities_quant':liabilities_quant,
-                    'sum_asset_values':sum_asset_values,
-                    'sum_liabilities_values':sum_liabilities_values,
-                    'patrimony':patrimony
-                    }), 200
+    return jsonify({
+    'cash_now':cash_data,
+    'cash_historic': cash_data_historic,
+    'assets_quant': assets_quant,
+    'liabilities_quant': liabilities_quant,
+    'sum_asset_values': sum_asset_values,
+    'sum_liabilities_values': sum_liabilities_values,
+    'patrimony': patrimony
+     }), 200
 
    
