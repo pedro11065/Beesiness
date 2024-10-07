@@ -1,9 +1,9 @@
 const balanceChartCanvas = document.getElementById('balanceChartCanvas').getContext('2d');
 const assetsLiabilitiesChartCanvas = document.getElementById('assetsLiabilitiesChartCanvas').getContext('2d');
 
+
 let balanceChart;
 let assetsLiabilitiesChart;
-
 
 
 function scrollCarousel(direction) {
@@ -17,7 +17,124 @@ function scrollCarousel(direction) {
         carousel.scrollLeft -= scrollAmount; // Rola para a esquerda
     }
 }
+
+function getCnpjFromUrl() {
+    const url = window.location.pathname;
+    const parts = url.split('/');
+    return parts[parts.length - 1];
+}
+
+function formatValueToMoney(valueStr) {
+    const valueNum = parseFloat(valueStr);
+    return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function CashName(nameStr) {
+    return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
+}
+
+
+document.addEventListener('DOMContentLoaded', async function () {
+
+    const main = document.getElementById('main');
+    const info_box_container = document.getElementById('info_box_container');
+    
+    loading.style.display = 'block';
+    main.style.display = 'none';
+    try {
+        const cnpj = getCnpjFromUrl(); // Obter o CNPJ da URL
+        const response = await fetch(`/dashboard/company/${cnpj}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro na resposta da API: ' + response.statusText);
+        }
+
+        const data = await response.json();
+
+        loading.style.display = 'none';
+        main.style.display = 'block';
+ 
+            const info_box_group = document.createElement('section');
+            info_box_group.className = 'info_box_group';
+            info_box_group.innerHTML = `
+            
+
+                <div class="info_box">
+                    <!-- Saldo atual -->
+                    <div class="info_box_title">
+                        Saldo Atual
+                    </div>
+
+                    <div class="info_box_description">
+                        ${formatValueToMoney(data.cash)}
+                    </div>
+                </div>
+                
+                <div class="info_box" id="liabilities_box">
+                    <!-- Quantidade de ativos -->
+                    <div class="info_box_title">
+                        Quantidade de Ativos
+                    </div>
+
+                    <div class="info_box_description">
+                        ${data.assets_quant}
+                    </div>
+                </div>
+                
+                <div class="info_box" id="assets_box" >
+                    <!-- Quantidade de passivos -->
+                    <div class="info_box_title">
+                        Quantidade de Passivos
+                    </div>
+
+                    <div class="info_box_description">
+                        ${data.liabilities_quant}
+                    </div>
+                </div>
+                
+                <div class="info_box" >
+                    <!-- Patrimônio -->
+                    <div class="info_box_title">
+                        Patrimônio
+                    </div>
+
+                    <div class="info_box_description">
+                    ${formatValueToMoney(data.patrimony)}
+                    </div>
+
+                </div>
+            
+            `;
+
+        info_box_container.appendChild(info_box_group);
+
+
+        const liabilities_box = document.getElementById('liabilities_box');
+
+        liabilities_box.addEventListener('click', function () { 
+            window.location.href = `/dashboard/assets/${cnpj}`;
+        });
+    
+        const assets_box = document.getElementById('assets_box');
+    
+        assets_box .addEventListener('click', function () { 
+            window.location.href = `/dashboard/liabilities/${cnpj}`;
+        });
+
+    } catch (error) {
+        console.error('Erro ao carregar os dados:', error);
+    }
+
+});
+
+
 // Função para criar o gráfico de saldo
+
 function createBalanceChart(data) {
     const chartData = {
         labels: data.labels,
@@ -99,16 +216,13 @@ createAssetsLiabilitiesChart(assetsLiabilitiesData);
 
 // Funções para alternar entre gráficos
 function showWeekly() {
-    // Atualizar dados do gráfico semanal
-    alert("Mostrando gráfico semanal.");
+
 }
 
 function showMonthly() {
-    // Atualizar dados do gráfico mensal
-    alert("Mostrando gráfico mensal.");
+
 }
 
 function showYearly() {
-    // Atualizar dados do gráfico anual
-    alert("Mostrando gráfico anual.");
+
 }
