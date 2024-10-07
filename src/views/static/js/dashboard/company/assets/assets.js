@@ -24,42 +24,46 @@ document.addEventListener('DOMContentLoaded', async function () {
             dataContainer.innerHTML = ''; // Limpar o conteúdo anterior, se houver
 
             data.value.forEach(asset => {
-                const row = document.createElement('tr');
 
-                row.innerHTML = `
-                    <td>${asset.asset_id}</td>
-                    <td class="limited-text name">${CashName(asset.name)}</td>
-                    <td>${asset.event}</td>
-                    <td>${asset.class}</td>
-                    <td>${formatValueToMoney(asset.value)}</td>
-                    <td class="limited-text">${asset.location}</td>
-                    <td>${asset.acquisition_date}</td>
-                    <td>${asset.status}</td>
-                    <td class="limited-text">${asset.description}</td>
-                    <td>${asset.creation_date}</td>
-                    <td>${asset.creation_time}</td>
-                `;
-
-                dataContainer.appendChild(row);
-
-                // Evento de clique para abrir o modal
-                row.addEventListener('click', function () {
-                    const details = Array.from(row.children).map(child => child.innerText);
-                    console.log(details)
+                if(asset.name != '#!@cash@!#'){
+            
+                    const row = document.createElement('tr');
                 
-                    document.getElementById('uuid').innerText = details[0];
-                    document.getElementById('name').innerText = details[1];
-                    document.getElementById('event').innerText = details[2];
-                    document.getElementById('class').innerText = details[3];
-                    document.getElementById('value').innerText = details[4];
-                    document.getElementById('location').innerText = details[5];
-                    document.getElementById('acquisition_date').innerText = details[6];
-                    document.getElementById('status').innerText = details[7];
-                    document.getElementById('description').innerText = details[8];
-                    document.getElementById('creation').innerText = `${details[9]} - ${details[10]}`;
-                
-                    document.getElementById('modal').style.display = 'block';
-                });
+                    row.innerHTML = `
+                        <td>${asset.asset_id}</td>
+                        <td class="limited-text name">${asset.name}</td>
+                        <td>${asset.event}</td>
+                        <td>${asset.class}</td>
+                        <td>${formatValueToMoney(asset.value)}</td>
+                        <td class="limited-text">${asset.location}</td>
+                        <td>${asset.acquisition_date}</td>
+                        <td>${asset.status}</td>
+                        <td class="limited-text">${asset.description}</td>
+                        <td>${asset.creation_date}</td>
+                        <td>${asset.creation_time}</td>
+                    `;
+
+                    dataContainer.appendChild(row);
+
+                    // Evento de clique para abrir o modal
+                    row.addEventListener('click', function () {
+                        const details = Array.from(row.children).map(child => child.innerText);
+                        console.log(details)
+                    
+                        document.getElementById('uuid').innerText = details[0];
+                        document.getElementById('name').innerText = details[1];
+                        document.getElementById('event').innerText = details[2];
+                        document.getElementById('class').innerText = details[3];
+                        document.getElementById('value').innerText = details[4];
+                        document.getElementById('location').innerText = details[5];
+                        document.getElementById('acquisition_date').innerText = details[6];
+                        document.getElementById('status').innerText = details[7];
+                        document.getElementById('description').innerText = details[8];
+                        document.getElementById('creation').innerText = `${details[9]} - ${details[10]}`;
+                    
+                        document.getElementById('modal').style.display = 'block';
+                    });
+                }
             });
         } else {
             console.error('Nenhum ativo encontrado!');

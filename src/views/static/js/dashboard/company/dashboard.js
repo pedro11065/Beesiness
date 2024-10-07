@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         };
 
         // Chamar a função que cria o gráfico de saldo
-        createBalanceChart(balanceData);
+        CashHistoryChart(balanceData);
 
     } catch (error) {
         console.error('Erro ao carregar os dados:', error);
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 // Função para criar o gráfico de saldo
-function createBalanceChart(data) {
+function CashHistoryChart(data) {
     // Verifique se o gráfico já existe e, se sim, destrua-o
     if (balanceChart) {
         balanceChart.destroy(); // Destrói o gráfico existente
@@ -205,18 +205,6 @@ const assetsLiabilitiesData = {
 };
 
 // Inicializar os gráficos com os dados de exemplo
-createBalanceChart(balanceData);
+CashHistoryChart(balanceData);
 createAssetsLiabilitiesChart(assetsLiabilitiesData);
 
-// Funções para alternar entre gráficos
-function showWeekly() {
-    // Lógica para mostrar gráficos semanais
-}
-
-function showMonthly() {
-    // Lógica para mostrar gráficos mensais
-}
-
-function showYearly() {
-    // Lógica para mostrar gráficos anuais
-}

@@ -25,17 +25,18 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
     historic_id =  uuid.uuid4()
     type =  "asset"
 
+    if event not in ['Entrada de Caixa','Venda']:
 
     # Guarda os dados na tabela de assets:
-    cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit)  VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{location}', '{acquisition_date}', '{description}', '{status}', '{asset_debit}', '{asset_credit}');")
-   
-    # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
+        cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit)  VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{location}', '{acquisition_date}', '{description}', '{status}', '{asset_debit}', '{asset_credit}');")
+    
+        # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
     cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value}, '{acquisition_date}', '{type}', '{asset_debit}', '{asset_credit}');")  
     
     cash_data = db_search_cash(company_id)
     cash_id = cash_data[0][0]
     date = cash_data[0][11]
-
+    cash_now = cash_data[0][6]
 
     if update_cash == 'more':
         cur.execute(f"""
@@ -46,6 +47,8 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
             WHERE name = '#!@cash@!#';
         """)
 
+        cash_now = cash_now + value
+
     elif update_cash == 'less':
         cur.execute(f"""
             UPDATE table_assets 
@@ -54,11 +57,13 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
                 credit = credit - {cash_credit} 
             WHERE name = '#!@cash@!#';
         """)
+
+        cash_now = cash_now - value
         
     new_historic_id =  uuid.uuid4()
 
     # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset', {cash_debit}, {cash_credit});")
+    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{cash_now}', '{date}', 'asset', {cash_debit}, {cash_credit});")
 
     # Confirma as mudanças
     conn.commit()
