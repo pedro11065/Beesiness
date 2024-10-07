@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Verifica se os campos obrigatórios estão vazios
         if (!eventvalue || !classvalue || !payment_method || !status || !name || !value || !emission_date || !expiration_date ) {
-            openSuccessModal('Campo obrigatório não preenchido.');
+            openAlertModal('Campo obrigatório não preenchido.');
             return false;
         }
 

@@ -60,7 +60,13 @@ def info_dashboard(company_id):
             day_of_week = datetime.strptime(date, '%d/%m/%Y').strftime('%A')
             cash_data_historic[day_of_week] = data['value']
 
-#---------------------------------------------------------------------------
+    # Tabela ativos e passivos
+
+    """Ainda não existe :) """
+
+    # Movimentação de caixa no dia, semana e mes
+    quant_days = len(historic_data)
+    print(quant_days)
 
     return jsonify({
         'cash_now': cash_now,
