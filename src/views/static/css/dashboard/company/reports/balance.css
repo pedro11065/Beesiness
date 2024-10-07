@@ -98,6 +98,18 @@ header .exit .icon {
     height: 30px;
 }
 
+.error {
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin-top: 5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    color: white;
+    padding: 1rem;
+    border-radius: 5px; 
+}
 
 .menu-container{
     background-color: #FFD700;
@@ -131,7 +143,7 @@ header .exit .icon {
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-.main{
+.main {
     display:flex;
     flex-direction: column;
     width: 100%;
@@ -142,14 +154,6 @@ header .exit .icon {
 
 }
 
-.error{
-    display:flex;
-    width: 100%;
-    height: 100%;
-    margin-top: 5rem;
-    align-items: center;
-    justify-content: center;
-}
 .month-container{
     display:inline-block;
     width: 95%;

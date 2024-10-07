@@ -7,7 +7,7 @@ from src.model.database.company.patrimony.historic.search import db_search_histo
 def info_balance(company_id, cnpj):
 
     info = db_search_historic(company_id)
-
+    
     if info is False:
         return jsonify({'message': 'Erro ao pesquisar no banco de dados, tente mais tarde.'}), 500
 

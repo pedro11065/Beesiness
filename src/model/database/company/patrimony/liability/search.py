@@ -18,13 +18,17 @@ def db_search_liability(company_id):
     print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Pesquisando liabilities para a empresa com company_id: {company_id}')
 
     cur.execute(f"SELECT * FROM table_liabilities WHERE company_id = '{company_id}' ORDER BY creation_date DESC, creation_time DESC;;")
-    db_data = cur.fetchall()
 
-    conn.commit()
-    cur.close()
-    conn.close()
+    
 
     try:
+        db_data = cur.fetchall()
+        conn.commit()
+
+        if not db_data:
+            print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Nenhum dado de histórico encontrado.')
+            return None
+        
         print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + f'Dados das liabilities encontrados com sucesso!')
 
         return [{
@@ -48,3 +52,7 @@ def db_search_liability(company_id):
     except Exception as error:
         print(Fore.RED + '[Banco de dados] ' + Style.RESET_ALL + f'Dados das liabilities não encontrados: {error}')
         return False
+    
+    finally:
+        cur.close()
+        conn.close()

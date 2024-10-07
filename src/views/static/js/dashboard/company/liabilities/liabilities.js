@@ -16,15 +16,20 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
+        console.log(data)
 
         loading.style.display = 'none';
         main.style.display = 'flex';
 
-        if (data.value.length > 0) {
+
+        if (data.historic) {
             const dataContainer = document.getElementById('data-container');
             dataContainer.innerHTML = ''; // Limpar o conteúdo anterior, se houver
+            
+            const tableContainer = document.querySelector('.table-container');
+            tableContainer.style.display = 'block';
 
-            data.value.forEach(liabilities => {
+            data.historic.forEach(liabilities => {
                 const row = document.createElement('tr');
                 
                 // Preencher o conteúdo do AssetDiv com os dados do passivo
@@ -64,12 +69,18 @@ document.addEventListener('DOMContentLoaded', async function () {
                     document.getElementById('modal').style.display = 'block';
                 });
             });
-
         } else {
-            console.error('Nenhum passivo encontrado!');
+            const noDataDiv = document.createElement('div');
+            noDataDiv.className = 'error';
+            noDataDiv.innerHTML = '<h1>Sem dados disponíveis.</h1>';
+            main.appendChild(noDataDiv);
         }
     } catch (error) {
-        console.error('Erro ao carregar os dados:', error);
+        console.log(error)
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error';
+        errorDiv.innerHTML = '<h1>Erro ao procurar as informações.</h1>';
+        main.appendChild(errorDiv);
     }
 
     // Fechar o modal ao clicar fora dele

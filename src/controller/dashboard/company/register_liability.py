@@ -17,7 +17,6 @@ def liability_registration(liability_data, company_id):
     value = float(value)
 
     if event in ['Multa', 'Juros', 'Conta a pagar', 'Imposto a pagar', 'Salário a pagar', 'Fornecedor', 'Processos judiciais']:
-
         update_cash = 'less'  
 
         liability_debit = value 
@@ -26,7 +25,6 @@ def liability_registration(liability_data, company_id):
         cash_credit = value  
 
     elif event in ['Empréstimo', 'Financiamento', 'Concessão de crédito', 'Prestação de serviços']:
-
         update_cash = 'more'  
         
         liability_debit = 0      

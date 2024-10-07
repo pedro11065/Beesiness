@@ -10,6 +10,12 @@ import datetime
 @cache.cached(timeout=30)  # Guarda as informações por 30 segundos
 def info_liabilities(company_id):
 
-    data = db_search_liability(company_id)
+    info = db_search_liability(company_id)
+
+    if info is False:
+        return jsonify({'message': 'Erro ao pesquisar no banco de dados, tente mais tarde.'}), 500
+
+    if info is None:
+        return jsonify({'message': 'Nenhum dado registrado no banco de dados.'})
     
-    return jsonify({'value': data}), 200
+    return jsonify({'historic': info}), 200

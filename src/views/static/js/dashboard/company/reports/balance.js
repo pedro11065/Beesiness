@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
-        console.log(data);
 
         loading.style.display = 'none';
         main.style.display = 'flex';
@@ -180,9 +179,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 main.appendChild(monthDiv);
             });
+        } else {
+            const noDataDiv = document.createElement('div');
+            noDataDiv.innerHTML = `<div class="error"><h1>Sem dados disponíveis.</h1></div>`;
+            main.appendChild(noDataDiv);
         }
     } catch (error) {
-        console.error(error);
+        const errorDiv = document.createElement('div');
+        errorDiv.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
+        main.appendChild(errorDiv);
     }
 });
 

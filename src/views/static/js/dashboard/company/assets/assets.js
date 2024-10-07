@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
+        console.log(data)
 
         loading.style.display = 'none';
         main.style.display = 'block';
@@ -24,9 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             dataContainer.innerHTML = ''; // Limpar o conteúdo anterior, se houver
 
             data.value.forEach(asset => {
-
-                if(asset.name != '#!@cash@!#'){
-            
+                if(asset.name != '#!@cash@!#'){ //Ignora a entrada de caixa
                     const row = document.createElement('tr');
                 
                     row.innerHTML = `

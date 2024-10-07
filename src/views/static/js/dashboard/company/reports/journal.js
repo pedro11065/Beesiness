@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         dayDiv.innerHTML = `
                             <header class="title-container">
                                 <div class="title-box">
-                                    <h3>${formatDateToBrazilian(item.creation_date)} - ${item.creation_time}</h3>
+                                    <h3>${formatDateToBrazilian(item.creation_date)} - ${getFormattedTime(item.creation_time)}</h3>
                                 </div>
                                 <div class="title-box">
                                     <h3>${formatValueToMoney(item.value)}</h3>
@@ -145,4 +145,17 @@ function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/Y
 function formatValueToMoney(valueStr) {
     const valueNum = parseFloat(valueStr);
     return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function getFormattedTime(creationTime) {
+    const date = new Date(creationTime);
+
+    const offset = -3; // Definindo o fuso horário como -3
+    const localTime = new Date(date.getTime() + offset * 60 * 60 * 1000); // Converte o horário para GMT-3
+
+    const hours = String(localTime.getUTCHours()).padStart(2, '0');
+    const minutes = String(localTime.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(localTime.getUTCSeconds()).padStart(2, '0');
+
+    return `${hours}:${minutes}:${seconds}`; // Retorna o horário formatado como HH:MM:SS
 }
