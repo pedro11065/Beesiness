@@ -54,7 +54,8 @@ def info_dashboard(company_id):
     patrimony = sum_asset_values - sum_liabilities_values
 
 #---------------------------------------------------------------------------
-
+    #tabela de saldo
+    
     dates_list = [] 
     values_list = [] 
     hours_list = [] 
@@ -108,15 +109,16 @@ def info_dashboard(company_id):
 
 
 #---------------------------------------------------------------------------
+#tabela ativos e passivos
 
 
 
 
+#---------------------------------------------------------------------------
+#Movimentação de caixa no dia, semana e mes
 
-
-
-
-
+    quant_days = len(historic_data)
+    print(quant_days)
 
 
 

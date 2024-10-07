@@ -56,6 +56,18 @@ document.addEventListener('DOMContentLoaded', async function () {
         loading.style.display = 'none';
         main.style.display = 'block';
 
+
+        document.getElementById('value_day').textContent = `R$ ${data.cash_now.toFixed(2)}`;
+        
+            // Atualiza o valor da semana
+        document.getElementById('value_week').textContent = `R$ ${data.cash_now.toFixed(2)}`;
+        
+            // Atualiza o valor do mês
+        document.getElementById('value_month').textContent = `R$ ${data.cash_now.toFixed(2)}`;
+        
+        
+
+
         // Preencher a seção de informações
         const info_box_group = document.createElement('section');
         info_box_group.className = 'info_box_group';
@@ -116,7 +128,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         };
 
         // Chamar a função que cria o gráfico de saldo
-        CashHistoryChart(balanceData);
+        createBalanceChart(balanceData);
 
     } catch (error) {
         console.error('Erro ao carregar os dados:', error);
@@ -124,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 // Função para criar o gráfico de saldo
-function CashHistoryChart(data) {
+function createBalanceChart(data) {
     // Verifique se o gráfico já existe e, se sim, destrua-o
     if (balanceChart) {
         balanceChart.destroy(); // Destrói o gráfico existente
@@ -205,6 +217,18 @@ const assetsLiabilitiesData = {
 };
 
 // Inicializar os gráficos com os dados de exemplo
-CashHistoryChart(balanceData);
+createBalanceChart(balanceData);
 createAssetsLiabilitiesChart(assetsLiabilitiesData);
 
+// Funções para alternar entre gráficos
+function showWeekly() {
+    // Lógica para mostrar gráficos semanais
+}
+
+function showMonthly() {
+    // Lógica para mostrar gráficos mensais
+}
+
+function showYearly() {
+    // Lógica para mostrar gráficos anuais
+}
