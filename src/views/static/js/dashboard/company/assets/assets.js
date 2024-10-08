@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
+        console.log(data)
 
         loading.style.display = 'none';
         loader.style.display = 'none';

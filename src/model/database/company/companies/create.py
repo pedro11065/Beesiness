@@ -29,7 +29,7 @@ def db_create_company(nome, user_id, email, cnpj, hashed_password): # Cria um us
     asset_id = uuid.uuid4()
 
     # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-    cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit) VALUES ('{asset_id}', '{company_id}', '{user_id}', '#!@cash@!#', 'Entrada de caixa', 'caixa', '0', '----', '01-01-2024', '----', 'Em uso','0' ,'0');")
+    cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit) VALUES ('{asset_id}', '{company_id}', '{user_id}', '#!@cash@!#', 'Entrada de caixa', 'caixa', 0, '----', '01-01-2024', '----', 'Em uso', 0, 0);")
     
     user_access_level = 'creator' # Nivel do usuário
     
