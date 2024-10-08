@@ -16,31 +16,30 @@ from src import cache
 def info_dashboard(company_id):
     print(company_id)
 
-    #descobrir o saldo
+     # Saldo em caixa
     cash_data = db_search_cash(company_id)
-    cash_now = cash_data[0][0]  
+    cash_now = cash_data[0][0] if cash_data else 0 # Exibe 0 se cash_data estiver vazio
 
 #---------------------------------------------------------------------------
 
-    #descobrir quantidade de ativos
+    # Quantidade de ativos
     assets_data = db_search_asset(company_id)
-
-    assets_quant = len(assets_data) - 1#quantidade de ativos
+    assets_quant = len(assets_data) - 1  if assets_data else 0 # Exibe 0 se assets_data estiver vazio
     
 #---------------------------------------------------------------------------
 
-    #descobrir quantidade de passivos
+    # Quantidade de passivos
     try:
         liabilities_data = db_search_liability(company_id)
-
-        liabilities_quant = len(liabilities_data)#quantidade de ativos
+        liabilities_quant = len(liabilities_data)
     except:
         liabilities_quant = 0
     
 #---------------------------------------------------------------------------
 
-     #descobrir patrimonio
-    liabilities_values =  [] ; assets_values =  []
+    # Descobrir patrimônio
+    liabilities_values =  [];
+    assets_values =  []
 
     for i in range(liabilities_quant):
         value = liabilities_data[i].get('value')
@@ -56,90 +55,69 @@ def info_dashboard(company_id):
     patrimony = sum_asset_values - sum_liabilities_values
 
 #---------------------------------------------------------------------------
-    #tabela de saldo
-    
-    dates_list = [] 
-    values_list = [] 
-    hours_list = [] 
-    cash_list = []  # Lista para armazenar o nome do caixa
 
+# Histórico de caixa
     historic_data = db_search_historic(company_id)
-
-    historic_length = len(historic_data)
-
-    for i in range(historic_length):
-        hour = historic_data[i].get('creation_time')
-        hours_list.append(hour)
-
-        date = historic_data[i].get('creation_date')
-        dates_list.append(date)
-
-        value = historic_data[i].get('value')
-        values_list.append(value)
-
-        cash_name = historic_data[i].get('name')  # Captura o nome do caixa
-        cash_list.append(cash_name)
-
     cash_data_historic = {}
-    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
 
-    # Dicionário temporário para armazenar o último valor do caixa por data
-    temp_cash_by_day = {}
+    if historic_data:
+        locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+        temp_cash_by_day = {} # Dicionário temporário para armazenar o último valor do caixa por data
 
-    for i in range(historic_length):
-        date = dates_list[i]
-        value = values_list[i]
-        cash_name = cash_list[i]
-        hour = hours_list[i]
+        for record in historic_data:
+            date = record.get('creation_date')
+            value = record.get('value', 0)
+            cash_name = record.get('name')
+            hour = record.get('creation_time')
 
-        # Filtra apenas os registros do caixa específico
-        if cash_name == '#!@cash@!#':
-            # Verifica se já existe uma entrada para essa data
-            if date not in temp_cash_by_day:
-                # Armazena o primeiro valor encontrado para esse dia
-                temp_cash_by_day[date] = {'value': value, 'hour': hour}
-            else:
-                # Compara as horas para garantir que o valor mais recente seja mantido
-                if hour > temp_cash_by_day[date]['hour']:
+            if cash_name == '#!@cash@!#':  # Verifica se é o caixa desejado
+                if date not in temp_cash_by_day or hour > temp_cash_by_day[date]['hour']: # Compara as horas para garantir que o valor mais recente seja mantido
                     temp_cash_by_day[date] = {'value': value, 'hour': hour}
 
-    # Converte o dicionário temporário para o formato desejado (nome do dia da semana e valor)
-    for date, data in temp_cash_by_day.items():
-        day_of_week = datetime.strptime(date, '%d/%m/%Y').strftime('%A')  # Nome do dia da semana
-        cash_data_historic[day_of_week] = data['value']
+        # Conversão para o formato desejado
+        for date, data in temp_cash_by_day.items():
+            day_of_week = datetime.strptime(date, '%d/%m/%Y').strftime('%A')
+            cash_data_historic[day_of_week] = data['value']
+
+#---------------------------------------------------------------------------
+    # Tabela ativos e passivos
+    """ Ainda não existe :) """
 
 
 
 #---------------------------------------------------------------------------
-#tabela ativos e passivos
 
+    # Movimentação de caixa no dia, semana e mês
+    dates_list_today = []
+    values_list_today = []
+    values_list_week = []
 
-
-
-#---------------------------------------------------------------------------
-#Movimentação de caixa no dia, semana e mes
-
-    dates_list_today = [] ; values_list_today = [] ; values_list_week = []
+    value_today = 0
+    value_week = 0
 
     date_today = datetime.now()
     date_today_f = date_today.strftime("%d/%m/%Y")
 
-    for i in range(historic_length):
-        date = historic_data[i].get('creation_date')
-        value = historic_data[i].get('value')
-        name = historic_data[i].get('name')
+    if(historic_data):
+        historic_length = len(historic_data)
 
-        if name != '#!@cash@!#':
-            if date == date_today_f:
-                dates_list_today.append(date)
-                values_list_today.append(value)
+        for i in range(historic_length):
+            date = historic_data[i].get('creation_date')
+            value = historic_data[i].get('value')
+            name = historic_data[i].get('name')
 
-            else:
-                values_list_week.append(value)
+            if name != '#!@cash@!#':
+                if date == date_today_f:
+                    dates_list_today.append(date)
+                    values_list_today.append(value)
+                else:
+                    values_list_week.append(value)
 
-    
-    value_today = sum(values_list_today)
-    value_week = sum(values_list_week)
+        value_today = sum(values_list_today)
+        value_week = sum(values_list_week)
+    else:
+        print("Nenhum dado histórico encontrado.")
+        historic_length = 0
  
 
     return jsonify({
