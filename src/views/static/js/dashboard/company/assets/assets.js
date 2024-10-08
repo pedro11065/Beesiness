@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    loading.style.display = 'block';
-    main.style.display = 'none';
+        const main = document.getElementById('main');
+        const loading = document.getElementById('loading'); // Certifique-se de que a variável loading está definida
+        const loader = document.getElementById('loader');
+
+        loading.style.display = 'flex';
+        main.style.display = 'none';
+        
     try {
         const cnpj = getCnpjFromUrl(); // Obter o CNPJ da URL
         const response = await fetch(`/dashboard/assets/${cnpj}`, {
@@ -15,17 +20,20 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
-        console.log(data)
 
         loading.style.display = 'none';
+        loader.style.display = 'none';
         main.style.display = 'block';
+
 
         if (data.value && data.value.length > 0) {
             const dataContainer = document.getElementById('data-container');
             dataContainer.innerHTML = ''; // Limpar o conteúdo anterior, se houver
-
+            
             data.value.forEach(asset => {
-                if(asset.name != '#!@cash@!#'){ //Ignora a entrada de caixa
+
+                if(asset.name != '#!@cash@!#'){
+            
                     const row = document.createElement('tr');
                 
                     row.innerHTML = `

@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const main = document.getElementById('main');
+    const loading = document.getElementById('loading');
 
     function getCnpjFromUrl() {
         const url = window.location.pathname;
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const cnpj = getCnpjFromUrl();
 
-    loading.style.display = 'block';
+    loading.style.display = 'flex';
     main.style.display = 'none';
 
     try {

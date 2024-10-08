@@ -17,7 +17,7 @@
         <div class="user">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
-            <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
+            <h3>{{ current_user.fullname }}</h3> <!-- Nome do usuário -->
         </div>
         
         <a href="/" class="exit">
@@ -120,5 +120,10 @@
         </table>
     </div>
     </main>
+
+    <div id="loading" class="loading">
+        <div id="loader" class="loader"></div>
+    </div>
+    
 </body>
 </html>

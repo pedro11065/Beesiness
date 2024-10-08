@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const info_box_container = document.getElementById('info_box_container');
     const loading = document.getElementById('loading'); // Certifique-se de que a variável loading está definida
 
-    loading.style.display = 'block';
+    loading.style.display = 'flex';
     main.style.display = 'none';
 
     try {

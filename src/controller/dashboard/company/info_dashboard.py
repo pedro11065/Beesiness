@@ -135,12 +135,12 @@ def info_dashboard(company_id):
                 values_list_today.append(value)
 
             else:
-                values_list_week.append(value)    
+                values_list_week.append(value)
 
     
     value_today = sum(values_list_today)
     value_week = sum(values_list_week)
-
+ 
 
     return jsonify({
         'value_today':value_today,

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    loading.style.display = 'block';
+    loading.style.display = 'flex';
     main.style.display = 'none';
     
     try {    

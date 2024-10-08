@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const main = document.getElementById('main');
-
+    const loading = document.getElementById('loading');
     const cnpj = getCnpjFromUrl();
     main.style.display = 'none';
-    loading.style.display = 'block';
+    loading.style.display = 'flex';
 
     try {
         const response = await fetch(`/dashboard/journal/${cnpj}`, {
