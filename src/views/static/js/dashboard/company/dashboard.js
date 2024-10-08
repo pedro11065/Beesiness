@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     Quantidade de Ativos
                 </div>
                 <div class="info_box_description">
-                    ${data.assets_quant}
+                    ${data.assets_quant-1}
                 </div>
             </div>
             <div class="info_box" id="assets_box">
@@ -126,9 +126,19 @@ document.addEventListener('DOMContentLoaded', async function () {
             labels: Object.keys(data.cash_historic), // Dias da semana
             values: Object.values(data.cash_historic) // Valores do fluxo de caixa por dia
         };
+        console.log(data.assets_dates_list);
+        console.log(data.assets_count);
+        console.log(data.liabilities_count);
+
+        const assetsLiabilitiesData = {
+            labels: data.assets_dates_list || data.liabilities_dates_list,  // Use a lista de datas correta
+            assets: data.assets_count, 
+            liabilities: data.liabilities_count
+        };
 
         // Chamar a função que cria o gráfico de saldo
         createBalanceChart(balanceData);
+        createAssetsLiabilitiesChart(assetsLiabilitiesData);
 
     } catch (error) {
         console.error('Erro ao carregar os dados:', error);
@@ -210,15 +220,6 @@ const balanceData = {
     values: [1200, 1900, 3000, 5000, 7000] // Valores do saldo
 };
 
-const assetsLiabilitiesData = {
-    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio'],
-    assets: [3000, 4000, 2500, 4500, 5000], // Valores dos ativos
-    liabilities: [1000, 1500, 2000, 1000, 1500] // Valores dos passivos
-};
-
-// Inicializar os gráficos com os dados de exemplo
-createBalanceChart(balanceData);
-createAssetsLiabilitiesChart(assetsLiabilitiesData);
 
 // Funções para alternar entre gráficos
 function showWeekly() {

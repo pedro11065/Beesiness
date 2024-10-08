@@ -3,6 +3,7 @@ from flask_login import current_user
 from colorama import Fore, Style
 import datetime
 import locale
+from collections import Counter
 from datetime import datetime
 
 from src.model.database.company.patrimony.asset.search_cash_value import db_search_cash
@@ -22,7 +23,7 @@ def info_dashboard(company_id):
 
     # Quantidade de ativos
     assets_data = db_search_asset(company_id)
-    assets_quant = len(assets_data) - 1  if assets_data else 0 # Exibe 0 se assets_data estiver vazio
+    assets_quant = len(assets_data)
     
 #---------------------------------------------------------------------------
 
@@ -49,18 +50,18 @@ def info_dashboard(company_id):
 
     sum_liabilities_values = (sum(liabilities_values))
     sum_asset_values = (sum(assets_values))
-
     patrimony = sum_asset_values - sum_liabilities_values
 
 #---------------------------------------------------------------------------
     #tabela de saldo
-    
-    dates_list = [] 
-    values_list = [] 
-    hours_list = [] 
-    cash_list = []  # Lista para armazenar o nome do caixa
 
     try:
+
+        dates_list = [] 
+        values_list = [] 
+        hours_list = [] 
+        cash_list = []  # Lista para armazenar o nome do caixa
+
         historic_data = db_search_historic(company_id)
 
         historic_length = len(historic_data)
@@ -105,6 +106,7 @@ def info_dashboard(company_id):
         for date, data in temp_cash_by_day.items():
             day_of_week = datetime.strptime(date, '%d/%m/%Y').strftime('%A')  # Nome do dia da semana
             cash_data_historic[day_of_week] = data['value']
+
     except:
         cash_data_historic = [0]
 
@@ -112,24 +114,45 @@ def info_dashboard(company_id):
 #tabela ativos e passivos
 
     dates_list= [] ; assets_list = [] ; liabilities_list = []
-
+#datetime.timedelta(days=0
     try:
         date_today = datetime.now()
         date_today_f = date_today.strftime("%d/%m/%Y")
 
-        for i in range(historic_length):
-            date = historic_data[i].get('creation_date')
-            value = historic_data[i].get('value')
-            name = historic_data[i].get('name')
+        for i in range(assets_quant):
+            date = assets_data[i].get('creation_date')
+            dates_list.append(date)
+        
+        assets_count = Counter(dates_list)
+        
+        # Separar as datas e suas contagens
+        assets_dates_list = list(assets_count.keys())
+        assets_count = list(assets_count.values())
+        
+        print(assets_dates_list)
+        print(assets_count)
+        
 
-            if name != '#!@cash@!#':
-                if date == date_today_f:
-                    dates_list_today.append(date)
-                    values_list_today.append(value)
 
-                values_list_week.append(value)
+        dates_list= []
+
+        for i in range(liabilities_quant):
+            date = liabilities_data[i].get('creation_date')
+            dates_list.append(date)
+        
+        liabilities_count = Counter(dates_list)
+        
+        # Separar as datas e suas contagens
+        liabilities_dates_list = list(liabilities_count.keys())
+        liabilities_count = list(liabilities_count.values())
+        
+        print(liabilities_dates_list)
+        print(liabilities_count)
+        
+
+
     except:
-        print("a")
+        print("erro tabela ativos e passivos")
 
 
 #---------------------------------------------------------------------------
@@ -173,12 +196,22 @@ def info_dashboard(company_id):
     return jsonify({
         'value_today':value_today,
         'value_week':value_week,
+
         'cash_now': cash_now,
+
         'cash_historic': cash_data_historic,
+
         'assets_quant': assets_quant,
         'liabilities_quant': liabilities_quant,
+
         'sum_asset_values': sum_asset_values,
         'sum_liabilities_values': sum_liabilities_values,
-        'patrimony': patrimony
+
+        'patrimony': patrimony,
+
+        'liabilities_dates_list': list(reversed(liabilities_dates_list)),
+        'liabilities_count': list(reversed(liabilities_count)),
+        'assets_dates_list': list(reversed(assets_dates_list)),
+        'assets_count': list(reversed(assets_count))
     }), 200
    
