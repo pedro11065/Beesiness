@@ -19,7 +19,6 @@
 
 <body>
     <header class="header">
-
         <div class="user">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
@@ -29,8 +28,71 @@
         <a href="/" class="exit">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
         </a>
-
     </header>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Detalhes</h2>
+                <button class="options-button" onclick="toggleDropdown(event)">
+                    <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
+                </button>
+            </div>
+            <div class="form-group">
+                <label>Nome:</label>
+                <p id="name"></p>
+    
+                <label>Valor:</label>
+                <p id="value"></p>
+    
+                <label id="paymentMethodLabel" style="display: none;">Forma de Pagamento:</label>
+                <p id="payment_method" style="display: none;"></p>
+    
+                <label>Descrição:</label>
+                <p id="description"></p>
+    
+                <div class="emission-class-expiration" id="emissionDates" style="display: none;">
+                    <div>
+                        <label>Data de Emissão:</label>
+                        <p id="emission_date"></p>
+                    </div>
+                    <div>
+                        <label>Data de Vencimento:</label>
+                        <p id="expiration_date"></p>
+                    </div>
+                </div>
+    
+                <label id="locationLabel" style="display: none;">Localização:</label>
+                <p id="location" style="display: none;"></p>
+    
+                <label id="acquisitionLabel" style="display: none;"> Data de Aquisição:</label>
+                <p id="acquisition_date" style="display: none;"></p>
+            </div>
+    
+            <div class="event-class-status">
+                <div>
+                    <label>Evento:</label>
+                    <p id="event"></p>
+                </div>
+                <div>
+                    <label>Classe:</label>
+                    <p id="class"></p>
+                </div>
+                <div>
+                    <label>Status:</label>
+                    <p id="status"></p>
+                </div>
+            </div>
+    
+            <footer class="footer">
+                <div class="footer-right">
+                    <p id="creation"></p>
+                    <p id="uuid"></p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
 
     <menu class="menu-container" id="menuContainer">
         <div class="menu-box">

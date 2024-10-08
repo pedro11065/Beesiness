@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         
         const data = await response.json();
+        console.log(data)
 
         loading.style.display = 'none';
         main.style.display = 'flex';
@@ -80,9 +81,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         dayDiv.style.cursor = 'pointer';
     
                         dayDiv.addEventListener('click', function () {
-                            sessionStorage.setItem('patrimonioData', JSON.stringify(item)); 
-    
-                            window.location.href = `/dashboard/${cnpj}/${item.type}/${item.patrimony_id}`;
+                            fillModal(data, item); // Preenche o modal com os dados do ativo ou passivo
                         });
     
                         dayDiv.innerHTML = `
@@ -158,4 +157,101 @@ function getFormattedTime(creationTime) {
     const seconds = String(localTime.getUTCSeconds()).padStart(2, '0');
 
     return `${hours}:${minutes}:${seconds}`; // Retorna o horário formatado como HH:MM:SS
+}
+
+function fillModal(data, item) {
+    const modalTitle = document.getElementById('modalTitle');
+    modalTitle.innerText = item.type === 'asset' ? 'Detalhes do Ativo' : 'Detalhes do Passivo';
+
+    const fullItem = item.type === 'asset' 
+        ? data.assets.find(asset => asset.asset_id === item.patrimony_id) 
+        : data.liabilities.find(liability => liability.liability_id === item.patrimony_id);
+
+    if (!fullItem) {
+        console.error('Item não encontrado');
+        return;
+    }
+
+    document.getElementById('name').innerText = fullItem.name; // Nome
+    document.getElementById('event').innerText = fullItem.event; // Evento
+    document.getElementById('class').innerText = fullItem.class; // Classe
+    document.getElementById('value').innerText = formatValueToMoney(fullItem.value); // Valor
+    document.getElementById('status').innerText = fullItem.status; // Status
+    document.getElementById('description').innerText = fullItem.description; // Descrição
+    document.getElementById('creation').innerText = `${fullItem.creation_date} - ${fullItem.creation_time}`; // Data e Horário de Criação
+
+    /*
+        Caso queira colocar o UUID do usuário nas informações:
+
+        - No html definir:
+                <label id="userIdLabel" style="display: none;">UUID do Usuário:</label>
+                <p id="user_id" style="display: none;"></p>
+        - No javascript definir:
+                document.getElementById('user_id').innerText = fullItem.user_id; // UUID do usuário
+                document.getElementById('userIdLabel').style.display = 'block'; 
+                document.getElementById('user_id').style.display = 'block';
+    */
+
+    // Limpar campos que podem ser usados apenas para ativos ou passivos
+    document.getElementById('payment_method').style.display = 'none';
+    document.getElementById('paymentMethodLabel').style.display = 'none';
+    document.getElementById('location').style.display = 'none';
+    document.getElementById('locationLabel').style.display = 'none';
+    document.getElementById('emission_date').style.display = 'none';
+    document.getElementById('expiration_date').style.display = 'none';
+    document.getElementById('emissionDates').style.display = 'none';
+    document.getElementById('acquisitionLabel').style.display = 'none';
+    document.getElementById('acquisition_date').style.display = 'none';
+
+    if (item.type === 'liability') {
+         // UUID do item
+        document.getElementById('uuid').innerText = fullItem.liability_id
+
+        // Forma de Pagamento
+        if (fullItem.payment_method) {
+            document.getElementById('payment_method').innerText = fullItem.payment_method;
+            document.getElementById('payment_method').style.display = 'block';
+            document.getElementById('paymentMethodLabel').style.display = 'block';
+        }
+
+        // Data de Emissão
+        if (fullItem.emission_date) {
+            document.getElementById('emission_date').innerText = fullItem.emission_date;
+            document.getElementById('emission_date').style.display = 'block';
+        }
+
+        // Data de Vencimento
+        if (fullItem.expiration_date) {
+            document.getElementById('expiration_date').innerText = fullItem.expiration_date;
+            document.getElementById('expiration_date').style.display = 'block';
+        }
+
+        document.getElementById('emissionDates').style.display = 'block';
+
+    } else {
+        document.getElementById('uuid').innerText = fullItem.asset_id // ID
+
+        // Localização
+        if (fullItem.location) {
+            document.getElementById('location').innerText = fullItem.location;
+            document.getElementById('location').style.display = 'block';
+            document.getElementById('locationLabel').style.display = 'block';
+        }
+    
+        // Data de Aquisição
+        if (fullItem.acquisition_date) {
+            document.getElementById('acquisition_date').innerText = fullItem.acquisition_date;
+            document.getElementById('acquisition_date').style.display = 'block';
+            document.getElementById('acquisitionLabel').style.display = 'block';
+        }
+    }
+
+    document.getElementById('modal').style.display = 'block';
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
 }

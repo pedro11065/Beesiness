@@ -1,7 +1,9 @@
-from flask_login import current_user
 from flask import jsonify
-from datetime import datetime, timedelta
+from datetime import datetime
+
 from src.model.database.company.patrimony.historic.search import db_search_historic
+from src.model.database.company.patrimony.asset.search import db_search_asset
+from src.model.database.company.patrimony.liability.search import db_search_liability
 
 def info_journal(company_id, cnpj):
 
@@ -12,6 +14,9 @@ def info_journal(company_id, cnpj):
 
     if info is None:
         return jsonify({'message': 'Nenhum dado registrado no banco de dados.'})
+    
+    assets_info = db_search_asset(company_id)
+    liabilities_info = db_search_liability(company_id)
 
     # Busca todos os dados, filtra pelos que estão com 'creation_date' e formata pelo horário correto.
     for record in info:
@@ -23,7 +28,9 @@ def info_journal(company_id, cnpj):
 
     return jsonify({
         'redirect_url': f'/dashboard/daily/{cnpj}',
-        'historic': info
+        'historic': info,
+        'assets': assets_info,
+        'liabilities': liabilities_info
     })
 
 
