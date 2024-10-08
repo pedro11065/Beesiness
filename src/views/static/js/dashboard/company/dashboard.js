@@ -57,13 +57,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         main.style.display = 'block';
 
 
-        document.getElementById('value_day').textContent = `R$ ${data.cash_now.toFixed(2)}`;
+        document.getElementById('value_day').textContent = `${formatValueToMoney(data.value_today.toFixed(2))}`;
         
             // Atualiza o valor da semana
-        document.getElementById('value_week').textContent = `R$ ${data.cash_now.toFixed(2)}`;
+        document.getElementById('value_week').textContent = `${formatValueToMoney(data.value_week.toFixed(2))}`;
         
             // Atualiza o valor do mês
-        document.getElementById('value_month').textContent = `R$ ${data.cash_now.toFixed(2)}`;
+        document.getElementById('value_month').textContent = `${formatValueToMoney(data.value_week.toFixed(2))}`;
         
         
 
