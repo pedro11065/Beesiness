@@ -134,8 +134,7 @@ def info_dashboard(company_id):
                 dates_list_today.append(date)
                 values_list_today.append(value)
 
-            else:
-                values_list_week.append(value)
+            values_list_week.append(value)
 
     
     value_today = sum(values_list_today)
