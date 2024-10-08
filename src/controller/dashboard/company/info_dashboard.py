@@ -13,32 +13,31 @@ from src.model.database.company.patrimony.historic.search import db_search_histo
 def info_dashboard(company_id):
     print(company_id)
 
-    #descobrir o saldo
+     # Saldo em caixa
     cash_data = db_search_cash(company_id)
     print(cash_data)
     cash_now = cash_data[0][0]  
 
 #---------------------------------------------------------------------------
 
-    #descobrir quantidade de ativos
+    # Quantidade de ativos
     assets_data = db_search_asset(company_id)
-
-    assets_quant = len(assets_data) - 1#quantidade de ativos
+    assets_quant = len(assets_data) - 1  if assets_data else 0 # Exibe 0 se assets_data estiver vazio
     
 #---------------------------------------------------------------------------
 
-    #descobrir quantidade de passivos
+    # Quantidade de passivos
     try:
         liabilities_data = db_search_liability(company_id)
-
-        liabilities_quant = len(liabilities_data)#quantidade de ativos
+        liabilities_quant = len(liabilities_data)
     except:
         liabilities_quant = 0
     
 #---------------------------------------------------------------------------
 
-     #descobrir patrimonio
-    liabilities_values =  [] ; assets_values =  []
+    # Descobrir patrimônio
+    liabilities_values =  [];
+    assets_values =  []
 
     for i in range(liabilities_quant):
         value = liabilities_data[i].get('value')
@@ -134,14 +133,23 @@ def info_dashboard(company_id):
 
 
 #---------------------------------------------------------------------------
-#Movimentação de caixa no dia, semana e mes
 
-    dates_list_today = [] ; values_list_today = [] ; values_list_week = []
+    # Movimentação de caixa no dia, semana e mês
+    dates_list_today = []
+    values_list_today = []
+    values_list_week = []
+
+    value_today = 0
+    value_week = 0
 
     try:
         date_today = datetime.now()
         date_today_f = date_today.strftime("%d/%m/%Y")
 
+        for i in range(historic_length):
+            date = historic_data[i].get('creation_date')
+            value = historic_data[i].get('value')
+            name = historic_data[i].get('name')
         for i in range(historic_length):
             date = historic_data[i].get('creation_date')
             value = historic_data[i].get('value')
