@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('LiabilityForm');
     const submitButton = document.querySelector('.register-button');
+    const registerbutton = document.getElementById('register-button');
 
     // Função para extrair o CNPJ da URL
     function getCnpjFromUrl() {
@@ -16,7 +17,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!validateForm()) {
             return; // Se a validação falhar, não envia o formulário
+
         }
+        submitButton.disabled = true;
+
+        const msg = document.createElement('h3');
+        submitButton.textContent = 
+            
+        msg.innerHTML = `
+            Aguarde..
+        `;
+
+        registerbutton.appendChild(msg);
 
         const eventvalue = document.getElementById('event').value.trim();
         const classvalue = document.getElementById('class').value.trim();

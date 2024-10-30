@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('AssetForm');
     const submitButton = document.querySelector('.register-button');
+    const registerbutton = document.getElementById('register-button');
 
     // Função para extrair o CNPJ da URL
     function getCnpjFromUrl() {
@@ -17,6 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!validateForm()) {
             return; // Se a validação falhar, não envia o formulário
         }
+
+        submitButton.disabled = true;
+
+        const msg = document.createElement('h3');
+        submitButton.textContent = 
+            
+        msg.innerHTML = `
+            Aguarde..
+        `;
+
+        registerbutton.appendChild(msg);
 
         const eventValue = document.getElementById('event').value.trim();
         const classeValue = document.getElementById('classe').value.trim();
@@ -53,10 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 const errorData = await response.json();
                 openAlertModal(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);
+                loginButton.disabled = false;
+                loginButton.textContent = "Acesse";
             }
         } catch (error) {
             console.error('Erro ao enviar dados:', error);
             openAlertModal('Erro ao enviar dados. Tente novamente mais tarde.');
+            loginButton.disabled = false;
+            loginButton.textContent = "Acesse";
         }
     });
 
