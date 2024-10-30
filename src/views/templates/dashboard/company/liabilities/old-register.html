@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Passivo</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/select.css') }}">
+
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <script src="{{ url_for('static', filename='js/dashboard/company/liabilities/register.js') }}" defer></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="user">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="Imagem do usuário">
+            <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
+        </div>
+        <a href="/" class="exit">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
+        </a>
+    </header>
+
+    <!-- Modal de Sucesso -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sucesso!</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="success-message">Registro realizado com sucesso!</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal de Aviso -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Aviso</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="alert-message">Mensagem de aviso</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="main">
+        <div class="out-box">
+            <form class="form-group" id="LiabilityForm">
+                <div class="left-box">
+                    <div class="title">
+                        <h2>Registrar Passivo</h2>
+                    </div>
+                    <div class="form-container">
+                        <div class="msg-position">
+                            <p>Evento:</p>
+                        </div>
+                        <select class="select" id="event" name="event" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Empréstimo</option>
+                            <option>Financiamento</option>
+                            <option>Leasing</option>
+                            <option>Multa</option>
+                            <option>Juros</option>
+                            <option>Conta a pagar</option>
+                            <option>Imposto a pagar</option>
+                            <option>Salário a pagar</option>
+                            <option>Fornecedor</option>
+                            <option>Concessão de crédito</option>
+                            <option>Prestação de serviços</option>
+                            <option>Processos judiciais</option>
+                            <option>Outro</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Classe -->
+                    <div class="form-container">
+                        <p class="msg-position">Classe:</p>
+                        <select class="select" id="class" name="class" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>INSS</option>
+                            <option>IPTU</option>
+                            <option>Conta de Luz</option>
+                            <option>Conta de Água</option>
+                            <option>Conta de Telefone</option>
+                            <option>Aluguel</option>
+                            <option>Seguro de Carro</option>
+                            <option>Seguro Residencial</option>
+                            <option>Financiamento Imobiliário</option>
+                            <option>Financiamento de Veículo</option>
+                            <option>Parcelamento de Compras</option>
+                            <option>Empréstimo Pessoal</option>
+                            <option>Empréstimo Empresarial</option>
+                            <option>Taxa de Condomínio</option>
+                            <option>Multa de Trânsito</option>
+                            <option>Juros Bancários</option>
+                            <option>Fatura de Cartão de Crédito</option>
+                            <option>Contribuição Sindical</option>
+                            <option>Mensalidade Escolar</option>
+                            <option>Pagamento de Funcionário</option>
+                            <option>Conta</option>
+                            <option>Outros</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Forma de Pagamento -->
+                    <div class="form-container">
+                        <p class="msg-position">Forma de Pagamento:</p>
+                        <select class="select" id="payment_method" name="payment_method" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Dinheiro em espécie</option>
+                            <option>Cartão de Crédito</option>
+                            <option>Cartão de Débito</option>
+                            <option>Pix</option>
+                            <option>Cheque</option>
+                            <option>Boleto Bancário</option>
+                            <option>Criptomoedas</option>
+                            <option>Vale-Alimentação</option>
+                            <option>Vale-Refeição</option>
+                            <option>Vale-Transporte</option>
+                            <option>Gift Cards</option>
+                            <option>Carnê</option>
+                            <option>Carteira Digital</option>
+                            <option>Transferência Bancária</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Status -->
+                    <div class="form-container">
+                        <p class="msg-position">Status:</p>
+                        <select class="select" id="status" name="status" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Pendente</option>
+                            <option>Pago</option>
+                            <option>Em Atraso</option>
+                            <option>Parcelado</option>
+                            <option>Em Negociação</option>
+                            <option>Cancelado</option>
+                        </select>
+                    </div>
+                </div> 
+                
+                <div class="right-box">
+                    <div class="info-box">
+                        <!-- Nome -->
+                        <div class="form-container">
+                            <p class="msg">Nome:</p>
+                            <input class="form-box" id="name" type="text" name="name" required>
+                        </div>
+
+                        <!-- Valor -->
+                        <div class="form-container">
+                            <p class="msg">Valor:</p>
+                            <input class="form-box" id="value" type="text" name="value" required>
+                        </div>
+
+                        <!-- Data de Emissão -->
+                        <div class="form-container">
+                            <p class="msg">Data de Emissão:</p>
+                            <input class="form-box" type="date" id="emission_date" min="1924-01-01" max="2999-12-31" name="emission_date" required>
+                        </div>
+
+                        <!-- Data de Vencimento -->
+                        <div class="form-container">
+                            <p class="msg">Data de Vencimento:</p>
+                            <input class="form-box" type="date" id="expiration_date" min="1924-01-01" max="2999-12-31" name="expiration_date" required>
+                        </div>
+                    </div>
+
+                    <!-- Essa parte está fora da div de cima. -->
+                    <!-- Descrição -->
+                    <div class="form-container">
+                        <p class="msg">Descrição:</p>
+                        <input class="form-box-description" type="text" id="description" name="description" required>
+                    </div>
+
+                    <!-- Botão Registrar -->
+                    <div class="form-container">
+                        <button type="submit" class="register-button" id="register-button"><h3>Registrar</h3></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

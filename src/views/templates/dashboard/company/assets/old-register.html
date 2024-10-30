@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar ativo</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/assets/register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/assets/select.css') }}">
+
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <script src="{{ url_for('static', filename='js/dashboard/company/assets/register.js') }}" defer></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="user">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
+            <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
+        </div>
+
+        <a href="/" class="exit">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
+        </a>
+    </header>
+
+    <!-- Modal de Sucesso -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sucesso!</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="success-message">Registro realizado com sucesso!</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Aviso -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Aviso</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="alert-message">Mensagem de aviso</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="main">
+        <div class="out-box">  
+            <form class="form-group" id="AssetForm">
+
+                <div class="left-box">
+                    <div class="title">
+                        <h2>Registrar Ativo</h2>
+                    </div>
+                
+                    <div class="form-container">
+                        <p class="msg-position">Evento:</p>
+                        <select class="select" id="event" name="event" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Compra</option>
+                            <option>Venda</option>
+                            <option>Herança</option>
+                            <option>Troca</option>
+                            <option>Incorporação</option>
+                            <option>Permuta</option>
+                            <option>Produção Interna</option>
+                            <option>Concessão</option>             
+                            <option>Investimento</option>
+                            <option>Leilão</option>
+                            <option>Restituição Judicial</option>
+                            <option>Aquisição</option>
+                            <option>Entrada de Caixa</option>
+                        </select>
+                    </div>
+                
+                    <!-- Classe -->
+                    <div class="form-container">
+                        <p class="msg-position">Classe:</p>
+                        <select class="select" id="classe" name="classe" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Contas a Receber</option>
+                            <option>Estoque</option>
+                            <option>Matérias-Primas</option>
+                            <option>Investimento</option>
+                            <option>Imóveis</option>
+                            <option>Mobília</option>
+                            <option>Veículos</option>
+                            <option>Equipamentos</option>
+                            <option>Maquinário</option>
+                            <option>Patentes</option>
+                            <option>Ações</option>
+                            <option>Tecnologia e TI</option>
+                            <option>Intangíveis</option>
+                            <option>Infraestrutura</option>
+                            <option>Terreno</option>
+                            <option>Licenças</option>
+                            <option>Espaços</option>
+                            <option>Caixa</option>
+                        </select>
+                    </div>
+                
+                    <!-- Status -->
+                    <div class="form-container">
+                        <p class="msg-position">Status:</p>
+                        <select class="select" id="status" name="status" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Comprado</option>
+                            <option>Apreendido</option>
+                            <option>Em Uso</option>
+                            <option>Em Manutenção</option>
+                            <option>Vendido</option>
+                            <option>Alugado</option>
+                            <option>Disponível</option>
+                            <option>Obsoleto</option>
+                            <option>Danificado</option>
+                            <option>Perdido</option>
+                            <option>Doado</option>
+                            <option>Empenhado</option>
+                            <option>Leiloado</option>
+                        </select>
+                    </div>
+                </div>
+                
+
+                <div class="right-box">
+                    <div class="info-box">
+                        <!-- Nome -->
+                        <div class="form-container">
+                            <p class="msg">Nome:</p>
+                            <input class="form-box" id="name" type="text" name="name" required>
+                            <p class="error" id="name-error"></p>
+                        </div>
+
+                        <!-- Localização -->
+                        <div class="form-container">
+                            <p class="msg">Localização:</p>
+                            <input class="form-box" id="localization" type="text" name="localization" required>
+                            <p class="error" id="localization-error"></p>
+                        </div>
+
+                        <!-- Data de Aquisição -->
+                        <div class="form-container">
+                            <p class="msg">Data de Aquisição:</p>
+                            <input class="form-box" type="date" id="acquisition_date" name="acquisition_date" required>
+                            <p class="error" id="date-error"></p>
+                        </div>
+
+                        <!-- Valor de Aquisição -->
+                        <div class="form-container">
+                            <p class="msg">Valor:</p>
+                            <input class="form-box" type="text" id="acquisition_value" name="acquisition_value" required>
+                            <p class="error" id="value-error"></p>
+                        </div>
+
+                    </div>
+
+                    <!-- Descrição -->
+                    <div class="form-container">
+                        <p class="msg">Descrição:</p>
+                        <input class="form-box-description" type="text" id="description" name="description" required>
+                        <p class="error" id="description-error"></p>
+                    </div>
+
+                    <!-- Botão Registrar -->
+                    <div class="form-container-register">
+                        <button type="submit" class="register-button" id="register-button"><h3>Registrar</h3></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

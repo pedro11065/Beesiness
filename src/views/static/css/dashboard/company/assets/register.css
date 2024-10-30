@@ -5,8 +5,8 @@ html {
 
 /* Configuração básica do corpo da página */
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #ffffff;
+    font-family: Inter;
+    background-color: #f1f1f1;
     height:100vh;
     width: 100%;
     margin: 0;
@@ -43,7 +43,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
+    }
 
 header .user {
     display: flex;
@@ -69,204 +69,188 @@ header .exit .icon {
     height: 30px;
 }
 
-.main {
-    background-color: #ffffff;
-    width: 100%;
-    height: auto;
-    align-items: center;
-    justify-content: center;
-    margin-top: 4vh; 
-    display: flex;
+h1 {
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 3rem;
+    margin: 0rem;
 }
 
-.main h1 {
-    color: white;
-    margin-left: 2rem;
-    font-size: 1.8rem;
-    font-weight: 300;
+h2 {
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 0rem;
 }
 
-.main p {
-    color: black;
-    margin-bottom: 0.5rem;
-    font-size: 1.4rem;
+h3 {
+    font-family: Inter;
     font-weight: 400;
+    font-size: 2.1rem;
+    margin: 0rem;
 }
 
-.main msg-position{
-    padding: 3rem;
-}
-
-.error{
-    display:none
-}
-
-main .out-box {
-    align-items:center;
-    justify-content:center;
-    background-color: #E4E4E4;
-    margin-bottom: 3rem;
-    padding: 2rem;
-    width: 85%;
-    height: 85%;
-    display: flex;
-    flex-direction:column;
-    border-radius: 2rem;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-                rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-}
-
-
-
-main .form-group {
-    background-color: transparent;
-    align-items:center;
-    justify-content:center;
-    column-count: 2;
+.main {
     width: 100%;
-    height: 100%;
-}
-
-.title {
-    background-color: #B4B4B4;
+    height: 80%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 1rem 2rem;
-    border-radius: 1rem;
-    border: none;
+}
+
+form{
     width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
-                rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-}
-
-.left-box{
-    display:grid;
-    padding: 2rem;
-    height: 90%;
-    background-color: transparent;
-}
-
-.right-box{
-    display:grid;
-    background-color: transparent;
-    height: 90%;
-    background-color: transparent;
-
-}
-
-main .info-box{
+    height: 80%;
     display: flex;
-    padding-left: 0.8rem;
-    padding-right: 1rem;
-    flex-wrap:wrap;
+    flex-direction: column;
+    align-items: center;
+}
+
+article{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+    width: 92%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+section-title{
+    display: flex;
+    align-items: flex-start;
+    margin: 0rem;
+    padding-top: 2rem;
+}
+
+section{
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    background-color: transparent;  
-
-    
-
+    width: 100%;
+    margin-bottom: 1rem;
 }
-.info-box .form-container {
+
+container{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    width: 45%;
-    height: 50%;
-    margin: 0;
-    padding: 0;
-    
+
 }
 
-.form-container {
+box-msg{
     display: flex;
-    width: 98%;
-    margin-left: 1rem;
-    flex-direction: column;
+    justify-content:flex-start;
     align-items: flex-start;
-    justify-content: flex-start;
+    padding-bottom: 0.3rem;
 }
 
-.form-container-register {
+input{
+    background-color: #D9D9D9;
     display: flex;
-    width: 98%;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-}
-
-
-.form-box {
-    background-color: transparent;
     justify-content: center;
-    font-size: 1.55rem;
-    font-weight: 500;
-    text-align: center;
-    width: 95%;
-    height: 3.5rem;
-    margin: 1px;
-    border-color: #000;
-    box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-}
-
-
-
-.form-box-description {
-    display: flex;
-    background-color:transparent;
-    width: 95%;
-    height: 4rem; /* Define uma altura mínima */
-    font-size: 1.55rem;
-    font-weight: 500;
-    text-align: start; /* Adiciona algum espaço interno ao redor do texto */
-    border: 1px solid #000; /* Adiciona uma borda para visibilidade */
-    box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
-                rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    overflow: auto; /* Adiciona rolagem se o conteúdo exceder o tamanho */
-    resize: vertical; /* Permite redimensionar a altura, se desejado */
-    white-space: pre-wrap; /* Permite quebras de linha e preserva espaços em branco */
-    line-height: 1.5; /* Define a altura da linha para melhorar a legibilidade */
-}
-
-h3{
-    color: black;
-    font-size: 2.5rem;
-    align-self: center;
-    display:flex;
-    text-align: center;
     align-items: center;
-    font-weight: 500;
+    width: 100%;
+    height: 3rem;
+    border-style: none;
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 1.3rem;
+    margin: 0rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    
 }
 
+input:hover{
+    background-color: rgb(165, 165, 165);
+    
+}
+
+
+.name{
+    width:60%;
+}
+.acquisition_value{
+    width:35%;
+}
+
+.acquisition_date{
+    width: 30%;
+}
+
+.localization{
+    width: 25%;
+}
+
+.event{
+    width: 15%;
+}
+
+.status{
+    width: 15%;
+}
+
+.class{ /*Se a classe for venda, aparecer outra lista mostrando os ativos que poderam ser vendidos*/
+    width: 86%;
+    padding-bottom: 2rem;
+}
+
+.payment{
+    width: 86%;
+    padding-bottom: 2rem;
+}
+
+.installment{
+    width: 86%;
+}
+
+.description{
+    width: 100%;
+    height: 100%;
+}
+
+.description input{
+    height: 87%;
+}
 
 .register-button {
-    background-color: #FFD700;
-    align-self: center;
-    display:flex;
-    justify-content: center;
-    text-align: center;
-    padding: 0.4rem 3.6rem;
-    margin-top: 1.4rem;
-    border-radius: 1rem;
+    margin-top: 1rem;
+    height: 5rem;
+    width: 100%;
+    background-color: #FFC300;
     border: none;
-    width: 96%;
-    height: 6rem;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-                rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    transition: background-color 0.3s ease;
-    cursor: pointer
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: rgba(50, 50, 93, 0.7) 4px 4px 10px -5px, 
+    rgba(0, 0, 0, 0.1) 0px 8px 16px -8px;
 }
 
 .register-button:hover {
-    background-color: #FFC300;
+    color:white;
+    background-color: #070707;
 }
 
-.register-button:focus {
-    outline: 2px solid #FFD700;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Modal de Aviso */
 .modal {
@@ -346,226 +330,6 @@ h3{
 }
 
 .btn:hover {
-    background-color: #FFD700;
+    background-color: #070707;
 }
 
-
-@media (max-width: 40rem) {
-
-    h2 {
-        color: black;
-        font-size: 1.7rem;
-        display:block;
-        font-weight: 500;
-    }
-
-    p {
-        color: white;
-        margin-left: 0.6rem;
-        font-size: 0.9rem;
-        font-weight: 300;
-    }
-
-    header .user {
-        display: flex;
-        align-items: center;
-        gap: 0;
-        margin-left: 0.1rem;
-    }
-
-    header .user .icon {
-        margin-left: 0.4rem;
-        width: 30px;
-        height: 30px;
-    }
-
-    .main {
-        background-color: #FFD700;
-        width: 100%;
-        height: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0; 
-        transform: scale(1);
-    }
-
-    
-    main .out-box {
-        align-items:center;
-        transform: scale(0.8);
-        justify-content:center;
-        background-color: white;
-        margin-bottom: 3rem;
-        padding: 2rem;
-        width: 90%;
-        height: auto;
-        display: flex;
-        border-radius: 2rem;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-                    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    }
-    
-    
-    
-    main .form-group {
-        background-color: transparent;
-        align-items:center;
-        justify-content:center;
-        column-count: 1;
-        width: 100%;
-        height: 100%;
-    }
-    
-    .title {
-        background-color: #F3F3F3;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem 2rem;
-        border-radius: 1rem;
-        border: none;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
-                    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    }
-    
-    .left-box{
-        padding: 2rem;
-        height: 90%;
-        background-color: transparent;
-    }
-    
-    .double-select-box{
-        display: flex;
-        flex-wrap:nowrap;
-        flex-direction: row;
-        background-color: transparent;  
-    }
-    
-    .double-select-box .form-container {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        width: 100%;
-        height: 50%;
-        margin: 0;
-        padding: 0;
-        
-    }
-    
-    .right-box{
-        padding: 2rem;
-        padding-top: 0;
-        width: 80%;
-        height: 90%;
-        background-color: transparent;
-    
-    }
-    
-    main .info-box{
-        display: flex;
-        flex-wrap:nowrap;
-        flex-direction: unset;
-        justify-content:center;
-        background-color: transparent;  
-        align-content: center;
-        justify-content: center;
-        flex-direction: column;
-        margin: 0;
-        padding: 0;
-    
-        
-    
-    }
-    .info-box .form-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        height: 50%;
-        margin: 0;
-        padding: 0;
-        
-    }
-    
-    .form-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-start;
-    }
-    
-    .form-box {
-        background-color: transparent;
-        justify-content: center;
-        font-size: 1.55rem;
-        font-weight: 500;
-        text-align: center;
-        width: 92%;
-        height: 3.5rem;
-        margin: 0;
-        border: 1px solid #000;
-        box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
-                    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    }
-    
-    
-    
-    .form-box-description {
-        display: flex;
-        background-color:transparent;
-        width: 87%;
-        height: 10.3rem; 
-        font-size: 1.55rem;
-        font-weight: 500;
-        text-align: start;
-        border: 1px solid #000; /* Adiciona uma borda para visibilidade */
-        box-shadow: inset rgba(50, 50, 93, 0.25) 13px 13px 15px -5px, 
-                    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-        overflow: auto; /* Adiciona rolagem se o conteúdo exceder o tamanho */
-        resize: vertical; /* Permite redimensionar a altura, se desejado */
-        white-space: pre-wrap; /* Permite quebras de linha e preserva espaços em branco */
-        line-height: 1.5; /* Define a altura da linha para melhorar a legibilidade */
-    }
-    
-    h3{
-        color: black;
-        font-size: 2.5rem;
-        align-self: center;
-        display:flex;
-        text-align: center;
-        align-items: center;
-        font-weight: 500;
-    }
-    
-    
-    .register-button {
-        background-color: #FFD700;
-        align-self: center;
-        display:flex;
-        justify-content: center;
-        text-align: center;
-        padding: 0.4rem 3.6rem;
-        margin-top: 2rem;
-        border-radius: 1rem;
-        border: none;
-        width: 96%;
-        height: 6rem;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-                    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-        transition: background-color 0.3s ease;
-    }
-    
-    .register-button:hover {
-        background-color: #FFC300;
-    }
-    
-    .register-button:focus {
-        outline: 2px solid #FFD700;
-    }
-    
-}

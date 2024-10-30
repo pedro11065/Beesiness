@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         registerbutton.appendChild(msg);
 
         const eventValue = document.getElementById('event').value.trim();
-        const classeValue = document.getElementById('classe').value.trim();
+        const classeValue = document.getElementById('class').value.trim();
         const name = document.getElementById('name').value.trim();
         const localization = document.getElementById('localization').value.trim() || 'Descrição não adicionada.';
         const acquisitionDate = document.getElementById('acquisition_date').value.trim();
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validateForm() {
         const eventValue = document.getElementById('event').value.trim();
-        const classeValue = document.getElementById('classe').value.trim();
+        const classeValue = document.getElementById('class').value.trim();
         const name = document.getElementById('name').value.trim();
         const localization = document.getElementById('localization').value.trim();
         const acquisitionDate = document.getElementById('acquisition_date').value.trim();

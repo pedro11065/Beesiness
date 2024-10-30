@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Passivo</title>
+    <title>Registrar ativo</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/register.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/select.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/assets/select.css') }}">
 
     <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
@@ -22,15 +22,15 @@
     <header class="header">
         <div class="user">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
-            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="Imagem do usuário">
+            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
             <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
         </div>
+
         <a href="/" class="exit">
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
         </a>
     </header>
-
-    <!-- Modal de Sucesso -->
+    <!-- Modal de Sucesso  -->
     <div id="success-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,8 +46,7 @@
         </div>
     </div>
 
-
-    <!-- Modal de Aviso -->
+             <!-- Modal de Aviso-->
     <div id="alert-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -62,91 +61,83 @@
             </div>
         </div>
     </div>
-
+     
     <main class="main">
-        <div class="out-box">
-            <form class="form-group" id="LiabilityForm">
-                <div class="left-box">
-                    <div class="title">
-                        <h2>Registrar Passivo</h2>
-                    </div>
-                    <div class="form-container">
-                        <div class="msg-position">
-                            <p>Evento:</p>
-                        </div>
+
+        <article> 
+            <section-title>
+                <h1>Registrar Passivo</h1>
+            </section-title>
+        </article>
+
+        <form id="AssetForm">
+            <article>
+                <section>
+                    <conteiner class="name">
+                        <box-msg>
+                            <h2>Nome</h2>
+                        </box-msg>
+                        <input class="form-box" id="name" type="text" name="name" required>
+                    </conteiner>
+
+                    <conteiner class="creditor">
+                        <box-msg>
+                            <h2>Credor</h2>
+                        </box-msg>
+                        <input class="form-box" id="creditor" type="text" name="creditor" required>
+                    </conteiner>
+
+                    <conteiner class="value">
+                        <box-msg>
+                            <h2>Valor</h2>
+                        </box-msg>
+                        <input class="form-box" id="value" type="text" name="value" required>
+                    </conteiner>
+                </section>
+            </article>
+
+            <article>
+                <section>
+                    <conteiner class="emission_date">
+                        <box-msg>
+                            <h2>Data de Emissão</h2>
+                        </box-msg>
+                        <input class="form-box" id="emission_date" type="date" name="emission_date" required>
+                    </conteiner>
+
+                    <conteiner class="expiration_date">
+                        <box-msg>
+                            <h2>Data de vencimento</h2>
+                        </box-msg>
+                        <input class="form-box" id="expiration_date" type="date" name="expiration_date" required>
+                    </conteiner>
+
+                    <conteiner class="event">
+                        <box-msg>
+                            <h2>Evento</h2>
+                        </box-msg>
                         <select class="select" id="event" name="event" required>
                             <option value="" disabled selected>- - -</option>
-                            <option>Empréstimo</option>
-                            <option>Financiamento</option>
-                            <option>Leasing</option>
-                            <option>Multa</option>
-                            <option>Juros</option>
-                            <option>Conta a pagar</option>
-                            <option>Imposto a pagar</option>
-                            <option>Salário a pagar</option>
-                            <option>Fornecedor</option>
-                            <option>Concessão de crédito</option>
-                            <option>Prestação de serviços</option>
-                            <option>Processos judiciais</option>
-                            <option>Outro</option>
+                            <option>Compra</option>
+                            <option>Venda</option>
+                            <option>Herança</option>
+                            <option>Troca</option>
+                            <option>Incorporação</option>
+                            <option>Permuta</option>
+                            <option>Produção Interna</option>
+                            <option>Concessão</option>             
+                            <option>Investimento</option>
+                            <option>Leilão</option>
+                            <option>Restituição Judicial</option>
+                            <option>Aquisição</option>
+                            <option>Entrada de Caixa</option>
                         </select>
-                    </div>
-                    
-                    <!-- Classe -->
-                    <div class="form-container">
-                        <p class="msg-position">Classe:</p>
-                        <select class="select" id="class" name="class" required>
-                            <option value="" disabled selected>- - -</option>
-                            <option>INSS</option>
-                            <option>IPTU</option>
-                            <option>Conta de Luz</option>
-                            <option>Conta de Água</option>
-                            <option>Conta de Telefone</option>
-                            <option>Aluguel</option>
-                            <option>Seguro de Carro</option>
-                            <option>Seguro Residencial</option>
-                            <option>Financiamento Imobiliário</option>
-                            <option>Financiamento de Veículo</option>
-                            <option>Parcelamento de Compras</option>
-                            <option>Empréstimo Pessoal</option>
-                            <option>Empréstimo Empresarial</option>
-                            <option>Taxa de Condomínio</option>
-                            <option>Multa de Trânsito</option>
-                            <option>Juros Bancários</option>
-                            <option>Fatura de Cartão de Crédito</option>
-                            <option>Contribuição Sindical</option>
-                            <option>Mensalidade Escolar</option>
-                            <option>Pagamento de Funcionário</option>
-                            <option>Conta</option>
-                            <option>Outros</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Forma de Pagamento -->
-                    <div class="form-container">
-                        <p class="msg-position">Forma de Pagamento:</p>
-                        <select class="select" id="payment_method" name="payment_method" required>
-                            <option value="" disabled selected>- - -</option>
-                            <option>Dinheiro em espécie</option>
-                            <option>Cartão de Crédito</option>
-                            <option>Cartão de Débito</option>
-                            <option>Pix</option>
-                            <option>Cheque</option>
-                            <option>Boleto Bancário</option>
-                            <option>Criptomoedas</option>
-                            <option>Vale-Alimentação</option>
-                            <option>Vale-Refeição</option>
-                            <option>Vale-Transporte</option>
-                            <option>Gift Cards</option>
-                            <option>Carnê</option>
-                            <option>Carteira Digital</option>
-                            <option>Transferência Bancária</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Status -->
-                    <div class="form-container">
-                        <p class="msg-position">Status:</p>
+                    </conteiner>
+
+                    <conteiner class="status">
+                        <box-msg>
+                            <h2>Status</h2>
+                        </box-msg>
                         <select class="select" id="status" name="status" required>
                             <option value="" disabled selected>- - -</option>
                             <option>Pendente</option>
@@ -156,50 +147,98 @@
                             <option>Em Negociação</option>
                             <option>Cancelado</option>
                         </select>
-                    </div>
-                </div> 
-                
-                <div class="right-box">
-                    <div class="info-box">
-                        <!-- Nome -->
-                        <div class="form-container">
-                            <p class="msg">Nome:</p>
-                            <input class="form-box" id="name" type="text" name="name" required>
-                        </div>
+                    </conteiner>
+                </section>
+            </article>
 
-                        <!-- Valor -->
-                        <div class="form-container">
-                            <p class="msg">Valor:</p>
-                            <input class="form-box" id="value" type="text" name="value" required>
-                        </div>
+            <article>
+                <section style="width: 53.5%;">
+                    <container style="width: 100%;">
+                        <conteiner class="class">
+                            <box-msg>
+                                <h2>Classe</h2>
+                            </box-msg>
+                            <select class="select" id="class" name="class" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Empréstimo</option>
+                                <option>Financiamento</option>
+                                <option>Leasing</option>
+                                <option>Multa</option>
+                                <option>Juros</option>
+                                <option>Conta a pagar</option>
+                                <option>Imposto a pagar</option>
+                                <option>Salário a pagar</option>
+                                <option>Fornecedor</option>
+                                <option>Concessão de crédito</option>
+                                <option>Prestação de serviços</option>
+                                <option>Processos judiciais</option>
+                                <option>Outro</option>
+                            </select>
+                        </conteiner>
 
-                        <!-- Data de Emissão -->
-                        <div class="form-container">
-                            <p class="msg">Data de Emissão:</p>
-                            <input class="form-box" type="date" id="emission_date" min="1924-01-01" max="2999-12-31" name="emission_date" required>
-                        </div>
+                        <conteiner class="payment">
+                            <box-msg>
+                                <h2>Forma de pagamento</h2>
+                            </box-msg>
+                            <select class="select" id="payment_method" name="payment_method" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Dinheiro em espécie</option>
+                                <option>Cartão de Crédito</option>
+                                <option>Cartão de Débito</option>
+                                <option>Pix</option>
+                                <option>Cheque</option>
+                                <option>Boleto Bancário</option>
+                                <option>Criptomoedas</option>
+                                <option>Vale-Alimentação</option>
+                                <option>Vale-Refeição</option>
+                                <option>Vale-Transporte</option>
+                                <option>Gift Cards</option>
+                                <option>Carnê</option>
+                                <option>Carteira Digital</option>
+                                <option>Transferência Bancária</option>
+                            </select>
+                        </conteiner>
 
-                        <!-- Data de Vencimento -->
-                        <div class="form-container">
-                            <p class="msg">Data de Vencimento:</p>
-                            <input class="form-box" type="date" id="expiration_date" min="1924-01-01" max="2999-12-31" name="expiration_date" required>
-                        </div>
-                    </div>
+                        <conteiner class="installment">
+                            <box-msg>
+                                <h2>Parcelamento</h2>
+                            </box-msg>
+                            <select class="select" id="installment" name="installment" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Débito</option>
+                                <option>1x</option>
+                                <option>2x</option>
+                                <option>3x</option>
+                                <option>4x</option>
+                                <option>5x</option>
+                                <option>6x</option>
+                                <option>7x</option>
+                                <option>8x</option>
+                                <option>9x</option>
+                                <option>10x</option>
+                                <option>11x</option>
+                                <option>12x</option>
+                            </select>
+                        </conteiner>
+                    </conteiner>
+                </section>
+                <section style="height: 100%">
+                    <conteiner class="description">
+                        <box-msg>
+                            <h2>descrição</h2>
+                        </box-msg>
+                        <input class="form-box" id="description" type="text" name="description" required>
+                    </conteiner>
+                </section>  
+            </article>
 
-                    <!-- Essa parte está fora da div de cima. -->
-                    <!-- Descrição -->
-                    <div class="form-container">
-                        <p class="msg">Descrição:</p>
-                        <input class="form-box-description" type="text" id="description" name="description" required>
-                    </div>
-
-                    <!-- Botão Registrar -->
-                    <div class="form-container">
-                        <button type="submit" class="register-button" id="register-button"><h3>Registrar</h3></button>
-                    </div>
-                </div>
-            </form>
-        </div>
+            <article>   
+                <section>
+                    <button type="submit" class="register-button" id="register-button"><h3>Registrar</h3></button>
+                </section>
+            </article>
+        </form>
     </main>
 </body>
+
 </html>

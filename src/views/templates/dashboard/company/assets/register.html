@@ -30,8 +30,7 @@
             <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
         </a>
     </header>
-
-    <!-- Modal de Sucesso -->
+    <!-- Modal de Sucesso  -->
     <div id="success-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -47,7 +46,7 @@
         </div>
     </div>
 
-    <!-- Modal de Aviso -->
+             <!-- Modal de Aviso-->
     <div id="alert-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -62,18 +61,54 @@
             </div>
         </div>
     </div>
-
+     
     <main class="main">
-        <div class="out-box">  
-            <form class="form-group" id="AssetForm">
 
-                <div class="left-box">
-                    <div class="title">
-                        <h2>Registrar Ativo</h2>
-                    </div>
-                
-                    <div class="form-container">
-                        <p class="msg-position">Evento:</p>
+        <article> 
+            <section-title>
+                <h1>Registrar Ativo</h1>
+            </section-title>
+        </article>
+
+        <form id="AssetForm">
+            <article>
+                <section>
+                    <conteiner class="name">
+                        <box-msg>
+                            <h2>Nome</h2>
+                        </box-msg>
+                        <input class="form-box" id="name" type="text" name="name" required>
+                    </conteiner>
+
+                    <conteiner class="acquisition_value">
+                        <box-msg>
+                            <h2>Valor</h2>
+                        </box-msg>
+                        <input class="form-box" id="acquisition_value" type="text" name="acquisition_value" required>
+                    </conteiner>
+                </section>
+            </article>
+
+            <article>
+                <section>
+                    <conteiner class="acquisition_date">
+                        <box-msg>
+                            <h2>Data de aquisição</h2>
+                        </box-msg>
+                        <input class="form-box" id="acquisition_date" type="date" name="acquisition_date" required>
+                    </conteiner>
+
+                    <conteiner class="localization">
+                        <box-msg>
+                            <h2>Localização</h2>
+                        </box-msg>
+                        <input class="form-box" id="localization" type="text" name="localization" required>
+                    </conteiner>
+
+                    <conteiner class="event">
+                        <box-msg>
+                            <h2>Evento</h2>
+                        </box-msg>
                         <select class="select" id="event" name="event" required>
                             <option value="" disabled selected>- - -</option>
                             <option>Compra</option>
@@ -90,37 +125,12 @@
                             <option>Aquisição</option>
                             <option>Entrada de Caixa</option>
                         </select>
-                    </div>
-                
-                    <!-- Classe -->
-                    <div class="form-container">
-                        <p class="msg-position">Classe:</p>
-                        <select class="select" id="classe" name="classe" required>
-                            <option value="" disabled selected>- - -</option>
-                            <option>Contas a Receber</option>
-                            <option>Estoque</option>
-                            <option>Matérias-Primas</option>
-                            <option>Investimento</option>
-                            <option>Imóveis</option>
-                            <option>Mobília</option>
-                            <option>Veículos</option>
-                            <option>Equipamentos</option>
-                            <option>Maquinário</option>
-                            <option>Patentes</option>
-                            <option>Ações</option>
-                            <option>Tecnologia e TI</option>
-                            <option>Intangíveis</option>
-                            <option>Infraestrutura</option>
-                            <option>Terreno</option>
-                            <option>Licenças</option>
-                            <option>Espaços</option>
-                            <option>Caixa</option>
-                        </select>
-                    </div>
-                
-                    <!-- Status -->
-                    <div class="form-container">
-                        <p class="msg-position">Status:</p>
+                    </conteiner>
+
+                    <conteiner class="status">
+                        <box-msg>
+                            <h2>Status</h2>
+                        </box-msg>
                         <select class="select" id="status" name="status" required>
                             <option value="" disabled selected>- - -</option>
                             <option>Comprado</option>
@@ -137,56 +147,103 @@
                             <option>Empenhado</option>
                             <option>Leiloado</option>
                         </select>
-                    </div>
-                </div>
-                
+                    </conteiner>
+                </section>
+            </article>
 
-                <div class="right-box">
-                    <div class="info-box">
-                        <!-- Nome -->
-                        <div class="form-container">
-                            <p class="msg">Nome:</p>
-                            <input class="form-box" id="name" type="text" name="name" required>
-                            <p class="error" id="name-error"></p>
-                        </div>
+            <article>
+                <section style="width: 53.5%;">
+                    <container style="width: 100%;">
+                        <conteiner class="class">
+                            <box-msg>
+                                <h2>Classe</h2>
+                            </box-msg>
+                            <select class="select" id="class" name="class" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Contas a Receber</option>
+                                <option>Estoque</option>
+                                <option>Matérias-Primas</option>
+                                <option>Investimento</option>
+                                <option>Imóveis</option>
+                                <option>Mobília</option>
+                                <option>Veículos</option>
+                                <option>Equipamentos</option>
+                                <option>Maquinário</option>
+                                <option>Patentes</option>
+                                <option>Ações</option>
+                                <option>Tecnologia e TI</option>
+                                <option>Intangíveis</option>
+                                <option>Infraestrutura</option>
+                                <option>Terreno</option>
+                                <option>Licenças</option>
+                                <option>Espaços</option>
+                                <option>Caixa</option>
+                            </select>
+                        </conteiner>
 
-                        <!-- Localização -->
-                        <div class="form-container">
-                            <p class="msg">Localização:</p>
-                            <input class="form-box" id="localization" type="text" name="localization" required>
-                            <p class="error" id="localization-error"></p>
-                        </div>
+                        <conteiner class="payment">
+                            <box-msg>
+                                <h2>Forma de pagamento</h2>
+                            </box-msg>
+                            <select class="select" id="payment_method" name="payment_method" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Dinheiro em espécie</option>
+                                <option>Cartão de Crédito</option>
+                                <option>Cartão de Débito</option>
+                                <option>Pix</option>
+                                <option>Cheque</option>
+                                <option>Boleto Bancário</option>
+                                <option>Criptomoedas</option>
+                                <option>Vale-Alimentação</option>
+                                <option>Vale-Refeição</option>
+                                <option>Vale-Transporte</option>
+                                <option>Gift Cards</option>
+                                <option>Carnê</option>
+                                <option>Carteira Digital</option>
+                                <option>Transferência Bancária</option>
+                            </select>
+                        </conteiner>
 
-                        <!-- Data de Aquisição -->
-                        <div class="form-container">
-                            <p class="msg">Data de Aquisição:</p>
-                            <input class="form-box" type="date" id="acquisition_date" name="acquisition_date" required>
-                            <p class="error" id="date-error"></p>
-                        </div>
+                        <conteiner class="installment">
+                            <box-msg>
+                                <h2>Parcelamento</h2>
+                            </box-msg>
+                            <select class="select" id="installment" name="installment" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Débito</option>
+                                <option>1x</option>
+                                <option>2x</option>
+                                <option>3x</option>
+                                <option>4x</option>
+                                <option>5x</option>
+                                <option>6x</option>
+                                <option>7x</option>
+                                <option>8x</option>
+                                <option>9x</option>
+                                <option>10x</option>
+                                <option>11x</option>
+                                <option>12x</option>
+                            </select>
+                        </conteiner>
+                    </conteiner>
+                </section>
+                <section style="height: 100%">
+                    <conteiner class="description">
+                        <box-msg>
+                            <h2>descrição</h2>
+                        </box-msg>
+                        <input class="form-box" id="description" type="text" name="description" required>
+                    </conteiner>
+                </section>  
+            </article>
 
-                        <!-- Valor de Aquisição -->
-                        <div class="form-container">
-                            <p class="msg">Valor:</p>
-                            <input class="form-box" type="text" id="acquisition_value" name="acquisition_value" required>
-                            <p class="error" id="value-error"></p>
-                        </div>
-
-                    </div>
-
-                    <!-- Descrição -->
-                    <div class="form-container">
-                        <p class="msg">Descrição:</p>
-                        <input class="form-box-description" type="text" id="description" name="description" required>
-                        <p class="error" id="description-error"></p>
-                    </div>
-
-                    <!-- Botão Registrar -->
-                    <div class="form-container-register">
-                        <button type="submit" class="register-button" id="register-button"><h3>Registrar</h3></button>
-                    </div>
-                </div>
-            </form>
-        </div>
+            <article>   
+                <section>
+                    <button type="submit" class="register-button" id="register-button"><h3>Registrar</h3></button>
+                </section>
+            </article>
+        </form>
     </main>
 </body>
+
 </html>
