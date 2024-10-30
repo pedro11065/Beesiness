@@ -30,8 +30,12 @@ select {
   line-height: 1.1;
   border-radius: 0.5rem;
   background-color: #D9D9D9;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
 }
 
-
+.select:hover{
+  background-color: rgb(165, 165, 165);
+  
+}
 
