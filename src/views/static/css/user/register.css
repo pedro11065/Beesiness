@@ -1,209 +1,288 @@
-/* Reset básico */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: inter;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+photo {
+  width: 45%;
+  height: 100%; 
+  background-image: url('/static/images/register_login/register_image.png');
+  background-size: cover; /* Ajusta o tamanho da imagem para cobrir todo o elemento */
+  background-position: center; /* Centraliza a imagem dentro do elemento */
+  background-repeat: no-repeat; /* Evita a repetição da imagem */
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+main {
+  width: 55%;
+  height: 100%;
+  background-color: white;
+
+}
+
+h1{
+  font-weight: 500;
+  font-size: 3rem;
   
-  /* Container geral */
-  body {
-    background-color: #FFD400;
+}
+
+.welcome-section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 18vh;
+}
+
+.welcome-box{
+  display: flex;
+  padding-left: 3rem;
+  align-items: center;
+  width: 100%;
+  height: 4rem;
+}
+
+.form-article{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  width: 100%;
+  height: 16.5vh;
+
+}
+
+.form-article-end{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  width: 100%;
+  height: 10vh;
+}
+
+.form-article-button{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+  width: 100%;
+  height: 16vh;
+}
+.form-section{
+  width: 100%;
+  height: 80%;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.form-section-fullname{
+  width: 100%;
+  height: 80%;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+}
+
+.form-section-birthdate{
+  width: 60%;
+  height: 80%;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+}
+
+.form-section-terms{
+
+  width: 100%;
+  height: 80%;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.msg{
+  display: flex;
+  width: 100%;
+  height: 25%;
+  font-weight: 500;
+}
+
+.msg-error{
+  display: flex;
+  width: 100%;
+  height: 25%;
+  color: red;
+}
+
+.form-box{
+  display: flex;
+  background-color:#D9D9D9;
+  font-family: inter;
+  width: 100%;
+  height: 50%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.form-box:hover{
+  background-color:#b8c5bb;
+  box-shadow: inset rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.form-box-birthdate{
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: 'Roboto Slab', serif;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    background-color:#D9D9D9;
+    width: 100%;
+    height: 50%;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
-  
-  /* Container do formulário */
-  .container {
-    background-color: white;
-    border-radius: 1.25rem;
-    padding: 2rem;
-    margin-top: 0;
-    margin-bottom: 0;
-    text-align: center;
-    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px; 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
-}
-  
-  /* Cabeçalho */
-  h1 {
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    color: #000;
-    transition: color 0.5s ease;
-  }
-  
-  /* Grupo de formulário */
-  .form-group {
-    margin-bottom: 1rem;
-    text-align: left;
-  }
-  
-  /* Labels */
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.75rem;
-    color: #666;
-    text-transform: uppercase;
-    font-weight: bold;
-    transition: color 0.5s ease;
-  }
-  
-  /* Campos de entrada */
-  input[type="text"],
-  input[type="email"],
-  input[type="date"],
-  input[type="password"] {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 0.625rem;
-    border: 1px solid #ccc;
-    background-color: #f2f2f2;
-    font-size: 0.875rem;
-    margin-bottom: 0.25rem;
-    transition: background-color 0.3s ease, color 0.3s ease,
-      border-color 0.3s ease;
-  }
-  
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  input[type="date"]:focus,
-  input[type="password"]:focus {
-    border-color: #ffd400;
-    outline: none;
-  }
-  
-  /* Botão de registro */
-  button[type="submit"] {
-    width: 100%;
-    padding: 1rem;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    border-radius: 0.625rem;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-bottom: 0.75rem;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #333;
-    transform: scale(1.05);
-  }
-  
-  /* Link de registro */
-  .register-link {
-    margin-top: 1rem;
-    font-size: 0.875rem;
-  }
-  
-  .register-link a {
-    color: #666;
-    text-decoration: none;
-    transition: color 0.3s ease, text-decoration 0.3s ease;
-  }
-  
-  .register-link a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Botão de Dark Mode */
-  #dark-mode-toggle {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #000;
-    transition: color 0.3s ease;
-  }
-  
-  /* Dark Mode */
-  body.dark-mode {
-    background-color: #1e1e1e;
-    color: #ccc;
-  }
-  
-  body.dark-mode .container {
-    background-color: #333;
-    color: #ccc;
-    box-shadow: 0 0 0.625rem rgba(255, 255, 255, 0.2);
-  }
-  
-  body.dark-mode h1 {
-    color: #ffd400;
-  }
-  
-  body.dark-mode label {
-    color: #ccc;
-  }
-  
-  body.dark-mode input[type="text"],
-  body.dark-mode input[type="email"],
-  body.dark-mode input[type="date"],
-  body.dark-mode input[type="password"] {
-    background-color: #555;
-    color: #ccc;
-    border: 1px solid #777;
-  }
-  
-  body.dark-mode button[type="submit"] {
-    background-color: #ffd400;
-    color: #000;
-  }
-  
-  body.dark-mode button[type="submit"]:hover {
-    background-color: #ffc107;
-  }
 
-  /* Botão de login */
-.register-btn {
-  width: 100%;
-  padding: 1rem;
-  background-color: #000;
-  color: #fff;
+.form-box-birthdate:hover{
+  background-color:#b8c5bb;
+  box-shadow: inset rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+  
+
+input{
   border: none;
-  border-radius: 0.625rem;
+  font-family: inter;
+  padding-left: 1rem;
+  padding-right: 1rem;
   font-size: 1rem;
-  cursor: pointer;
-  margin-bottom: 0.75rem;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
-.register-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;    /* Altera o cursor para indicar que o botão não está clicável */
-  pointer-events: none;   /* Remove a possibilidade de clicar no botão */
+.form-section-birthdate input{
+  display: flex;
+  border: none;
+  font-family: inter;
+  align-items: center;
+  text-align: center;
 }
 
-.register-btn:hover {
-  background-color: #333;
-  transform: scale(1.05);
+.form-check-box{
+  padding-right: 1rem;
 }
-  
-  /* Ajustes adicionais para responsividade */
-  @media (max-width: 768px) {
-    #dark-mode-toggle {
-      font-size: 1.5rem;
-    }
+
+.form-check-terms-box{
+  display: flex;
+  align-items:flex-start;
+  justify-items: flex-start;
+  width: 100%;
+  height: auto;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+
+button{
+  border: none;
+}
+
+.form-section-button{
+  background-color: #edc80d;
+  width: 15rem;
+  height: 60%;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 3rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.form-section-button:hover{
+  background-color: #000000;
+  color: white;
+  box-shadow: inset rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.login-button{
+  background-color:#af940e;
+  width: 20rem;
+  height: 60%;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 3rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.login-button:hover{
+  background-color: #000000;
+  color: white;
+  box-shadow: inset rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+@media (max-width: 800px) {
+
+  main {
+    width: 100%;
   }
 
-  /* Responsável por mostrar a mensagem de erro vermelha */
-  .error {
-    color: red;
-    font-size: 12px;
-    display: block;
+  photo{
+    display:none;
+  }
+
+  .form-article{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+    height: 22vh;
+  
+  }
+
+  .welcome-section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 2rem;
+  height: 10vh;
+  padding-left: 2rem;
+}
+
+.welcome-box{
+  display: flex;
+  flex-direction: column;
+  padding-left: 0rem;
+  align-items: flex-start;
+  width: 100%;
+  height: 4rem;
+}
+
+.form-section-birthdate {
+  width: 100%;
+}
+
+.form-article-end {
+
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+}
+
 }

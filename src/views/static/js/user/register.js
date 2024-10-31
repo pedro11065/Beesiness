@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const registerForm = document.getElementById("registroForm");
-    const registerButton = registerForm.querySelector(".register-btn");
+    const FormRegister = document.getElementById("registerForm");
+    const registerButton = FormRegister.querySelector(".register-btn");
 
-    registerForm.addEventListener('submit', async (event) => {
+    FormRegister.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         // Chama a função de validação
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(registerData)
+               body: JSON.stringify(registerData)
             });
 
             if (!response.ok) {
@@ -67,7 +67,10 @@ document.addEventListener("DOMContentLoaded", function () {
             registerButton.textContent = "Registrar";
         }
     });
-});
+
+
+
+
 
 function clearErrors() {
     const errorFields = document.querySelectorAll('.error');
@@ -205,4 +208,12 @@ function verifyCPF(strCPF) {
     if (Resto != parseInt(strCPF.substring(10, 11))) return false;
 
     return true;
-}
+}   
+    const loginButton = document.querySelector('.login-button');
+    if (loginButton) {
+    loginButton.addEventListener('click', function (e) {
+        e.preventDefault(); // Impede o envio do formulário, caso exista
+        window.location.href = '/user/login'; // Substitua '/login' pela URL da sua página de login
+    });
+    }
+});
