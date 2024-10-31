@@ -16,6 +16,13 @@ body {
     justify-content: space-between;
 }
 
+header p {
+    font-family: 'Inter';
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 300;
+  }
+
 header .user {
     display: flex;
     align-items: center;
@@ -152,7 +159,7 @@ header .exit .icon {
     overflow-x: visible; 
     overflow-y: hidden; 
     white-space: nowrap;
-    align-items:flex-start;
+    align-items: flex-start;
     justify-content: center;
     margin: 0;
     padding: 0;
