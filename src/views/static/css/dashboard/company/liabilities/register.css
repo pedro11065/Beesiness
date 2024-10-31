@@ -7,7 +7,7 @@ html {
 body {
     font-family: Inter;
     background-color: #f1f1f1;
-    height:100vh;
+    height: auto;
     width: 100%;
     margin: 0;
     
@@ -113,7 +113,7 @@ article{
     justify-content:space-between;
     width: 92%;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1%;
 }
 
 section-title{
@@ -217,7 +217,7 @@ input:hover{
 }
 
 .description input{
-    height: 87%;
+    height: 18rem;
 }
 
 .register-button {

@@ -113,7 +113,7 @@ article{
     justify-content:space-between;
     width: 92%;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1%;
 }
 
 section-title{
@@ -212,7 +212,7 @@ input:hover{
 }
 
 .description input{
-    height: 87%;
+    height: 18rem;
 }
 
 .register-button {

@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 empresaDiv.innerHTML = `
                     <div class="company-data">
                         <img src="${simbolosImagem}" alt="${nivelAcesso} icon" class="icon-simbolo"/>
-                        <h1 class="nome-empresa">${nome}</h1>
+                        <h2 class="nome-empresa">${nome}</h2>
                     </div>
                     <img class="icon" src="/static/images/dashboard/public/next.png" alt="Configurações">
                 `;

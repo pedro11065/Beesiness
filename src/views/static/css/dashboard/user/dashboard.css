@@ -80,11 +80,21 @@ header .exit .icon {
 }
 
 .main h1 {
+    font-family: inter;
+    color: rgb(0, 0, 0);
+    margin-left: 2rem;
+    font-size: 1.8rem;
+    font-weight:400;
+}
+
+.main h2 {
+    font-family: inter;
     color: white;
     margin-left: 2rem;
     font-size: 1.8rem;
-    font-weight:300;
+    font-weight:400;
 }
+
 .main p {
     color: white;
     margin-top: 0.3rem;
