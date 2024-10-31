@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const msg = document.createElement('h3');
         submitButton.textContent = 
             
-        msg.innerHTML = `
-            Aguarde..
-        `;
+        // msg.innerHTML = `
+        //     Aguarde..
+        // `;
 
         registerbutton.appendChild(msg);
 

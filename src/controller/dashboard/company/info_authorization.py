@@ -40,6 +40,5 @@ def info_authorization(data, company_id):
             return jsonify({'message': 'Usuário deletado com sucesso.'})
         else:
             return jsonify({'message': 'Usuário não encontrado.'})
-        
     else:
         return jsonify({'message': 'Ação não reconhecida'}), 400

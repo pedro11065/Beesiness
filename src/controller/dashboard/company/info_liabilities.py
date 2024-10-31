@@ -9,7 +9,6 @@ import datetime
 
 @cache.cached(timeout=30)  # Guarda as informações por 30 segundos
 def info_liabilities(company_id):
-
     info = db_search_liability(company_id)
 
     if info is False:

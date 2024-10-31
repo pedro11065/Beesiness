@@ -76,8 +76,6 @@ document.querySelector('.btn.confirmar').addEventListener('click', function () {
             if (data.message) {
                 openAlertModal(data.message)
             }
-
-            window.location.reload();
         })
         .catch(error => console.error('Erro ao atualizar permissão:', error));
 });
@@ -109,6 +107,8 @@ document.getElementById('add-button').addEventListener('click', function () {
 
 document.querySelector('#alert-modal .fechar').addEventListener('click', function () {
     document.getElementById('alert-modal').style.display = 'none';
+    window.location.reload();
+    alertModal.removeEventListener('click', closeModal);
 });
 
 document.querySelector('#cpf-search').addEventListener('input', function (e) {

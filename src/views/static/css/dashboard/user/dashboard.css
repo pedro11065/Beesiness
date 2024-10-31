@@ -14,7 +14,7 @@ html {
 /* Configuração básica do corpo da página */
 body {
     font-family: inter;
-    background-color: #FFD700;
+    background-color: #d2d2d2; /*FFD700*/
     height: 100vh;
     width: auto;
     margin: 0;
@@ -71,7 +71,6 @@ header .exit .icon {
 }
 
 .main {
-    background-color: #FFD700;
     width: 100%;
     height: auto; 
     display: flex;
@@ -123,7 +122,7 @@ main .box {
 
 .main .box .new_company {
     cursor: pointer;
-    background-color: #2F7B00;
+    background-color: #FFD400; /*#2F7B00*/
     margin-top: 0.5rem;
     margin-bottom: 1rem;
     padding-right: 2rem;
@@ -139,11 +138,11 @@ main .box {
 }
 
 .main .box .new_company:hover {
-    background-color: #2a6804;
+    background-color: #f4cd09;
 }
 
 .main .box .company:hover {
-    background-color: #131313;
+    background-color: #1d1d1d;
 }
 
 main .box .company {
@@ -168,7 +167,6 @@ main .box .company .company-data {
 }
 
 main .box .company-data-error {
-
     background-color: #222222;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -182,7 +180,6 @@ main .box .company-data-error {
     border: none;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-
 }
 
 .icon-simbolo {

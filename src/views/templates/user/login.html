@@ -28,7 +28,6 @@
 
     <main>
         <section class="welcome-section">
-
             <welcome-box class="welcome-box">
                 <h1>Olá de novo!</h1>
                 <div class="msg" style="color: rgb(70, 70, 70); font-weight: 400;">
@@ -36,65 +35,41 @@
                     
                 </div>
             </welcome-box>
-
         </section>
 
         <form id="loginForm" action="/user/login" method="POST">
-
             <article class="form-article">
-
                 <section class="form-section">  <!-- email -->
-
                     <div class="msg">
                         Email
                     </div>
-
-                        <input class="form-box" type="text" id="email" name="email" required>
-
+                        <input class="form-box" type="text" id="email" name="email" placeholder="Digite seu e-mail" required>
                     <div class="msg-error" id="message-error">
-
                     </div>
-
                 </section>
-
-
             </article>
 
-
-
             <article class="form-article">
-
                 <section class="form-section"> <!-- password -->
-
                     <div class="msg">
                         Senha
                     </div>
-
-                    <input class="form-box" type="password" id="password" name="password" required>
+                    <input class="form-box" type="password" id="password" name="password" placeholder="Digite sua senha" required>
 
                     <div class="msg">
-                        <a href="/forget-password" style="color: rgb(70, 70, 70); font-weight: 400; padding-top: 0.2rem">Esqueci minha senha</a>
+                        <a href="/user/forget-password" style="color: rgb(70, 70, 70); font-weight: 400; padding-top: 0.2rem">Esqueci minha senha</a>
                     </div>
-
                     </div>
-
                 </section>
-
-
             </article>
 
 
 
             <article class="login-article-button">
-
                 <button type="submit" class="login-section-button">Login</button> 
-
-
             </article>
-            
-
         </form>
 
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     </main>
-    
 </body>
