@@ -12,11 +12,8 @@ from src.model.database.company.patrimony.liability.search import db_search_liab
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
 def info_dashboard(company_id):
-    print(company_id)
-
      # Saldo em caixa
     cash_data = db_search_cash(company_id)
-    print(cash_data)
     cash_now = cash_data[0][0]  
 
 #---------------------------------------------------------------------------
@@ -129,9 +126,6 @@ def info_dashboard(company_id):
         assets_dates_list = list(assets_count.keys())
         assets_count = list(assets_count.values())
         
-        print(assets_dates_list)
-        print(assets_count)
-        
 
 
         dates_list= []
@@ -145,9 +139,6 @@ def info_dashboard(company_id):
         # Separar as datas e suas contagens
         liabilities_dates_list = list(liabilities_count.keys())
         liabilities_count = list(liabilities_count.values())
-        
-        print(liabilities_dates_list)
-        print(liabilities_count)
         
 
 

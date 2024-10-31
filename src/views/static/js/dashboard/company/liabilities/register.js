@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const eventvalue = document.getElementById('event').value.trim();
         const classvalue = document.getElementById('class').value.trim();
         const payment_method = document.getElementById('payment_method').value.trim();
+        const installment = document.getElementById('installment').value.trim();
         const status = document.getElementById('status').value.trim();
         const name = document.getElementById('name').value.trim();
         const value = document.getElementById('value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.');
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event: eventvalue,
             classe: classvalue,
             payment_method: payment_method,
+            installment: installment,
             status: status,
             name: name,
             value: value,
@@ -67,10 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 const errorData = await response.json();
                 openAlertModal(`Erro: ${errorData.message || 'Não foi possível registrar o passivo.'}`);
+                submitButton.disabled = false;
+                submitButton.textContent = "Registrar";
             }
         } catch (error) {
             console.error('Erro ao enviar dados:', error);
             openAlertModal('Erro ao enviar dados. Tente novamente mais tarde.');
+            submitButton.disabled = false;
+            submitButton.textContent = "Registrar";
         }
     });
 
@@ -78,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const eventvalue = document.getElementById('event').value.trim();
         const classvalue = document.getElementById('class').value.trim();
         const payment_method = document.getElementById('payment_method').value.trim();
+        const installment = document.getElementById('installment').value.trim();
         const status = document.getElementById('status').value.trim();
         const name = document.getElementById('name').value.trim();
         const value = document.getElementById('value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.');

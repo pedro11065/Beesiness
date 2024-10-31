@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.disabled = true;
 
         const msg = document.createElement('h3');
-        submitButton.textContent = 
+        submitButton.textContent = "Aguarde"
             
         // msg.innerHTML = `
         //     Aguarde..
@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const acquisitionDate = document.getElementById('acquisition_date').value.trim();
         const acquisitionValue = document.getElementById('acquisition_value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.'); 
         const status = document.getElementById('status').value.trim();
+        const payment_method = document.getElementById('payment_method').value.trim();
+        const installment = document.getElementById('installment').value.trim();
         const description = document.getElementById('description').value.trim() || 'Descrição não adicionada.';
 
         const formData = {
@@ -48,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
             acquisitionDate: acquisitionDate,
             acquisitionValue: acquisitionValue,
             status: status,
-            description: description
+            description: description,
+            installment: installment,
+            payment_method: payment_method
         };
 
         try {
@@ -65,14 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 const errorData = await response.json();
                 openAlertModal(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);
-                loginButton.disabled = false;
-                loginButton.textContent = "Acesse";
+                submitButton.disabled = false;
+                submitButton.textContent = "Registrar";
             }
         } catch (error) {
             console.error('Erro ao enviar dados:', error);
             openAlertModal('Erro ao enviar dados. Tente novamente mais tarde.');
-            loginButton.disabled = false;
-            loginButton.textContent = "Acesse";
+            submitButton.disabled = false;
+            submitButton.textContent = "Registrar";
         }
     });
 

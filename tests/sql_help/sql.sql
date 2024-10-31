@@ -57,6 +57,7 @@ location varchar (100),
 acquisition_date date, /*formato = xx-xx-xxxx*/ 
 Description varchar (255),
 status varchar(100),
+installment int,
 creation_date DATE DEFAULT CURRENT_DATE,
 creation_time TIME DEFAULT CURRENT_TIME);
 
@@ -75,6 +76,7 @@ expiration_date date, /*formato = xx-xx-xxxx*/
 payment_method varchar (50),
 description varchar (255),
 status varchar(100),
+installment int,
 creation_date DATE DEFAULT CURRENT_DATE,
 creation_time TIME DEFAULT CURRENT_TIME);
 

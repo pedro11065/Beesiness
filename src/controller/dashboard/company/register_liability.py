@@ -16,6 +16,19 @@ def liability_registration(liability_data, company_id):
 
     value = float(value)
 
+#-------------------------------------------------- Parcelamento
+
+    if installment == "Débito":
+        installment = 0
+    
+    else:               # indices: 0 1 2
+        installment = installment[:-1]
+        print(installment)
+
+
+
+#-------------------------------------------------- Debito e crédito 
+
     if event in ['Multa', 'Juros', 'Conta a pagar', 'Imposto a pagar', 'Salário a pagar', 'Fornecedor', 'Processos judiciais']:
         update_cash = 'less'  
 
@@ -39,6 +52,8 @@ def liability_registration(liability_data, company_id):
         liability_credit = value             
         cash_debit = value  
         cash_credit =  0
+
+#-----------------------------------------------------------------------------------
 
     db_create_liability(company_id, current_user.id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit)
 

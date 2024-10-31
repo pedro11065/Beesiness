@@ -14,8 +14,21 @@ def asset_registration(asset_data, company_id):
     acquisition_date = asset_data.get('acquisitionDate')
     value = asset_data.get('acquisitionValue')
     status = asset_data.get('status')
+    installment = asset_data.get('installment')
     description = asset_data.get('description')
 
+#-------------------------------------------------- Parcelamento
+
+    if installment == "Débito":
+        installment = 0
+    
+    else:               # indices: 0 1 2
+        installment = installment[:-1]
+        print(installment)
+
+
+
+#-------------------------------------------------- Debito e crédito 
     value = float(value)
     
     if event == 'Compra':
@@ -41,6 +54,8 @@ def asset_registration(asset_data, company_id):
         cash_credit = 0
         asset_debit = 0
         asset_credit = value   
+
+    #---------------------------------------------------------------------
 
     db_create_asset(company_id, current_user.id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash)
 
