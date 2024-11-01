@@ -48,11 +48,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                     if (asset.name !== '#!@cash@!#') {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${asset.asset_id}</td>
+                            <td class="limited-text name">${asset.asset_id}</td>
                             <td class="limited-text name">${asset.name}</td>
                             <td>${asset.event}</td>
                             <td>${asset.class}</td>
                             <td>${formatValueToMoney(asset.value)}</td>
+                            <td>${asset.installment}</td>
                             <td class="limited-text">${asset.location}</td>
                             <td>${asset.acquisition_date}</td>
                             <td>${asset.status}</td>
@@ -71,9 +72,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                             document.getElementById('event').innerText = details[2];
                             document.getElementById('class').innerText = details[3];
                             document.getElementById('value').innerText = details[4];
-                            document.getElementById('location').innerText = details[5];
-                            document.getElementById('acquisition_date').innerText = details[6];
-                            document.getElementById('status').innerText = details[7];
+                            document.getElementById('installment').innerText = asset.installment;
+                            document.getElementById('location').innerText = asset.location;
+                            document.getElementById('acquisition_date').innerText = asset.creation_date;
+                            document.getElementById('status').innerText = asset.status;
                             document.getElementById('description').innerText = details[8];
                             document.getElementById('creation').innerText = `${details[9]} - ${details[10]}`;
                         

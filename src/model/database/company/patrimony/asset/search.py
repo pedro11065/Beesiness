@@ -37,6 +37,7 @@ def db_search_asset(company_id):
         'description': data[9],
         'status': data[10],
         'creation_date': data[11].strftime("%d/%m/%Y") if isinstance(data[11], datetime.date) else data[11],
-        'creation_time': data[12].strftime('%H:%M:%S') if isinstance(data[12], datetime.time) else data[12]  # Convertendo time para string
+        'creation_time': data[12].strftime('%H:%M:%S') if isinstance(data[12], datetime.time) else data[12],
+        'installment': data[15]  # Convertendo time para string
     } for data in db_data]
 
