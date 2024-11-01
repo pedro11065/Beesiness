@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             noRelationDiv.className = 'company-data-error';
             noRelationDiv.innerHTML = `
                 <div>
-                    <h1>Aparentemente você não está relacionado a nenhuma empresa! :(</h1>
+                    <h2>Aparentemente você não está relacionado a nenhuma empresa! :(</h2>
                 </div>
             `;
             container.appendChild(noRelationDiv);
