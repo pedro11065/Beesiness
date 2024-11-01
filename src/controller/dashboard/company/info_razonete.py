@@ -18,7 +18,7 @@ def info_razonete(company_id, cnpj):
     for record in info:
         if 'creation_date' in record:
             # Converte a string no formato DD/MM/YYYY para um objeto datetime
-            record['creation_date'] = datetime.strptime(record['creation_date'], '%d/%m/%Y').strftime('%Y-%m-%d')  # Formato YYYY-MM-DD
+             record['creation_date'] = datetime.fromisoformat(record['creation_date']) 
         
         
         if 'creation_time' in record:

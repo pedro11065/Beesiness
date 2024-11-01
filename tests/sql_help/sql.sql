@@ -58,7 +58,7 @@ acquisition_date date, /*formato = xx-xx-xxxx*/
 Description varchar (255),
 status varchar(100),
 creation_date DATE DEFAULT CURRENT_DATE,
-creation_time TIME DEFAULT CURRENT_TIME),
+creation_time TIME DEFAULT CURRENT_TIME)
 installment int;
 
 CREATE TABLE table_liabilities
@@ -78,26 +78,26 @@ description varchar (255),
 status varchar(100),
 installment int,
 creation_date DATE DEFAULT CURRENT_DATE,
-creation_time TIME DEFAULT CURRENT_TIME)
-installment int;
+creation_time TIME DEFAULT CURRENT_TIME);
 
-CREATE TABLE table_historic
-(historic_id UUID primary key,
-company_id UUID REFERENCES table_companies(company_id),
-user_id UUID REFERENCES table_users(user_id),
-patrimony_id UUID,
-name varchar(100), 
-event varchar(50),
-class varchar(50),
-value double precision,
-credit double precision,
-debit double precision,
-date varchar(10),
-type varchar(25),
-creation_date DATE DEFAULT CURRENT_DATE,
-creation_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP AT TIME ZONE 'America/Sao_Paulo'
-)
-installment int;
+CREATE TABLE table_historic (
+    historic_id UUID PRIMARY KEY,
+    company_id UUID REFERENCES table_companies(company_id),
+    user_id UUID REFERENCES table_users(user_id),
+    patrimony_id UUID,
+    name VARCHAR(100),
+    event VARCHAR(50),
+    class VARCHAR(50),   
+    value DOUBLE PRECISION,
+    date VARCHAR(10),
+    type VARCHAR(25),
+    creation_date DATE DEFAULT CURRENT_DATE,
+    creation_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    debit DOUBLE PRECISION,
+    credit DOUBLE PRECISION,
+	installment int
+);
+
 
 
 

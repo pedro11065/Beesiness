@@ -18,9 +18,7 @@ def info_balance(company_id, cnpj):
     for record in info:
         if 'creation_date' in record:
             # Converte a string no formato DD/MM/YYYY para um objeto datetime
-            record['creation_date'] = datetime.strptime(record['creation_date'], '%d/%m/%Y').strftime('%Y-%m-%d')  # Formato YYYY-MM-DD
-        
-
+            record['creation_date'] = datetime.fromisoformat(record['creation_date']) 
         
         if 'creation_time' in record:
             record['creation_time'] = record['creation_time'].strftime('%H:%M:%S')  # Formato HH:MM:SS

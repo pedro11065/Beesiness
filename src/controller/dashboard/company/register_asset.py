@@ -18,6 +18,8 @@ def asset_registration(asset_data, company_id):
     installment = asset_data.get('installment')
     description = asset_data.get('description')
 
+    print(acquisition_date)
+
 #-------------------------------------------------- Parcelamento
 
     if installment == "Débito":
