@@ -34,11 +34,29 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     """)
 
     # Guarda os dados no histórico de ativos e passivos
-    installment_record = 0
-    for i in range(installment): #vai registrar a quantidade de parcelas
+    installment_record = 0; new_month_add = 0 #01-11-2024
+    for i in range(installment): #vai registrar a quantidade de parcelas 
         historic_id =  uuid.uuid4()
         installment_record = installment_record + 1
-        
+        print(i)
+        if i > 0:
+
+            current_day = datetime.now().strftime("%d")
+            current_month = datetime.now().strftime("%m")
+            current_year = datetime.now().strftime("%Y")
+
+         
+            
+            next_month = new_month_add + 1 + int(current_month)
+            new_month_add = new_month_add + 1
+
+            creation_date = (f"{current_year}-{next_month}-{current_day}")
+            
+            if next_month>12:
+                next_month = next_month - 12
+                next_year = int(current_year) + 1
+                creation_date = (f"{next_year}-{next_month}-{current_day}")
+                
         cur.execute(f"""
             INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment) 
             VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
