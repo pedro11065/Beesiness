@@ -38,6 +38,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     for i in range(installment): #vai registrar a quantidade de parcelas
         historic_id =  uuid.uuid4()
         installment_record = installment_record + 1
+        
         cur.execute(f"""
             INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment) 
             VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
@@ -71,7 +72,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     new_historic_id = uuid.uuid4()
 
     # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creadtion_time, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset', , '{creation_date}', '{creation_time}', {cash_debit}, {cash_credit});")
+    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset','{creation_date}', '{creation_time}', {cash_debit}, {cash_credit});")
 
     # Confirma as mudanças
     conn.commit()

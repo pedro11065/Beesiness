@@ -34,10 +34,29 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
         cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit, installment)  VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{location}', '{acquisition_date}', '{description}', '{status}', '{asset_debit}', '{asset_credit}', '{installment}');")
     
         # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
-    installment_record = 0
-    for i in range(installment): #vai registrar a quantidade de parcelas
+    installment_record = 0; new_month_add = 0 #01-11-2024
+    for i in range(installment): #vai registrar a quantidade de parcelas 
         historic_id =  uuid.uuid4()
         installment_record = installment_record + 1
+        print(i)
+        if i > 0:
+
+            current_day = datetime.now().strftime("%d")
+            current_month = datetime.now().strftime("%m")
+            current_year = datetime.now().strftime("%Y")
+
+         
+            
+            next_month = new_month_add + 1 + int(current_month)
+            new_month_add = new_month_add + 1
+
+            creation_date = (f"{current_year}-{next_month}-{current_day}")
+            
+            if next_month>12:
+                next_month = next_month - 12
+                next_year = int(current_year) + 1
+                creation_date = (f"{next_year}-{next_month}-{current_day}")
+
         cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment)  VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value/installment}, '{acquisition_date}', '{type}', '{creation_date}', '{creation_time}', '{asset_debit/installment}', '{asset_credit/installment}','{installment_record}');")  
     
     cash_data = db_search_cash(company_id)
