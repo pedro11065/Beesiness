@@ -1,5 +1,6 @@
 from flask import jsonify
 from datetime import datetime
+from datetime import time
 
 from src.model.database.company.patrimony.historic.search import db_search_historic
 from src.model.database.company.patrimony.asset.search import db_search_asset
@@ -39,9 +40,6 @@ def info_journal(company_id, cnpj):
                 record['creation_date'] = new_date.strftime('%Y-%m-%d')
             print(f"Depois: {record['creation_date'] , record['installment']}")
     """
-    
-
-
     return jsonify({
         'redirect_url': f'/dashboard/daily/{cnpj}',
         'historic': info,

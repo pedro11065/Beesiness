@@ -91,8 +91,8 @@ CREATE TABLE table_historic (
     value DOUBLE PRECISION,
     date VARCHAR(10),
     type VARCHAR(25),
-    creation_date DATE DEFAULT CURRENT_DATE,
-    creation_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    creation_date DATE,
+    creation_time TIME,
     debit DOUBLE PRECISION,
     credit DOUBLE PRECISION,
 	installment int

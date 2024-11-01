@@ -1,8 +1,10 @@
 import psycopg2
 import uuid
+from datetime import datetime
 from colorama import Fore, Style
 from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
+
 
 
 def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
@@ -22,7 +24,8 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
 
     # Define dados
     asset_id = uuid.uuid4()
-    
+    creation_time = datetime.now().strftime("%H:%M:%S")
+    creation_date = datetime.now().strftime("%Y-%m-%d")
     type =  "asset"
 
     if event not in ['Entrada de Caixa','Venda']:
@@ -35,7 +38,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
     for i in range(installment): #vai registrar a quantidade de parcelas
         historic_id =  uuid.uuid4()
         installment_record = installment_record + 1
-        cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit, installment) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value/installment}, '{acquisition_date}', '{type}', '{asset_debit/installment}', '{asset_credit/installment}','{installment_record}');")  
+        cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment)  VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value/installment}, '{acquisition_date}', '{type}', '{creation_date}', '{creation_time}', '{asset_debit/installment}', '{asset_credit/installment}','{installment_record}');")  
     
     cash_data = db_search_cash(company_id)
     cash_id = cash_data[0][0]
@@ -67,7 +70,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
     new_historic_id =  uuid.uuid4()
 
     # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{cash_now}', '{date}', 'asset', {cash_debit}, {cash_credit});")
+    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit)  VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{cash_now}', '{date}', 'asset', '{creation_date}', '{creation_time}', {cash_debit}, {cash_credit});")
 
     # Confirma as mudanças
     conn.commit()

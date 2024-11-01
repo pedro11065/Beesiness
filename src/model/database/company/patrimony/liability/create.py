@@ -1,5 +1,6 @@
 import psycopg2
 import uuid
+from datetime import datetime
 from colorama import Fore, Style
 from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
@@ -21,7 +22,10 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
 
     # Define dados
     liability_id = uuid.uuid4()
+    creation_time = datetime.now().strftime("%H:%M:%S")
+    creation_date = datetime.now().strftime("%Y-%m-%d")
     type = "liability"
+    
 
     # Guarda os dados na tabela de liabilities
     cur.execute(f"""
@@ -35,8 +39,8 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
         historic_id =  uuid.uuid4()
         installment_record = installment_record + 1
         cur.execute(f"""
-            INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit, installment) 
-            VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
+            INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment) 
+            VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
         """)
 
     # Busca os dados de caixa
@@ -67,7 +71,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     new_historic_id = uuid.uuid4()
 
     # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset', {cash_debit}, {cash_credit});")
+    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creadtion_time, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset', , '{creation_date}', '{creation_time}', {cash_debit}, {cash_credit});")
 
     # Confirma as mudanças
     conn.commit()
