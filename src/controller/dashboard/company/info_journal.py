@@ -23,7 +23,24 @@ def info_journal(company_id, cnpj):
         if 'creation_date' in record:
             # Converte a string no formato DD/MM/YYYY para um objeto datetime
             record['creation_date'] = datetime.strptime(record['creation_date'], '%d/%m/%Y').strftime('%Y-%m-%d')  # Formato YYYY-MM-DD
-        
+            print(f"{record['creation_date'] , record['installment']}")
+            
+
+        """            print(f"Depois: {record['creation_date'] , record['installment']}")
+            record['creation_date'] = datetime.strptime(record['creation_date'], '%d/%m/%Y') # Formato YYYY-MM-DD
+            if record['installment'] != None:
+                new_month = record['creation_date'].month + record['installment']
+                new_year = record['creation_date'].year + (new_month - 1) // 12
+                new_month = (new_month - 1) % 12 + 1
+
+                # Cria um novo objeto datetime com o ano e mês ajustados
+                new_date = record['creation_date'].replace(year=new_year, month=new_month)
+
+                # Atualiza o record com a nova data formatada
+                record['creation_date'] = new_date.strftime('%Y-%m-%d')
+            print(f"Depois: {record['creation_date'] , record['installment']}")
+    """
+    
 
 
     return jsonify({

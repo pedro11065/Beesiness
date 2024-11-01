@@ -5,7 +5,7 @@ from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
 
 
-def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit):
+def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment):
     db_login = connect_database()  # Coleta os dados para conexão
 
     # Conecta ao banco de dados
@@ -21,20 +21,23 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
 
     # Define dados
     liability_id = uuid.uuid4()
-    historic_id = uuid.uuid4()
     type = "liability"
 
     # Guarda os dados na tabela de liabilities
     cur.execute(f"""
-        INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status) 
-        VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}');
+        INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment) 
+        VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}' ,'{installment}');
     """)
 
     # Guarda os dados no histórico de ativos e passivos
-    cur.execute(f"""
-        INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit) 
-        VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{type}', {liability_debit}, {liability_credit});
-    """)
+    installment_record = 0
+    for i in range(installment): #vai registrar a quantidade de parcelas
+        historic_id =  uuid.uuid4()
+        installment_record = installment_record + 1
+        cur.execute(f"""
+            INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit, installment) 
+            VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
+        """)
 
     # Busca os dados de caixa
     cash_data = db_search_cash(company_id)

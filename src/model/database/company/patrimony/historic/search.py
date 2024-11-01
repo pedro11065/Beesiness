@@ -40,6 +40,7 @@ def db_search_historic(company_id):
             "creation_time": data[11].strftime('%H:%M:%S') if isinstance(data[11], datetime.time) else data[11],
             "debit": data[12],
             "credit": data[13],
+            "installment": data[14],
 
         } for data in historic_data]
 

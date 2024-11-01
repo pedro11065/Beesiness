@@ -8,6 +8,7 @@ def liability_registration(liability_data, company_id):
     event = liability_data.get('event')
     classe = liability_data.get('classe')
     payment_method = liability_data.get('payment_method')
+    installment = liability_data.get('installment')
     status = liability_data.get('status')
     value = liability_data.get('value')
     emission_date = liability_data.get('emission_date')
@@ -19,14 +20,13 @@ def liability_registration(liability_data, company_id):
 #-------------------------------------------------- Parcelamento
 
     if installment == "Débito":
-        installment = 0
+        installment = 1
     
-    else:               # indices: 0 1 2
+    else:               
         installment = installment[:-1]
-        print(installment)
+        # --> 12x --> 12
 
-
-
+    installment = int(installment)
 #-------------------------------------------------- Debito e crédito 
 
     if event in ['Multa', 'Juros', 'Conta a pagar', 'Imposto a pagar', 'Salário a pagar', 'Fornecedor', 'Processos judiciais']:
@@ -55,6 +55,6 @@ def liability_registration(liability_data, company_id):
 
 #-----------------------------------------------------------------------------------
 
-    db_create_liability(company_id, current_user.id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit)
+    db_create_liability(company_id, current_user.id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment)
 
     return jsonify('Liability registrado com sucesso!'), 200

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('AssetForm');
     const submitButton = document.querySelector('.register-button');
-    const registerbutton = document.getElementById('register-button');
+    const submitButtonTxt = document.getElementById('register-button-text');
 
     // Função para extrair o CNPJ da URL
     function getCnpjFromUrl() {
@@ -20,15 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         submitButton.disabled = true;
+        submitButtonTxt.textContent = "Aguarde..."
 
-        const msg = document.createElement('h3');
-        submitButton.textContent = "Aguarde"
-            
-        // msg.innerHTML = `
-        //     Aguarde..
-        // `;
-
-        registerbutton.appendChild(msg);
 
         const eventValue = document.getElementById('event').value.trim();
         const classeValue = document.getElementById('class').value.trim();
@@ -70,13 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorData = await response.json();
                 openAlertModal(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);
                 submitButton.disabled = false;
-                submitButton.textContent = "Registrar";
+                submitButtonTxt.textContent = "Registrar";
             }
         } catch (error) {
             console.error('Erro ao enviar dados:', error);
             openAlertModal('Erro ao enviar dados. Tente novamente mais tarde.');
             submitButton.disabled = false;
-            submitButton.textContent = "Registrar";
+            submitButtonTxt.textContent = "Registrar";
         }
     });
 

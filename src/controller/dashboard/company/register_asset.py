@@ -14,19 +14,21 @@ def asset_registration(asset_data, company_id):
     acquisition_date = asset_data.get('acquisitionDate')
     value = asset_data.get('acquisitionValue')
     status = asset_data.get('status')
+    payment_method = asset_data.get('payment_method')
     installment = asset_data.get('installment')
     description = asset_data.get('description')
 
 #-------------------------------------------------- Parcelamento
 
     if installment == "Débito":
-        installment = 0
+        installment = 1
     
-    else:               # indices: 0 1 2
+    else:               
         installment = installment[:-1]
-        print(installment)
-
-
+        # --> 12x --> 12
+    
+    installment = int(installment)
+    print(installment)
 
 #-------------------------------------------------- Debito e crédito 
     value = float(value)
@@ -57,6 +59,6 @@ def asset_registration(asset_data, company_id):
 
     #---------------------------------------------------------------------
 
-    db_create_asset(company_id, current_user.id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash)
+    db_create_asset(company_id, current_user.id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment)
 
     return jsonify('Asset registrado com sucesso!'), 200

@@ -5,7 +5,7 @@ from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
 
 
-def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
+def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
 
     db_login = connect_database() # Coleta os dados para conexão
     
@@ -22,16 +22,20 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
 
     # Define dados
     asset_id = uuid.uuid4()
-    historic_id =  uuid.uuid4()
+    
     type =  "asset"
 
     if event not in ['Entrada de Caixa','Venda']:
 
     # Guarda os dados na tabela de assets:
-        cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit)  VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{location}', '{acquisition_date}', '{description}', '{status}', '{asset_debit}', '{asset_credit}');")
+        cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit, installment)  VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{location}', '{acquisition_date}', '{description}', '{status}', '{asset_debit}', '{asset_credit}', '{installment}');")
     
         # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
-    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value}, '{acquisition_date}', '{type}', '{asset_debit}', '{asset_credit}');")  
+    installment_record = 0
+    for i in range(installment): #vai registrar a quantidade de parcelas
+        historic_id =  uuid.uuid4()
+        installment_record = installment_record + 1
+        cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, debit, credit, installment) VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value/installment}, '{acquisition_date}', '{type}', '{asset_debit/installment}', '{asset_credit/installment}','{installment_record}');")  
     
     cash_data = db_search_cash(company_id)
     cash_id = cash_data[0][0]
