@@ -87,6 +87,7 @@ body {
 main  {
     display: grid;
     width: 100%;
+    padding-top: 1rem;
     
 
 }
@@ -203,7 +204,7 @@ h1{
 
 .carousel-container {
   display: flex;
-  background-color: #E3C000;
+  background-color: #FFD700;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -221,7 +222,7 @@ h1{
 
 .buttons_container {
   display: flex;
-  background-color: #E3C000;
+  background-color: #FFD700;
   justify-content: flex-start;
   align-items: center;
   width: 200%;
@@ -257,7 +258,7 @@ h1{
 
 .button_box_green{
   font-family: 'Inter';
-  background-color: #e0000041;
+  background-color: #bd07076a;
   white-space: nowrap;
   display: flex;
   justify-content: center;

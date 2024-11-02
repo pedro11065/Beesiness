@@ -34,7 +34,7 @@ def info_dashboard(company_id):
 #---------------------------------------------------------------------------
 
     # Descobrir patrimônio
-    liabilities_values =  [];
+    liabilities_values =  []
     assets_values =  []
 
     for i in range(liabilities_quant):
@@ -150,6 +150,8 @@ def info_dashboard(company_id):
 #---------------------------------------------------------------------------
     #Gasto por classe
     
+
+
 
 #---------------------------------------------------------------------------
     #Quantidade de entradas e saídas // Total de entradas de saídas

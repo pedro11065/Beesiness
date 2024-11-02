@@ -30,42 +30,6 @@
         <!-- <button class="btn logout" onclick="toggleModal()"><i class="fas fa-right-from-bracket"></i></button> -->
     </header>
 
-    <article class="values_container_mobile" id="values_container_mobile">
-
-        <section class="values_group_mobile" id="values_group_mobile">
-            <div class="value" id="value"><h5>----</h5></div> <!-- valor movimentado no dia -->
-            <div class="value" id="value"><h5>----</h5></div> <!-- Svalor movimentado na semana -->
-            <div class="value" id="value"><h5>----</h5></div> <!-- valor movimentado no mes -->
-        </section>
-
-        <section class="values_group_mobile" id="values_group_mobile">
-
-            <div class="value_type" id="value_type"><h5>Dia</h5></div>
-            <div class="value_type" id="value_type"><h5>Semana</h5></div>
-            <div class="value_type" id="value_type"><h5>Mês</h5></div>
-            
-        </section>
-
-    </article>
-
-    <article_header class="values_container_pc" id="values_container_pc">
-
-        <section class="values_group_pc" id="values_group_pc">
-
-            
-            <div class="value_type" id="value_type">Dia</div>
-            <div class="value" id="value_day">-</div> <!-- valor movimentado no dia -->
-            <div class="value_type" id="value_type">Semana</div>
-            <div class="value" id="value_week">-</div> <!-- Svalor movimentado na semana -->
-            <div class="value_type" id="value_type">Mês</div>
-            <div class="value" id="value_month">-</div> <!-- valor movimentado no mes -->
-
-        </section>
-
-        <img class="beesiness_img" src="{{ url_for('static', filename='images/dashboard/public/beesiness_logo_black.png') }}" alt="Beesiness logo"></img>
-        
-    </article_header>
-
     <article_corousel class="carousel-container">
         <button class="carousel-prev" onclick="scrollCarousel(-1)">&#10094;</button>
         <section class="carousel-wrapper">

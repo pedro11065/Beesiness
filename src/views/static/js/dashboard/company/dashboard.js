@@ -55,12 +55,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const data = await response.json();
         loading.style.display = 'none';
         main.style.display = 'block';
-
-        document.getElementById('value_day').textContent = `${formatValueToMoney(data.value_today.toFixed(2))}`;
-        // Atualiza o valor da semana
-        document.getElementById('value_week').textContent = `${formatValueToMoney(data.value_week.toFixed(2))}`;
-        // Atualiza o valor do mês
-        document.getElementById('value_month').textContent = `${formatValueToMoney(data.value_week.toFixed(2))}`;
+        
         // Saldo
         document.getElementById('cash_now').textContent = `${formatValueToMoney(data.cash_now)}`;
         // Patrimônio
