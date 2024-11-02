@@ -48,7 +48,7 @@
 
     </article>
 
-    <article class="values_container_pc" id="values_container_pc">
+    <article_header class="values_container_pc" id="values_container_pc">
 
         <section class="values_group_pc" id="values_group_pc">
 
@@ -64,9 +64,9 @@
 
         <img class="beesiness_img" src="{{ url_for('static', filename='images/dashboard/public/beesiness_logo_black.png') }}" alt="Beesiness logo"></img>
         
-    </article>
+    </article_header>
 
-    <article class="carousel-container">
+    <article_corousel class="carousel-container">
         <button class="carousel-prev" onclick="scrollCarousel(-1)">&#10094;</button>
         <section class="carousel-wrapper">
             <nav class="buttons_container" id="buttons_container">
@@ -81,27 +81,7 @@
             </nav>
         </section>
         <button class="carousel-next" onclick="scrollCarousel(1)">&#10095;</button>
-    </article>
-    
-    <main id="main">
-
-        <article class="info_box_container" id="info_box_container"></article>
-
-        <article class="charts-container">
-            <section class="chart-box" id="balanceChart">
-                <div class="chart-buttons">
-                    <button class="btn chart-option" onclick="showWeekly()">Semanal</button>
-                    <!--- <button class="btn chart-option" onclick="showMonthly()">Mensal</button> -->
-                   <!--- <button class="btn chart-option" onclick="showYearly()">Anual</button> -->
-                </div>
-                <canvas id="balanceChartCanvas"></canvas> <!-- Canvas para o gráfico de saldo -->
-            </section>
-
-            <section class="chart-box" id="assetsLiabilitiesChart">
-                <canvas id="assetsLiabilitiesChartCanvas"></canvas> <!-- Canvas para o gráfico de ativos e passivos -->
-            </section>
-        </article>
-    </main>
+    </article_corousel>
 
     <div id="loading" class="loading">
         <div class="loader "></div>
@@ -115,6 +95,235 @@
             <button class="btn cancel" onclick="toggleModal()">Cancelar</button>
         </section>
     </article>
+    
+    <main id="main">
+        <article>
+
+            <section-info-top > <!-- INFO BOXES 1 -->
+
+                <box-info-top >
+
+                    <box-info-title>
+                        <h2>Saldo</h2><h2>></h2>
+                    </box-info-title>
+
+                    <box-info-value>
+                        <h3>R$400,00</h3>
+                    </box-info-value>
+
+                </box-info-top>
+                
+                <box-info-top >
+                    <box-info-title>
+                        <h2>A pagar</h2><h2>></h2>
+                    </box-info-title>
+
+                    <box-info-value>
+                        <h3>R$200,00</h3>
+                    </box-info-value>                   
+                </box-info-top>
+
+                <box-info-top id="assets_box">
+
+                    <box-info-title>
+                        <h2>Quantidade de ativos</h2><h2>></h2>
+                    </box-info-title>
+
+                    <box-info-value>
+                        <h3>1</h3>
+                    </box-info-value>
+
+                </box-info-top>
+                
+                <box-info-top id="liabilities_box" >
+                    <box-info-title >
+                        <h2>Quantidade de passivos</h2><h2>></h2>
+                    </box-info-title>
+
+                    <box-info-value>
+                        <h3>2</h3>
+                    </box-info-value>                   
+                </box-info-top>
+
+            </section-info-top>
+
+        </article>
+
+        <!-- -------------------- -->
+
+        <article>
+
+            <section-graph> <!-- GRAPH 1 -->
+
+                <container-graph>
+                    
+                    <box-graph-title>
+                        <h1>Saldo x Tempo</h1>
+                    </box-graph-title>
+                        
+
+                     <box-graph-chart>
+                        <canvas id="balanceChartCanvas"></canvas> <!-- Canvas para o gráfico de saldo -->
+                     </box-graph-chart>
+
+                </container-graph>
+       
+            </section-graph>
+
+
+            <section-costs> <!--  -->
+
+                <container-class-title>
+                    <h1>Gasto por classe</h1>
+                </container-class-title>
+
+                <container-class>
+                    <container-class-left>
+                        <box-class><h5>Capital Social</h5> <h5>R$1</h5></box-class>
+                        <box-class><h5>Contas</h5> <h5>R$1</h5></box-class>
+                        <box-class><h5>Estoque</h5> <h5>R$1</h5></box-class>
+                        <box-class><h5>Matérias-primas</h5> <h5>R$1</h5></box-class>
+                        <box-class><h5>Investimentos</h5> <h2>R$1</h5></box-class>  
+                        <box-class><h5>Mobílias</h5>  <h5>R$1</h5></box-class>   
+                        <box-class><h5>Veículos</h5>  <h5>R$1</h5></box-class>  
+                        <box-class><h5>Equipamentos</h5>  <h5>R$1</h5></box-class>  
+                        <box-class><h5>Outros</h5>  <h5>R$1</h5></box-class>  
+
+                    </container-class-left>
+                    
+
+                    <container-class-right>
+                        <box-class><h5>Maquinário</h5> <h5>R$1</h5></box-class>
+                        <box-class><h5>Patentes</h5> <h5>R$1</h5></box-class>
+                        <box-class><h5>Ações</h5> <h5>R$1</h5></box-class>
+                        <box-class><h5>Tec e TI</h5> <h2>R$1</h5></box-class>
+                        <box-class><h5>Intangíveis</h5>  <h5>R$1</h5></box-class> 
+                        <box-class><h5>Infraestruturas</h5>  <h5>R$1</h5></box-class>  
+                        <box-class><h5>Terrenos</h5>  <h5>R$1</h5></box-class>   
+                        <box-class><h5>Licenças</h5>  <h5>R$1</h5></box-class>  
+                        <box-class><h5>Espaços</h5>  <h5>R$1</h5></box-class>  
+
+                    </container-class-right>
+                    
+                </container-class>
+
+            </section-costs>
+
+        </article>
+
+        <!-- -------------------- -->
+
+        <article>
+
+            <section-graph> <!-- GRAPH 1 -->
+
+                <container-graph>
+                    
+                    <box-graph-title>
+                        <h1>Passivos x Ativos</h1>
+                    </box-graph-title>
+                        
+
+                     <box-graph-chart>
+                        <canvas id="assetsLiabilitiesChartCanvas"></canvas>
+                     </box-graph-chart>
+
+                </container-graph>
+       
+            </section-graph>
+
+            <section-info> <!-- INFO BOXES 1 -->
+
+                <container-info>
+
+                    <box-info>
+
+                        <box-info-title>
+                            <h2>Quantidade de entradas</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3>1</h3>
+                        </box-info-value>
+
+                    </box-info>
+                    
+                    <box-info>
+                        <box-info-title>
+                            <h2>Quantidade de saídas</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3>2</h3>
+                        </box-info-value>                   
+                    </box-info>
+
+                </container-info>
+
+                <container-info>
+
+                    <box-info>
+
+                        <box-info-title>
+                            <h2>Total entrada</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3>R$400,00</h3>
+                        </box-info-value>
+
+                    </box-info>
+                    
+                    <box-info>
+                        <box-info-title>
+                            <h2>Total saída</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3>R$500,00</h3>
+                        </box-info-value>                   
+                    </box-info>
+                    
+                </container-info>
+
+                <container-info>
+
+                    <box-info>
+
+                        <box-info-title>
+                            <h2>----</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3>R$----</h3>
+                        </box-info-value>
+
+                    </box-info>
+                    
+                    <box-info>
+                        <box-info-title>
+                            <h2>----</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3>R$----</h3>
+                        </box-info-value>                   
+                    </box-info>
+                    
+                </container-info>
+
+
+            </section-info>
+
+        </article>
+
+        <!-- -------------------- -->
+
+    </main>
+
+</body>
+
+
 
     <script src="{{ url_for('static', filename='js/dashboard/company/dashboard.js') }}" defer></script>
 </body>

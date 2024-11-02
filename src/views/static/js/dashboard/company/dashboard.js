@@ -69,54 +69,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
         // Preencher a seção de informações
-        const info_box_group = document.createElement('section');
-        info_box_group.className = 'info_box_group';
-        info_box_group.innerHTML = `
-            <div class="info_box">
-                <!-- Saldo atual -->
-                <div class="info_box_title">
-                    Saldo Atual
-                </div>
-                <div class="info_box_description">
-                    ${formatValueToMoney(data.cash_now)}
-                </div>
-            </div>
-            <div class="info_box" id="liabilities_box">
-                <!-- Quantidade de ativos -->
-                <div class="info_box_title">
-                    Quantidade de Ativos
-                </div>
-                <div class="info_box_description">
-                    ${data.assets_quant-1}
-                </div>
-            </div>
-            <div class="info_box" id="assets_box">
-                <!-- Quantidade de passivos -->
-                <div class="info_box_title">
-                    Quantidade de Passivos
-                </div>
-                <div class="info_box_description">
-                    ${data.liabilities_quant}
-                </div>
-            </div>
-            <div class="info_box">
-                <!-- Patrimônio -->
-                <div class="info_box_title">
-                    Patrimônio
-                </div>
-                <div class="info_box_description">
-                    ${formatValueToMoney(data.patrimony)}
-                </div>
-            </div>
-        `;
-        info_box_container.appendChild(info_box_group);
+        
 
-        const liabilities_box = document.getElementById('liabilities_box');
+        const liabilities_box = document.getElementById('assets_box');
         liabilities_box.addEventListener('click', function () {
             window.location.href = `/dashboard/assets/${cnpj}`;
         });
 
-        const assets_box = document.getElementById('assets_box');
+        const assets_box = document.getElementById('liabilities_box');
         assets_box.addEventListener('click', function () {
             window.location.href = `/dashboard/liabilities/${cnpj}`;
         });
@@ -182,7 +142,6 @@ function createBalanceChart(data) {
 // Função para criar o gráfico de ativos e passivos
 function createAssetsLiabilitiesChart(data) {
     const chartData = {
-        labels: data.labels,
         datasets: [{
             label: 'Ativos',
             data: data.assets,

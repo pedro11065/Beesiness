@@ -15,11 +15,16 @@ html {
 
 /* Configuração básica do corpo da página */
 body {
-    font-family: 'Inter';
+    font-family: Inter;
     background-color: #FFD700;
     height: auto;
     width: auto;
     margin: 0;
+}
+
+main{
+  width: 100%;
+  height: auto;
 }
 
 h2 {
@@ -95,13 +100,14 @@ h1{
 .loading{
   width: 100%;
   height: 50vh;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
 }
 
 /* HTML: <div class="loader"></div> */
 .loader {
+  display: flex;
   width: 80px;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -325,212 +331,281 @@ h1{
   overflow:visible;
 }
 
-.info_box_container{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content:center;
-  width: 100%;
-  height: auto;
-  padding-bottom: 1rem;
-  padding-top: 2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;  
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+article{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-between;
+  width: auto;
+  height: auto;
+  margin: 2rem 2vw;
+  margin-bottom: 4rem;
 }
 
-.info_box_group{
+/*---------TITLES GENERAL ---------*/
+
+
+h1{
+  font-family: Inter;
+  font-size:26px;
+  font-weight: 400 ;
+ }
+
+h2{
+  font-family: Inter;
+  font-size:20px;
+  font-weight: 400 ;
+}
+
+h3{
+  font-family: Inter;
+  font-size: 26px;
+  font-weight: 600 ;
+}
+
+h4{
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 500 ;
+}
+
+h5{
+  font-family: Inter;
+  font-size:18px;
+  font-weight: 400 ;
+}
+/*--------- ARTICLE 1 ---------*/
+
+
+section-info-top{
+  
   display: flex;
-  flex-wrap: wrap;
-  justify-content:space-between;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
-  margin-top: 0.8rem;
-  padding: 0.5rem;
-
 }
 
-.info_box{
-  font-family: 'Inter';
-  background-color: white;
+box-info-top{
+  background-color: #F7F7F7;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 9rem;
-  width: 23%;
-  min-width: 10rem;
-  font-size: 1rem;
-  color: rgb(0, 0, 0);
-  text-decoration: none;
+  width: 22vw;
+  height: 100%;
   cursor: pointer;
-  border-radius: 1rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 2rem;
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 
   0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
-.info_box:hover {
-  background-color: #e6e6e6;
+
+box-info-title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
 }
 
-.info_box_title{
+box-info-value{
   display: flex;
-  font-family: inter;
+  align-items: flex-start;
   justify-content: flex-start;
-  padding: 1rem;
-  padding-top: 1.6rem;
-  padding-left: 2rem;
   width: 100%;
-  height: 45%;
-  font-size:1.5rem;
-  font-weight: 500;
-  color: black;
+  height: 100%;
+  padding: 1.5rem;
+  padding-top: 0.7rem;
 }
 
-.info_box_description{
-  display: flex;
-  text-align: center;
-  font-family: inter;
-  justify-content: flex-start;
-  padding-top: 1.3rem;
-  padding-left: 2rem;
-  width: 100%;
-  height: 55%;
-  font-weight: 600;
-  font-size: 1.8rem;
-  color: #000000;
-}
 
-.charts-container {
-  display: flex;
-  justify-content:space-between;
-  width: 100%;
-  height: auto;
-  padding: 1rem 2.5rem;
+
+/*--------- ARTICLE 2 ---------*/
+
+section-graph{
   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 46.5vw;
+  height: 53vh;
+
+
 }
 
+container-graph{
+  background-color: #F7F7F7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 46.5vw;
+  height: 53vh;
+  border-radius: 2rem;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 
+  0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
 
-.chart-box-title{
+box-graph-title{
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  font-weight: 500 ;
   width: 100%;
   height: 100%;
   padding: 1rem 1rem;
 }
 
-.chart-box {
-  font-family: 'Inter';
+box-graph-description{
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  background-color: white;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  border-radius: 2rem;
-  padding: 0rem 2rem;
-  width: 48.2%; 
-  height: auto; 
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 
-  0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-  position: relative;
-}
-
-.chart-buttons {
-  font-family: 'Inter';
-  display: flex;
-  width:100%;
-  justify-content:flex-end;
-  margin-bottom: 10px; 
-}
-
-.chart-option {
-  font-family: inter;
-  background-color: #ffcc007e;
-  color: black;
-  border: none;
-  padding: 10px 15px;
-  width: 6rem;
-  margin: 0 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.chart-option:hover {
-  transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: #e6e6e6;
-  box-shadow: inset rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
-
-
-/* Estilos do modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
-  padding-top: 60px;
+  padding:0rem 30% 0rem 30%;
 }
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #888;
+box-graph-chart{
+  
   width: 80%;
-  max-width: 400px;
-  text-align: center;
+  margin-top: 0.7rem;
+  margin-bottom: 2rem;
+  
 }
 
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+
+.box-graph-chart{
+  width: 100%;
+  height: 100%;
+  margin-top: 0.7rem;
+  margin-bottom: 2rem;
+  padding: 5.2rem 1rem;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.confirm, .cancel {
-  margin: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.confirm {
-  background-color: #ffcc00; 
-}
-
-.cancel {
-  background-color: #ccc;
-}
-
-.box-article {
+section-costs{
+  
   display: flex;
-  flex-wrap: wrap;
+  background-color: #F7F7F7;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  width: 46.5vw;
+  height: auto;
+  border-radius: 2rem;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 
+  0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+container-class-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+}
+container-class{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  
+}
+
+container-class-left{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+}
+
+container-class-right{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+}
+
+box-class{
+  background-color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+  margin-bottom: 1rem;
+  min-height:2rem;
+  height: auto;
+  padding: 0rem 1.5rem;
+  border-radius: 0.5rem;
+
 }
 
 
+
+/*--------- ARTICLE 4 ---------*/
+
+
+section-info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 46.5vw;
+  height: 53vh;
+}
+
+container-info{
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 46.5vw;
+  height: 53vh;
+}
+
+box-info{
+  background-color: #F7F7F7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 22.5vw;
+  height: 16vh;
+  border-radius: 2rem;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 
+  0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
 
 
 @media (max-width: 40rem) { 
@@ -566,7 +641,7 @@ h1{
     margin: 0.7rem;
     text-align: center;
     align-content: center;
-    color: white;
+    background-color: #F7F7F7;
     font-size: 0.9rem;
     font-weight: 300;
     border-radius: 0.3rem;
@@ -747,132 +822,6 @@ h1{
   overflow:visible;
 }
 
-.info_box_container{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content:center;
-  width: 100%;
-  height: auto;
-  padding: 0.5rem;
-
-}
-
-.info_box_group{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content:space-between;
-  width: 100%;
-  height: 100%;
-  margin-top: 0.8rem;
-  padding: 0.5rem;
-  
-}
-
-.info_box{
-  font-family: 'Inter';
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 10rem;
-  width: 22%;
-  min-width: 10rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  font-size: 1rem;
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 0.5rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  box-shadow: rgba(0, 0, 0, 0.24) 1px 1px 5px
-}
-
-.info_box:hover {
-  background-color: #e6e6e6;
-}
-
-.info_box_title{
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-  padding-top: 1.6rem;
-  width: 100%;
-  height: 45%;
-  font-size: 1.3rem;
-  font-weight: 400;
-  color: #000000c0;
-}
-
-.info_box_description{
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  padding-top: 1.3rem;
-  width: 100%;
-  height: 55%;
-  font-weight: 400;
-  font-size: 1.5rem;
-  color: #000000;
-}
-
-.charts-container {
-  display: flex;
-  justify-content:center;
-  width: 100%;
-  height: auto;
-  margin-top: 0.8rem;
-  margin-bottom: 0.8rem;
-  padding: 0.5rem;
-  
-}
-
-.chart-box {
-  font-family: 'Inter';
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-left:1rem;
-  margin-right:1rem;
-  border-radius: 10px;
-  width: 47%; 
-  height: auto; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-}
-
-.chart-buttons {
-  font-family: 'Inter';
-  display: flex;
-  width:100%;
-  justify-content:flex-end;
-  margin-bottom: 10px; 
-}
-
-.chart-option {
-  font-family: inter;
-  background-color: #ffcc007e;
-  color: black;
-  border: none;
-  padding: 10px 15px;
-  width: 6rem;
-  margin: 0 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.chart-option:hover {
-  transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: #e6e6e6;
-  box-shadow: inset rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 
@@ -936,6 +885,4 @@ h1{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
-
 }
