@@ -56,16 +56,29 @@ document.addEventListener('DOMContentLoaded', async function () {
         loading.style.display = 'none';
         main.style.display = 'block';
 
-
         document.getElementById('value_day').textContent = `${formatValueToMoney(data.value_today.toFixed(2))}`;
-        
-            // Atualiza o valor da semana
+        // Atualiza o valor da semana
         document.getElementById('value_week').textContent = `${formatValueToMoney(data.value_week.toFixed(2))}`;
-        
-            // Atualiza o valor do mês
+        // Atualiza o valor do mês
         document.getElementById('value_month').textContent = `${formatValueToMoney(data.value_week.toFixed(2))}`;
-        
-        
+        // Saldo
+        document.getElementById('cash_now').textContent = `${formatValueToMoney(data.cash_now)}`;
+        // Patrimônio
+        document.getElementById('patrimony').textContent = `${formatValueToMoney(data.patrimony)}`; 
+        // Quantidade de passivos
+        document.getElementById('liabilities_quant').textContent = `${data.liabilities_quant}`;
+        // Quantidade de ativos
+        document.getElementById('assets_quant').textContent = `${data.assets_quant}`;
+        // Quantidade de entradas
+        document.getElementById('count_entrys').textContent = `${data.count_entrys}`;
+        // Quantidade de saídas
+        document.getElementById('count_exits').textContent = `${data.count_exits}`;
+        // Quantidade de saídas
+        document.getElementById('values_entrys').textContent = `${data.values_entrys}`;
+        // Quantidade de saídas
+        document.getElementById('values_exits').textContent = `${data.values_exits}`;
+
+
 
 
         // Preencher a seção de informações
@@ -86,9 +99,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             labels: Object.keys(data.cash_historic), // Dias da semana
             values: Object.values(data.cash_historic) // Valores do fluxo de caixa por dia
         };
-        console.log(data.assets_dates_list);
-        console.log(data.assets_count);
-        console.log(data.liabilities_count);
 
         const assetsLiabilitiesData = {
             labels: data.assets_dates_list || data.liabilities_dates_list,  // Use a lista de datas correta

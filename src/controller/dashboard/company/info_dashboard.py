@@ -107,6 +107,7 @@ def info_dashboard(company_id):
     except:
         cash_data_historic = [0]
 
+
 #---------------------------------------------------------------------------
 #tabela ativos e passivos
 
@@ -145,6 +146,40 @@ def info_dashboard(company_id):
     except:
         print("erro tabela ativos e passivos")
 
+
+#---------------------------------------------------------------------------
+    #Gasto por classe
+    
+
+#---------------------------------------------------------------------------
+    #Quantidade de entradas e saídas // Total de entradas de saídas
+
+    count_exits = 0 ; values_exits = 0
+    count_entrys = 0 ; values_entrys = 0
+
+    try:
+        for i in range(historic_length):
+            class_ = historic_data[i].get('class')
+            value = historic_data[i].get('value')
+            name = historic_data[i].get('name')
+
+            if name != '#!@cash@!#':
+
+                if class_ in ['Pagamento']:
+                    count_exits = count_exits + 1
+                    values_exits = values_exits + value
+                
+                if class_ in ['Compra','Venda','Troca','Permuta','Concessão','Investimento','Leilão']:
+                    count_exits = count_exits + 1
+                    count_entrys = count_entrys + 1
+                    values_exits = values_exits + value
+                    values_entrys = values_entrys + value
+
+                count_entrys = count_entrys + 1
+                values_entrys = values_entrys + value
+    
+    except:
+        None
 
 #---------------------------------------------------------------------------
 
@@ -192,7 +227,7 @@ def info_dashboard(company_id):
 
         'cash_historic': cash_data_historic,
 
-        'assets_quant': assets_quant,
+        'assets_quant': assets_quant-1,
         'liabilities_quant': liabilities_quant,
 
         'sum_asset_values': sum_asset_values,
@@ -203,6 +238,12 @@ def info_dashboard(company_id):
         'liabilities_dates_list': list(reversed(liabilities_dates_list)),
         'liabilities_count': list(reversed(liabilities_count)),
         'assets_dates_list': list(reversed(assets_dates_list)),
-        'assets_count': list(reversed(assets_count))
+        'assets_count': list(reversed(assets_count)),
+
+        'count_exits': count_exits,
+        'count_entrys': count_entrys,
+        'values_exits': values_exits,
+        'values_entrys': values_entrys
+
     }), 200
    
