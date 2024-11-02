@@ -601,7 +601,7 @@ box-info{
   align-items: center;
   justify-content: center;
   width: 22.5vw;
-  height: 16vh;
+  height: 10rem;
   border-radius: 2rem;
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 
   0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);

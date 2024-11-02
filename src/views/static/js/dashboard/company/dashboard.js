@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('count_entrys').textContent = `${data.count_entrys}`;
         // Quantidade de saídas
         document.getElementById('count_exits').textContent = `${data.count_exits}`;
-        // Quantidade de saídas
-        document.getElementById('values_entrys').textContent = `${data.values_entrys}`;
-        // Quantidade de saídas
-        document.getElementById('values_exits').textContent = `${data.values_exits}`;
+        // Total de saídas
+        document.getElementById('values_entrys').textContent = `${formatValueToMoney(data.values_entrys)}`;
+        // Total de saídas
+        document.getElementById('values_exits').textContent = `${formatValueToMoney(data.values_exits)}`;
 
 
 
