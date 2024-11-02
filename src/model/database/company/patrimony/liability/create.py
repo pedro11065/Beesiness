@@ -6,7 +6,7 @@ from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
 
 
-def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment):
+def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment,status_mode):
     db_login = connect_database()  # Coleta os dados para conexão
 
     # Conecta ao banco de dados
@@ -26,71 +26,70 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     creation_date = datetime.now().strftime("%Y-%m-%d")
     type = "liability"
     
-
+    if status_mode == True or event == "Empréstimo":
     # Guarda os dados na tabela de liabilities
-    cur.execute(f"""
-        INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment) 
-        VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}' ,'{installment}');
-    """)
+        cur.execute(f"""
+            INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment) 
+            VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}' ,'{installment}');
+        """)
+    if status_mode == False:
+        # Guarda os dados no histórico de ativos e passivos
+        installment_record = 0; new_month_add = 0 #01-11-2024
+        for i in range(installment): #vai registrar a quantidade de parcelas 
+            historic_id =  uuid.uuid4()
+            installment_record = installment_record + 1
+            if i > 0:
 
-    # Guarda os dados no histórico de ativos e passivos
-    installment_record = 0; new_month_add = 0 #01-11-2024
-    for i in range(installment): #vai registrar a quantidade de parcelas 
-        historic_id =  uuid.uuid4()
-        installment_record = installment_record + 1
-        print(i)
-        if i > 0:
+                current_day = datetime.now().strftime("%d")
+                current_month = datetime.now().strftime("%m")
+                current_year = datetime.now().strftime("%Y")
 
-            current_day = datetime.now().strftime("%d")
-            current_month = datetime.now().strftime("%m")
-            current_year = datetime.now().strftime("%Y")
-
-         
             
-            next_month = new_month_add + 1 + int(current_month)
-            new_month_add = new_month_add + 1
-
-            creation_date = (f"{current_year}-{next_month}-{current_day}")
-            
-            if next_month>12:
-                next_month = next_month - 12
-                next_year = int(current_year) + 1
-                creation_date = (f"{next_year}-{next_month}-{current_day}")
                 
-        cur.execute(f"""
-            INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment) 
-            VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
-        """)
+                next_month = new_month_add + 1 + int(current_month)
+                new_month_add = new_month_add + 1
 
-    # Busca os dados de caixa
-    cash_data = db_search_cash(company_id)
-    cash_id = cash_data[0][0]  # ID do caixa
-    date = cash_data[0][11]     # Data do registro de caixa
+                creation_date = (f"{current_year}-{next_month}-{current_day}")
+                
+                if next_month>12:
+                    next_month = next_month - 12
+                    next_year = int(current_year) + 1
+                    creation_date = (f"{next_year}-{next_month}-{current_day}")
+                    
+            cur.execute(f"""
+                INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment) 
+                VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
+            """)
 
-    # Atualiza o caixa de acordo com o evento
-    if update_cash == 'more':
-        cur.execute(f"""
-            UPDATE table_assets 
-            SET value = value + {value}, 
-                debit = debit , 
-                credit = credit + {cash_credit}
-            WHERE name = '#!@cash@!#';
-        """)
-        
+        # Busca os dados de caixa
+        cash_data = db_search_cash(company_id)
+        cash_id = cash_data[0][0]  # ID do caixa
+        date = cash_data[0][11]     # Data do registro de caixa
 
-    elif update_cash == 'less':
-        cur.execute(f"""
-            UPDATE table_assets 
-            SET value = value - {value}, 
-                debit = debit + {cash_debit}, 
-                credit = credit 
-            WHERE name = '#!@cash@!#';
-        """)
+        # Atualiza o caixa de acordo com o evento
+        if update_cash == 'more':
+            cur.execute(f"""
+                UPDATE table_assets 
+                SET value = value + {value}, 
+                    debit = debit , 
+                    credit = credit + {cash_credit}
+                WHERE name = '#!@cash@!#';
+            """)
+            
 
-    new_historic_id = uuid.uuid4()
+        elif update_cash == 'less':
+            cur.execute(f"""
+                UPDATE table_assets 
+                SET value = value - {value}, 
+                    debit = debit + {cash_debit}, 
+                    credit = credit 
+                WHERE name = '#!@cash@!#';
+            """)
 
-    # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset','{creation_date}', '{creation_time}', {cash_debit}, {cash_credit});")
+        new_historic_id = uuid.uuid4()
+
+        # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
+        cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset','{creation_date}', '{creation_time}', {cash_debit}, {cash_credit});")
 
     # Confirma as mudanças
     conn.commit()
