@@ -11,10 +11,10 @@ def refund_asset(asset_id, company_id):
     asset_data = db_search_specific_asset(asset_id, company_id)
 
     if "Estorno" in asset_data.get('status').split('-')[-1].strip():
-        return jsonify({'error': 'O produto já foi estornado uma vez.'})
+        return jsonify({'message': 'O produto já foi estornado uma vez.'})
     
     if not asset_data:
-        return jsonify({'error': 'Ativo com uuid {asset_id} não encontrado na empresa!'})
+        return jsonify({'message': 'Ativo com uuid {asset_id} não encontrado na empresa!'})
     
     data_atual = datetime.datetime.now().strftime('%Y-%m-%d')
     data_hora_atual = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
@@ -26,7 +26,7 @@ def refund_asset(asset_id, company_id):
     location = 'Empresa'
     acquisition_date = data_atual
     description = f"Estorno realizado pelo usuário {current_user.id} no dia {data_hora_atual} do ativo {asset_id}, denominado {asset_data.get('name')}, adquirido em {asset_data.get('acquisition_date')}."
-    status = "Estorno"
+    status = "Estornado"
     installment = 0;
 
     cash_debit = None
@@ -57,4 +57,4 @@ def refund_asset(asset_id, company_id):
 
     db_update_asset(asset_id, company_id, 'status', f'{asset_data.get("status")} - Estornado')
 
-    return jsonify({'success': 'Estorno realizado com sucesso!'})
+    return jsonify({'message': 'Estorno realizado com sucesso!'})

@@ -1,3 +1,5 @@
+const confirmModal = document.getElementById('confirm-modal');
+
 document.addEventListener('DOMContentLoaded', async function () {
         const main = document.getElementById('main');
         const loading = document.getElementById('loading');
@@ -148,11 +150,9 @@ function toggleDropdown(event) {
     if (dropdown) dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
 }
 
-
 function deleteUser(event) {
     event.stopPropagation();
 
-    const confirmModal = document.getElementById('confirm-modal');
     confirmModal.style.display = 'block';
 
     const dropdown = event.currentTarget.nextElementSibling;
@@ -161,14 +161,22 @@ function deleteUser(event) {
     const assetId = document.getElementById('uuid').innerText;
 
     const status = document.getElementById('status').innerText;
-    if (status.includes('Estorno')) {
-        alert('Este ativo já foi estornado e não pode ser deletado.');
+
+    if (status.trim().toLowerCase().includes('estornado')) {
+        document.getElementById('body-content').innerText = 'Este ativo já foi estornado e não pode ser deletado.';
+        document.getElementById('alert-modal').style.display = 'block';
+
         confirmModal.style.display = 'none';
         return;
     }
 
+    const yesButton = document.querySelector('.btn.sim');
+
     document.querySelector('.btn.sim').onclick = async function () {
-        try {
+        try {   
+            yesButton.disabled = true;
+            yesButton.style.cursor = 'not-allowed';
+
             const response = await fetch(`/dashboard/refund-asset/${assetId}`, {
                 method: 'POST',
                 headers: {
@@ -176,23 +184,33 @@ function deleteUser(event) {
                 }
             });
 
+            const result = await response.json();
+            console.log(result)
+
             if (response.ok) {
-                console.log(response)
-                alert('Ativo deletado com sucesso. (OU NÃO, TAMO SEM RETORNO DAS FRASES, isso aqui é genérico só)');
+                document.getElementById('body-content').innerText = result.message;
+                document.getElementById('alert-modal').style.display = 'block';
                 
                 confirmModal.style.display = 'none';
                 document.getElementById('modal').style.display = 'none';
-
-                location.reload();
             } else {
-                throw new Error('Erro ao deletar o ativo.');
+                throw new Error(result.message || 'Erro ao deletar o ativo.');
             }
         } catch (error) {
-            alert('Erro ao deletar o ativo: ' + error.message);
+            document.getElementById('body-content').innerText = error.message;
+            document.getElementById('alert-modal').style.display = 'block';
+        } finally {
+            yesButton.disabled = false;
+            yesButton.style.cursor  = 'pointer';
         }
     };
-
-    document.querySelector('.btn.nao').onclick = function () {
-        confirmModal.style.display = 'none';
-    };
 }
+
+document.querySelector('.btn.nao').onclick = function () {
+    confirmModal.style.display = 'none';
+};
+
+document.querySelector('#alert-modal .fechar').onclick = function () {
+    document.getElementById('alert-modal').style.display = 'none';
+    location.reload();
+};
