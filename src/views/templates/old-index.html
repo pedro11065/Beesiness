@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <header>     
+    
+        <img class="mobile-image" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Imagem do Cabeçalho">
+
+        <div class="logo">BEESINESS</div>
+        <div class="header-links">
+            {% if current_user.is_authenticated %}
+                <a href="/dashboard/" class="dashboard">Dashboard</a>
+                <a href="/user/logout" class="logout">Logout</a>
+            {% else %}
+                <a href="/user/register" class="register">Abra a sua conta</a>
+                <a href="/user/login" class="login">Login</a>           
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="hero">
+            <h1>Faça sua <span class="highlight">empresa voar</span><br>como uma <span class="highlight">abelha</span></h1>
+            <div>
+                <a  class="hero-button" href="#features">Saiba mais</a>
+            </div>
+        
+        </section>
+
+        <section id="features" class="features">
+
+            <h2>A Beesiness é um gestor de patrimônio inovador voltado para pequenas e médias empresas, oferecendo uma plataforma completa para gestão econômica e contábil.</h2>
+            <div id="features-container" class="features-container">
+
+                <div class="feature-item">
+                    <div class="icon">✔️</div>
+                    <h3>Controle total, em um só lugar.</h3>
+                    <p>Gerencie todas as movimentações financeiras da sua empresa de forma centralizada e eficiente.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="icon">✔️</div>
+                    <h3>Relatórios Personalizados:</h3>
+                    <p>Geração de relatórios detalhados para análise de desempenho financeiro.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="icon">✔️</div>
+                    <h3>Integração Contábil:</h3>
+                    <p>Facilite o trabalho com contadores, exportando facilmente dados financeiros.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="icon">✔️</div>
+                    <h3>Gestão de Inventário:</h3>
+                    <p>Monitore seus ativos de forma eficiente, integrando o controle de patrimônio com o fluxo financeiro.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="icon">✔️</div>
+                    <h3>Automação de Processos:</h3>
+                    <p>Economize tempo automatizando tarefas repetitivas, como cálculos de despesas recorrentes e criação de relatórios.</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="icon">✔️</div>
+                    <h3>Segurança e Privacidade:</h3>
+                    <p>Proteja seus dados financeiros com criptografia de ponta a ponta e controle de acesso baseado em permissões.</p>
+                </div>
+                
+            </div>
+        </section>
+
+        <section id="team" class="team">
+            <h2>Conheça a Equipe</h2>
+            <div class="team-container">
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="{{ url_for('static', filename='images/index/rhuan.jpg') }}" alt="Rhuan Mulero">
+                    </div>
+                    <h3>Rhuan Mulero, CEO da Startup</h3>
+                    <p>CEO e desenvolvedor front-end.</p>
+                    <p>
+                        <a href="https://github.com/dev/rhuanmulero" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                        </a>
+                        <a href="https://www.linkedin.com/in/rhuan-mulero/" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                        </a>
+                        <a href="mailto:rhuanmscontato@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                    </p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="{{ url_for('static', filename='images/index/miguel.jpeg') }}" alt="Miguel Marques">
+                    </div>
+                    <h3>Miguel Marques, back-end</h3>
+                    <p>Responsável pela criação dos designs das páginas e pelo desenvolvimento do back-end.</p>
+                    <p>
+                        <a href="https://github.com/MiguelMMarques06" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                        </a>
+                        <a href="https://www.linkedin.com/in/miguel-macedo-marques-8308392b8/" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                        </a>
+                        <a href="mailto:miguelmm06@hotmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                    </p>
+                </div>
+                <div class="team-member" id="pedro-card">
+                    <div class="member-photo">
+                        <img id="pedro-photo" src="{{ url_for('static', filename='images/index/pedro.jpeg') }}" alt="Pedro Quixabeira">
+                    </div>
+                    <h3>Pedro Quixabeira, Eng. de Dados</h3>
+                    <p>Lider na gestão do banco de dados e do desenvolvimento do back-end em python.</p>
+                    <p>
+                        <a href="https://github.com/pedro11065" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                        </a>
+                        <a href="https://www.linkedin.com/in/pedro-henrique-silva-quixabeira/" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                        </a>
+                        <a href="mailto:pedrohenriquesilvaquixabeira@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                    </p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="{{ url_for('static', filename='images/index/thiago.jpeg') }}" alt="Thiago Almeida">
+                    </div>
+                    <h3>Thiago Almeida, Dev. back-end</h3>
+                    <p>Um dos nossos desenvolvendores back-end mais experientes da equipe, especializado em JavaScript.</p>
+                    <p>
+                        <a href="https://github.com/ThiagoAlmeidaDev" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                        </a>
+                        <a href="https://www.linkedin.com/in/thiagoalmeida29/" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                        </a>
+                    </p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="{{ url_for('static', filename='images/index/beatriz.jpeg') }}" alt="Beatriz Lima">
+                    </div>
+                    <h3>Beatriz Lima, Dev. Front-End</h3>
+                    <p>Desenvolvedora front-end, especializada em UI e na arquitetura de banco de dados.</p>
+                    <p>
+                        <a href="https://github.com/biafalls" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                        </a>
+                        <a href="https://www.linkedin.com/in/beatriz-lima-a21a6b2a4/" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                        </a>
+                        <a href="mailto:biaevangelista1967@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                    </p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="{{ url_for('static', filename='images/index/julia.jpeg') }}" alt="Julia Santos">
+                    </div>
+                    <h3>Julia Santos, Dev. Front-End</h3>
+                    <p>Uma de nossas desenvolvedoras front-end e resposável pela documentação e pela UX.</p>
+                    <p>
+                        <a href="https://github.com/Juli4Souzas" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                        </a>
+                        <a href="https://www.linkedin.com/in/julia-santos-3873252b3/" target="_blank">
+                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                        </a>
+                        <a href="mailto:souzasjulia14@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <            id="footer" class="footer"></footer>
+            <div class="footer-container">
+                <h1> Av. Senador Feijó, 350 - Vila Matias, Santos - SP, 11015-502</h1>
+                <p>© 2024 Beesiness L.T.D.A. Todos os direitos reservados.</p>
+            <div class="footer-container">
+        </footer>
+
+        <!-- Seção de login e registro -->
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>

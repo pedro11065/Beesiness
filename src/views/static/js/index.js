@@ -1,42 +1,81 @@
-     let pPressCount = 0;
+function ShowFeature1() {
+    const elemento = document.getElementById('feature-section-1');
+    const posicao = elemento.getBoundingClientRect().top;
+    const alturaJanela = window.innerHeight;
 
-    document.addEventListener('keydown', function(event) {
-        // Verifica se a tecla pressionada é "P" ou "p"
-        if (event.key.toLowerCase() === 'p') {
-            pPressCount++;
-        } else {
-            pPressCount = 0;  // Reseta o contador se qualquer outra tecla for pressionada
-        }
+    if (posicao < alturaJanela) {
+        elemento.classList.add('visible');
+    }
+}
 
-        // Se a tecla "P" for pressionada 3 vezes
-        if (pPressCount === 3) {
-            const pedroCard = document.getElementById('pedro-card');
-            const pedroPhoto = document.getElementById('pedro-photo');
-            const h3 = pedroCard.querySelector('h3');
-            const p = pedroCard.querySelector('p');
+window.addEventListener('scroll', ShowFeature1);
 
-            // Adiciona classe fade-out para começar a transição de saída
-            h3.classList.add('fade-out');
-            p.classList.add('fade-out');
-            pedroPhoto.classList.add('fade-out');
+function ShowFeature2() {
+    const elemento = document.getElementById('feature-section-2');
+    const posicao = elemento.getBoundingClientRect().top;
+    const alturaJanela = window.innerHeight;
 
-            // Após um pequeno delay (mesmo tempo da transição), mudar o conteúdo
-            setTimeout(function() {
-                h3.textContent = 'Pedro Gayxabeira, Diretor de Logística';
-                p.textContent = 'Pedro Gayxabeira é nosso Diretor de Logística e um dos desenvolvedores back-end.';
-                pedroPhoto.src = '/static/images/index/pedro_logistica.jpeg'; 
-                pedroPhoto.alt = 'Pedro Gayxabeira';
+    if (posicao < alturaJanela) {
+        elemento.classList.add('visible');
+    }
+}
 
-                // Remove a classe fade-out e adiciona a fade-in para a transição de entrada
-                h3.classList.remove('fade-out');
-                p.classList.remove('fade-out');
-                pedroPhoto.classList.remove('fade-out');
+window.addEventListener('scroll', ShowFeature2);
 
-                h3.classList.add('fade-in');
-                p.classList.add('fade-in');
-                pedroPhoto.classList.add('fade-in');
-            }, 500); // 500ms para coincidir com o tempo da transição no CSS
+function ShowFeature3() {
+    const elemento = document.getElementById('feature-section-3');
+    const posicao = elemento.getBoundingClientRect().top;
+    const alturaJanela = window.innerHeight;
 
-            pPressCount = 0;  // Reseta o contador após ativar o easter egg
-        }
-    });
+    if (posicao < alturaJanela) {
+        elemento.classList.add('visible');
+    }
+}
+
+window.addEventListener('scroll', ShowFeature3);
+
+function ShowFeature4() {
+    const elemento = document.getElementById('feature-section-4');
+    const posicao = elemento.getBoundingClientRect().top;
+    const alturaJanela = window.innerHeight;
+
+    if (posicao < alturaJanela) {
+        elemento.classList.add('visible');
+    }
+}
+
+window.addEventListener('scroll', ShowFeature4);
+function ShowFeature5() {
+    const elemento = document.getElementById('feature-section-5');
+    const posicao = elemento.getBoundingClientRect().top;
+    const alturaJanela = window.innerHeight;
+
+    if (posicao < alturaJanela) {
+        elemento.classList.add('visible');
+    }
+}
+
+window.addEventListener('scroll', ShowFeature5);
+function ShowFeature6() {
+    const elemento = document.getElementById('feature-section-6');
+    const posicao = elemento.getBoundingClientRect().top;
+    const alturaJanela = window.innerHeight;
+
+    if (posicao < alturaJanela) {
+        elemento.classList.add('visible');
+    }
+}
+
+window.addEventListener('scroll', ShowFeature6);
+
+function ShowFeatureBtn() {
+    const elemento = document.getElementById('feature-btn-container');
+    const posicao = elemento.getBoundingClientRect().top;
+    const alturaJanela = window.innerHeight;
+
+    if (posicao < alturaJanela) {
+        elemento.classList.add('visible');
+    }
+}
+
+window.addEventListener('scroll', ShowFeatureBtn);
