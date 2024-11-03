@@ -9,16 +9,14 @@
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
 </head>
 
 <body>
     <header>     
     
-        <img class="mobile-image" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Imagem do Cabeçalho">
-
-        <div class="logo">BEESINESS</div>
-        <div class="header-links">
+        <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Imagem do Cabeçalho">
+        <section class="header-links">
             {% if current_user.is_authenticated %}
                 <a href="/dashboard/user" class="dashboard">Dashboard</a>
                 <a href="/user/logout" class="logout">Logout</a>
@@ -26,172 +24,285 @@
                 <a href="/user/register" class="register">Abra a sua conta</a>
                 <a href="/user/login" class="login">Login</a>           
             {% endif %}
-        </div>
+        </section>
     </header>
 
     <main>
-        <section id="hero" class="hero">
-            <h1>Faça sua <span class="highlight">empresa voar</span><br>como uma <span class="highlight">abelha</span></h1>
-            <div class="hero-button">
-                <a  href="#features">Saiba mais</a>
-            </div>
-        
-        </section>
+        <article-hero>
+            <section-hero>
+                <h1>Faça a sua empresa <h1_1>voar </h1_1> <br>como uma <h1_1>abelha</h1_1></h1>
+                <a class="box-hero" href="#features"><h2>Saiba mais</h2></a>
+            </section-hero>
+        </article-hero>
 
-        <section id="features" class="features">
+        <article class="features_background">
 
-            <h2>O Beesiness é um gestor de patrimônio inovador voltado para pequenas e médias empresas, oferecendo uma plataforma completa para gestão econômica e contábil.</h2>
-            <div id="features-container" class="features-container">
+            <article-features-title id="features">
+                <h3>O gestor de patrimônio para pequenas e médias<br> empresas que você <h3_1>precisa.</h3_1></h3>
+            </article-features-title>
 
-                <div class="feature-item">
-                    <div class="icon">✔️</div>
-                    <h3>Controle total, em um só lugar.</h3>
-                    <p>Gerencie todas as movimentações financeiras da sua empresa de forma centralizada e eficiente.</p>
-                </div>
+            <article-features>
 
-                <div class="feature-item">
-                    <div class="icon">✔️</div>
-                    <h3>Relatórios Personalizados:</h3>
-                    <p>Geração de relatórios detalhados para análise de desempenho financeiro.</p>
-                </div>
+                <section-features-left>
 
-                <div class="feature-item">
-                    <div class="icon">✔️</div>
-                    <h3>Integração Contábil:</h3>
-                    <p>Facilite o trabalho com contadores, exportando facilmente dados financeiros.</p>
-                </div>
+                    <container-features id="feature-section-1" class="hide-left">
 
-                <div class="feature-item">
-                    <div class="icon">✔️</div>
-                    <h3>Gestão de Inventário:</h3>
-                    <p>Monitore seus ativos de forma eficiente, integrando o controle de patrimônio com o fluxo financeiro.</p>
-                </div>
+                        <box-features-title>
+                            <h4>Controle total, <br> em um só lugar<h4_1>.</h4_1></h4>
+                        </box-features-title>
 
-                <div class="feature-item">
-                    <div class="icon">✔️</div>
-                    <h3>Automação de Processos:</h3>
-                    <p>Economize tempo automatizando tarefas repetitivas, como cálculos de despesas recorrentes e criação de relatórios.</p>
-                </div>
+                        <box-features-description>
+                            <h5>Facilite o trabalho com contadores, exportando facilmente dados financeiros.</h5>
+                        </box-features-description>
 
-                <div class="feature-item">
-                    <div class="icon">✔️</div>
-                    <h3>Segurança e Privacidade:</h3>
-                    <p>Proteja seus dados financeiros com criptografia de ponta a ponta e controle de acesso baseado em permissões.</p>
-                </div>
+                    </container-features>
+
+                    <container-features id="feature-section-3" class="hide-left">
+
+                        <box-features-title>
+                            <h4>Integração contábil<h4_1>.</h4_1></h4>
+                        </box-features-title>
+
+                        <box-features-description>
+                            <h5>Facilite o trabalho com contadores, exportando facilmente dados financeiros.</h5>
+                        </box-features-description>
+                        
+                    </container-features>
+
+                    <container-features style="margin-bottom: 2rem;" id="feature-section-5" class="hide-left">
+
+                        <box-features-title>
+                            <h4>Automação de <br> Processos<h4_1>.</h4_1></h4>
+                        </box-features-title>
+
+                        <box-features-description>
+                            <h5>Economize tempo automatizando tarefas repetitivas, como cálculos de despesas recorrentes e criação de relatórios.</h5>
+                        </box-features-description>
+                        
+                    </container-features>
+
+                    <container-features-extra>
+                        <box-features-extra>
+                        </box-features-extra>
+                    </container-features-extra>
+
+                </section-features-left>
+
+                <section-features-right>
+
+                    <container-features-extra>
+                        <box-features-extra>
+                        </box-features-extra>
+                    </container-features-extra>
+
+                    <container-features id="feature-section-2" class="hide-right">
+
+                        <box-features-title>
+                            <h4>Relatórios <br>personalizados<h4_1>.</h4_1></h4>
+                        </box-features-title>
+
+                        <box-features-description>
+                            <h5>Geração de relatórios detalhados para análise de desempenho financeiro.</h5>
+                        </box-features-description>
+                        
+                    </container-features>
+
+                    <container-features  id="feature-section-4" class="hide-right">
+
+                        <box-features-title>
+                            <h4>Gestão de invetário<h4_1>.</h4_1></h4>
+                        </box-features-title>
+
+                        <box-features-description>
+                            <h5>Monitore seus ativos de forma eficiente, integrando o controle de patrimônio com o fluxo financeiro.</h5>
+                        </box-features-description>
+                        
+                    </container-features>
+
+                    <container-features  id="feature-section-6" class="hide-right">
+
+                        <box-features-title>
+                            <h4>Segurança e <br>Privacidade<h4_1>.</h4_1></h4>
+                        </box-features-title>
+
+                        <box-features-description>
+                            <h5>Proteja seus dados financeiros com criptografia de ponta a ponta e controle de acesso baseado em permissões.</h5>
+                        </box-features-description>
+                        
+                    </container-features>    
+
+                </section-features-right>
+
+            </article-features  >
+
+            <article-features-end id="feature-btn-container" class="hide-down">
+                <h3>Tudo isso e mais em um só lugar<h3_1>.</h3_1></h3>
+                <a href="/user/register"><box-features-register><h6>Crie sua conta de graça!</h6></box-features-register></a>
+            </article-features-end>
+
+        </article>
+
+        <article-team>
+            <section-team-title>
+                <h7>Conheça a equipe</h7>
+            </section-team-title>
+
+            <section-members>
+                <container-members>
+                    <box-member>
+
+                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/pedro.jpeg') }}" alt="Pedro Quixabeira"></member-photo>
+                        <member-title><h8>Pedro Quixabeira</h8></member-title>
+                        <member-sub-title><h9>Full-Stack/Database engineer</h9>></member-sub-title>
+
+                        <member-socials>
+                            <a  href="https://github.com/pedro11065" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                            </a>
+                            <a href="https://www.linkedin.com/in/pedro-henrique-silva-quixabeira/" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                            </a>
+                            <a href="mailto:pedrohenriquesilvaquixabeira@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                        </member-socials>
+
+                    </box-member>
+                    <box-member>
+                        
+                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/thiago.jpeg') }}" alt="Thiago Ameilda"></member-photo>
+                        <member-title><h8>Thiago Ameilda</h8></member-title>
+                        <member-sub-title><h9>Full-Stack</h9>></member-sub-title>
+
+                        <member-socials>
+                            <a  href="https://github.com/ThiagoAlmeidaDev" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                            </a>
+                            <a href="https://www.linkedin.com/in/thiagoalmeida29/" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                            </a>
+                            
+                        </member-socials>
+
+                    </box-member>
+                    <box-member>
+                        
+                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/miguel.jpeg') }}" alt="Miguel Macedo"></member-photo>
+                        <member-title><h8>Miguel Macedo</h8></member-title>
+                        <member-sub-title><h9>Front-End</h9>></member-sub-title>
+
+                        <member-socials>
+                            <a  href="https://github.com/MiguelMMarques065" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                            </a>
+                            <a href="https://www.linkedin.com/in/miguel-macedo-marques-8308392b8/" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                            </a>
+                            <a href="mailto:miguelmm06@hotmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                        </member-socials>
+
+                    </box-member>
+                </container-members>
+
+                <container-members>
+                    <box-member>
+                        
+                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/rhuan.jpg') }}" alt="Rhuan Mulero"></member-photo>
+                        <member-title><h8>Rhuan Mulero</h8></member-title>
+                        <member-sub-title><h9>Front-End</h9>></member-sub-title>
+
+                        <member-socials>
+                            <a  href="https://github.com/dev/rhuanmulero" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                            </a>
+                            <a href="https://www.linkedin.com/in/rhuan-mulero/" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                            </a>
+                            <a href="mailto:rhuanmscontato@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                        </member-socials>
+
+                    </box-member>
+                    <box-member>
+
+                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/beatriz.jpeg') }}" alt="Beatriz Lima"></member-photo>
+                        <member-title><h8>Beatriz Lima</h8></member-title>
+                        <member-sub-title><h9>Database engineer</h9>></member-sub-title>
+
+                        <member-socials>
+                            <a  href="https://github.com/biafalls" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                            </a>
+                            <a href="https://www.linkedin.com/in/beatriz-lima-a21a6b2a4/" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                            </a>
+                            <a href="mailto:biaevangelista1967@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                        </member-socials>
+
+                    </box-member>
+                    <box-member>
+                        
+                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/julia.jpeg') }}" alt="Julia Santos"></member-photo>
+                        <member-title><h8>Julia Santos</h8></member-title>
+                        <member-sub-title><h9>Technical writer</h9>></member-sub-title>
+
+                        <member-socials>
+                            <a  href="https://github.com/Juli4Souzas" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
+                            </a>
+                            <a href="https://www.linkedin.com/in/julia-santos-3873252b3/" target="_blank">
+                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
+                            </a>
+                            <a href="mailto:souzasjulia14@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
+                        </member-socials>
+
+                    </box-member>
+                </container-members>
+            </section-members>
+        </article-team>
+
+        <footer>
+            <article-footer>
+
+                <section-footer-logo>
+                    <h10>BEESINESS</h10>
+                    <h11>Desde 2024</h11>
+                </section-footer-logo>
+
+                <section-footer>
+
+                    <box-footer>
+                        <h11>Serviços</h11>
+                    </box-footer>
+
+                    <box-footer>
+                        <h11>Trabalho conosco</h11>
+                    </box-footer>
+
+                    <box-footer>
+                        <h11>Sobre nós</h11>
+                    </box-footer>
+                    
+                </section-footer>
+
+            </article-footer>
+
+            </article-info>
                 
-            </div>
-        </section>
-
-        <section id="team" class="team">
-            <h2>Conheça a Equipe</h2>
-            <div class="team-container">
-                <div class="team-member">
-                    <div class="member-photo">
-                        <img src="{{ url_for('static', filename='images/index/rhuan.jpg') }}" alt="Rhuan Mulero">
-                    </div>
-                    <h3>Rhuan Mulero, Front-End</h3>
-                    <p> Respnsável pela criação da identidade visual do beesiness e desenvolvedor front-end.</p>
-                    <p>
-                        <a href="https://github.com/dev/rhuanmulero" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                        </a>
-                        <a href="https://www.linkedin.com/in/rhuan-mulero/" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                        </a>
-                        <a href="mailto:rhuanmscontato@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                    </p>
-                </div>
-                <div class="team-member">
-                    <div class="member-photo">
-                        <img src="{{ url_for('static', filename='images/index/miguel.jpeg') }}" alt="Miguel Marques">
-                    </div>
-                    <h3>Miguel Marques, back-end</h3>
-                    <p>Responsável pela criação dos designs das páginas e pelo desenvolvimento do back-end.</p>
-                    <p>
-                        <a href="https://github.com/MiguelMMarques06" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                        </a>
-                        <a href="https://www.linkedin.com/in/miguel-macedo-marques-8308392b8/" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                        </a>
-                        <a href="mailto:miguelmm06@hotmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                    </p>
-                </div>
-                <div class="team-member" id="pedro-card">
-                    <div class="member-photo">
-                        <img id="pedro-photo" src="{{ url_for('static', filename='images/index/pedro.jpeg') }}" alt="Pedro Quixabeira">
-                    </div>
-                    <h3>Pedro Quixabeira, Full-Stack</h3>
-                    <p>Lider na gestão do banco de dados e desenvolvedor full Stack.</p>
-                    <p>
-                        <a href="https://github.com/pedro11065" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                        </a>
-                        <a href="https://www.linkedin.com/in/pedro-henrique-silva-quixabeira/" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                        </a>
-                        <a href="mailto:pedrohenriquesilvaquixabeira@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                    </p>
-                </div>
-                <div class="team-member">
-                    <div class="member-photo">
-                        <img src="{{ url_for('static', filename='images/index/thiago.jpeg') }}" alt="Thiago Almeida">
-                    </div>
-                    <h3>Thiago Almeida, Dev. back-end</h3>
-                    <p>Um dos nossos desenvolvendores back-end mais experientes da equipe, especializado em JavaScript.</p>
-                    <p>
-                        <a href="https://github.com/ThiagoAlmeidaDev" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                        </a>
-                        <a href="https://www.linkedin.com/in/thiagoalmeida29/" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                        </a>
-                    </p>
-                </div>
-                <div class="team-member">
-                    <div class="member-photo">
-                        <img src="{{ url_for('static', filename='images/index/beatriz.jpeg') }}" alt="Beatriz Lima">
-                    </div>
-                    <h3>Beatriz Lima, Dev. Front-End</h3>
-                    <p>Desenvolvedora front-end, especializada em UI e na arquitetura de banco de dados.</p>
-                    <p>
-                        <a href="https://github.com/biafalls" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                        </a>
-                        <a href="https://www.linkedin.com/in/beatriz-lima-a21a6b2a4/" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                        </a>
-                        <a href="mailto:biaevangelista1967@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                    </p>
-                </div>
-                <div class="team-member">
-                    <div class="member-photo">
-                        <img src="{{ url_for('static', filename='images/index/julia.jpeg') }}" alt="Julia Santos">
-                    </div>
-                    <h3>Julia Santos, Dev. Front-End</h3>
-                    <p>Uma de nossas desenvolvedoras front-end e resposável pela documentação e pela UX.</p>
-                    <p>
-                        <a href="https://github.com/Juli4Souzas" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                        </a>
-                        <a href="https://www.linkedin.com/in/julia-santos-3873252b3/" target="_blank">
-                            <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                        </a>
-                        <a href="mailto:souzasjulia14@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                    </p>
-                </div>
-            </div>
-        </section>
-        <footer id="footer" class="footer"></footer>
-            <div class="footer-container">
-                <h1> Av. Senador Feijó, 350 - Vila Matias, Santos - SP, 11015-502</h1>
-                <p>© 2024 Beesiness L.T.D.A. Todos os direitos reservados.</p>
-            <div class="footer-container">
+            <article-end>
+                <h11>© 2024 Direitos Reservados - Termos de Uso - Política de Privacidade</h11>
+            </article-end>
         </footer>
 
-        <!-- Seção de login e registro -->
-
     </main>
+
+
+
+
+
+
+
+
+
+
+
 
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
