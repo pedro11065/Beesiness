@@ -4,7 +4,7 @@ from colorama import Fore, Style
 
 from ....connect import connect_database
 
-def db_update_user(update_data, asset_id):
+def db_update_asset(asset_id, company_id, field, value):
     db_login = connect_database() 
     
     conn = psycopg2.connect(
@@ -16,13 +16,16 @@ def db_update_user(update_data, asset_id):
     cur = conn.cursor() # Cria um cursor no PostGreSQL
     
 
-    print(Fore.GREEN + '[Atualização de asset] ' + Style.RESET_ALL + f'Procurando informações do asset: {asset_id}')
+    print(Fore.GREEN + '[Atualização de asset] ' + Style.RESET_ALL + f'Atualizando o campo {field} do asset {asset_id}')
     try:
-
-        cur.execute("UPDATE table_assets SET value = %sd = %s WHERE asset_id = %s;", (update_data,asset_id))
+        query = sql.SQL("UPDATE table_assets SET {field} = %s WHERE asset_id = %s AND company_id = %s").format(
+            field=sql.Identifier(field)
+        )
+        
+        cur.execute(query, (value, asset_id, company_id))
    
-    except:
-        print(Fore.RED + '[Atualização de asset] ' + Style.RESET_ALL + f'Dados do usuário não encontrados')
+    except Exception as error:
+        print(Fore.RED + '[Atualização de asset] ' + Style.RESET_ALL + f'Erro ao atualizar o asset: {error}')
         return False
     
     finally:
@@ -30,6 +33,7 @@ def db_update_user(update_data, asset_id):
         cur.close();
         conn.close();
 
-    
+    print(Fore.GREEN + '[Atualização de asset] ' + Style.RESET_ALL + 'Campo atualizado com sucesso!')
+    return True
         
     

@@ -358,8 +358,18 @@ select {
     color: white;
 }
 
+.button-group .btn.sim:hover {
+    background-color: #459c48;
+    color: white;
+}
+
 .button-group .btn.nao {
     background-color: #f44336;
+    color: white;
+}
+
+.button-group .btn.nao:hover {
+    background-color: #da4338;
     color: white;
 }
 

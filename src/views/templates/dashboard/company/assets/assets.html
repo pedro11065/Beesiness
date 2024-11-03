@@ -25,6 +25,7 @@
         </a>
     </header>
 
+    <!-- Modal de detalhes -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -33,13 +34,11 @@
                  <button class="options-button" onclick="toggleDropdown(event)">
                     <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
                 </button>
-
-                <!--
+                
                 <div class="dropdown-menu" style="display:none;">
                     <button class="dropdown-item" onclick="openEditModal()">Editar</button>
-                    <button class="dropdown-item" onclick="deleteUser()">Deletar</button>
+                    <button class="dropdown-item" onclick="deleteUser(event)">Deletar</button>
                 </div>
-                -->
             </div>
 
             
@@ -86,7 +85,23 @@
             </footer>
         </div>
     </div>
-    
+
+    <!-- Modal de confirmação -->
+     <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirmação</h2>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja deletar o ativo?</p>
+            </div>
+            <div class="button-group">
+                <button class="btn sim">Sim</button>
+                <button class="btn nao">Não</button>
+            </div>
+        </div>
+    </div>
+
 
     <menu class="menu-container" id="menuContainer">
         <div class="register-box">

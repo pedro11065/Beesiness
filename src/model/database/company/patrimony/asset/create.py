@@ -23,17 +23,20 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
     cur = conn.cursor()
 
     # Define dados
-    asset_id = uuid.uuid4()
+    asset_id = str(uuid.uuid4())
     creation_time = datetime.now().strftime("%H:%M:%S")
     creation_date = datetime.now().strftime("%Y-%m-%d")
     type =  "asset"
 
     if event not in ['Entrada de Caixa','Venda']:
-
-    # Guarda os dados na tabela de assets:
-        cur.execute(f"INSERT INTO table_assets (asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit, installment)  VALUES ('{asset_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{location}', '{acquisition_date}', '{description}', '{status}', '{asset_debit}', '{asset_credit}', '{installment}');")
+        # Guarda os dados na tabela de assets:
+        cur.execute("""
+        INSERT INTO table_assets (
+            asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit, installment
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """, (asset_id, company_id, user_id, name, event, classe, value, location, acquisition_date, description, status, asset_debit, asset_credit, installment))
     
-        # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
+    # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
     installment_record = 0; new_month_add = 0 #01-11-2024
     for i in range(installment): #vai registrar a quantidade de parcelas 
         historic_id =  uuid.uuid4()
@@ -89,7 +92,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
     new_historic_id =  uuid.uuid4()
 
     # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit)  VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{cash_now}', '{date}', 'asset', '{creation_date}', '{creation_time}', {cash_debit}, {cash_credit});")
+    cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time)  VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{cash_now}', '{date}', 'asset', '{creation_date}', '{creation_time}';")
 
     # Confirma as mudanças
     conn.commit()
