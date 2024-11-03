@@ -19,8 +19,8 @@ photo {
   height: 100%; 
   background-image: url('/static/images/register_login/register_image.png');
   background-size: cover; /* Ajusta o tamanho da imagem para cobrir todo o elemento */
-  background-position: center; /* Centraliza a imagem dentro do elemento */
-  background-repeat: no-repeat; /* Evita a repetição da imagem */
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
@@ -32,13 +32,61 @@ main {
 
 }
 
-h1{
+h1 {
   font-family: inter;
   font-weight: 500;
   font-size: 3rem;
-  
 }
 
+
+/* Estilos do Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  max-width: 40rem;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 1rem !important;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+  position: relative;
+}
+
+.modal-header {
+  background-color: #d3d3d3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  padding: 15px;
+  border-radius: 1rem !important;
+  margin-bottom: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 2px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  flex-grow: 1;
+  text-align: center;
+}
+
+
+/* Bem-vindo */
 .welcome-section{
   display: flex;
   align-items: center;
@@ -120,6 +168,21 @@ h1{
   margin-right: 1rem;
 }
 
+.form-check-terms-box {
+  display: flex; /* Mantém os itens como flex, permitindo que eles sejam responsivos */
+  flex-wrap: wrap; /* Permite que os itens se movam para a linha seguinte se não houver espaço suficiente */
+  align-items: center; /* Alinha verticalmente os itens */
+}
+
+.terms-conditions, .privacy-policy {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  margin: 0 5px; /* Espaçamento entre os links */
+}
+
+
+
 .msg{
   display: flex;
   width: 100%;
@@ -145,7 +208,7 @@ h1{
 }
 
 .form-box:hover{
-  background-color:#b8c5bb;
+  background-color:#cacaca;
   box-shadow: inset rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 
@@ -159,7 +222,7 @@ h1{
 }
 
 .form-box-birthdate:hover{
-  background-color:#b8c5bb;
+  background-color:#cacaca;
   box-shadow: inset rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
   
@@ -211,6 +274,7 @@ button{
   font-weight: 500;
   transition: background-color 0.3s ease, color 0.3s ease;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer
 }
 
 .form-section-button:hover{
@@ -219,10 +283,19 @@ button{
   box-shadow: inset rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+#registroBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.form-section-button:hover:not(:disabled) {
+  background-color: #1d1d1d;
+}
+
 .login-button{
   font-family: inter;
   font-size: 1rem;
-  background-color:#af940e;
+  background-color:#edc80d;
   width: 20rem;
   height: 60%;
   margin-left: 1rem;

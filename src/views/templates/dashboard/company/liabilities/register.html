@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar ativo</title>
+    <title>Registrar passivo</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/register.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/select.css') }}">
@@ -73,46 +73,46 @@
         <form id="AssetForm">
             <article>
                 <section>
-                    <conteiner class="name">
+                    <container class="name">
                         <box-msg>
                             <h2>Nome</h2>
                         </box-msg>
                         <input class="form-box" id="name" type="text" name="name" required>
-                    </conteiner>
+                    </container>
 
-                    <conteiner class="creditor">
+                    <container class="creditor">
                         <box-msg>
                             <h2>Credor</h2>
                         </box-msg>
                         <input class="form-box" id="creditor" type="text" name="creditor" required>
-                    </conteiner>
+                    </container>
 
-                    <conteiner class="value">
+                    <container class="value">
                         <box-msg>
                             <h2>Valor</h2>
                         </box-msg>
                         <input class="form-box" id="value" type="text" name="value" required>
-                    </conteiner>
+                    </container>
                 </section>
             </article>
 
             <article>
                 <section>
-                    <conteiner class="emission_date">
+                    <container class="emission_date">
                         <box-msg>
                             <h2>Data de Emissão</h2>
                         </box-msg>
                         <input class="form-box" id="emission_date" type="date" name="emission_date" min="1924-01-01" max="2999-12-31" maxlength="10" required>
-                    </conteiner>
+                    </container>
 
-                    <conteiner class="expiration_date">
+                    <container class="expiration_date">
                         <box-msg>
                             <h2>Data de vencimento</h2>
                         </box-msg>
                         <input class="form-box" id="expiration_date" type="date" name="expiration_date" min="1924-01-01" max="2999-12-31" maxlength="10" required>
-                    </conteiner>
+                    </container>
 
-                    <conteiner class="event">
+                    <container class="event">
                         <box-msg>
                             <h2>Evento</h2>
                         </box-msg>
@@ -133,9 +133,9 @@
                             <option>Outro</option>
                         </select>
 
-                    </conteiner>
+                    </container>
 
-                    <conteiner class="status">
+                    <container class="status">
                         <box-msg>
                             <h2>Status</h2>
                         </box-msg>
@@ -148,14 +148,14 @@
                             <option>Em Negociação</option>
                             <option>Cancelado</option>
                         </select>
-                    </conteiner>
+                    </container>
                 </section>
             </article>
 
             <article>
                 <section style="width: 53.5%;">
                     <container style="width: 100%;">
-                        <conteiner class="class">
+                        <container class="class">
                             <box-msg>
                                 <h2>Classe</h2>
                             </box-msg>
@@ -172,9 +172,9 @@
                                 <option>Restituição Judicial</option>
                                 <option>Entrada de Caixa</option>
                             </select>
-                        </conteiner>
+                        </container>
 
-                        <conteiner class="payment">
+                        <container class="payment">
                             <box-msg>
                                 <h2>Forma de pagamento</h2>
                             </box-msg>
@@ -195,9 +195,9 @@
                                 <option>Carteira Digital</option>
                                 <option>Transferência Bancária</option>
                             </select>
-                        </conteiner>
+                        </container>
 
-                        <conteiner class="installment">
+                        <container class="installment">
                             <box-msg>
                                 <h2>Parcelamento</h2>
                             </box-msg>
@@ -217,16 +217,16 @@
                                 <option>11x</option>
                                 <option>12x</option>
                             </select>
-                        </conteiner>
-                    </conteiner>
+                        </container>
+                    </container>
                 </section>
                 <section>
-                    <conteiner class="description">
+                    <container class="description">
                         <box-msg>
                             <h2>Descrição</h2>
                         </box-msg>
-                        <input class="form-box" id="description" type="text" name="description" required>
-                    </conteiner>
+                        <textarea class="form-box" id="description" type="text" name="description" required></textarea>
+                    </container>
                 </section>  
             </article>
 

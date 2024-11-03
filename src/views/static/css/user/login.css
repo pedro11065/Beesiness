@@ -134,7 +134,7 @@
   }
   
   .form-box:hover{
-    background-color:#b8c5bb;
+    background-color:#cacaca;
     box-shadow: inset rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   }
   
@@ -156,7 +156,7 @@
   
   .login-section-button{
     font-family: inter;
-    background-color: rgb(228, 222, 24);
+    background-color: #edc80d;
     width: 15rem;
     height: 3.5rem;
     margin-left: 1rem;
@@ -168,8 +168,8 @@
   }
   
   .login-section-button:hover{
-    color:white;
-    background-color:black;
+    background-color: #000000;
+    color: white;
     box-shadow: inset rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
   
