@@ -67,17 +67,17 @@ document.addEventListener('DOMContentLoaded', async function () {
                             const details = Array.from(row.children).map(child => child.innerText);
                             console.log(details)
                         
-                            document.getElementById('uuid').innerText = details[0];
-                            document.getElementById('name').innerText = details[1];
-                            document.getElementById('event').innerText = details[2];
-                            document.getElementById('class').innerText = details[3];
-                            document.getElementById('value').innerText = details[4];
+                            document.getElementById('name').innerText = asset.name;
+                            document.getElementById('event').innerText = asset.event;
+                            document.getElementById('class').innerText = asset.class;
+                            document.getElementById('value').innerText = asset.value;
                             document.getElementById('installment').innerText = asset.installment;
                             document.getElementById('location').innerText = asset.location;
                             document.getElementById('acquisition_date').innerText = asset.creation_date;
                             document.getElementById('status').innerText = asset.status;
-                            document.getElementById('description').innerText = details[8];
-                            document.getElementById('creation').innerText = `${details[9]} - ${details[10]}`;
+                            document.getElementById('description').innerText = asset.description;
+                            document.getElementById('creation').innerText = `${asset.status} - ${asset.creation_date}`;
+                            document.getElementById('uuid').innerText = asset.asset_id;
                         
                             document.getElementById('modal').style.display = 'block';
                         });
@@ -114,9 +114,9 @@ function getCnpjFromUrl() {
 }
 
 function formatDateToBrazilian(date) {
-    const day = date.getDate().toString().padStart(2, '0'); // Obtém o dia e formata para 2 dígitos
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Obtém o mês e formata para 2 dígitos
-    const year = date.getFullYear(); // Obtém o ano
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 }
 
@@ -130,21 +130,69 @@ function CashName(nameStr) {
 }
 
 
-// document.addEventListener('click', function (event) {
-//     const dropdowns = document.querySelectorAll('.dropdown-menu');
+document.addEventListener('click', function (event) {
+    const dropdowns = document.querySelectorAll('.dropdown-menu');
     
-//     dropdowns.forEach(dropdown => {
-//         if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) { // Verifica se o clique foi fora do dropdown ou do botão
-//             dropdown.style.display = 'none';
-//         }
-//     });
-// });
+    dropdowns.forEach(dropdown => {
+        // Verifica se o clique foi fora do dropdown ou do botão
+        if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) { 
+            dropdown.style.display = 'none';
+        }
+    });
+});
 
-// function toggleDropdown(event) {
-//     event.stopPropagation();
+function toggleDropdown(event) {
+    event.stopPropagation();
 
-//     const dropdown = event.currentTarget.nextElementSibling; // Pega o próximo elemento que é o dropdown
-//     if (dropdown) {
-//         dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
-//     }
-// }
+    const dropdown = event.currentTarget.nextElementSibling;
+    if (dropdown) dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
+}
+
+
+function deleteUser(event) {
+    event.stopPropagation();
+
+    const confirmModal = document.getElementById('confirm-modal');
+    confirmModal.style.display = 'block';
+
+    const dropdown = event.currentTarget.nextElementSibling;
+    if (dropdown) dropdown.style.display = 'none';
+
+    const assetId = document.getElementById('uuid').innerText;
+
+    const status = document.getElementById('status').innerText;
+    if (status.includes('Estorno')) {
+        alert('Este ativo já foi estornado e não pode ser deletado.');
+        confirmModal.style.display = 'none';
+        return;
+    }
+
+    document.querySelector('.btn.sim').onclick = async function () {
+        try {
+            const response = await fetch(`/dashboard/refund-asset/${assetId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                console.log(response)
+                alert('Ativo deletado com sucesso. (OU NÃO, TAMO SEM RETORNO DAS FRASES, isso aqui é genérico só)');
+                
+                confirmModal.style.display = 'none';
+                document.getElementById('modal').style.display = 'none';
+
+                location.reload();
+            } else {
+                throw new Error('Erro ao deletar o ativo.');
+            }
+        } catch (error) {
+            alert('Erro ao deletar o ativo: ' + error.message);
+        }
+    };
+
+    document.querySelector('.btn.nao').onclick = function () {
+        confirmModal.style.display = 'none';
+    };
+}

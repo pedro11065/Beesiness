@@ -12,6 +12,8 @@ from src.controller.dashboard.company.info_dashboard import info_dashboard
 from src.controller.dashboard.company.info_liabilities import info_liabilities
 from src.controller.dashboard.user.info_user_companies import info_user_companies
 
+from src.controller.dashboard.company.refund_asset import refund_asset
+
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
 
@@ -132,6 +134,15 @@ def assets_site(cnpj):
     if request.method == 'GET': 
         validate_cnpj_access(cnpj)
         return render_template('dashboard/company/assets/assets.html',cnpj=cnpj)
+    
+@dashboard_request.route('/refund-asset/<uuid>', methods=['POST'])
+@login_required
+def assets_refund(uuid):
+    if request.method == 'POST': 
+        company_id = session.get('company_id')
+        return refund_asset(uuid, company_id)
+        
+
 
 #-----------------------------------------------------------------------------------------
 #   
