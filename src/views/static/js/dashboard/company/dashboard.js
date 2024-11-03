@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const data = await response.json();
         loading.style.display = 'none';
         main.style.display = 'block';
-        
+
         // Saldo
         document.getElementById('cash_now').textContent = `${formatValueToMoney(data.cash_now)}`;
         // Patrimônio
@@ -74,9 +74,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('values_exits').textContent = `${formatValueToMoney(data.values_exits)}`;
 
 
+        //---------------------------------------------------------------------------------------------
 
 
-        // Preencher a seção de informações
+
+         //---------------------------------------------------------------------------------------------
+
+
+
+        // Caixas clicáveis
         
 
         const liabilities_box = document.getElementById('assets_box');
