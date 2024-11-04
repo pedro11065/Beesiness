@@ -20,16 +20,14 @@
             <div class="modal-header">
                 <h2>Detalhes do passivo</h2>
 
-                 <button class="options-button" onclick="toggleDropdown(event)">
+                <button class="options-button" onclick="toggleDropdown(event)">
                     <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
                 </button>
-
-                <!--
+                
                 <div class="dropdown-menu" style="display:none;">
                     <button class="dropdown-item" onclick="openEditModal()">Editar</button>
-                    <button class="dropdown-item" onclick="deleteUser()">Deletar</button>
+                    <button class="dropdown-item" onclick="deleteLiability(event)">Deletar</button>
                 </div>
-                -->
             </div>
             <div class="form-group">
                 <label>Nome:</label>
@@ -80,6 +78,37 @@
                     <p id="uuid"></p>
                 </div>
             </footer>
+        </div>
+    </div>
+
+      <!-- Modal de confirmação -->
+      <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirmação</h2>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja deletar o passivo?</p>
+            </div>
+            <div class="button-group">
+                <button class="btn sim">Sim</button>
+                <button class="btn nao">Não</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de aviso -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Aviso</h2>
+            </div>
+            <div class="modal-body">
+                <p id="body-content"></p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
         </div>
     </div>
 

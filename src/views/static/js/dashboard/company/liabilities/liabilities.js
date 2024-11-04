@@ -53,20 +53,18 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 // Adiciona evento de clique ao row para abrir o modal
                 row.addEventListener('click', function () {
-                    const details = Array.from(row.children).map(child => child.innerText);
-                    console.log(details)
-                    document.getElementById('uuid').innerText = details[0]; // ID
-                    document.getElementById('name').innerText = details[1]; // Nome
-                    document.getElementById('event').innerText = details[2]; // Evento
-                    document.getElementById('class').innerText = details[3]; // Classe
-                    document.getElementById('value').innerText = details[4]; // Valor
+                    document.getElementById('name').innerText = liabilities.name; // Nome
+                    document.getElementById('event').innerText = liabilities.event; // Evento
+                    document.getElementById('class').innerText = liabilities.class; // Classe
+                    document.getElementById('value').innerText = liabilities.value; // Valor
                     document.getElementById('installment').innerText = liabilities.installment; // Parcelas
                     document.getElementById('emission_date').innerText = liabilities.emission_date; // Data de Emissão
                     document.getElementById('expiration_date').innerText = liabilities.expiration_date; // Data de Vencimento
                     document.getElementById('payment_method').innerText = liabilities.payment_method; // Forma de Pagamento
-                    document.getElementById('status').innerText = details[8]; // Status
+                    document.getElementById('status').innerText = liabilities.status; // Status
                     document.getElementById('description').innerText = liabilities.description; // Descrição
-                    document.getElementById('creation').innerText = `${details[10]} - ${details[11]}`; // Data e Horário de Criação
+                    document.getElementById('creation').innerText = `${liabilities.status} - ${liabilities.creation_date}`; // Data e Horário de Criação
+                    document.getElementById('uuid').innerText = liabilities.liability_id; // ID
 
                     document.getElementById('modal').style.display = 'block';
                 });
@@ -109,3 +107,88 @@ function formatValueToMoney(valueStr) {
 function CashName(nameStr) {
     return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
 }
+
+// Eventos e funções para deletar o passivo.
+const confirmModal = document.getElementById('confirm-modal');
+
+document.addEventListener('click', function (event) {
+    const dropdowns = document.querySelectorAll('.dropdown-menu');
+    
+    dropdowns.forEach(dropdown => {
+        // Verifica se o clique foi fora do dropdown ou do botão
+        if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) { 
+            dropdown.style.display = 'none';
+        }
+    });
+});
+
+function toggleDropdown(event) {
+    event.stopPropagation();
+
+    const dropdown = event.currentTarget.nextElementSibling;
+    if (dropdown) dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
+}
+
+function deleteLiability(event) {
+    event.stopPropagation();
+
+    confirmModal.style.display = 'block';
+
+    const dropdown = event.currentTarget.nextElementSibling;
+    if (dropdown) dropdown.style.display = 'none';
+
+    const liabilityId = document.getElementById('uuid').innerText;
+
+    const status = document.getElementById('status').innerText;
+
+    if (status.trim().toLowerCase().includes('estornado')) {
+        document.getElementById('body-content').innerText = 'Este passivo já foi estornado uma vez.';
+        document.getElementById('alert-modal').style.display = 'block';
+
+        confirmModal.style.display = 'none';
+        return;
+    }
+
+    const yesButton = document.querySelector('.btn.sim');
+
+    document.querySelector('.btn.sim').onclick = async function () {
+        try {   
+            yesButton.disabled = true;
+            yesButton.style.cursor = 'not-allowed';
+
+            const response = await fetch(`/dashboard/refund-liability/${liabilityId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                document.getElementById('body-content').innerText = result.message;
+                document.getElementById('alert-modal').style.display = 'block';
+                
+                confirmModal.style.display = 'none';
+                document.getElementById('modal').style.display = 'none';
+            } else {
+                throw new Error(result.message || 'Erro ao deletar o ativo.');
+            }
+        } catch (error) {
+            document.getElementById('body-content').innerText = error.message;
+            document.getElementById('alert-modal').style.display = 'block';
+        } finally {
+            yesButton.disabled = false;
+            yesButton.style.cursor  = 'pointer';
+        }
+    };
+}
+
+document.querySelector('.btn.nao').onclick = function () {
+    confirmModal.style.display = 'none';
+};
+
+document.querySelector('#alert-modal .fechar').onclick = function () {
+    document.getElementById('alert-modal').style.display = 'none';
+    location.reload();
+};

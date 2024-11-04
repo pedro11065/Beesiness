@@ -13,6 +13,7 @@ from src.controller.dashboard.company.info_liabilities import info_liabilities
 from src.controller.dashboard.user.info_user_companies import info_user_companies
 
 from src.controller.dashboard.company.refund_asset import refund_asset
+from src.controller.dashboard.company.refund_liability import refund_liability
 
 from src.controller.dashboard.company.register_asset import asset_registration
 from src.controller.dashboard.company.register_liability import liability_registration
@@ -157,7 +158,13 @@ def liabilities_site(cnpj):
         validate_cnpj_access(cnpj)
         return render_template('dashboard/company/liabilities/liabilities.html',cnpj=cnpj)
 
-
+@dashboard_request.route('/refund-liability/<uuid>', methods=['POST'])
+@login_required
+def liabilities_refund(uuid):
+    if request.method == 'POST': 
+        company_id = session.get('company_id')
+        return refund_liability(uuid, company_id)
+        
 #-----------------------------------------------------------------------------------------
 
 @dashboard_request.route('/company/<cnpj>/authorization', methods=['POST','GET'])

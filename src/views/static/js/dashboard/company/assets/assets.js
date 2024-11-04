@@ -1,5 +1,3 @@
-const confirmModal = document.getElementById('confirm-modal');
-
 document.addEventListener('DOMContentLoaded', async function () {
         const main = document.getElementById('main');
         const loading = document.getElementById('loading');
@@ -66,9 +64,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                         dataContainer.appendChild(row);
         
                         row.addEventListener('click', function () {
-                            const details = Array.from(row.children).map(child => child.innerText);
-                            console.log(details)
-                        
                             document.getElementById('name').innerText = asset.name;
                             document.getElementById('event').innerText = asset.event;
                             document.getElementById('class').innerText = asset.class;
@@ -131,6 +126,8 @@ function CashName(nameStr) {
     return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
 }
 
+// Eventos e funções para deletar o ativo.
+const confirmModal = document.getElementById('confirm-modal');
 
 document.addEventListener('click', function (event) {
     const dropdowns = document.querySelectorAll('.dropdown-menu');
@@ -150,7 +147,7 @@ function toggleDropdown(event) {
     if (dropdown) dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
 }
 
-function deleteUser(event) {
+function deleteAsset(event) {
     event.stopPropagation();
 
     confirmModal.style.display = 'block';
@@ -163,7 +160,7 @@ function deleteUser(event) {
     const status = document.getElementById('status').innerText;
 
     if (status.trim().toLowerCase().includes('estornado')) {
-        document.getElementById('body-content').innerText = 'Este ativo já foi estornado e não pode ser deletado.';
+        document.getElementById('body-content').innerText = 'Este ativo já foi estornado uma vez.';
         document.getElementById('alert-modal').style.display = 'block';
 
         confirmModal.style.display = 'none';

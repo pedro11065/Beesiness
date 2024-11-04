@@ -45,7 +45,7 @@ def db_search_liability(company_id):
             "description": data[10],
             "status": data[11],
             "creation_date":data[12].strftime("%d/%m/%Y") if isinstance(data[12], datetime.date) else data[12],
-            "creation_time": data[13].strftime('%H:%M:%S') if isinstance(data[13], datetime.time) else data[13],  # Convertendo time para string
+            "creation_time": data[13].strftime('%H:%M:%S') if isinstance(data[13], datetime.time) else data[13],
             'installment': data[16] 
 
         } for data in db_data]

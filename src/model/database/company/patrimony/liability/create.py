@@ -28,10 +28,12 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     
     if status_mode == True or event == "Empréstimo":
     # Guarda os dados na tabela de liabilities
-        cur.execute(f"""
-            INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment) 
-            VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}' ,'{installment}');
-        """)
+        cur.execute("""
+        INSERT INTO table_liabilities (
+            liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """, (liability_id, company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, installment))
+        
     if status_mode == False:
         # Guarda os dados no histórico de ativos e passivos
         installment_record = 0; new_month_add = 0 #01-11-2024
@@ -89,8 +91,26 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
         new_historic_id = uuid.uuid4()
 
         # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-        cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa','{value}', '{date}', 'asset','{creation_date}', '{creation_time}', {cash_debit}, {cash_credit});")
-
+        cur.execute(f"""
+                INSERT INTO table_historic (
+                    historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit
+                ) VALUES (
+                    '{new_historic_id}', 
+                    '{company_id}', 
+                    '{user_id}', 
+                    '{cash_id}', 
+                    '#!@cash@!#', 
+                    'Entrada de caixa', 
+                    'Caixa',
+                    '{value}', 
+                    '{date}', 
+                    'asset', 
+                    '{creation_date}', 
+                    '{creation_time}', 
+                    {cash_debit if cash_debit is not None else 'NULL'}, 
+                    {cash_credit if cash_credit is not None else 'NULL'}
+                );
+            """)
     # Confirma as mudanças
     conn.commit()
     print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Liability registrado com sucesso!')
