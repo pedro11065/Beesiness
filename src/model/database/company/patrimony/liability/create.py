@@ -5,7 +5,6 @@ from colorama import Fore, Style
 from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
 
-
 def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment,status_mode):
     db_login = connect_database()  # Coleta os dados para conexão
 
@@ -21,18 +20,21 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     cur = conn.cursor()
 
     # Define dados
-    liability_id = uuid.uuid4()
+    liability_id = str(uuid.uuid4())
     creation_time = datetime.now().strftime("%H:%M:%S")
     creation_date = datetime.now().strftime("%Y-%m-%d")
     type = "liability"
     
     if status_mode == True or event == "Empréstimo":
     # Guarda os dados na tabela de liabilities
-        cur.execute("""
-        INSERT INTO table_liabilities (
-            liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-        """, (liability_id, company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, installment))
+        try:
+            cur.execute("""
+            INSERT INTO table_liabilities (
+                liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            """, (liability_id, company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, installment))
+        except Exception as error:
+            print(Fore.RED + '[Liability - cadastro] ' + Style.RESET_ALL + f'Houve um erro: {error}')
         
     if status_mode == False:
         # Guarda os dados no histórico de ativos e passivos
@@ -58,11 +60,22 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
                     next_year = int(current_year) + 1
                     creation_date = (f"{next_year}-{next_month}-{current_day}")
                     
-            cur.execute(f"""
-                INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment) 
-                VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
-            """)
+            # cur.execute(f"""
+            #    INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment) 
+            #    VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
+            #""")
 
+            # Eu coloquei table_liabilities porque ele não registrava, não sei se era necessário colocar um historic aqui, dá uma checada no código depois.
+            # O if do table_liabilities de cima deve estar errado
+            try:    
+                cur.execute("""
+                INSERT INTO table_liabilities (
+                    liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """, (liability_id, company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, installment))
+            except Exception as error:
+                print(Fore.RED + '[Liability - cadastro] ' + Style.RESET_ALL + f'Houve um erro: {error}')
+            
         # Busca os dados de caixa
         cash_data = db_search_cash(company_id)
         cash_id = cash_data[0][0]  # ID do caixa
@@ -91,26 +104,15 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
         new_historic_id = uuid.uuid4()
 
         # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
-        cur.execute(f"""
-                INSERT INTO table_historic (
-                    historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit
-                ) VALUES (
-                    '{new_historic_id}', 
-                    '{company_id}', 
-                    '{user_id}', 
-                    '{cash_id}', 
-                    '#!@cash@!#', 
-                    'Entrada de caixa', 
-                    'Caixa',
-                    '{value}', 
-                    '{date}', 
-                    'asset', 
-                    '{creation_date}', 
-                    '{creation_time}', 
-                    {cash_debit if cash_debit is not None else 'NULL'}, 
-                    {cash_credit if cash_credit is not None else 'NULL'}
-                );
-            """)
+        try:
+            cur.execute(f"""
+                    INSERT INTO table_historic (
+                        historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit
+                    ) VALUES ('{new_historic_id}', '{company_id}', '{user_id}', '{cash_id}', '#!@cash@!#', 'Entrada de caixa', 'Caixa', '{value}', '{date}', '{type}', '{creation_date}', '{creation_time}', {cash_debit if cash_debit is not None else 'NULL'}, {cash_credit if cash_credit is not None else 'NULL'});
+                """)
+        except Exception as error:
+            print(Fore.RED + '[Liability - cadastro] ' + Style.RESET_ALL + f'Houve um erro ao tentar registrar caixa: {error}')
+
     # Confirma as mudanças
     conn.commit()
     print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Liability registrado com sucesso!')

@@ -1,14 +1,11 @@
 import psycopg2
 import uuid
-from datetime import datetime
+import datetime
 from colorama import Fore, Style
 from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
 
-
-
 def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
-
     db_login = connect_database() # Coleta os dados para conexão
     
     # Conecta ao banco de dados
@@ -24,8 +21,8 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
 
     # Define dados
     asset_id = str(uuid.uuid4())
-    creation_time = datetime.now().strftime("%H:%M:%S")
-    creation_date = datetime.now().strftime("%Y-%m-%d")
+    creation_time = datetime.datetime.now().strftime("%H:%M:%S")
+    creation_date = datetime.datetime.now().strftime("%Y-%m-%d")
     type =  "asset"
 
     if event not in ['Entrada de Caixa','Venda']:
@@ -44,9 +41,9 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
         print(i)
         if i > 0:
 
-            current_day = datetime.now().strftime("%d")
-            current_month = datetime.now().strftime("%m")
-            current_year = datetime.now().strftime("%Y")
+            current_day = datetime.datetime.now().strftime("%d")
+            current_month = datetime.datetime.now().strftime("%m")
+            current_year = datetime.datetime.now().strftime("%Y")
 
          
             

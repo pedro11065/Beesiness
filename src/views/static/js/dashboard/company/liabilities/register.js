@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(formData)
             });
 
+            console.log(response)
             if (response.ok) {
                 openSuccessModal('Passivo registrado com sucesso!');
             } else {

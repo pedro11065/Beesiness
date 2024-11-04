@@ -19,8 +19,6 @@ def refund_liability(liability_id, company_id):
     data_atual = datetime.datetime.now().strftime('%Y-%m-%d')
     data_hora_atual = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
 
-
-
     name = f'Estorno de {liability_data.get("name")}'
     event = 'Entrada de caixa'
     classe = 'Caixa'
@@ -38,8 +36,6 @@ def refund_liability(liability_id, company_id):
     expiration_date = None
     payment_method = None
     status_mode = False # Não é uma obrigação (pagamentos, etc)
-
-    # PS: O create_liability não está sendo criado embora o update_liability ocorra, é necessário fazer testes para encontrar o problema.
         
     try:
         db_create_liability(
