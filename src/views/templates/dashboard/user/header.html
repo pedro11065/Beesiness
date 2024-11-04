@@ -1,0 +1,97 @@
+<!-- Template do header -->
+<header class="main-header">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .main-header {
+            background-color: #1E1E1E;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10vw;
+            height: 4rem;
+            overflow: visible;
+            z-index: 10;
+            width: 100%;
+            box-shadow: rgba(0, 0, 0, 0.05) 0px 19px 38px, rgba(0, 0, 0, 0.05) 0px 15px 12px;
+        }
+
+        .main-header .logo {
+            height: 80%;
+            padding: 0.5rem;
+            object-fit: contain;
+        }
+
+        .main-header .logo-link {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .main-header .header-name {
+            display: flex;
+            color: #ffffff;
+            align-items: center;
+            position: relative;
+            height: 100%;
+            padding: 0 1rem;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .main-header section {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: auto; 
+            margin-bottom: 0; 
+        }
+
+        .main-header .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1E1E1E;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 50;
+        }
+
+        .main-header .dropdown-content a {
+            color: #ffffff;;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.2s ease;
+        }
+
+        .main-header .dropdown-content a:hover {
+            background-color: #2e2e2e;
+        }
+
+        .main-header #exit {
+            color: red;
+        }
+
+        .main-header .header-name:hover .dropdown-content,
+        .dropdown-content:hover {
+            display: block;
+        }
+
+    </style>
+    <a href="/" class="logo-link">
+        <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Imagem do Cabeçalho">
+    </a>
+    <section class="header-name">
+            <span style="text-transform: capitalize;">{{ current_user.fullname }}</span>
+            <div class="dropdown-content">
+                <a href="/user/settings">Editar conta</a>
+                <a id="exit" href="/user/logout">Sair</a>
+        </div>
+    </section>
+</header>

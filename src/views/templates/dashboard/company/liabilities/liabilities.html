@@ -13,17 +13,7 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="user">
-            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
-            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
-            <p>{{ current_user.fullname }}</p>
-        </div>
-        
-        <a href="/" class="exit">
-            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
-        </a>
-    </header>
+    {% include 'dashboard/user/header.html' %}
 
     <div id="modal" class="modal">
         <div class="modal-content">

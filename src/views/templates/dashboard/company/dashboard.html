@@ -15,31 +15,8 @@
     
 </head>
 <body>
-    <!-- <header class="header">
-        <nav>
-            <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Configurações" href="/">
-            <div class="user">
-                <p>{{ current_user.fullname }}</p>
-                <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
-            </div>
-        </nav>
-    </header> -->
-    
-    
-    <header class="header">
-        <div class="user">
-            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações">
-            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário">
-            <p>{{ current_user.fullname }}</p> Nome do usuário
-        </div>
-
-        <a href="/" class="exit">
-            <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair">
-        </a>
-         <!-- <button class="btn logout" onclick="toggleModal()"><i class="fas fa-right-from-bracket"></i></button> -->
-    </header>
+    {% include 'dashboard/user/header.html' %}
    
-
     <article_corousel class="carousel-container">
         <button class="carousel-prev" onclick="scrollCarousel(-1)">&#10094;</button>
         <section class="carousel-wrapper">

@@ -20,18 +20,7 @@
 
   </head>
     <body>
-      <header class="header">  
-
-        <div class="user">
-          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/config.png') }}" alt="Configurações"> 
-          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/user.png') }}" alt="imagem usuário"> 
-          <p>{{ current_user.fullname }}</p> <!-- Nome do usuário -->
-        </div>  
-  
-          <a href="/" class="exit">
-          <img class="icon" src="{{ url_for('static', filename='images/dashboard/header/exit.png') }}" alt="Botão sair"> </a>
-
-      </header>
+      {% include 'dashboard/user/header.html' %}
 
       <main class="main">
         <div class="box" id="resultado">

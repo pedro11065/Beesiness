@@ -185,7 +185,6 @@ function deleteUser(event) {
             });
 
             const result = await response.json();
-            console.log(result)
 
             if (response.ok) {
                 document.getElementById('body-content').innerText = result.message;
