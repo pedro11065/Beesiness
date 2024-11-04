@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const registerForm = document.getElementById("registroEmpresaForm"); // Ajuste o ID aqui para corresponder ao HTML
-    const registerButton = registerForm.querySelector(".register-btn"); // Verifique se o botão tem essa classe
+    const registerForm = document.getElementById("registroEmpresaForm");
+    const registerButton = registerForm.querySelector(".register-btn");
     
     // Verifica se o formulário e o botão de registro foram encontrados
     if (!registerForm || !registerButton) {
@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // Evento de envio do formulário
     registerForm.addEventListener('submit', async (event) => {
         event.preventDefault(); 
 
@@ -74,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function clearErrors() {
-    var errorFields = document.querySelectorAll('.error');
+    var errorFields = document.querySelectorAll('.msg-error');
     errorFields.forEach(function (errorField) {
         errorField.textContent = ''; // Limpa os erros anteriores
     });

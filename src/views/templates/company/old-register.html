@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Empresa - Beesiness</title>
+
+    <!-- Css Linkado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/company/register.css') }}">
+
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+
+    <!-- Fontes do Google: Roboto Slab -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Dark Mode -->
+    <button id="dark-mode-toggle">🌙</button>
+
+    <!-- Registro de Empresa -->
+    <div class="container">
+        <h1>Registrar Empresa</h1>
+
+        <!-- Mostrar erro no topo do formulário, caso ocorra um erro grave -->
+        <p class="error" id="message-error"></p>
+
+        <!-- Entrada de Dados -->
+        <form id="registroEmpresaForm">
+            <div class="form-group">
+                <label for="name">Nome da Empresa</label>
+                <input type="text" id="name" name="name" required>
+                <p class="error" id="nomeEmpresa-error"></p>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required>
+                <p class="error" id="email-error"></p>
+            </div>
+            <div class="form-group">
+                <label for="cnpj">CNPJ</label>
+                <input type="text" id="cnpj" name="cnpj" maxlength="18" required>
+                <p class="error" id="cnpj-error"></p>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" required>
+                <p class="error" id="password-error"></p>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Senha</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <p class="error" id="confirmPassword-error"></p>
+            </div>
+            <button type="submit" class="register-btn">Registrar Empresa</button>
+        </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/company/register.js') }}"></script>
+</body>
+
+</html>

@@ -4,65 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Empresa - Beesiness</title>
+    <title>Registro de empresa - Beesiness</title>
 
     <!-- Css Linkado -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/company/register.css') }}">
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
 
     <!-- Fontes do Google: Roboto Slab -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
 </head>
 
 <body>
-    <!-- Dark Mode -->
-    <button id="dark-mode-toggle">🌙</button>
 
-    <!-- Registro de Empresa -->
-    <div class="container">
-        <h1>Registrar Empresa</h1>
+    <!-- Modal  -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"></div>
 
-        <!-- Mostrar erro no topo do formulário, caso ocorra um erro grave -->
-        <p class="error" id="message-error"></p>
-
-        <!-- Entrada de Dados -->
-        <form id="registroEmpresaForm">
-            <div class="form-group">
-                <label for="name">Nome da Empresa</label>
-                <input type="text" id="name" name="name" required>
-                <p class="error" id="nomeEmpresa-error"></p>
-            </div>
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" required>
-                <p class="error" id="email-error"></p>
-            </div>
-            <div class="form-group">
-                <label for="cnpj">CNPJ</label>
-                <input type="text" id="cnpj" name="cnpj" maxlength="18" required>
-                <p class="error" id="cnpj-error"></p>
-            </div>
-            <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" name="password" required>
-                <p class="error" id="password-error"></p>
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirmar Senha</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
-                <p class="error" id="confirmPassword-error"></p>
-            </div>
-            <button type="submit" class="register-btn">Registrar Empresa</button>
-        </form>
+            <div class="modal-body"></div>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <photo >
+        
+    </photo>
+    <main>
+        <section class="welcome-section">
+
+            <welcome-box class="welcome-box">
+                <h1>Criando empresa!</h1>
+            </welcome-box>
+
+        </section>
+        <form id="registroEmpresaForm" action="/company/register" method="post">
+            <article class="form-article">
+                <section class="form-section-name"> <!-- nome da empresa -->
+                    <div class="msg">Nome da empresa</div>
+                        <input class="form-box" type="text" id="name" name="name" required>
+                    <p class="msg-error" id="nomeEmpresa-error"></p>
+                </section>
+            </article>
+
+            <article class="form-article">
+                <section class="form-section">  <!-- email -->
+                    <div class="msg">E-mail</div>
+                        <input class="form-box" type="text" id="email" name="email" required>
+                    <div class="msg-error" id="email-error"></div>
+                </section>
+
+                <section class="form-section"> <!-- cpf -->
+                    <div class="msg">CNPJ</div>
+                        <input class="form-box" type="text" id="cnpj" name="cnpj" maxlength="18" required>
+                    <div class="msg-error" id="cnpj-error"></div>
+                </section>
+            </article>
+
+            <article class="form-article">
+                <section class="form-section"> <!-- password -->
+                    <div class="msg">Senha</div>
+                        <input class="form-box" type="password" id="password" name="password" required>
+                    <div class="msg-error" id="password-error"></div>
+                </section>
+
+                <section class="form-section"> <!-- confirm password -->
+                    <div class="msg">Confirme a senha</div>
+                        <input class="form-box" type="password" id="confirmPassword" name="confirmPassword" required>
+                    <div class="msg-error" id="confirmPassword-error"></div>
+                </section>
+            </article>
+
+
+            <article class="form-article-button">
+                <button type="submit" id="registroBtn" class="form-section-button register-btn">Registrar</button> 
+            </article>
+        </form>
+    </main>
     <script src="{{ url_for('static', filename='js/company/register.js') }}"></script>
 </body>
-
-</html>
