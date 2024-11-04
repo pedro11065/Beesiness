@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!validateForm()) {
             return;
         }
+        
 
         registerButton.disabled = true;
         registerButton.textContent = "Aguarde...";
@@ -167,7 +168,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function clearErrors() {
-    document.querySelectorAll('.error').forEach(errorField => {
+    const errorFields = document.querySelectorAll('.msg-error');
+    errorFields.forEach(function (errorField) {
         errorField.textContent = '';
     });
 }
@@ -187,7 +189,7 @@ function validateForm() {
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const cpf = document.getElementById('cpf').value.replace(/\D/g, ''); // Remove a máscara
-    const birthDate = document.getElementById('birthDate').value;
+    var birthDate = document.getElementById('birthDate').value;
     let isValid = true;
 
     // Validação de nome
@@ -214,6 +216,9 @@ function validateForm() {
     if (!birthDatePattern.test(birthDate)) {
         displayError('birthDate', 'Data de nascimento inválida. Use o formato DD/MM/YYYY.');
         isValid = false;
+    } else if (!isAtLeast18(birthDate)) {
+        displayError('birthDate', 'Você deve ter pelo menos 18 anos.');
+        isValid = false;
     }
 
     // Validação de CPF
@@ -227,7 +232,6 @@ function validateForm() {
         displayError('confirmPassword', 'As senhas não coincidem.');
         isValid = false;
     } else {
-        // Apenas o primeiro erro de senha será mostrado
         if (password.length < 8) {
             displayError('password', 'A senha deve ter um mínimo de 8 dígitos.');
             isValid = false;
@@ -250,6 +254,23 @@ function validateForm() {
     }
 
     return isValid;
+}
+
+function isAtLeast18(birthDate) {
+    const [day, month, year] = birthDate.split('/').map(Number);
+    const birth = new Date(year, month - 1, day);
+    const today = new Date();
+
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    const dayDiff = today.getDate() - birth.getDate();
+
+    // Diminui um ano caso o aniversário não tenha acontecido ainda
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--;
+    }
+
+    return age >= 18;
 }
 
 function formatCPF(value) {

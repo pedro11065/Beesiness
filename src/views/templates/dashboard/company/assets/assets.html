@@ -108,9 +108,9 @@
     </div>
 
     <menu class="menu-container" id="menuContainer">
-        <div class="register-box">
-            <a href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}">Registrar</a>
-        </div>
+        <a href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}" style="text-decoration: none;">
+            <div class="register-box">Registrar</div>
+        </a>
         <div class="info-box">
             Lista ativos
         </div>
