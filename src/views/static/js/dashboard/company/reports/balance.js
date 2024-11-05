@@ -117,6 +117,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 let totalDebito = 0, totalCredito = 0;
 
                 Object.keys(groupedByMonth[month]).forEach(day => {
+                
+                
                     const dayDiv = document.createElement('article');
                     dayDiv.className = 'day-container';
 
@@ -141,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                     const balanceDiv = document.createElement('main');
                     balanceDiv.className = 'balance-container';
-
+                    console.log(dailyData.map(item =>item.name))
                     balanceDiv.innerHTML = `
                         <section class="accounts-container">
                             <header class="account-title">

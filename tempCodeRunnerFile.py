@@ -1,2 +1,2 @@
 
-app = create_app()
+def page_permission(e):

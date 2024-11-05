@@ -21,19 +21,17 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     cur = conn.cursor()
 
     # Define dados
-    liability_id = uuid.uuid4()
+    liability_id = str(uuid.uuid4())
     creation_time = datetime.now().strftime("%H:%M:%S")
     creation_date = datetime.now().strftime("%Y-%m-%d")
     type = "liability"
     
     if status_mode == True or event == "Empréstimo":
     # Guarda os dados na tabela de liabilities
-        cur.execute("""
-        INSERT INTO table_liabilities (
-            liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-        """, (liability_id, company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, installment))
-        
+        cur.execute(f"""
+            INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment) 
+            VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}' ,'{installment}');
+        """) 
     if status_mode == False:
         # Guarda os dados no histórico de ativos e passivos
         installment_record = 0; new_month_add = 0 #01-11-2024

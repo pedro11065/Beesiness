@@ -48,12 +48,20 @@ def liability_registration(liability_data, company_id):
         cash_debit = 0  
         cash_credit = value  
 
-    elif event in ['Empréstimo', 'Financiamento', 'Concessão de crédito', 'Prestação de serviços']:
+    elif event in ['Financiamento', 'Concessão de crédito', 'Prestação de serviços']:
         update_cash = 'more'  #Se for uma dessas coisas, vai ter uma adição do meu saldo, logo, update_cash = more
         
         liability_debit = 0      
         liability_credit = value             
         cash_debit = value  
+        cash_credit =  0
+
+    elif event in ['Empréstimo', 'Capital Social']:
+        update_cash = 'more'  #Se for uma dessas coisas, vai ter uma adição do meu saldo, logo, update_cash = more
+        
+        liability_debit = 0      
+        liability_credit = value             
+        cash_debit = 0 
         cash_credit =  0
 
     else:

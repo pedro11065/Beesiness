@@ -289,7 +289,7 @@ section-hero{
     box-shadow: rgba(0, 0, 0, 0.30) 0px 3px 6px;
 }
 
-box-hero:hover{
+.box-hero:hover{
     background-color: #1E1E1E;
     h2{
         color: white;
