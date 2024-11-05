@@ -50,7 +50,16 @@ def asset_registration(asset_data, company_id):
         cash_credit = 0
         asset_debit = 0
         asset_credit = 0    
-             
+
+
+    elif event == "Capital Social":
+        update_cash = 'more'
+        
+        cash_debit = 0 
+        cash_credit = 0
+        asset_debit = 0
+        asset_credit = 0
+
     else:
         update_cash = 'none'
         
