@@ -38,8 +38,8 @@ def asset_registration(asset_data, company_id):
     if event in ['Compra','Transferência','Serviço']:
         update_cash = 'less' 
 
-        cash_debit = 0
-        cash_credit = value    
+        cash_debit = value 
+        cash_credit = 0  
         asset_debit = value    
         asset_credit = 0
 
@@ -65,8 +65,8 @@ def asset_registration(asset_data, company_id):
         
         cash_debit = value   
         cash_credit = 0
-        asset_debit = 0
-        asset_credit = value   
+        asset_debit = value   
+        asset_credit = 0
 
     #---------------------------------------------------------------------
 

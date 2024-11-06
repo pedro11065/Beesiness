@@ -26,7 +26,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     creation_date = datetime.now().strftime("%Y-%m-%d")
     type = "liability"
     
-    if status_mode == True or event == "Empréstimo":
+    if status_mode == True or event in [ "Empréstimo",'Capital Social']:
     # Guarda os dados na tabela de liabilities
         cur.execute(f"""
             INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment) 
