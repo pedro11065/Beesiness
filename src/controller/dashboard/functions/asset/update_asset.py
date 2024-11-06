@@ -18,6 +18,9 @@ def update_asset(data, asset_id, company_id):
     new_value = data.get('new_value') # 15000
     difference_value = current_value - new_value # 35000
 
+    if current_value < new_value:
+         return jsonify({'message': 'O novo valor é maior que do banco de dados.'})
+
     # Atualizar o  value do asset por (difference_value) e acquisition_date para o dia atual.
     # Criar um valor no histórico da diferença com o new_value
 
@@ -33,6 +36,5 @@ def update_asset(data, asset_id, company_id):
     if asset_data.get('acquisition_date') != data_atual:
       db_update_asset(asset_id, company_id, 'acquisition_date', data_atual)
 
-      
     return jsonify({'message': 'Valor do ativo atualizado com sucesso e histórico criado.'})
 

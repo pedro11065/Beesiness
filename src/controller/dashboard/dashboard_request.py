@@ -13,6 +13,8 @@ from src.controller.dashboard.functions.liability.info_liabilities import info_l
 from src.controller.dashboard.user.info_user_companies import info_user_companies
 
 from src.controller.dashboard.functions.asset.update_asset import update_asset
+from src.controller.dashboard.functions.liability.update_liability import update_liability
+
 
 from src.controller.dashboard.functions.asset.refund_asset import refund_asset
 from src.controller.dashboard.functions.liability.refund_liability import refund_liability
@@ -125,7 +127,7 @@ def razonete_site(cnpj):
         validate_cnpj_access(cnpj)
         return render_template('dashboard/company/reports/razonete.html', cnpj=cnpj)
 
-#-----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------- ATIVO
 
 @dashboard_request.route('assets/<cnpj>', methods=['POST','GET'])
 @login_required
@@ -138,16 +140,16 @@ def assets_site(cnpj):
         validate_cnpj_access(cnpj)
         return render_template('dashboard/company/assets/assets.html',cnpj=cnpj)
     
+
 @dashboard_request.route('/refund-asset/<uuid>', methods=['POST'])
 @login_required
 def assets_refund(uuid):
     if request.method == 'POST': 
         company_id = session.get('company_id')
         return refund_asset(uuid, company_id)
-    
 
 
-@dashboard_request.route('/update-asset-value/<uuid>', methods=['POST'])
+@dashboard_request.route('/update-asset/<uuid>', methods=['POST'])
 @login_required
 def assets_update(uuid):
     if request.method == 'POST': 
@@ -157,8 +159,7 @@ def assets_update(uuid):
         
 
 
-#-----------------------------------------------------------------------------------------
-#   
+#----------------------------------------------------------------------------------------- PASSIVO
 @dashboard_request.route('liabilities/<cnpj>', methods=['POST','GET'])
 @login_required
 def liabilities_site(cnpj): 
@@ -170,12 +171,23 @@ def liabilities_site(cnpj):
         validate_cnpj_access(cnpj)
         return render_template('dashboard/company/liabilities/liabilities.html',cnpj=cnpj)
 
+
 @dashboard_request.route('/refund-liability/<uuid>', methods=['POST'])
 @login_required
 def liabilities_refund(uuid):
     if request.method == 'POST': 
         company_id = session.get('company_id')
         return refund_liability(uuid, company_id)
+    
+    
+@dashboard_request.route('/update-liability/<uuid>', methods=['POST'])
+@login_required
+def liabilities_update(uuid):
+    if request.method == 'POST': 
+        data = request.get_json()
+        company_id = session.get('company_id')
+        return update_liability(data, uuid, company_id)
+        
         
 #-----------------------------------------------------------------------------------------
 

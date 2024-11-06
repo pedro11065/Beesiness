@@ -417,15 +417,15 @@ p {
 
 /* Modal de editar */
 input[readonly], input, select {
-    width: 100%; /* Garante que o campo ocupe toda a largura disponível */
-    max-width: 100%; /* Evita que o campo ultrapasse a largura do modal */
+    width: 100%;
+    max-width: 100%; 
     padding: 10px;
     margin: 8px 0;
     border-radius: 8px;
     border: 1px solid #ccc;
     background-color: #e9ecef;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 2px;
-    box-sizing: border-box; /* Garante que o padding e border não afetem a largura total */
+    box-sizing: border-box;
 }
 
 input[readonly] {
@@ -433,6 +433,6 @@ input[readonly] {
 }
 
 #edit-modal input, #edit-modal select {
-    margin: 10px 0; /* Adiciona espaçamento entre campos no modal */
-    padding: 12px 15px; /* Um pouco mais de preenchimento para uma melhor visualização */
+    margin: 10px 0;
+    padding: 12px 15px;
 }

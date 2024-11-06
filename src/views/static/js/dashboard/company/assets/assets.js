@@ -246,7 +246,7 @@ async function confirmEdit() {
 
     // Enviar requisição para atualizar o valor do ativo
     try {
-        const response = await fetch(`/dashboard/update-asset-value/${assetId}`, {
+        const response = await fetch(`/dashboard/update-asset/${assetId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
