@@ -3,20 +3,22 @@ from flask_login import login_required, current_user
 from src import cache
 
 
-from src.controller.dashboard.company.info_authorization import info_authorization
-from src.controller.dashboard.company.info_assets import info_assets
-from src.controller.dashboard.company.info_journal import info_journal
-from src.controller.dashboard.company.info_balance import info_balance
-from src.controller.dashboard.company.info_razonete import info_razonete
-from src.controller.dashboard.company.info_dashboard import info_dashboard
-from src.controller.dashboard.company.info_liabilities import info_liabilities
+from src.controller.dashboard.functions.info_authorization import info_authorization
+from src.controller.dashboard.functions.asset.info_assets import info_assets
+from src.controller.dashboard.functions.info_journal import info_journal
+from src.controller.dashboard.functions.info_balance import info_balance
+from src.controller.dashboard.functions.info_razonete import info_razonete
+from src.controller.dashboard.functions.info_dashboard import info_dashboard
+from src.controller.dashboard.functions.liability.info_liabilities import info_liabilities
 from src.controller.dashboard.user.info_user_companies import info_user_companies
 
-from src.controller.dashboard.company.refund_asset import refund_asset
-from src.controller.dashboard.company.refund_liability import refund_liability
+from src.controller.dashboard.functions.asset.update_asset import update_asset
 
-from src.controller.dashboard.company.register_asset import asset_registration
-from src.controller.dashboard.company.register_liability import liability_registration
+from src.controller.dashboard.functions.asset.refund_asset import refund_asset
+from src.controller.dashboard.functions.liability.refund_liability import refund_liability
+
+from src.controller.dashboard.functions.asset.register_asset import asset_registration
+from src.controller.dashboard.functions.liability.register_liability import liability_registration
 
 from src.model.database.company.companies.search import db_search_company
 from src.model.database.company.user_companies.search import db_search_user_company
@@ -142,6 +144,16 @@ def assets_refund(uuid):
     if request.method == 'POST': 
         company_id = session.get('company_id')
         return refund_asset(uuid, company_id)
+    
+
+
+@dashboard_request.route('/update-asset-value/<uuid>', methods=['POST'])
+@login_required
+def assets_update(uuid):
+    if request.method == 'POST': 
+        data = request.get_json()
+        company_id = session.get('company_id')
+        return update_asset(data, uuid, company_id)
         
 
 

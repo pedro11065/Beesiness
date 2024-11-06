@@ -3,7 +3,7 @@ from flask_login import current_user
 
 import datetime
 
-from src.model.database.company.patrimony.asset.search_asset import db_search_specific_asset
+from src.model.database.company.patrimony.asset.actions.search_asset import db_search_specific_asset
 from src.model.database.company.patrimony.asset.create import db_create_asset
 from src.model.database.company.patrimony.asset.update import db_update_asset
 
