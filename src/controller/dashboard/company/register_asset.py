@@ -63,9 +63,9 @@ def asset_registration(asset_data, company_id):
     else:
         update_cash = 'none'
         
-        cash_debit = value   
+        cash_debit = 0 
         cash_credit = 0
-        asset_debit = value   
+        asset_debit = value    
         asset_credit = 0
 
     #---------------------------------------------------------------------
