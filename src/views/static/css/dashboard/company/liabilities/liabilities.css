@@ -333,26 +333,25 @@ p {
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
+    color: white;
 }
 
-.button-group .btn.sim {
+/* Botões de confirmação */
+.btn.confirm-delete, .btn.confirm-edit {
     background-color: #4CAF50;
-    color: white;
 }
 
-.button-group .btn.sim:hover {
+.btn.confirm-delete:hover, .btn.confirm-edit:hover {
     background-color: #459c48;
-    color: white;
 }
 
-.button-group .btn.nao {
+/* Botões de cancelamento */
+.btn.cancel-delete, .btn.cancel-edit {
     background-color: #f44336;
-    color: white;
 }
 
-.button-group .btn.nao:hover {
+.btn.cancel-delete:hover, .btn.cancel-edit:hover {
     background-color: #da4338;
-    color: white;
 }
 
 .modal-body p {
@@ -361,7 +360,18 @@ p {
     padding: 1rem;
 }
 
-#alert-modal .fechar {
+.modal-body p {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 1rem;
+}
+
+#alert-modal {
+    position: fixed;
+    z-index: 1050;
+}
+
+#alert-modal .btn.fechar {
     background-color: #FFD700;
     color: white;
     padding: 10px 30px;
@@ -371,6 +381,28 @@ p {
     font-size: 1rem;
 }
 
-#alert-modal .fechar:hover {
+#alert-modal .btn.fechar:hover {
     background-color: #FFC400;
+}
+
+/* Modal de editar */
+input[readonly], input, select {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #e9ecef;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 2px;
+    box-sizing: border-box;
+}
+
+input[readonly] {
+    cursor: not-allowed;
+}
+
+#edit-modal input, #edit-modal select {
+    margin: 10px 0;
+    padding: 12px 15px;
 }

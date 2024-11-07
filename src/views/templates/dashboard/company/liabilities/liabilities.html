@@ -82,7 +82,7 @@
     </div>
 
       <!-- Modal de confirmação -->
-      <div id="confirm-modal" class="modal">
+     <div id="confirm-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Confirmação</h2>
@@ -91,8 +91,8 @@
                 <p>Tem certeza que deseja deletar o passivo?</p>
             </div>
             <div class="button-group">
-                <button class="btn sim">Sim</button>
-                <button class="btn nao">Não</button>
+                <button class="btn confirm-delete">Sim</button>
+                <button class="btn cancel-delete">Não</button>
             </div>
         </div>
     </div>
@@ -108,6 +108,32 @@
             </div>
             <div class="button-group">
                 <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edição -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configuração do passivo</h2>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Nome:</label>
+                <input type="text" id="edit-name" name="edit-name" readonly>
+
+                <label for="cpf">Valor antigo:</label>
+                <input type="text" id="old_value" name="old_value" readonly>
+
+                <label for="permission">Valor abatido:</label>
+                <input type="text" id="new_value" name="new_value">
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button class="btn confirm-edit" onclick="confirmEdit()">Confirmar</button>
+                <button class="btn cancel-edit" onclick="closeEditModal()">Cancelar</button>
             </div>
         </div>
     </div>

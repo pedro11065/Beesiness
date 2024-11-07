@@ -1,3 +1,7 @@
+const confirmModal = document.getElementById('confirm-modal');
+const alertModal = document.getElementById('alert-modal');
+const editModal = document.getElementById('edit-modal');
+
 document.addEventListener('DOMContentLoaded', async function () {
         const main = document.getElementById('main');
         const loading = document.getElementById('loading');
@@ -126,9 +130,8 @@ function CashName(nameStr) {
     return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
 }
 
-// Eventos e funções para deletar o ativo.
-const confirmModal = document.getElementById('confirm-modal');
 
+/* Dropdown */
 document.addEventListener('click', function (event) {
     const dropdowns = document.querySelectorAll('.dropdown-menu');
     
@@ -147,6 +150,7 @@ function toggleDropdown(event) {
     if (dropdown) dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
 }
 
+/* Modal de delete */
 function deleteAsset(event) {
     event.stopPropagation();
 
@@ -202,11 +206,65 @@ function deleteAsset(event) {
     };
 }
 
-document.querySelector('.btn.nao').onclick = function () {
+/* Editar */
+document.querySelector('.btn.cancel-delete').onclick = function () {
     confirmModal.style.display = 'none';
 };
 
-document.querySelector('#alert-modal .fechar').onclick = function () {
-    document.getElementById('alert-modal').style.display = 'none';
-    location.reload();
+document.querySelector('#alert-modal .btn.fechar').onclick = function () {
+    const confirmModalVisible = confirmModal.style.display === 'block';
+    alertModal.style.display = 'none';
+    if (confirmModalVisible) location.reload();
 };
+
+/* Editar */
+function openEditModal() {
+    editModal.style.display = 'block';
+
+    const name = document.getElementById('name').innerText;
+    const oldValue = document.getElementById('value').innerText;
+
+    document.getElementById('edit-name').value = name;
+    document.getElementById('old_value').value = oldValue;
+    document.getElementById('new_value').value = '';
+}
+
+function closeEditModal() {
+    editModal.style.display = 'none';
+}
+
+async function confirmEdit() {
+    const newValue = parseFloat(document.getElementById('new_value').value);
+    const oldValue = parseFloat(document.getElementById('old_value').value);
+    const assetId = document.getElementById('uuid').innerText;
+
+    if (isNaN(newValue) || newValue <= 0 || newValue >= oldValue) {
+        document.getElementById('body-content').innerText = 'Por favor, insira um valor maior que 0 e menor que o valor atual.';
+        alertModal.style.display = 'block';
+        return;
+    }
+
+    // Enviar requisição para atualizar o valor do ativo
+    try {
+        const response = await fetch(`/dashboard/update-asset/${assetId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ new_value: newValue })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            document.getElementById('body-content').innerText = result.message;
+            alertModal.style.display = 'block';
+            closeEditModal();
+        } else {
+            throw new Error(result.message || 'Erro ao atualizar o valor.');
+        }
+    } catch (error) {
+        document.getElementById('body-content').innerText = error.message;
+        alertModal.style.display = 'block';
+    }
+}

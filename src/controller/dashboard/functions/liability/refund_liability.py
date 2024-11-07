@@ -3,7 +3,7 @@ from flask_login import current_user
 
 import datetime
 
-from src.model.database.company.patrimony.liability.search_liability import db_search_specific_liability
+from src.model.database.company.patrimony.liability.actions.search_liability import db_search_specific_liability
 from src.model.database.company.patrimony.liability.create import db_create_liability
 from src.model.database.company.patrimony.liability.update import db_update_liability
 

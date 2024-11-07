@@ -1,7 +1,7 @@
 import psycopg2
 from colorama import Fore, Style
 from datetime import date, time
-from ....connect import connect_database
+from .....connect import connect_database
 
 def db_search_specific_liability(asset_id, company_id):
     db_login = connect_database()
@@ -18,9 +18,11 @@ def db_search_specific_liability(asset_id, company_id):
 
     # Busca com base no asset_id e company_id
     cur.execute("""
-        SELECT * FROM table_liabilities 
-        WHERE liability_id = %s AND company_id = %s
-        ORDER BY creation_date DESC, creation_time DESC;
+            SELECT liability_id, company_id, user_id, name, event, class, value, emission_date, 
+                   expiration_date, payment_method, description, status, creation_date, creation_time, debit, credit, installment 
+            FROM table_liabilities 
+            WHERE liability_id = %s AND company_id = %s
+            ORDER BY creation_date DESC, creation_time DESC;
     """, (asset_id, company_id))
     
     db_data = cur.fetchone()
@@ -45,7 +47,9 @@ def db_search_specific_liability(asset_id, company_id):
         "payment_method": db_data[9],
         "description": db_data[10],
         "status": db_data[11],
-        "creation_date":db_data[12].strftime("%d/%m/%Y") if isinstance(db_data[12], date) else db_data[12],
+        "creation_date": db_data[12].strftime("%d/%m/%Y") if isinstance(db_data[12], date) else db_data[12],
         "creation_time": db_data[13].strftime('%H:%M:%S') if isinstance(db_data[13], time) else db_data[13],
-        'installment': db_data[16] 
+        'debit': db_data[13] if db_data[13] is not None else 0,
+        'credit': db_data[14] if db_data[14] is not None else 0,
+        'installment': db_data[15]
     }
