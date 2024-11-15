@@ -56,7 +56,7 @@ def db_create_historic(liability_id, company_id, data, value):
             class_type,
             value,
             emission_date_formatted,
-            'asset',
+            'liability',
             creation_date,
             creation_time,
             debit if debit is not None else None,

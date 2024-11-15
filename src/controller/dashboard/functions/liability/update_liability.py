@@ -9,9 +9,6 @@ from src.model.database.company.patrimony.liability.update import db_update_liab
 
 def update_liability(data, liability_id, company_id):
     liability_data = db_search_specific_liability(liability_id, company_id)
-    print(liability_data)
-
-    print(f'O liability deu: {liability_data}')
 
     if not liability_data:
         return jsonify({'message': 'Passivo com uuid {liability_id} não encontrado na empresa!'})

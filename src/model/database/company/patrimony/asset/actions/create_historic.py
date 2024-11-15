@@ -18,8 +18,6 @@ def db_create_historic(asset_id, company_id, data, value):
     )
     cur = conn.cursor() # Cria um cursor no PostGreSQL
 
-    print(f'A data chegou no create_historic: {data}')
-
     new_historic_id = str(uuid.uuid4())
     user_id = data.get('user_id')
     #patrimony_id = asset_id 
