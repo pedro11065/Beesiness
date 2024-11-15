@@ -6,6 +6,7 @@ import datetime
 from src.model.database.company.patrimony.liability.actions.search_liability import db_search_specific_liability
 from src.model.database.company.patrimony.liability.actions.create_historic import db_create_historic
 from src.model.database.company.patrimony.liability.update import db_update_liability
+from src.model.database.company.patrimony.asset.actions.update_cash import db_update_cash
 
 def update_liability(data, liability_id, company_id):
     liability_data = db_search_specific_liability(liability_id, company_id)
@@ -21,7 +22,8 @@ def update_liability(data, liability_id, company_id):
          return jsonify({'message': 'O novo valor é maior que do banco de dados.'})
 
     db_update_liability(liability_id, company_id, 'value', difference_value) # Atualiza o valor do liability de 50 mil para 35 mil.
-    db_create_historic(liability_id, company_id, liability_data, new_value) # Cria um histórico da diferença do valor, ou seja, 15 mil.
+    db_update_cash(company_id, new_value)
+    db_create_historic(liability_id, company_id, liability_data, difference_value) # Cria um histórico da diferença do valor, ou seja, 15 mil.
 
 
     data_atual = datetime.datetime.now().strftime('%Y-%m-%d')
