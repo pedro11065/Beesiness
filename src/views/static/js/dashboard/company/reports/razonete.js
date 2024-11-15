@@ -61,22 +61,22 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 groupedByMonth[month][day].items.push(item);
 
-                // Agrupando por classe
-                if (!groupedByMonth[month][day].groupedByClass[item.class]) {
-                    groupedByMonth[month][day].groupedByClass[item.class] = {
+                // Agrupando por classe 
+                if (!groupedByMonth[month][day].groupedByClass[item.name]) {
+                    groupedByMonth[month][day].groupedByClass[item.name] = {
                         credit: 0,
                         debit: 0,
                         items: []
                     };
                 }
-                groupedByMonth[month][day].groupedByClass[item.class].credit += item.credit;
-                groupedByMonth[month][day].groupedByClass[item.class].debit += item.debit;
+                groupedByMonth[month][day].groupedByClass[item.name].credit += item.credit;
+                groupedByMonth[month][day].groupedByClass[item.name].debit += item.debit;
 
                 // Armazenando item para exibição futura
                 if (item.credit > 0) {
-                    groupedByMonth[month][day].groupedByClass[item.class].items.push({ type: 'credit', value: item.credit });
+                    groupedByMonth[month][day].groupedByClass[item.name].items.push({ type: 'credit', value: item.credit });
                 } else {
-                    groupedByMonth[month][day].groupedByClass[item.class].items.push({ type: 'debit', value: item.debit });
+                    groupedByMonth[month][day].groupedByClass[item.name].items.push({ type: 'debit', value: item.debit });
                 }
             });
 

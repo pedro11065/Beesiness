@@ -68,19 +68,19 @@ document.addEventListener('DOMContentLoaded', async function () {
                     groupedByDay[day] = {};
                 }
 
-                if (!groupedByDay[day][item.class]) {
-                    groupedByDay[day][item.class] = {
+                if (!groupedByDay[day][item.name]) {
+                    groupedByDay[day][item.name] = {
                         credit: 0,
                         debit: 0,
-                        name: CashName(item.class),
+                        name: CashName(item.name),
                         events: []
                     };
                 }
 
                 // Somar os débitos e créditos do mesmo dia e classe
-                groupedByDay[day][item.class].credit += parseFloat(item.credit);
-                groupedByDay[day][item.class].debit += parseFloat(item.debit);
-                groupedByDay[day][item.class].events.push(item);
+                groupedByDay[day][item.name].credit += parseFloat(item.credit);
+                groupedByDay[day][item.name].debit += parseFloat(item.debit);
+                groupedByDay[day][item.name].events.push(item);
             });
 
             const groupedByMonth = {};

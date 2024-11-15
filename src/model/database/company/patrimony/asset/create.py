@@ -70,7 +70,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
             SET value = value + {value}, 
                 debit = debit + {cash_debit}, 
                 credit = credit + {cash_credit} 
-            WHERE name = '#!@cash@!#';
+            WHERE name = '#!@cash@!#' and company_id = '{company_id}';
         """)
 
         cash_now = cash_now + value
@@ -81,7 +81,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
             SET value = value - {value}, 
                 debit = debit + {cash_debit}, 
                 credit = credit - {cash_credit} 
-            WHERE name = '#!@cash@!#';
+            WHERE name = '#!@cash@!#' and company_id = '{company_id}';
         """)
 
         cash_now = cash_now - value

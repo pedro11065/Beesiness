@@ -73,7 +73,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
                 SET value = value + {value}, 
                     debit = debit , 
                     credit = credit + {cash_credit}
-                WHERE name = '#!@cash@!#';
+                WHERE name = '#!@cash@!#' and company_id = '{company_id}';
             """)
             
 
@@ -83,7 +83,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
                 SET value = value - {value}, 
                     debit = debit + {cash_debit}, 
                     credit = credit 
-                WHERE name = '#!@cash@!#';
+                WHERE name = '#!@cash@!#' and company_id = '{company_id}';
             """)
 
         new_historic_id = uuid.uuid4()
