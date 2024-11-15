@@ -34,8 +34,8 @@ def db_create_historic(liability_id, company_id, data, value):
     
     creation_date = datetime.datetime.now().strftime('%Y-%m-%d')  # Data atual no formato YYYY-MM-DD
     creation_time = datetime.datetime.now().strftime('%H:%M:%S')  # Hora atual no formato HH:MM:SS
-    debit = data.get('debit')
-    credit = data.get('credit')
+    debit = value
+    credit = 0
     installment = data.get('installment')
 
     print(Fore.GREEN + '[Criando histórico de liability] ' + Style.RESET_ALL + f'Utilizando dados do {liability_id}...')

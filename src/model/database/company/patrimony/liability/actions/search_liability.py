@@ -49,7 +49,7 @@ def db_search_specific_liability(asset_id, company_id):
         "status": db_data[11],
         "creation_date": db_data[12].strftime("%d/%m/%Y") if isinstance(db_data[12], date) else db_data[12],
         "creation_time": db_data[13].strftime('%H:%M:%S') if isinstance(db_data[13], time) else db_data[13],
-        'debit': db_data[13] if db_data[13] is not None else 0,
-        'credit': db_data[14] if db_data[14] is not None else 0,
-        'installment': db_data[15]
+        "debit": db_data[14] if db_data[14] is not None else 0,
+        "credit": db_data[15] if db_data[15] is not None else 0,
+        "installment": db_data[16]
     }
