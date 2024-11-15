@@ -131,6 +131,7 @@ p {
     border-radius: 0.5rem;
     font-weight: 600;
     font-size: 15px;
+    cursor:pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
     box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
 }
