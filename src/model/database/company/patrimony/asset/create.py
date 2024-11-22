@@ -5,7 +5,7 @@ from colorama import Fore, Style
 from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
 
-def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
+def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment, floating): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     db_login = connect_database() # Coleta os dados para conexão
     
     # Conecta ao banco de dados
@@ -29,9 +29,9 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
         # Guarda os dados na tabela de assets:
         cur.execute("""
         INSERT INTO table_assets (
-            asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit, installment
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-        """, (asset_id, company_id, user_id, name, event, classe, value, location, acquisition_date, description, status, asset_debit, asset_credit, installment))
+            asset_id, company_id, user_id, name, event, class, value, location, acquisition_date, description, status, debit, credit, installment, floating
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """, (asset_id, company_id, user_id, name, event, classe, value, location, acquisition_date, description, status, asset_debit, asset_credit, installment, floating))
     
     # Guarda os dados no histórico de ativos e passivos (para evitar que informações sejam escondidas no futuro).
     installment_record = 0; new_month_add = 0 #01-11-2024
@@ -57,7 +57,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
                 next_year = int(current_year) + 1
                 creation_date = (f"{next_year}-{next_month}-{current_day}")
 
-        cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment)  VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value/installment}, '{acquisition_date}', '{type}', '{creation_date}', '{creation_time}', '{asset_debit/installment}', '{asset_credit/installment}','{installment_record}');")  
+        cur.execute(f"INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment, floating)  VALUES ('{historic_id}', '{company_id}', '{user_id}', '{asset_id}', '{name}', '{event}', '{classe}', {value/installment}, '{acquisition_date}', '{type}', '{creation_date}', '{creation_time}', '{asset_debit/installment}', '{asset_credit/installment}','{installment_record}','{floating}');")  
     
     cash_data = db_search_cash(company_id)
     cash_id = cash_data[0][0]
@@ -91,7 +91,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
     # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
     cur.execute(f"""
         INSERT INTO table_historic (
-            historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit
+            historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit,floating
         ) VALUES (
             '{new_historic_id}', 
             '{company_id}', 
@@ -106,7 +106,8 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
             '{creation_date}', 
             '{creation_time}', 
             {cash_debit if cash_debit is not None else 'NULL'}, 
-            {cash_credit if cash_credit is not None else 'NULL'}
+            {cash_credit if cash_credit is not None else 'NULL'},
+            '{floating}'
         );
     """)
     # Confirma as mudanças

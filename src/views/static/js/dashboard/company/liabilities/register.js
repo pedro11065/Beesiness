@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const eventvalue = document.getElementById('event').value.trim();
         const classvalue = document.getElementById('class').value.trim();
         const payment_method = document.getElementById('payment_method').value.trim();
+        const floating = document.getElementById('floating').value.trim();
         const installment = document.getElementById('installment').value.trim();
         const status = document.getElementById('status').value.trim();
         const name = document.getElementById('name').value.trim();
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             classe: classvalue,
             payment_method: payment_method,
             installment: installment,
+            floating: floating,
             status: status,
             name: name,
             value: value,

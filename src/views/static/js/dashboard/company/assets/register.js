@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         const eventValue = document.getElementById('event').value.trim();
+        const floating = document.getElementById('floating').value.trim();
         const classeValue = document.getElementById('class').value.trim();
         const name = document.getElementById('name').value.trim();
         const localization = document.getElementById('localization').value.trim() || 'Descrição não adicionada.';
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event: eventValue,
             classe: classeValue,
             name: name,
+            floating: floating,
             localization: localization,
             acquisitionDate: acquisitionDate,
             acquisitionValue: acquisitionValue,

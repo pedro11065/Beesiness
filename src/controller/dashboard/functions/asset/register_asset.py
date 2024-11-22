@@ -14,11 +14,21 @@ def asset_registration(asset_data, company_id):
     acquisition_date = asset_data.get('acquisitionDate')
     value = asset_data.get('acquisitionValue')
     status = asset_data.get('status')
+    floating = asset_data.get('floating')
     payment_method = asset_data.get('payment_method')
     installment = asset_data.get('installment')
     description = asset_data.get('description')
 
     print(acquisition_date)
+
+
+#-------------------------------------------------- Circulante ou não circulante
+
+    if floating == "Circulante":
+        floating = True
+
+    else:
+        floating = False
 
 #-------------------------------------------------- Parcelamento
 
@@ -70,6 +80,6 @@ def asset_registration(asset_data, company_id):
 
     #---------------------------------------------------------------------
 
-    db_create_asset(company_id, current_user.id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment)
+    db_create_asset(company_id, current_user.id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment, floating)
 
     return jsonify('Asset registrado com sucesso!'), 200

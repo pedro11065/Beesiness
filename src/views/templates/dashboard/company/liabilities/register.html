@@ -71,19 +71,24 @@
                         <input class="form-box" id="name" type="text" name="name" required>
                     </container>
 
-                    <container class="creditor">
-                        <box-msg>
-                            <h2>Credor</h2>
-                        </box-msg>
-                        <input class="form-box" id="creditor" type="text" name="creditor" required>
-                    </container>
-
                     <container class="value">
                         <box-msg>
                             <h2>Valor</h2>
                         </box-msg>
                         <input class="form-box" id="value" type="text" name="value" required>
                     </container>
+
+                    <container class="floating">
+                        <box-msg>
+                            <h2>Tipo</h2>
+                        </box-msg>
+                        <select class="select" id="floating" name="floating" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Não circulante</option>
+                            <option>Circulante</option>
+                        </select>
+                    </container>
+                    
                 </section>
             </article>
 

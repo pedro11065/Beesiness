@@ -10,6 +10,7 @@ def liability_registration(liability_data, company_id):
     payment_method = liability_data.get('payment_method')
     installment = liability_data.get('installment')
     status = liability_data.get('status')
+    floating = liability_data.get('floating')
     value = liability_data.get('value')
     emission_date = liability_data.get('emission_date')
     expiration_date = liability_data.get('expiration_date')
@@ -27,6 +28,14 @@ def liability_registration(liability_data, company_id):
         # --> 12x --> 12
 
     installment = int(installment)
+
+#-------------------------------------------------- Circulante ou não circulante
+
+    if floating == "Circulante":
+        floating = True
+
+    else:
+        floating = False
 
 #-------------------------------------------------- Status 
 
@@ -75,6 +84,6 @@ def liability_registration(liability_data, company_id):
 #-----------------------------------------------------------------------------------
 
 
-    db_create_liability(company_id, current_user.id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment,status_mode)
+    db_create_liability(company_id, current_user.id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment,status_mode,floating)
 
     return jsonify('Liability registrado com sucesso!'), 200

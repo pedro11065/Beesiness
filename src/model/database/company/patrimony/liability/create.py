@@ -6,7 +6,7 @@ from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
 
 
-def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment,status_mode):
+def db_create_liability(company_id, user_id, name, event, classe, value, emission_date, expiration_date, payment_method, description, status, update_cash, liability_debit, liability_credit, cash_debit, cash_credit,installment,status_mode,floating):
     db_login = connect_database()  # Coleta os dados para conexão
 
     # Conecta ao banco de dados
@@ -29,8 +29,8 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
     if status_mode == True or event in [ "Empréstimo",'Capital Social']:
     # Guarda os dados na tabela de liabilities
         cur.execute(f"""
-            INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment) 
-            VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}' ,'{installment}');
+            INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment, floating) 
+            VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}' ,'{installment}', '{floating}');
         """) 
     if status_mode == False:
         # Guarda os dados no histórico de ativos e passivos
@@ -57,8 +57,8 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
                     creation_date = (f"{next_year}-{next_month}-{current_day}")
                     
             cur.execute(f"""
-                INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment) 
-                VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}');
+                INSERT INTO table_historic (historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment,floating) 
+                VALUES ('{historic_id}', '{company_id}', '{user_id}', '{liability_id}', '{name}', '{event}', '{classe}', {value/installment}, '{emission_date}', '{type}', '{creation_date}', '{creation_time}', {liability_debit/installment}, {liability_credit/installment} ,'{installment_record}', '{floating}');
             """)
 
         # Busca os dados de caixa
@@ -91,7 +91,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
         # Adiciona o caixa inicial automaticamente (Pretendemos mudar isso para colocar na hora da criação da empresa)
         cur.execute(f"""
                 INSERT INTO table_historic (
-                    historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit
+                    historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, floating
                 ) VALUES (
                     '{new_historic_id}', 
                     '{company_id}', 
@@ -106,7 +106,8 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
                     '{creation_date}', 
                     '{creation_time}', 
                     {cash_debit if cash_debit is not None else 'NULL'}, 
-                    {cash_credit if cash_credit is not None else 'NULL'}
+                    {cash_credit if cash_credit is not None else 'NULL'},
+                    '{floating}'
                 );
             """)
     # Confirma as mudanças
