@@ -14,12 +14,10 @@ def info_razonete(company_id, cnpj):
     if info is None:
         return jsonify({'message': 'Nenhum dado registrado no banco de dados.'})
 
-    # Busca todos os dados, filtra pelos que estão com 'creation_date' e formata pelo horário correto.
+   # Busca todos os dados, filtra pelos que estão com 'creation_date' e formata pelo horário correto.
     for record in info:
         if 'creation_date' in record:
-            # Converte a string no formato DD/MM/YYYY para um objeto datetime
-             record['creation_date'] = record['creation_date'].strftime('%d/%m/%Y %H:%M:%S')
-         # Formato HH:MM:SS
+            record['creation_date'] = datetime.fromisoformat(record['creation_date'])
 
     return jsonify({
         'historic': info

@@ -36,12 +36,12 @@ def db_search_historic(company_id):
             "class": data[6],
             "value": data[7],
             "date": data[8],
-            "type": data[9],
-            "creation_date": data[10].strftime("%Y-%m-%d") if isinstance(data[10], datetime.date) else data[10],
-            "creation_time": data[11].strftime('%H:%M:%S') if isinstance(data[11], datetime.time) else data[11],
-            "debit": data[12],
-            "credit": data[13],
-            "installment":data[14],
+            "creation_date": data[9].strftime("%Y-%m-%d") if isinstance(data[9], datetime.date) else data[9],
+            "creation_time": data[10].strftime('%H:%M:%S') if isinstance(data[10], datetime.time) else data[10],
+            "debit": data[11],
+            "credit": data[12],
+            "installment":data[13],
+            "type": data[14],
             "floating": data[15]
 
         } for data in historic_data]

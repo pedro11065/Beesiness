@@ -297,14 +297,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                 // Exibir título do mês
                 monthDiv.innerHTML = `
                 <header class="month-title-container" id="month-title-container">
-                    <article class="month-title-box">
                         <div class="month-box">
                             <h1>${month.charAt(0).toUpperCase() + month.slice(1)}</h1>
                         </div>
                         <div class="month-box">
                             <h1>${formatValueToMoney(1, ByMonth[month].credit - ByMonth[month].debit)}</h1>
                         </div>
-                    </article>
                 </header>
             `;
 
@@ -312,7 +310,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 let totalDebito = 0, totalCredito = 0;
 
                 const balanceDiv = document.createElement('main');
-                balanceDiv.className = 'balance-container';
+                balanceDiv.className = 'balance-container'; // OBS: Adicionar o fundo: day-container, contudo, quebra os dados.
                 balanceDiv.id = 'balance-container';
 
                 // Seção de contas

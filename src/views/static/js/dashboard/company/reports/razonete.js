@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
+    function CashName(nameStr) {
+        return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
+    }
+
     const cnpj = getCnpjFromUrl();
     loading.style.display = 'flex';
     main.style.display = 'none';
@@ -119,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         const difference = totalCredit - totalDebit >= 0 ? totalCredit - totalDebit : totalDebit - totalCredit;
 
                         classDiv.innerHTML = `
-                        <h4 class="class-name">${className}</h4>
+                        <h4 class="class-name">${CashName(className)}</h4>
                         <div class="values-container">
                             <div class="debit-container">
                                 ${classData.items.filter(item => item.type === 'debit').map(item => `

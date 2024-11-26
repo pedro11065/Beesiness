@@ -18,7 +18,7 @@ def info_balance(company_id, cnpj):
     # Busca todos os dados, filtra pelos que estão com 'creation_date' e formata pelo horário correto.
     for record in info:
         if 'creation_date' in record:
-            record['creation_date'] = record['creation_date'].strftime('%H:%M:%S')
+            record['creation_date'] = datetime.fromisoformat(record['creation_date'])
 
     return jsonify({
         'historic': info
