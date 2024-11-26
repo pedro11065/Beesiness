@@ -389,6 +389,10 @@ box-info-top{
   0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
+box-info-top:hover {
+  background-color: #e0e0e0
+}
+
 
 box-info-title{
   display: flex;

@@ -100,9 +100,9 @@ def register_journal_site(cnpj):
         return render_template('dashboard/company/reports/journal.html',cnpj=cnpj)
     
 
-#----------------------------------------------------------------------------------------- BALANÇO PATRIMONIAL
+#----------------------------------------------------------------------------------------- Balancete de verificação
 
-@dashboard_request.route('/balance/<cnpj>', methods=['POST','GET'])
+@dashboard_request.route('/trial-balance/<cnpj>', methods=['POST','GET'])
 @login_required
 def balance_site(cnpj): 
     if request.method == 'POST':
@@ -112,6 +112,19 @@ def balance_site(cnpj):
     if request.method == 'GET': 
         validate_cnpj_access(cnpj)
         return render_template('dashboard/company/reports/balance.html',cnpj=cnpj)
+    
+#----------------------------------------------------------------------------------------- Balanço patrimonial
+
+# @dashboard_request.route('/balance-sheet/<cnpj>', methods=['POST','GET'])
+# @login_required
+# def balance_site(cnpj): 
+#     if request.method == 'POST':
+#         company_id = session.get('company_id')
+#         return info_balance(company_id, cnpj)
+
+#     if request.method == 'GET': 
+#         validate_cnpj_access(cnpj)
+#         return render_template('dashboard/company/reports/balance.html',cnpj=cnpj)
 
 
 #----------------------------------------------------------------------------------------- RAZONETE

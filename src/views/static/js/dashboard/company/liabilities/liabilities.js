@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     document.getElementById('expiration_date').innerText = liabilities.expiration_date; // Data de Vencimento
                     document.getElementById('payment_method').innerText = liabilities.payment_method; // Forma de Pagamento
                     document.getElementById('status').innerText = liabilities.status; // Status
+                    document.getElementById('floating').innerText = liabilities.floating ? 'Sim' : 'Não';
                     document.getElementById('description').innerText = liabilities.description; // Descrição
                     document.getElementById('creation').innerText = `${liabilities.status} - ${liabilities.creation_date}`; // Data e Horário de Criação
                     document.getElementById('uuid').innerText = liabilities.liability_id; // ID

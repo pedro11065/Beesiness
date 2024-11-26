@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         `;
                         dataContainer.appendChild(row);
         
+                        console.log(asset)
                         row.addEventListener('click', function () {
                             document.getElementById('name').innerText = asset.name;
                             document.getElementById('event').innerText = asset.event;
@@ -76,6 +77,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             document.getElementById('location').innerText = asset.location;
                             document.getElementById('acquisition_date').innerText = asset.creation_date;
                             document.getElementById('status').innerText = asset.status;
+                            document.getElementById('floating').innerText = asset.floating ? 'Sim' : 'Não';
                             document.getElementById('description').innerText = asset.description;
                             document.getElementById('creation').innerText = `${asset.status} - ${asset.creation_date}`;
                             document.getElementById('uuid').innerText = asset.asset_id;

@@ -84,9 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const acquisitionValue = document.getElementById('acquisition_value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.');
         const status = document.getElementById('status').value.trim();
         const description = document.getElementById('description').value.trim();
+        const floating = document.getElementById('floating').value.trim();
 
         // Verifica se os campos obrigatórios estão vazios
-        if (!eventValue || !classeValue || !name || !acquisitionDate || !acquisitionValue || !status ) {
+        if (!eventValue || !classeValue || !name || !acquisitionDate || !acquisitionValue || !status || !floating ) {
             openAlertModal('Campo obrigatório não preenchido.');
             return false;
         }

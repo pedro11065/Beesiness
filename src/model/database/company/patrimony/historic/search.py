@@ -25,6 +25,7 @@ def db_search_historic(company_id):
 
         print(Fore.CYAN + '[Banco de dados] ' + Style.RESET_ALL + 'Dados do histórico encontrados com sucesso!')
 
+        # ERRO DE BUSCA: a partir de type tá retornando outros valores em posições incorretas
         historic = [{
             "historic_id": data[0],
             "company_id": data[1],
@@ -40,7 +41,8 @@ def db_search_historic(company_id):
             "creation_time": data[11].strftime('%H:%M:%S') if isinstance(data[11], datetime.time) else data[11],
             "debit": data[12],
             "credit": data[13],
-            "installment":data[14]
+            "installment":data[14],
+            "floating": data[15]
 
         } for data in historic_data]
 

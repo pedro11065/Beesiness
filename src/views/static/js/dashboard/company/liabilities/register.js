@@ -87,9 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const emission_date = document.getElementById('emission_date').value.trim();
         const expiration_date = document.getElementById('expiration_date').value.trim();
         const description = document.getElementById('description').value.trim();
+        const floating = document.getElementById('floating').value.trim();
 
         // Verifica se os campos obrigatórios estão vazios
-        if (!eventvalue || !classvalue || !payment_method || !status || !name || !value || !emission_date || !expiration_date ) {
+        if (!eventvalue || !classvalue || !payment_method || !status || !name || !value || !emission_date || !expiration_date || !floating) {
             openAlertModal('Campo obrigatório não preenchido.');
             return false;
         }

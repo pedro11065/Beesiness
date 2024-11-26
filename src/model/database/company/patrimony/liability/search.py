@@ -46,7 +46,8 @@ def db_search_liability(company_id):
             "creation_time": data[13].strftime('%H:%M:%S') if isinstance(data[13], datetime.time) else data[13],
             "debit": data[14] if data[14] is not None else 0,
             "credit": data[15] if data[15] is not None else 0,
-            "installment": data[16]
+            "installment": data[16],
+            "floating": data[17]
         } for data in db_data]
         
     except Exception as error:
