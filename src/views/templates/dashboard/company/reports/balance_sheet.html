@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balanço patrimonial</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/balance_sheet.css') }}">
+
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <script src="{{ url_for('static', filename='js/dashboard/company/reports/balance_sheet.js') }}" defer></script>
+</head>
+
+<body>
+    {% include 'dashboard/user/header.html' %}
+
+    <menu class="menu-container" id="menuContainer">
+        <div class="menu-box" id="day-btn">
+            <a>Dia</a>
+        </div>
+        <div class="menu-box" id="month-btn">
+            <a>Mês</a>
+        </div>
+        <div class="menu-box" id="year-btn">
+            <a>Ano</a>
+        </div>
+    </menu>
+
+    <div id="loading" class="loading">
+        <div class="loader "></div>
+    </div>
+
+    <main class="main" id="main">
+        <p>Em desenvolvimento.</p>
+    </main>
+<body>
