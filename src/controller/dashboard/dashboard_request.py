@@ -122,7 +122,9 @@ def balance_trial(cnpj):
 def balance_sheet(cnpj): 
     if request.method == 'POST':
         company_id = session.get('company_id')
-        return info_balance_sheet(company_id, cnpj)
+        teste = info_balance_sheet(company_id, cnpj)
+        print(teste);
+        return teste;
 
     if request.method == 'GET': 
         validate_cnpj_access(cnpj)

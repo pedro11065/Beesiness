@@ -20,15 +20,11 @@
 <body>
     {% include 'dashboard/user/header.html' %}
 
-    <menu class="menu-container" id="menuContainer">
-        <div class="menu-box" id="day-btn">
-            <a>Dia</a>
-        </div>
-        <div class="menu-box" id="month-btn">
-            <a>Mês</a>
-        </div>
-        <div class="menu-box" id="year-btn">
-            <a>Ano</a>
+    <menu class="menu-container" id="menu-container">
+        <div class="menu-box" id="month-year-btn">
+            <select class="select" id="month-year-select" name="month_year" required>
+                <option value="" disabled selected>Escolher mês e ano</option>
+            </select>
         </div>
     </menu>
 
@@ -37,6 +33,32 @@
     </div>
 
     <main class="main" id="main">
-        <p>Em desenvolvimento.</p>
+        <section class="month-container" id="month-container">
+            <header class="month-title-container" id="month-title-container">
+                <article class="month-title-box">
+                    <div class="month-box">
+                        <h1>Mês</h1>
+                    </div>
+                    <div class="month-box">
+                        <h1>R$ ---</h1>
+                    </div>
+                </article>
+            </header>
+    
+            <div class="financial-container">
+                <section class="category-container">
+                    <header class="asset-title"><h2>Ativo</h2></header>
+                    <div class="data-box"> abc </div>
+                </section>
+            
+                <section class="second-category-container">
+                    <header class="liability-title"><h2>Passivo</h2></header>
+                    <div class="data-box"> abc </div>
+                
+                    <header class="patrimony-title"><h2>Patrimônio Líquido</h2></header>
+                    <div class="data-box"> abc </div>
+                </section>
+            </div>
+        </section>
     </main>
 <body>
