@@ -101,7 +101,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
                     'Entrada de caixa', 
                     'Caixa',
                     '{value}', 
-                    '{date}', 
+                    '{emission_date}', 
                     'asset', 
                     '{creation_date}', 
                     '{creation_time}', 
