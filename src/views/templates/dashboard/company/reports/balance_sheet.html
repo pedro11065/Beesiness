@@ -46,19 +46,63 @@
             </header>
     
             <div class="financial-container">
-                <section class="category-container">
-                    <header class="asset-title"><h2>Ativo</h2></header>
-                    <div class="data-box"> abc </div>
+                <!-- Ativo -->
+                <section class="first-category-container">
+                    <header class="asset-title">
+                        <h2>Ativo</h2>
+                    </header>
+                    
+                    <section class="category-container">
+                        <div class="category-item">
+                            <h3>Circulante</h3>
+                            <ul class="data-list">
+                                <li class="data-item"></li>
+                            </ul>
+                        </div>
+                        <div class="category-item">
+                            <h3>Não circulante</h3>
+                            <ul class="data-list">
+                                <li class="data-item"></li>
+                            </ul>
+                        </div>
+                    </section>
                 </section>
             
+                <!-- Passivo -->
                 <section class="second-category-container">
-                    <header class="liability-title"><h2>Passivo</h2></header>
-                    <div class="data-box"> abc </div>
-                
+                    <header class="liability-title">
+                        <h2>Passivo</h2>
+                    </header>
+                    
+                    <section class="category-container">
+                        <div class="category-item">
+                            <h3>Circulante</h3>
+                            <ul class="data-list">
+                                <li class="data-item"></li>
+                            </ul>
+                        </div>
+                        <div class="category-item">
+                            <h3>Não circulante</h3>
+                            <ul class="data-list">
+                                <li class="data-item"></li>
+                            </ul>
+                        </div>
+                    </section>
+            
+                    <!-- Patrimônio Líquido -->
                     <header class="patrimony-title"><h2>Patrimônio Líquido</h2></header>
-                    <div class="data-box"> abc </div>
+                    <div class="category-item">
+                        <ul class="data-list">
+                            <li class="data-item"></li>
+                        </ul>
+                    </div>
                 </section>
             </div>
-        </section>
+
+            <!-- Box dos totais -->
+            <div class="total-box">
+                <h3>Total Ativo: <span id="total-ativo"></span></h3>
+                <h3>Total Passivo: <span id="total-passivo"></span></h3>
+            </div>
     </main>
 <body>

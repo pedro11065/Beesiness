@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     const menu = document.getElementById('menu-container');
     const month = document.getElementById('month-container');
     const loading = document.getElementById('loading');
-    const monthYearSelect = document.getElementById('month-year-select');  // Corrigido para o ID correto do select
 
     function getCnpjFromUrl() {
         const url = window.location.pathname;
@@ -32,7 +31,75 @@ document.addEventListener('DOMContentLoaded', async function () {
         const data = await response.json();
         console.log(data);
 
-        // Coletar no data.dates, os últimos dois valores do mês e ano para mostrar. Como retorna: [ "2024-11-06", "2024-11-25" ]
+        // Função genérica para processar os dados
+        function processCategories(data, filter = null) {
+            const result = {};
+
+            for (const category in data) {
+                result[category] = {};
+
+                data[category].forEach(item => {
+                    // Aplica o filtro, se definido (ex.: "Capital Social" para patrimônio)
+                    if (item.name !== '#!@cash@!#' && (!filter || filter(item))) {
+                        if (result[category][item.class]) {
+                            result[category][item.class] += item.value;
+                        } else {
+                            result[category][item.class] = item.value;
+                        }
+                    }
+                });
+            }
+
+            return result;
+        }
+
+        // Atualizar o DOM com resultados processados
+        function updateHtmlWithResults(results, sectionSelector) {
+            const section = document.querySelector(sectionSelector);
+
+            if (!section) return;
+
+            for (const category in results) {
+                // Encontre o item de categoria baseado no título, incluindo qualquer variação
+                const categoryElement = Array.from(
+                    section.querySelectorAll('.category-item')
+                ).find(item => {
+                    const h3Text = item.querySelector('h3').textContent.toLowerCase();
+                    return h3Text.includes(category.replace('_', ' ').toLowerCase());
+                });
+
+                if (categoryElement) {
+                    const ul = categoryElement.querySelector('.data-list');
+                    ul.innerHTML = ''; // Limpa os itens anteriores
+
+                    for (const className in results[category]) {
+                        const li = document.createElement('li');
+                        li.classList.add('data-item');
+                        li.textContent = `${className}: R$ ${results[category][className]}`;
+                        ul.appendChild(li);
+                    }
+                }
+            }
+        }
+
+        // Processar e exibir os dados de ativos
+        const processedAssets = processCategories(data.assets);
+        updateHtmlWithResults(processedAssets, '.financial-container .category-container');
+
+        const totalAtivo = sumValues(processedAssets);
+        document.getElementById('total-ativo').textContent = `R$ ${totalAtivo.toFixed(2)}`;
+
+        // Processar e exibir os dados de passivos
+        const processedLiabilities = processCategories(data.liabilities);
+        updateHtmlWithResults(processedLiabilities, '.second-category-container .category-container');
+
+        const totalPassivo = sumValues(processedLiabilities);
+        document.getElementById('total-passivo').textContent = `R$ ${totalPassivo.toFixed(2)}`;
+
+        // Processar e exibir os dados de patrimônio (filtrando apenas "Capital Social")
+        const processedPatrimony = processCategories(data.assets, item => item.event === 'Capital Social');
+        console.log(processedPatrimony);
+        updateHtmlWithResults(processedPatrimony, '.second-category-container .patrimony-title');
 
         loading.style.display = 'none';
         main.style.display = 'flex';
@@ -50,3 +117,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         main.appendChild(errorDiv);
     }
 });
+
+function sumValues(data) {
+    let total = 0;
+    for (const category in data) {
+        for (const item in data[category]) {
+            total += data[category][item];
+        }
+    }
+    return total;
+}

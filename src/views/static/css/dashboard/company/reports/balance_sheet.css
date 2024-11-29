@@ -184,32 +184,22 @@ p {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: center;
-    width: 95%;
+    justify-content: space-between;
+    width: 100%;
     column-count: 3;
     column-rule: #000000;
-    column-rule-width: 1rem;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
+    column-rule-width: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
-.category-container {
+.first-category-container, .second-category-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 1rem;
-    width: 32%;
-    min-width: 250px;
-    height: auto;
-}
-
-.second-category-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 1rem;
-    width: 32%;
+    width: 33%;
+    flex: 1;
     min-width: 250px;
     height: auto;
 }
@@ -227,8 +217,7 @@ p {
 .liability-title,
 .patrimony-title {
     display: flex;
-    width: 80%;
-    height: 2.5rem;
+    width: 85%;
     margin-bottom: 1.5rem;
     align-items: center;
     justify-content: center;
@@ -236,6 +225,8 @@ p {
     font-weight: 600;
     font-size: 13px;
     box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+    height: auto;
+    padding: 0.5rem 0;
 }
 
 .asset-title {
@@ -265,8 +256,11 @@ p {
     align-items: center;
 }
 
+.financial-container {
+    border-bottom: 1px solid black;
+}
 /*
-.category-container .data-box:first-of-type {
+.first-category-container .data-box:first-of-type {
     border-top: 1px solid black;
 }
 
@@ -275,6 +269,57 @@ p {
 }
 */
 
-.category-container .data-box.total-row {
+.first-category-container .data-box.total-row {
     box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+    height: auto;
+}
+
+.category-item h3 {
+    background-color: #f1f1f1;
+    color: #333;
+    font-weight: 500;
+    align-self: center;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
+    font-size: 15px;
+    width: 60%;
+    text-align: center;
+    border-radius: 0.25rem;
+}
+
+.data-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.data-item {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    font-weight: normal;
+    font-size: 17px;
+    color: #000000;
+    text-align: left;
+}
+
+.total-box {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
 }
