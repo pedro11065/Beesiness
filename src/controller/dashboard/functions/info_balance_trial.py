@@ -4,10 +4,9 @@ from datetime import datetime
 
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
-def info_balance(company_id, cnpj):
-
+def info_balance_trial(company_id, cnpj):
     info = db_search_historic(company_id)
-    print(info)
+    print(f'Info do balance_trial:\n{info}')
     
     if info is False:
         return jsonify({'message': 'Erro ao pesquisar no banco de dados, tente mais tarde.'}), 500

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balanço patrimonial</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/balance_sheet.css') }}">
+
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <script src="{{ url_for('static', filename='js/dashboard/company/reports/balance_sheet.js') }}" defer></script>
+</head>
+
+<body>
+    {% include 'dashboard/user/header.html' %}
+
+    <menu class="menu-container" id="menu-container">
+        <div class="menu-box" id="month-year-btn">
+            <select class="select" id="month-year-select" name="month_year" required>
+                <option value="" disabled selected>Escolher mês e ano</option>
+            </select>
+        </div>
+    </menu>
+
+    <div id="loading" class="loading">
+        <div class="loader "></div>
+    </div>
+
+    <main class="main" id="main">
+        <section class="month-container" id="month-container">
+            <header class="month-title-container" id="month-title-container">
+                <article class="month-title-box">
+                    <div class="month-box">
+                        <h1>Mês</h1>
+                    </div>
+                    <div class="month-box">
+                        <h1>R$ ---</h1>
+                    </div>
+                </article>
+            </header>
+    
+            <div class="financial-container">
+                <section class="category-container">
+                    <header class="asset-title"><h2>Ativo</h2></header>
+                    <div class="data-box"> abc </div>
+                </section>
+            
+                <section class="second-category-container">
+                    <header class="liability-title"><h2>Passivo</h2></header>
+                    <div class="data-box"> abc </div>
+                
+                    <header class="patrimony-title"><h2>Patrimônio Líquido</h2></header>
+                    <div class="data-box"> abc </div>
+                </section>
+            </div>
+        </section>
+    </main>
+<body>

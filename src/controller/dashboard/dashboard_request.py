@@ -6,7 +6,9 @@ from src import cache
 from src.controller.dashboard.functions.info_authorization import info_authorization
 from src.controller.dashboard.functions.asset.info_assets import info_assets
 from src.controller.dashboard.functions.info_journal import info_journal
-from src.controller.dashboard.functions.info_balance import info_balance
+from src.controller.dashboard.functions.info_balance_trial import info_balance_trial
+from src.controller.dashboard.functions.info_balance_sheet import info_balance_sheet
+from src.controller.dashboard.functions.info_income_statement import info_income_statement
 from src.controller.dashboard.functions.info_razonete import info_razonete
 from src.controller.dashboard.functions.info_dashboard import info_dashboard
 from src.controller.dashboard.functions.liability.info_liabilities import info_liabilities
@@ -104,28 +106,42 @@ def register_journal_site(cnpj):
 
 @dashboard_request.route('/trial-balance/<cnpj>', methods=['POST','GET'])
 @login_required
-def balance_site(cnpj): 
+def balance_trial(cnpj): 
     if request.method == 'POST':
         company_id = session.get('company_id')
-        return info_balance(company_id, cnpj)
+        return info_balance_trial(company_id, cnpj)
 
     if request.method == 'GET': 
         validate_cnpj_access(cnpj)
-        return render_template('dashboard/company/reports/balance.html',cnpj=cnpj)
+        return render_template('dashboard/company/reports/trial_balance.html',cnpj=cnpj)
     
 #----------------------------------------------------------------------------------------- Balanço patrimonial
 
-# @dashboard_request.route('/balance-sheet/<cnpj>', methods=['POST','GET'])
-# @login_required
-# def balance_site(cnpj): 
-#     if request.method == 'POST':
-#         company_id = session.get('company_id')
-#         return info_balance(company_id, cnpj)
+@dashboard_request.route('/balance-sheet/<cnpj>', methods=['POST','GET'])
+@login_required
+def balance_sheet(cnpj): 
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        teste = info_balance_sheet(company_id, cnpj)
+        print(teste);
+        return teste;
 
-#     if request.method == 'GET': 
-#         validate_cnpj_access(cnpj)
-#         return render_template('dashboard/company/reports/balance.html',cnpj=cnpj)
+    if request.method == 'GET': 
+        validate_cnpj_access(cnpj)
+        return render_template('dashboard/company/reports/balance_sheet.html',cnpj=cnpj)
 
+#----------------------------------------------------------------------------------------- Demonstração de Resultados dos Exercícios
+
+@dashboard_request.route('/income-statement/<cnpj>', methods=['POST','GET'])
+@login_required
+def income_statement(cnpj): 
+    if request.method == 'POST':
+        company_id = session.get('company_id')
+        return info_income_statement(company_id, cnpj)
+
+    if request.method == 'GET': 
+        validate_cnpj_access(cnpj)
+        return render_template('dashboard/company/reports/income_statement.html',cnpj=cnpj)
 
 #----------------------------------------------------------------------------------------- RAZONETE
 
