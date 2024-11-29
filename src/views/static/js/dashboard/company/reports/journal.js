@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             const groupedByMonth = {};
 
             data.historic.forEach(item => {
-                const month = new Date(item.creation_date).toLocaleString('pt-BR', { month: 'long' });
+                const month = new Date(item.date).toLocaleString('pt-BR', { month: 'long' });
                 if (!groupedByMonth[month]) {
                     groupedByMonth[month] = [];
                 }
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         dayDiv.innerHTML = `
                             <header class="title-container">
                                 <div class="title-box">
-                                    <h3>${formatDateToBrazilian(item.creation_date)} - ${item.creation_time}</h3>
+                                    <h3>${formatDateToBrazilian(item.date)} - ${item.creation_time}</h3>
                                 </div>
                                 <div class="title-box">
                                     <h3>${formatValueToMoney(item.value)}</h3>
