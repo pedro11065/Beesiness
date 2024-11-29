@@ -32,7 +32,7 @@ def db_create_liability(company_id, user_id, name, event, classe, value, emissio
             INSERT INTO table_liabilities (liability_id, company_id, user_id, name, event, class, value, emission_date, expiration_date, payment_method, description, status, installment, floating) 
             VALUES ('{liability_id}', '{company_id}', '{user_id}', '{name}', '{event}', '{classe}', {value}, '{emission_date}', '{expiration_date}', '{payment_method}', '{description}', '{status}' ,'{installment}', '{floating}');
         """) 
-    if status_mode == False:
+    if status_mode == False  or status in ['Pendente','Em atraso','Parcelado']:
         # Guarda os dados no histórico de ativos e passivos
         installment_record = 0; new_month_add = 0 #01-11-2024
         for i in range(installment): #vai registrar a quantidade de parcelas 
