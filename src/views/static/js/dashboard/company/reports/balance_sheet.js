@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     for (const className in results[category]) {
                         const li = document.createElement('li');
                         li.classList.add('data-item');
-                        li.textContent = `${className}: R$ ${results[category][className]}`;
+                        li.textContent = `${className}: ${formatValueToMoney(0,results[category][className])}`;
                         ul.appendChild(li);
                     }
                 }
@@ -87,14 +87,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         updateHtmlWithResults(processedAssets, '.financial-container .category-container');
 
         const totalAtivo = sumValues(processedAssets);
-        document.getElementById('total-ativo').textContent = `R$ ${totalAtivo.toFixed(2)}`;
+        document.getElementById('total-ativo').textContent = `${formatValueToMoney(0,totalAtivo.toFixed(2))}`;
 
         // Processar e exibir os dados de passivos
         const processedLiabilities = processCategories(data.liabilities);
         updateHtmlWithResults(processedLiabilities, '.second-category-container .category-container');
 
         const totalPassivo = sumValues(processedLiabilities);
-        document.getElementById('total-passivo').textContent = `R$ ${totalPassivo.toFixed(2)}`;
+        document.getElementById('total-passivo').textContent = `${formatValueToMoney(0,totalPassivo.toFixed(2))}`;
 
         // Processar e exibir os dados de patrimônio (filtrando apenas "Capital Social")
         const processedPatrimony = processCategories(data.assets, item => item.event === 'Capital Social');
@@ -126,4 +126,18 @@ function sumValues(data) {
         }
     }
     return total;
+}
+
+function formatValueToMoney(mode, valueStr) {
+    if (valueStr != 0 && mode == 0) {
+        const valueNum = parseFloat(valueStr);
+        return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    if (mode == 1) {
+        const valueNum = parseFloat(valueStr);
+        return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    return '----';
 }
