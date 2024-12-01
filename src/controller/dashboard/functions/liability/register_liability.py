@@ -49,7 +49,7 @@ def liability_registration(liability_data, company_id):
 
 #-------------------------------------------------- Debito e crédito 
 
-    if event in ['Multa', 'Juros', 'Conta a pagar', 'Imposto a pagar', 'Salário a pagar', 'Fornecedor', 'Processos judiciais']: 
+    if event in ['Multa', 'Juros', 'Conta a pagar', 'Imposto a pagar(Receita)', 'Imposto a pagar(Operacional)', 'Salário a pagar', 'Fornecedor', 'Processos judiciais']: 
 
         if status_mode == False:
             update_cash = 'less'  #Se for uma dessas coisas, vai ter uma subtração do meu saldo, logo, update_cash = less

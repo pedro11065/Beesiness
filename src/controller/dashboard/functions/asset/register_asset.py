@@ -45,7 +45,7 @@ def asset_registration(asset_data, company_id):
 #-------------------------------------------------- Debito e crédito 
     value = float(value)
     
-    if event in ['Compra','Transferência','Serviço']:
+    if event in ['Compra','Transferência','Investimento']:
         update_cash = 'less' 
 
         cash_debit = value 
@@ -53,7 +53,7 @@ def asset_registration(asset_data, company_id):
         asset_debit = value    
         asset_credit = 0
 
-    elif event in ["Entrada de Caixa","Venda","Herança"]:
+    elif event in ["Entrada de Caixa","Venda","Herança","Serviço"]:
         update_cash = 'more' 
 
         cash_debit = value   

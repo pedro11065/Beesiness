@@ -32,10 +32,120 @@ def info_income_statement(company_id, cnpj):
 
         sorted_years = sorted(list(years)) # Convertendo o set de anos únicos para uma lista ordenada
 
+#-------------------------------------------------------------------------------------------------------
+
+        brute_revenue = []  ; brute_revenue_float = 0 #todas receitas
+        deductions_revenue = []; deductions_revenue_float = 0 #deduções da receita
+        result_revenue = 0 #resultado operacional bruto 
+
+        sell_costs = [] ; sell_costs_float = 0 #custos de venda    
+        result_operational_costs = 0 #resultado operacional líquido 
+
+        operational_costs = [] ;  operational_costs_float = 0 #custo operacional
+        loss = 0
+        loss_profit = 0 #lucro x prezuízo
+
+#-------------------------------------------------------------------------------------------------------
+        #Receita bruta
+        #brute_revenue eventos: Entrada de Caixa(exceto "#!@cash@!#") -> Receita = Lucro
+        
+        for item in assets:
+            if item['event'] in ['Lucro', 'Venda', 'Serviço'] and item['name'] != '#!@cash@!#':
+                brute_revenue.append(item)
+
+                brute_revenue_float += float(item['value'])
+            
+        for item in liabilities:
+            if item['event'] in ['Lucro']:
+                brute_revenue.append(item)
+
+                brute_revenue_float += float(item['value'])
+
+#-------------------------------------------------------------------------------------------------------
+        #Deduções da receita bruta
+        #deductions_revenue eventos: Descontos, Impostos e devoluções --> Despesas relacionadas ao lucro
+
+        for item in liabilities:
+            if item['event'] in ['Imposto a pagar(Receita)', 'Devolução', 'Desconto']:
+                deductions_revenue.append(item)     
+
+                deductions_revenue_float -= float(item['value'])
+ 
+
+#-------------------------------------------------------------------------------------------------------
+        #Resultado operacional bruto
+        #result_revenue = receita - despesas da receita
+        result_revenue = brute_revenue_float - deductions_revenue_float
+        print(result_revenue)
+#-------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
+        # Gastos diretos para gerar receitas, sem esses gastos, sem vendas(ex.: custo de produtos vendidos).
+        #sell_costs eventos: Fornecedor, Salário a pagar; Compra, investimento, serviço
+        
+        for item in liabilities:
+            if item['event'] in ['Fornecedor', 'Salário a pagar']:
+                sell_costs.append(item)     
+
+                sell_costs_float += float(item['value'])  
+
+        for item in assets:
+            if item['event'] in ['Compra', 'Investimento', 'Serviço']:
+                sell_costs.append(item)     
+
+                sell_costs_float += float(item['value'])  
+             
+#-------------------------------------------------------------------------------------------------------
+        #resultado operacional líquido = Resultado operacional bruto - custo das vendas
+
+        result_operational_costs = result_revenue - sell_costs_float
+
+        print(result_operational_costs)
+
+#-------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------
+        #Custos operacionais
+
+        for item in liabilities:
+            if item['event'] in ['Conta a pagar', 'Empréstimo', 'Financiamento', 'Imposto a pagar(Operacional)', 'Multa', 'Serviço']:
+                operational_costs.append(item)     
+
+                operational_costs_float += float(item['value'])  
+
+#-------------------------------------------------------------------------------------------------------
+        #lucro/prejuízo = Resultado operacional líquido x Custos operacionais
+        
+        loss_profit = result_operational_costs - operational_costs_float          
+        print(loss_profit)
+
+
+
         return jsonify({
-            'dates': sorted_years,  # Anos únicos e ordenados
-            'assets': assets,       # Lista de ativos
-            'liabilities': liabilities  # Lista de passivos
+
+            'brute_revenue':brute_revenue, #Receita operacional bruta
+            'brute_revenue_float':brute_revenue_float,#Receita operacional bruta(valor)
+        
+            'deductions_revenue':deductions_revenue, #Deduções da receita bruta
+            'deductions_revenue_float':deductions_revenue_float,#Deduções da receita bruta(valor)
+
+            'result_revenue':result_revenue, #Resultado operacional bruto
+            
+            ################################################
+
+            'sell_costs':sell_costs, #Custos das vendas
+            'sell_costs_float':sell_costs_float, #Custos das vendas(valor)
+
+            'result_operational_costs':result_operational_costs, #Resultado operacional líquido
+
+            ################################################
+
+            'operational_costs':operational_costs, #Despesas operacionais
+            'operational_costs_float':operational_costs_float, #Despesas operacionais(valor)
+
+            'loss_profit':loss_profit,#lucro/prejuízo operacional
+
+            ################################################
         })
     
     except Exception as e:
