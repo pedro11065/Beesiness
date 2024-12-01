@@ -1,13 +1,11 @@
 /** Correções necessárias:
- *  - Mês no month-box precisa estar de acordo com o selecionado.
- *  - O capital social deve ficar em patrimônio líquido.
- *  - Quando não há nada selecionado, ele pedirá para selecionar algo primeiro.
+ *  - O capital social e lucros acumulados devem ficar em patrimônio líquido.
  */
 
 document.addEventListener('DOMContentLoaded', async function () {
     const main = document.getElementById('main');
+    const main_temporario = document.getElementById('main_temporario'); 
     const menu = document.getElementById('menu-container');
-    const loading = document.getElementById('loading');
     const monthYearSelect = document.getElementById('month-year-select');
 
     // Formatar data no formato "MM/YYYY"
@@ -78,13 +76,24 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Processar dados agrupando-os por categorias
     const processCategories = (data) => {
         return data.reduce((grouped, item) => {
-            if (item.name === '#!@cash@!#') return grouped; // Ignorar itens específicos
+            if (item.name === '#!@cash@!#') return grouped;
+    
+            // Verificar se é um item de Patrimônio Líquido (Capital Social ou Lucros Acumulados)
+            if (item.name === 'Capital Social' || item.name === 'Lucros acumulados') {
+                const patrimony = grouped['patrimonio_liquido'] || {};
+                patrimony[item.name] = (patrimony[item.name] || 0) + item.value; // Soma os valores de Capital Social ou Lucros Acumulados
+                grouped['patrimonio_liquido'] = patrimony; // Adiciona na categoria do patrimônio líquido
+                return grouped;
+            }
+    
+            // Para os outros itens, agrupar por categoria
             const category = item.class.toLowerCase();
             if (!grouped[category]) grouped[category] = {};
             grouped[category][item.name] = (grouped[category][item.name] || 0) + item.value;
             return grouped;
         }, {});
     };
+    
 
     // Soma os valores das categorias
     const sumValues = (data) => {
@@ -109,15 +118,13 @@ document.addEventListener('DOMContentLoaded', async function () {
             circulante: processCategories(filteredLiabilities.circulante),
             nao_circulante: processCategories(filteredLiabilities.nao_circulante)
         };
-        
+
         console.log(processedAssets)
         console.log(processedLiabilities)
 
-        // Atualizar os ativos e passivos no DOM
-        updateHtmlWithResults(processedAssets, '.financial-container .category-container');
+        updateHtmlWithResults(processedAssets, '.first-category-container .category-container');
         updateHtmlWithResults(processedLiabilities, '.second-category-container .category-container');
 
-        // Atualizar os totais
         document.getElementById('total-ativo').textContent = formatValueToMoney(0, sumValues(processedAssets));
         document.getElementById('total-passivo').textContent = formatValueToMoney(0, sumValues(processedLiabilities));
     };
@@ -126,9 +133,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     try {
         const cnpj = getCnpjFromUrl();
 
-        loading.style.display = 'flex';
+        main_temporario.style.display = 'flex';
+        menu.style.display = 'flex';
         main.style.display = 'none';
-        menu.style.display = 'none';
 
         const response = await fetch(`/dashboard/balance-sheet/${cnpj}`, {
             method: 'POST',
@@ -144,25 +151,33 @@ document.addEventListener('DOMContentLoaded', async function () {
         monthYearSelect.addEventListener('change', function () {
             const selectedMonthYear = this.value;
 
+            const [selectedMonth, selectedYear] = selectedMonthYear.split('/');
+            const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+            const monthName = monthNames[parseInt(selectedMonth, 10) - 1]; // Remove um para ficar no indice (0-11)
+        
+            document.querySelector('#month-container .month-box h1').textContent = monthName;
+        
             const filteredAssets = {
                 circulante: filterDataByMonthYear(data.assets.circulante, selectedMonthYear),
                 nao_circulante: filterDataByMonthYear(data.assets.nao_circulante, selectedMonthYear)
             };
-
+        
             const filteredLiabilities = {
                 circulante: filterDataByMonthYear(data.liabilities.circulante, selectedMonthYear),
                 nao_circulante: filterDataByMonthYear(data.liabilities.nao_circulante, selectedMonthYear)
             };
-
+        
             displayFilteredData(filteredAssets, filteredLiabilities);
+            
+            main_temporario.style.display = 'none';
+            main.style.display = 'flex';
+            menu.style.display = 'flex';
         });
+        
 
-        loading.style.display = 'none';
-        main.style.display = 'flex';
-        menu.style.display = 'flex';
     } catch (error) {
         console.error(error);
-        loading.style.display = 'none';
+        main_temporario.style.display = 'none';
         main.style.display = 'flex';
         main.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
     }

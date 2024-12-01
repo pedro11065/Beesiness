@@ -138,15 +138,15 @@ h4 {
     background-color: transparent;
     color: #000000;
     border: none;
-    width: 100%; /* Faz o select ocupar toda a largura da caixa */
-    height: 100%; /* Faz o select ocupar toda a altura da caixa */
+    width: 100%;
+    height: 100%;
     font-weight: inherit;
     font-size: inherit;
     color: inherit;
     cursor: pointer;
     outline: none;
     appearance: none;
-    text-align: center; /* Centraliza o texto dentro do select */
+    text-align: center;
 }
 
 .menu-box:hover {
@@ -286,36 +286,25 @@ h4 {
     border-bottom: 1px solid black;
 }
 
-.first-category-container{
+.first-category-container, .second-category-container {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
 }
-
-.second-category-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
 
 .first-category-container .data-box.total-row {
     box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
 }
 
-.category-container{
+.category-container {
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: 86%;
 }
 
-
-
-.category-item{
-    
+.category-item {
     color: #333;
     align-self: center;
     margin-bottom: 0.5rem;
@@ -335,7 +324,7 @@ h4 {
     align-items: center;
 }
 
-.category-title{
+.category-title {
     display: flex;
     background-color: #f1f1f1;
     align-items: flex-start;

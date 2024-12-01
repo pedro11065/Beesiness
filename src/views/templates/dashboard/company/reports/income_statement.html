@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demonstração de Resultado do Exercício</title>
+    <title>Balanço patrimonial</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/income_statement.css') }}">
 
@@ -20,15 +20,11 @@
 <body>
     {% include 'dashboard/user/header.html' %}
 
-    <menu class="menu-container" id="menuContainer">
-        <div class="menu-box" id="day-btn">
-            <a>Dia</a>
-        </div>
-        <div class="menu-box" id="month-btn">
-            <a>Mês</a>
-        </div>
+    <menu class="menu-container" id="menu-container">
         <div class="menu-box" id="year-btn">
-            <a>Ano</a>
+            <select class="select" id="year-select" name="year" required>
+                <option value="" disabled selected>Escolher ano</option>
+            </select>
         </div>
     </menu>
 
@@ -37,6 +33,124 @@
     </div>
 
     <main class="main" id="main">
-        <p>Em desenvolvimento.</p>
+        <section class="year-container" id="year-container">
+            <header class="year-title-container" id="year-title-container">
+                <article class="year-title-box">
+                    <div class="year-box">
+                        <h1>2024 - 2025</h1>
+                    </div>
+                </article>
+            </header>
+    
+            <div class="financial-container">
+                    <!-- Receita Operacional Bruta -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(+) RECEITA OPERACIONAL BRUTA</h3>
+                            <div class="category-value" id="receita-operacional-bruta">1300</div>
+                        </div>
+                        <ul class="data-list">
+                            <li class="data-item">
+                                Vendas de Produtos
+                                <div class="data-value" id="vendas-produtos">1000</div>
+                            </li>
+                            <li class="data-item">
+                                Vendas de Mercadorias
+                                <div class="data-value" id="vendas-mercadorias">200</div>
+                            </li>
+                            <li class="data-item">
+                                Prestação de Serviços
+                                <div class="data-value" id="prestacao-servicos">100</div>
+                            </li>
+                        </ul>
+                    </div>
+                
+                    <!-- Deduções da Receita Bruta -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(-) DEDUÇÕES DA RECEITA BRUTA</h3>
+                            <div class="category-value" id="deducoes-receita-bruta">300</div>
+                        </div>
+                        <ul class="data-list">
+                            <li class="data-item">
+                                Devoluções de Vendas
+                                <div class="data-value" id="devolucoes-vendas">150</div>
+                            </li>
+                            <li class="data-item">
+                                Abatimentos
+                                <div class="data-value" id="abatimentos">50</div>
+                            </li>
+                            <li class="data-item">
+                                Impostos e Contribuições Incidentes sobre Vendas
+                                <div class="data-value" id="impostos-vendas">100</div>
+                            </li>
+                        </ul>
+                    </div>
+                
+                    <!-- Receita Operacional Líquida -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(=) RESULTADO OPERACIONAL BRUTO</h3>
+                            <div class="category-value" id="resultado-operacional-bruto">1000</div>
+                        </div>
+                    </div>
+                
+                    <!-- Custos das Vendas -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(-) CUSTOS DAS VENDAS</h3>
+                            <div class="category-value" id="custos-vendas">600</div>
+                        </div>
+                        <ul class="data-list">
+                            <li class="data-item">
+                                Custo dos Produtos Vendidos
+                                <div class="data-value" id="custo-produtos">300</div>
+                            </li>
+                            <li class="data-item">
+                                Custo das Mercadorias
+                                <div class="data-value" id="custo-mercadorias">200</div>
+                            </li>
+                            <li class="data-item">
+                                Custo dos Serviços Prestados
+                                <div class="data-value" id="custo-servicos">100</div>
+                            </li>
+                        </ul>
+                    </div>
+                
+                    <!-- Resultado Operacional Líquido -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(=) RESULTADO OPERACIONAL LÍQUIDO</h3>
+                            <div class="category-value" id="resultado-operacional-liquido">400</div>
+                        </div>
+                    </div>
+                
+                    <!-- Despesas Operacionais -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(-) DESPESAS OPERACIONAIS</h3>
+                            <div class="category-value" id="despesas-operacionais">300</div>
+                        </div>
+                        <ul class="data-list">
+                            <li class="data-item">
+                                Despesas com Vendas
+                                <div class="data-value" id="despesas-vendas">150</div>
+                            </li>
+                            <li class="data-item">
+                                Despesas Administrativas
+                                <div class="data-value" id="despesas-administrativas">150</div>
+                            </li>
+                        </ul>
+                    </div>
+                
+                    <!-- Resultado Líquido do Exercício -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(=) Lucro/Prejuízo operacional</h3>
+                            <div class="category-value" id="resultado-liquido">100</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </main>
 <body>

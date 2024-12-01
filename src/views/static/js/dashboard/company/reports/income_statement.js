@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', async function () {
+    const categoryTitles = document.querySelectorAll('.category-title');
+    
+    categoryTitles.forEach(title => {
+        title.addEventListener('click', () => {
+            const dataList = title.nextElementSibling;
+            dataList.classList.toggle('collapsed');
+        });
+    });
+
     const main = document.getElementById('main');
     const loading = document.getElementById('loading');
 
@@ -26,6 +35,74 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
+        console.log(data);
+
+        /*
+        - Passivos (classe):
+            Compra
+            Concessão
+            Entrada de Caixa
+            Investimento
+            Leilão
+            Pagamento
+            Permuta
+            Restituição Judicial
+            Troca
+            Venda
+        - Eventos dos Passivos:
+            Capital Social
+            Concessão de crédito
+            Conta a pagar
+            Empréstimo
+            Financiamento
+            Fornecedor
+            Imposto a pagar
+            Juros
+            Leasing
+            Multa
+            Outro
+            Prestação de serviços
+            Processos judiciais
+            Salário a pagar
+
+        - Ativos (classe):
+            Ações
+            Banco
+            Caixa
+            Contas a Receber
+            Equipamentos
+            Espaços
+            Estoque
+            Imóveis
+            Infraestrutura
+            Intangíveis
+            Investimento
+            Licenças
+            Maquinário
+            Matérias-Primas
+            Mobília
+            Outro
+            Patentes
+            Tecnologia e TI
+            Terreno
+            Veículos
+        - Eventos dos Ativos:
+            Aquisição
+            Compra
+            Concessão
+            Entrada de Caixa
+            Herança
+            Incorporação
+            Investimento
+            Leilão
+            Permuta
+            Produção Interna
+            Restituição Judicial
+            Serviço
+            Transferência
+            Troca
+            Venda
+        */
 
         loading.style.display = 'none';
         main.style.display = 'flex';
@@ -35,4 +112,4 @@ document.addEventListener('DOMContentLoaded', async function () {
         errorDiv.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
         main.appendChild(errorDiv);
     }
-})
+});

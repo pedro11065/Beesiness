@@ -95,11 +95,11 @@ p {
 .menu-box {
     background-color: white;
     display: flex;
-    width: 6rem;
     height: 40%;
     margin-right: 3rem;
-    align-items: center;
+    width: 10rem;
     justify-content: center;
+    align-items: center;
     border-radius: 0.5rem;
     font-weight: 600;
     font-size: 15px;
@@ -108,9 +108,24 @@ p {
     box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
 }
 
+.menu-box select {
+    background-color: transparent;
+    color: #000000;
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    text-align: center;
+}
+
 .menu-box:hover {
     background-color: rgb(34, 34, 34);
-    color: white;
+    color: black;
     box-shadow:inset rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
@@ -124,4 +139,129 @@ p {
     align-items: center;
     justify-content: center;
     border-radius: 0.5rem;
+}
+
+/* Container principal */
+.year-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 75%;
+    margin: 0 auto;
+}
+
+.year-title-container {
+    display: flex;
+    background-color: #3b3b3b;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4rem;
+    width: 100%;
+    height: 3rem;
+    margin: 20px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    position: relative;
+}
+
+.year-title-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    height: 100%;
+}
+
+.year-box {
+    display: flex;
+    margin: 0 1rem;
+    padding: 0.2rem;
+    align-items: center;
+    text-align: center;
+}
+
+/* Categorias do DRE */
+.financial-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0.8rem;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column; 
+    width: 100%;
+}
+
+.category-title {
+    background-color: #e2e1e1;
+    color: #333;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-radius: 0.4rem;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.category-value {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: 1rem;
+}
+
+/* Transição para esconder as categorias */
+.data-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+    max-height: 1000px;
+}
+
+.data-list.collapsed {
+    max-height: 0; /* Quando oculto, o conteúdo desaparece */
+}
+
+
+.data-item {
+    background-color: #f5f5f5;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.5rem;
+    padding-left: 2rem;
+    font-size: 1rem;
+    text-align: left;
+    border-radius: 0.4rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; 
+}
+
+.data-item:hover {
+    background-color: #eaeaea;
+}
+
+/* Cores */
+#receita-operacional-bruta {
+    color: #52e40f;
+}
+
+#deducoes-receita-bruta, #despesas-operacionais, #custos-vendas {
+    color: #DC5D5D;
+}
+
+#resultado-liquido, #resultado-operacional-liquido, #resultado-operacional-bruto {
+    color: #ecca09;
 }
