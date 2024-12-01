@@ -6,62 +6,51 @@ from src.model.database.company.patrimony.historic.search import db_search_histo
 
 def info_balance_sheet(company_id, cnpj):
     try:
-        # Obtém os dados históricos do banco de dados
         historic_data = db_search_historic(company_id)
         if not historic_data:
             return jsonify({'error': 'No historical data found'}), 404
-        
+
         # Data de corte (transações dentro dos últimos 12 meses são consideradas circulantes)
         data_corte = datetime.now().replace(year=datetime.now().year - 1)
 
-        # Inicializa listas para ativos e passivos
-        assets_circulante = []
-        assets_nao_circulante = []
-        liabilities_circulante = []
-        liabilities_nao_circulante = []
+        # Inicializa estruturas para ativos, passivos e patrimônio líquido
+        assets = {'circulante': {}, 'nao_circulante': {}}
+        liabilities = {'circulante': {}, 'nao_circulante': {}}
+        patrimony = {}
 
-        # Cria um set para garantir que as datas sejam únicas
-        datas = set()
+        datas = set() # Cria um set para garantir que as datas sejam únicas
 
-        # Itera sobre os dados históricos
         for item in historic_data:
+            if item['name'] == '#!@cash@!#':
+                continue
+
             try:
-                transaction_date = datetime.strptime(item['date'], "%Y-%m-%d")  # Converte 'date' para datetime
+                transaction_date = datetime.strptime(item['date'], "%Y-%m-%d")
             except ValueError:
-                # Se houver erro na conversão da data, ignora o item
                 continue
 
             # Adiciona a data ao set de datas únicas
             datas.add(transaction_date.date())
 
-            # Classifica os itens como ativos ou passivos
+            # Classifica os itens como ativos, passivos ou patrimônio líquido
+            category = 'circulante' if transaction_date > data_corte else 'nao_circulante'
             if item['type'] == 'asset':
-                if transaction_date > data_corte:
-                    assets_circulante.append(item)  # Transação recente é circulante
-                else:
-                    assets_nao_circulante.append(item)  # Transação mais antiga é não circulante
-
+                assets[category][item['name']] = assets[category].get(item['name'], 0) + item['value']
             elif item['type'] == 'liability':
-                if transaction_date > data_corte:
-                    liabilities_circulante.append(item)  # Passivo recente é circulante
+                if item['name'] in ['Capital Social', 'Lucros acumulados']: # Move "Capital Social" e "Lucros acumulados" para o patrimônio líquido
+                    patrimony[item['name']] = patrimony.get(item['name'], 0) + item['value']
                 else:
-                    liabilities_nao_circulante.append(item)  # Passivo mais antigo é não circulante
+                    liabilities[category][item['name']] = liabilities[category].get(item['name'], 0) + item['value']
 
-        
-        sorted_dates = sorted(list(datas)) # Convertendo o set de datas únicas para uma lista ordenada
-        sorted_dates_str = [date.strftime("%Y-%m-%d") for date in sorted_dates] # Convertendo para o formato desejado 'YYYY-MM-DD'
+        # Ordenar as datas por ordem crescente e colocar no formato 'YYYY-MM-DD'
+        sorted_dates = sorted(list(datas))
+        sorted_dates_str = [date.strftime("%Y-%m-%d") for date in sorted_dates]
 
-        # Retorna a resposta em formato JSON
         return jsonify({
-            'dates': sorted_dates_str,  # Datas únicas e ordenadas
-            'assets': {
-                'circulante': assets_circulante,
-                'nao_circulante': assets_nao_circulante
-            },
-            'liabilities': {
-                'circulante': liabilities_circulante,
-                'nao_circulante': liabilities_nao_circulante
-            }
+            'dates': sorted_dates_str,
+            'assets': assets,
+            'liabilities': liabilities,
+            'patrimony': patrimony
         })
     
     except Exception as e:

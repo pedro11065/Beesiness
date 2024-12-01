@@ -1,7 +1,3 @@
-/** Correções necessárias:
- *  - O capital social e lucros acumulados devem ficar em patrimônio líquido.
- */
-
 document.addEventListener('DOMContentLoaded', async function () {
     const main = document.getElementById('main');
     const main_temporario = document.getElementById('main_temporario'); 
@@ -33,100 +29,80 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Filtrar os dados pelo mês/ano
     const filterDataByMonthYear = (data, monthYear) => {
         const [selectedMonth, selectedYear] = monthYear.split('/').map(Number);
-        return data.filter(item => {
-            const [year, month] = item.date.split('-').map(Number);
-            return year === selectedYear && month === selectedMonth;
+        return Object.fromEntries(Object.entries(data).map(([key, values]) => {
+            const filtered = filterEntriesByDate(values, selectedYear, selectedMonth);
+            return [key, filtered];
+        }));
+    };
+
+    // Filtrar entradas com base no mês/ano
+    const filterEntriesByDate = (values, year, month) => {
+        const filtered = {};
+        Object.entries(values).forEach(([name, value]) => {
+            if (value.date) {
+                const [dataYear, dataMonth] = value.date.split('-').map(Number);
+                if (dataYear === year && dataMonth === month) {
+                    filtered[name] = value;
+                }
+            } else {
+                filtered[name] = value;
+            }
         });
+        return filtered;
     };
 
     // Atualizar o DOM com os resultados
-    const updateHtmlWithResults = (data, sectionSelector) => {
+    const updateHtmlWithResults = (data, sectionSelector, isPatrimony = false) => {
         const section = document.querySelector(sectionSelector);
         if (!section) return;
 
-        section.querySelectorAll('.category-item').forEach(categoryItem => {
-            const categoryName = categoryItem.querySelector('.category-title h3').textContent.trim().toLowerCase();
-            const ul = categoryItem.querySelector('.data-list');
+        const renderDataList = (ul, data) => {
             ul.innerHTML = ''; // Limpar a lista
-
-            if (!data[categoryName]) return;
-
-            const createListItem = (key, value) => {
+            Object.entries(data).forEach(([key, value]) => {
                 const li = document.createElement('li');
                 li.classList.add('data-item');
-                li.textContent = `${key}: ${formatValueToMoney(0, value)}`; // Pedro: Se quiser mudar a box dos valores, fica nessa parte.
+                li.textContent = `${key}: ${formatValueToMoney(0, value)}`;
                 ul.appendChild(li);
-            };
-
-            // Adicionar itens ao DOM
-            Object.entries(data[categoryName]).forEach(([key, value]) => {
-                if (typeof value === 'object') {
-                    Object.entries(value).forEach(([subKey, subValue]) => {
-                        if (subKey !== '#!@cash@!#' && typeof subValue === 'number') {
-                            createListItem(subKey, subValue);
-                        }
-                    });
-                } else if (key !== '#!@cash@!#' && typeof value === 'number') {
-                    createListItem(key, value);
-                }
             });
-        });
+        };
+
+        if (isPatrimony) {
+            const ul = section.querySelector('.data-list');
+            renderDataList(ul, data);
+        } else {
+            section.querySelectorAll('.category-item').forEach(categoryItem => {
+                const categoryName = categoryItem.querySelector('.category-title h3').textContent.trim().toLowerCase();
+                const ul = categoryItem.querySelector('.data-list');
+                if (!data[categoryName]) return;
+                renderDataList(ul, data[categoryName]);
+            });
+        }
     };
 
-    // Processar dados agrupando-os por categorias
-    const processCategories = (data) => {
-        return data.reduce((grouped, item) => {
-            if (item.name === '#!@cash@!#') return grouped;
-    
-            // Verificar se é um item de Patrimônio Líquido (Capital Social ou Lucros Acumulados)
-            if (item.name === 'Capital Social' || item.name === 'Lucros acumulados') {
-                const patrimony = grouped['patrimonio_liquido'] || {};
-                patrimony[item.name] = (patrimony[item.name] || 0) + item.value; // Soma os valores de Capital Social ou Lucros Acumulados
-                grouped['patrimonio_liquido'] = patrimony; // Adiciona na categoria do patrimônio líquido
-                return grouped;
-            }
-    
-            // Para os outros itens, agrupar por categoria
-            const category = item.class.toLowerCase();
-            if (!grouped[category]) grouped[category] = {};
-            grouped[category][item.name] = (grouped[category][item.name] || 0) + item.value;
-            return grouped;
-        }, {});
-    };
-    
+    const displayFilteredData = (data) => {
+        updateHtmlWithResults(data.assets, '.first-category-container .category-container'); // Ativos
+        updateHtmlWithResults(data.liabilities, '.second-category-container .category-container'); // Passivos
+        updateHtmlWithResults(data.patrimony, '.patrimony-section', true); // Patrimônio líquido
 
-    // Soma os valores das categorias
+        const totalAtivo = sumValues(data.assets);
+        document.getElementById('total-ativo').textContent = formatValueToMoney(0, totalAtivo);
+
+        const totalPassivo = sumValues(data.liabilities);
+        const totalPatrimonio = sumValues(data.patrimony);
+
+        const totalPassivoPatrimonio = totalPassivo + totalPatrimonio;
+
+        document.getElementById('total-passivo-patrimonio').textContent = formatValueToMoney(0, totalPassivoPatrimonio);
+    };
+
+    // Função para somar os valores considerando a estrutura dos dados
     const sumValues = (data) => {
-        return Object.values(data).reduce((total, category) => {
-            return total + Object.values(category).reduce((sum, value) => {
-                if (typeof value === 'object') {
-                    return sum + Object.values(value).reduce((subSum, subValue) => subSum + (typeof subValue === 'number' ? subValue : 0), 0);
-                }
-                return sum + (typeof value === 'number' ? value : 0);
-            }, 0);
+        return Object.values(data).reduce((total, values) => {
+            if (typeof values === 'object') {
+                return total + sumValues(values);
+            }
+            return total + (typeof values === 'number' ? values : 0); // Somar o valor se for um número
         }, 0);
-    };
-
-    // Exibir dados filtrados no DOM
-    const displayFilteredData = (filteredAssets, filteredLiabilities) => {
-        const processedAssets = {
-            circulante: processCategories(filteredAssets.circulante),
-            nao_circulante: processCategories(filteredAssets.nao_circulante)
-        };
-
-        const processedLiabilities = {
-            circulante: processCategories(filteredLiabilities.circulante),
-            nao_circulante: processCategories(filteredLiabilities.nao_circulante)
-        };
-
-        console.log(processedAssets)
-        console.log(processedLiabilities)
-
-        updateHtmlWithResults(processedAssets, '.first-category-container .category-container');
-        updateHtmlWithResults(processedLiabilities, '.second-category-container .category-container');
-
-        document.getElementById('total-ativo').textContent = formatValueToMoney(0, sumValues(processedAssets));
-        document.getElementById('total-passivo').textContent = formatValueToMoney(0, sumValues(processedLiabilities));
     };
 
     // Função principal com chamada à API e inicialização
@@ -150,30 +126,24 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         monthYearSelect.addEventListener('change', function () {
             const selectedMonthYear = this.value;
-
             const [selectedMonth, selectedYear] = selectedMonthYear.split('/');
             const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-            const monthName = monthNames[parseInt(selectedMonth, 10) - 1]; // Remove um para ficar no indice (0-11)
-        
+            const monthName = monthNames[parseInt(selectedMonth, 10) - 1];
+
             document.querySelector('#month-container .month-box h1').textContent = monthName;
-        
-            const filteredAssets = {
-                circulante: filterDataByMonthYear(data.assets.circulante, selectedMonthYear),
-                nao_circulante: filterDataByMonthYear(data.assets.nao_circulante, selectedMonthYear)
+
+            const filteredData = {
+                assets: filterDataByMonthYear(data.assets, selectedMonthYear),
+                liabilities: filterDataByMonthYear(data.liabilities, selectedMonthYear),
+                patrimony: data.patrimony
             };
-        
-            const filteredLiabilities = {
-                circulante: filterDataByMonthYear(data.liabilities.circulante, selectedMonthYear),
-                nao_circulante: filterDataByMonthYear(data.liabilities.nao_circulante, selectedMonthYear)
-            };
-        
-            displayFilteredData(filteredAssets, filteredLiabilities);
-            
+
+            displayFilteredData(filteredData);
+
             main_temporario.style.display = 'none';
             main.style.display = 'flex';
             menu.style.display = 'flex';
         });
-        
 
     } catch (error) {
         console.error(error);
