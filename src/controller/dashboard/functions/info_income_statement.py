@@ -84,13 +84,13 @@ def info_income_statement(company_id, cnpj):
         #sell_costs eventos: Fornecedor, Salário a pagar; Compra, investimento, serviço
         
         for item in liabilities:
-            if item['event'] in ['Fornecedor', 'Salário a pagar']:
+            if item['event'] in ['Fornecedor', 'Salário a pagar','Serviço']:
                 sell_costs.append(item)     
 
                 sell_costs_float += float(item['value'])  
 
         for item in assets:
-            if item['event'] in ['Compra', 'Investimento', 'Serviço']:
+            if item['event'] in ['Compra', 'Investimento']:
                 sell_costs.append(item)     
 
                 sell_costs_float += float(item['value'])  

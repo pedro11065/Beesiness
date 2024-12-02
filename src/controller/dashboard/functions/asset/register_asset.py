@@ -43,6 +43,8 @@ def asset_registration(asset_data, company_id):
     print(installment)
 
 #-------------------------------------------------- Debito e crédito 
+
+    record = True
     value = float(value)
     
     if event in ['Compra','Transferência','Investimento']:
@@ -54,6 +56,8 @@ def asset_registration(asset_data, company_id):
         asset_credit = 0
 
     elif event in ["Entrada de Caixa","Venda","Herança","Serviço"]:
+        
+        record = True
         update_cash = 'more' 
 
         cash_debit = value   
@@ -80,6 +84,6 @@ def asset_registration(asset_data, company_id):
 
     #---------------------------------------------------------------------
 
-    db_create_asset(company_id, current_user.id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment, floating)
+    db_create_asset(company_id, current_user.id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment, floating,record)
 
     return jsonify('Asset registrado com sucesso!'), 200

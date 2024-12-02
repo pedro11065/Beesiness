@@ -5,7 +5,7 @@ from colorama import Fore, Style
 from ....connect import connect_database
 from ..asset.search_cash import db_search_cash
 
-def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment, floating): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
+def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit, cash_credit,  asset_debit, asset_credit, location, acquisition_date, description, status, update_cash, installment, floating, record): # Cria um usuário usando as informações do user_info como parametro, todos os dados são temporários.
     db_login = connect_database() # Coleta os dados para conexão
     
     # Conecta ao banco de dados
@@ -25,7 +25,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
     creation_date = datetime.datetime.now().strftime("%Y-%m-%d")
     type =  "asset"
 
-    if event not in ['Entrada de Caixa','Venda']:
+    if record == True:
         # Guarda os dados na tabela de assets:
         cur.execute("""
         INSERT INTO table_assets (
@@ -101,7 +101,7 @@ def db_create_asset(company_id, user_id, name, event, classe, value, cash_debit,
             'Entrada de caixa', 
             'Caixa',
             '{cash_now}', 
-            '{date}', 
+            '{acquisition_date}', 
             'asset', 
             '{creation_date}', 
             '{creation_time}', 
