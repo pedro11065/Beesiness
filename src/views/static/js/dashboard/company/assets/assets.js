@@ -270,3 +270,57 @@ async function confirmEdit() {
         alertModal.style.display = 'block';
     }
 }
+
+/* Modal de vender */
+function sellAsset(event) {
+    event.stopPropagation();
+
+    // Mostrar modal de venda
+    const sellModal = document.getElementById('sell-modal');
+    sellModal.style.display = 'block';
+
+    const dropdown = event.currentTarget.nextElementSibling;
+    if (dropdown) dropdown.style.display = 'none';
+
+    const assetId = document.getElementById('uuid').innerText;
+
+    // Botão "Sim" do modal de venda
+    const confirmSellButton = document.querySelector('.btn.confirm-sell');
+
+    confirmSellButton.onclick = async function () {
+        try {
+            confirmSellButton.disabled = true;
+            confirmSellButton.style.cursor = 'not-allowed';
+
+            const response = await fetch(`/dashboard/sell-asset/${assetId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                document.getElementById('body-content').innerText = result.message;
+                document.getElementById('alert-modal').style.display = 'block';
+
+                sellModal.style.display = 'none';
+                document.getElementById('modal').style.display = 'none';
+            } else {
+                throw new Error(result.message || 'Erro ao vender o ativo.');
+            }
+        } catch (error) {
+            document.getElementById('body-content').innerText = error.message;
+            document.getElementById('alert-modal').style.display = 'block';
+        } finally {
+            confirmSellButton.disabled = false;
+            confirmSellButton.style.cursor = 'pointer';
+        }
+    };
+
+    // Botão "Não" do modal de venda
+    document.querySelector('.btn.cancel-sell').onclick = function () {
+        sellModal.style.display = 'none';
+    };
+}

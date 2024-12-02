@@ -27,6 +27,7 @@
                 
                 <div class="dropdown-menu" style="display:none;">
                     <button class="dropdown-item" onclick="openEditModal()">Editar</button>
+                    <button class="dropdown-item" onclick="sellAsset(event)">Vender</button>
                     <button class="dropdown-item" onclick="deleteAsset(event)">Deletar</button>
                 </div>
             </div>
@@ -77,6 +78,22 @@
                     <p id="uuid"></p>
                 </div>
             </footer>
+        </div>
+    </div>
+
+    <!-- Modal de vender -->
+    <div id="sell-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Vender</h2>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja vender o ativo?</p>
+            </div>
+            <div class="button-group">
+                <button class="btn confirm-sell">Sim</button>
+                <button class="btn cancel-sell">Não</button>
+            </div>
         </div>
     </div>
 

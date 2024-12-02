@@ -337,20 +337,20 @@ p {
 }
 
 /* Botões de confirmação */
-.btn.confirm-delete, .btn.confirm-edit {
+.btn.confirm-delete, .btn.confirm-edit, .btn.confirm-settle {
     background-color: #4CAF50;
 }
 
-.btn.confirm-delete:hover, .btn.confirm-edit:hover {
+.btn.confirm-delete:hover, .btn.confirm-edit:hover, .btn.confirm-sette:hover {
     background-color: #459c48;
 }
 
 /* Botões de cancelamento */
-.btn.cancel-delete, .btn.cancel-edit {
+.btn.cancel-delete, .btn.cancel-edit, .btn.cancel-settle{
     background-color: #f44336;
 }
 
-.btn.cancel-delete:hover, .btn.cancel-edit:hover {
+.btn.cancel-delete:hover, .btn.cancel-edit:hover, .btn.cancel-settle:hover {
     background-color: #da4338;
 }
 

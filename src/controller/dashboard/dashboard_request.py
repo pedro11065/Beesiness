@@ -17,6 +17,9 @@ from src.controller.dashboard.user.info_user_companies import info_user_companie
 from src.controller.dashboard.functions.asset.update_asset import update_asset
 from src.controller.dashboard.functions.liability.update_liability import update_liability
 
+from src.controller.dashboard.functions.asset.sell_asset import sell_asset
+from src.controller.dashboard.functions.liability.settle_liability import settle_liability
+
 
 from src.controller.dashboard.functions.asset.refund_asset import refund_asset
 from src.controller.dashboard.functions.liability.refund_liability import refund_liability
@@ -185,6 +188,13 @@ def assets_update(uuid):
         data = request.get_json()
         company_id = session.get('company_id')
         return update_asset(data, uuid, company_id)
+    
+@dashboard_request.route('/sell-asset/<uuid>', methods=['POST'])
+@login_required
+def assets_sell(uuid):
+    if request.method == 'POST': 
+        company_id = session.get('company_id')
+        return sell_asset(uuid, company_id)
         
 
 
@@ -216,6 +226,13 @@ def liabilities_update(uuid):
         data = request.get_json()
         company_id = session.get('company_id')
         return update_liability(data, uuid, company_id)
+    
+@dashboard_request.route('/settle-liability/<uuid>', methods=['POST'])
+@login_required
+def liabilities_settle(uuid):
+    if request.method == 'POST': 
+        company_id = session.get('company_id')
+        return settle_liability(uuid, company_id)
         
         
 #-----------------------------------------------------------------------------------------

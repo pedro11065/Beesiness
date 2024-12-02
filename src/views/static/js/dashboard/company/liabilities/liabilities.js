@@ -132,6 +132,7 @@ function toggleDropdown(event) {
     if (dropdown) dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
 }
 
+/* Deletar */
 function deleteLiability(event) {
     event.stopPropagation();
 
@@ -198,7 +199,6 @@ document.querySelector('#alert-modal .btn.fechar').onclick = function () {
     if (confirmModalVisible) location.reload();
 };
 
-/* Editar */
 function openEditModal() {
     editModal.style.display = 'block';
 
@@ -248,4 +248,58 @@ async function confirmEdit() {
         document.getElementById('body-content').innerText = error.message;
         alertModal.style.display = 'block';
     }
+}
+
+/* Quitar */
+function settleLiability(event) {
+    event.stopPropagation();
+
+    // Mostrar modal de quitar
+    const settleModal = document.getElementById('settle-modal');
+    settleModal.style.display = 'block';
+
+    const dropdown = event.currentTarget.nextElementSibling;
+    if (dropdown) dropdown.style.display = 'none';
+
+    const liabilityId = document.getElementById('uuid').innerText;
+    
+    // Botão "Sim" do modal de quitar
+    const confirmSettleButton = document.querySelector('.btn.confirm-settle');
+
+    confirmSettleButton.onclick = async function () {
+        try {
+            confirmSettleButton.disabled = true;
+            confirmSettleButton.style.cursor = 'not-allowed';
+
+            const response = await fetch(`/dashboard/settle-liability/${liabilityId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                document.getElementById('body-content').innerText = result.message;
+                document.getElementById('alert-modal').style.display = 'block';
+
+                settleModal.style.display = 'none';
+                document.getElementById('modal').style.display = 'none';
+            } else {
+                throw new Error(result.message || 'Erro ao quitar o passivo.');
+            }
+        } catch (error) {
+            document.getElementById('body-content').innerText = error.message;
+            document.getElementById('alert-modal').style.display = 'block';
+        } finally {
+            confirmSettleButton.disabled = false;
+            confirmSettleButton.style.cursor = 'pointer';
+        }
+    };
+
+    // Botão "Não" do modal de quitar
+    document.querySelector('.btn.cancel-settle').onclick = function () {
+        settleModal.style.display = 'none';
+    };
 }
