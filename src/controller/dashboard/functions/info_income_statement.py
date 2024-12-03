@@ -25,10 +25,12 @@ def info_income_statement(company_id, cnpj):
             years.add(transaction_date.year)
 
             # Classifica os itens como ativos ou passivos
-            if item['type'] == 'asset':
-                assets.append(item)
-            elif item['type'] == 'liability':
-                liabilities.append(item)
+            if item['ignore'] != True:
+                if item['type'] == 'asset':
+                    assets.append(item)
+
+                elif item['type'] == 'liability':
+                    liabilities.append(item)
 
         sorted_years = sorted(list(years)) # Convertendo o set de anos únicos para uma lista ordenada
 

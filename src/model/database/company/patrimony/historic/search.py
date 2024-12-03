@@ -42,7 +42,8 @@ def db_search_historic(company_id):
             "credit": data[12],
             "installment":data[13],
             "type": data[14],
-            "floating": data[15]
+            "floating": data[15],
+            "ignore": data[16]
 
         } for data in historic_data]
 

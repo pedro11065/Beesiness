@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             BruteRevenueDiv.innerHTML = `
             
             <li class="data-item">
-                ${data.brute_revenue[i].name}
+                ${data.brute_revenue[i].name} - ${data.brute_revenue[i].date}
                 <div class="data-value" id="vendas-produtos">${formatValueToMoney(data.brute_revenue[i].value)}</div>
             </li>`
                 
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             DeductionsRevenueDiv.innerHTML = `
             
             <li class="data-item">
-                ${data.brute_revenue[i].name}
+                ${data.brute_revenue[i].name} - ${data.brute_revenue[i].date}
                 <div class="data-value" id="vendas-produtos">${formatValueToMoney(data.deductions_revenue[i].value)}</div>
             </li>`
                 
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             SellCostsDiv.innerHTML = `
             
             <li class="data-item">
-                ${data.sell_costs[i].name}
+                ${data.sell_costs[i].name} - ${data.sell_costs[i].date}
                 <div class="data-value" id="vendas-produtos">${formatValueToMoney(data.sell_costs[i].value)}</div>
             </li>`
                 
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             SellCostsDiv.innerHTML = `
             
             <li class="data-item">
-                ${data.operational_costs[i].name}
+                ${data.operational_costs[i].name} - ${data.operational_costs[i].date}
                 <div class="data-value" id="vendas-produtos">${formatValueToMoney(data.operational_costs[i].value)}</div>
             </li>`
                 
