@@ -18,6 +18,9 @@ def settle_liability(liability_id, company_id):
     value = liability_data.get('value')
     print(f'Value do settle é: {value}')
 
+    ignore = True
+    settle = True
+
     # Dados do registro no histórico para o caixa
     cash_historic_data = {
         'user_id': current_user.id,
@@ -32,10 +35,10 @@ def settle_liability(liability_id, company_id):
 
     try:
         # Recria o histórico do passivo de forma idêntica (única diferença é o value no debit que antes ficava no credit)
-        db_create_historic(liability_id, company_id, liability_data, value)
+        db_create_historic(liability_id, company_id, liability_data, value, ignore)
 
         # Atualiza o cash
-        db_update_cash(company_id, value)
+        db_update_cash(company_id, value, settle)
 
         # Remover passivo original da tabela de passivos
         db_delete_liability(liability_id, company_id)

@@ -7,7 +7,7 @@ import uuid
 
 from .....connect import connect_database
 
-def db_update_cash(company_id, new_value):
+def db_update_cash(company_id, new_value, settle):
     db_login = connect_database() 
     
     conn = psycopg2.connect(
@@ -21,13 +21,21 @@ def db_update_cash(company_id, new_value):
 
     print(Fore.GREEN + '[Alteração de dados] ' + Style.RESET_ALL + f'Alterando cash')
 
-    new_value = int(new_value)
-    
-    cur.execute(f"""
-        UPDATE table_liabilities 
+    new_value = float(new_value)
+
+    if settle == True:
+            cur.execute(f"""
+        UPDATE table_assets 
         SET value = value - {new_value}
         WHERE name = '#!@cash@!#' and company_id = '{company_id}';
     """)
+    
+    else:
+        cur.execute(f"""
+            UPDATE table_liabilities 
+            SET value = value - {new_value}
+            WHERE name = '#!@cash@!#' and company_id = '{company_id}';
+        """)
     
     conn.commit()
     cur.close()

@@ -7,7 +7,7 @@ import uuid
 
 from .....connect import connect_database
 
-def db_create_historic(liability_id, company_id, data, value):
+def db_create_historic(liability_id, company_id, data, value, ignore):
     db_login = connect_database() 
     
     conn = psycopg2.connect(
@@ -42,9 +42,9 @@ def db_create_historic(liability_id, company_id, data, value):
     try:
         cur.execute("""
             INSERT INTO table_historic (
-                historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment
+                historic_id, company_id, user_id, patrimony_id, name, event, class, value, date, type, creation_date, creation_time, debit, credit, installment, ignore
             ) VALUES (
-                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
             );
         """, (
             new_historic_id,
@@ -61,7 +61,8 @@ def db_create_historic(liability_id, company_id, data, value):
             creation_time,
             debit if debit is not None else None,
             credit if credit is not None else None,
-            installment
+            installment,
+            ignore
         ))
 
    
