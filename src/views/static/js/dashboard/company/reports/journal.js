@@ -138,6 +138,8 @@ function getCnpjFromUrl() {
 
 function formatDateToBrazilian(dateStr) { // Converte de YYYY-MM-DD para DD/MM/YYYY
     const date = new Date(dateStr);
+    date.setHours(date.getHours() + 3);
+
     const day = date.getDate().toString().padStart(2, '0');
     const month = date.toLocaleString('pt-BR', { month: 'long' });
     const year = date.getFullYear();
@@ -150,14 +152,9 @@ function formatValueToMoney(valueStr) {
 }
 
 function getFormattedTime(creationTime) {
-    const date = new Date(creationTime);
-
-    const offset = -3; // Definindo o fuso horário como -3
-    const localTime = new Date(date.getTime() + offset * 60 * 60 * 1000); // Converte o horário para GMT-3
-
-    const hours = String(localTime.getUTCHours()).padStart(2, '0');
-    const minutes = String(localTime.getUTCMinutes()).padStart(2, '0');
-    const seconds = String(localTime.getUTCSeconds()).padStart(2, '0');
+    const hours = new Date(creationTime.getUTCHours()).padStart(2, '0');
+    const minutes = new Date(creationTime.getUTCMinutes()).padStart(2, '0');
+    const seconds = new Date(creationTime.getUTCSeconds()).padStart(2, '0');
 
     return `${hours}:${minutes}:${seconds}`; // Retorna o horário formatado como HH:MM:SS
 }

@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     function formatDateToBrazilian(dateStr) {
         const date = new Date(dateStr);
+        date.setHours(date.getHours() + 3);
+
         const day = date.getDate().toString().padStart(2, '0');
         const month = date.toLocaleString('pt-BR', { month: 'long' });
         const year = date.getFullYear();
