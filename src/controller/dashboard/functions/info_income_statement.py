@@ -48,7 +48,7 @@ def info_income_statement(company_id, cnpj):
                 next_name = assets[j]['name']
 
                 if now_name == next_name:
-                    assets[i]['value'] = float(assets[j]['value']) + float(assets[i]['value'])
+                    float(assets[i]['value']) = float(assets[j]['value']) + float(assets[i]['value'])
                     del_list.append(assets[i]['patrimony_id'])
 
         for i in del_list:
@@ -68,7 +68,7 @@ def info_income_statement(company_id, cnpj):
                 next_name = liabilities[j]['value']
 
                 if now_name == next_name:
-                    liabilities[i]['value'] = float(liabilities[j]['value']) + float(assets[i]['value'])
+                    float(liabilities[i]['value'])= float(liabilities[j]['value']) + float(assets[i]['value'])
                     del_list.append(liabilities[i]['patrimony_id'])
                     
         for i in del_list:
