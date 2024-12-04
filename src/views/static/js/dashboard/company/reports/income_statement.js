@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const data = await response.json();
-        console.log(data);
+
 
         const BruteRevenue = document.getElementById('brute_revenue');
         const DeductionsRevenue = document.getElementById('deductions_revenue');
