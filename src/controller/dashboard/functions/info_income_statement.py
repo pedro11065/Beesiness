@@ -35,6 +35,59 @@ def info_income_statement(company_id, cnpj):
         sorted_years = sorted(list(years)) # Convertendo o set de anos únicos para uma lista ordenada
 
 #-------------------------------------------------------------------------------------------------------
+# Juntando todos os itens com o mesmo nome
+
+#ATIVOS ====================================================
+
+        del_list = []
+
+        for i in range(len(assets)):
+            now_name = assets[i]['name']
+
+            for j in range(len(assets)):
+                next_name = assets[j]['name']
+
+                if now_name == next_name:
+                    assets[i]['value'] = float(assets[j]['value']) + float(assets[i]['value'])
+                    del_list.append(assets[i]['patrimony_id'])
+
+        for i in del_list:
+            print(i)
+            for item in assets:
+                if item['patrimony_id'] == i:
+                    del assets[i]     
+
+#PASSIVOS ====================================================
+
+        del_list = []
+
+        for i in range(len(liabilities)):
+            now_name = liabilities[i]['value']
+
+            for j in range(len(liabilities)):
+                next_name = liabilities[j]['value']
+
+                if now_name == next_name:
+                    liabilities[i]['value'] = float(liabilities[j]['value']) + float(assets[i]['value'])
+                    del_list.append(liabilities[i]['patrimony_id'])
+                    
+        for i in del_list:
+            print(i)
+            for item in assets:
+                if item['patrimony_id'] == i:
+                    del liabilities[i]    
+
+            
+
+
+
+
+
+
+
+
+
+#-------------------------------------------------------------------------------------------------------
 
         brute_revenue = []  ; brute_revenue_float = 0 #todas receitas
         deductions_revenue = []; deductions_revenue_float = 0 #deduções da receita
