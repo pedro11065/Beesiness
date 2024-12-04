@@ -28,19 +28,22 @@ document.addEventListener('DOMContentLoaded', async function () {
             const groupedByMonth = {};
 
             data.historic.forEach(item => {
-                const month = new Date(item.date).toLocaleString('pt-BR', { month: 'long' });
+                const date = new Date(item.date);
+                date.setHours(date.getHours() + 3); // Coloca no UTC de Brasília.
+            
+                const month = date.toLocaleString('pt-BR', { month: 'long' });
+            
                 if (!groupedByMonth[month]) {
                     groupedByMonth[month] = [];
                 }
                 groupedByMonth[month].push(item);
             });
+            
 
             // Criar month-container para cada mês
             Object.keys(groupedByMonth).forEach(month => {
                 const monthDiv = document.createElement('section');
                 monthDiv.className = 'month-container';
-
-                console.log(groupedByMonth[0])
 
                 let MonthValue = 0; 
 
@@ -87,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         dayDiv.innerHTML = `
                             <header class="title-container">
                                 <div class="title-box">
-                                    <h3>${formatDateToBrazilian(item.date)} - ${item.creation_time}</h3>
+                                    <h3>${formatDateToBrazilian(item.date)} – ${item.creation_time}</h3>
                                 </div>
                                 <div class="title-box">
                                     <h3>${formatValueToMoney(item.value)}</h3>

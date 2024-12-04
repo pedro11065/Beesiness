@@ -49,9 +49,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             const groupedByMonth = {};
 
             data.historic.forEach(item => {
-                const date = new Date(item.creation_date);
+                const date = new Date(item.date);
+                date.setHours(date.getHours() + 3); // Coloca no UTC de Brasília.
+            
                 const month = date.toLocaleString('pt-BR', { month: 'long' });
-                const day = formatDateToBrazilian(item.creation_date);
+                const day = formatDateToBrazilian(date)
 
                 // Agrupando por mês
                 if (!groupedByMonth[month]) {

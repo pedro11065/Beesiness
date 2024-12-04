@@ -151,8 +151,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             Object.keys(groupedByDay).forEach(day => {
                 const creationDate = new Date(day);
+                creationDate.setHours(creationDate.getHours() + 3); // Coloca no UTC de Brasília.
+            
                 const month = creationDate.toLocaleString('pt-BR', { month: 'long' });
-                const formattedDay = formatDateToBrazilian(day);
+
+                const formattedDay = formatDateToBrazilian(creationDate);
 
                 if (!groupedByMonth[month]) {
                     groupedByMonth[month] = {};
@@ -181,8 +184,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 let totalDebito = 0, totalCredito = 0;
 
                 Object.keys(groupedByMonth[month]).forEach(day => {
-
-
                     const dayDiv = document.createElement('article');
                     dayDiv.className = 'day-container';
 
@@ -259,7 +260,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             // Agrupar dados por mês e classe
             data.historic.forEach(item => {
-                const creationDate = new Date(item.date); // Usa a data de criação para o agrupamento
+                const creationDate = new Date(item.date);
+                creationDate.setHours(creationDate.getHours() + 3); // Coloca no UTC de Brasília.
+            
                 const month = creationDate.toLocaleString('pt-BR', { month: 'long' });
 
                 if (!ByMonth[month]) {
