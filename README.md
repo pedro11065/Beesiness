@@ -15,7 +15,7 @@ Este projeto foi desenvolvido durante o segundo semestre do curso de Análise e 
 ## Disponível na Web!
 
 Agora rodando 24/7 em um servidor linux com docker + ngrok na Oracle!
-acesse: [Beesiness](https://constantly-amusing-ferret.ngrok-free.app)
+acesse: [Beesiness.com](https://constantly-amusing-ferret.ngrok-free.app)
 
 ## Preparando & Instalando
 
