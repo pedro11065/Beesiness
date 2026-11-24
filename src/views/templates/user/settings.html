@@ -1,60 +1,256 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurações - Beesiness</title>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/settings.css')}}">
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png')}}">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
+    <meta name="description" content="Gerencie seus dados pessoais e credenciais de acesso na Beesiness.">
+    <title>Editar conta | Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/settings.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <section class="container">
-        <h1>Configurações da Conta</h1>
-        <form id="settingsForm" action="/user/settings" method="post">
-            <div class="form-group">
-                <label for="name">Nome <a>*</a></label>
-                <input type="text" id="name" name="name" value="{{ current_user.fullname }}" required>
-                <p class="error" id="name-error"></p>
-            </div>
+    {% include 'dashboard/user/header.html' %}
 
-            <div class="form-group">
-                <label for="email">E-mail <a>*</a></label>
-                <input type="email" id="email" name="email" value="{{ current_user.email }}" required>
-            </div>
+    <main class="settings-page">
+        <div class="container">
+            <header class="page-head">
+                <div>
+                    <span class="label">Conta pessoal</span>
+                    <h1>Configurações da conta.</h1>
+                    <p>Atualize seus dados de identificação ou redefina sua senha de acesso.</p>
+                </div>
+                <a href="/dashboard/user" class="btn btn-outline">← Minhas empresas</a>
+            </header>
 
-            <div class="form-group">
-                <label for="cpf">CPF <a>*</a></label>
-                <input type="text" id="cpf" name="cpf" value="{{ current_user.cpf }}" maxlength="14" required>
-                <p class="error" id="cpf-error"></p>
-            </div>
+            <div class="settings-grid">
+                <!-- Coluna esquerda: Resumo do perfil -->
+                <aside class="profile-card" aria-label="Resumo do titular">
+                    <div class="profile-top">
+                        <div class="profile-avatar" id="profileInitial" aria-hidden="true">
+                            {{ (current_user.fullname or 'U')[0] }}
+                        </div>
+                        <div>
+                            <span class="profile-badge">Conta ativa</span>
+                            <h2 id="profileName">{{ current_user.fullname }}</h2>
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <label for="password">Senha atual <a>*</a></label>
-                <input type="password" id="password" name="password" placeholder="Digite sua senha atual" required>
-                <p class="error" id="password-error"></p>
-            </div>
+                    <dl class="profile-meta">
+                        <div>
+                            <dt>E-mail cadastrado</dt>
+                            <dd id="profileEmail">{{ current_user.email }}</dd>
+                        </div>
+                        <div>
+                            <dt>CPF do titular</dt>
+                            <dd id="profileCpf">{{ current_user.cpf }}</dd>
+                        </div>
+                    </dl>
 
-            <div class="form-group">
-                <label for="new_password">Nova senha</label>
-                <input type="password" id="new_password" name="new_password" placeholder="Digite a nova senha">
-                <p class="error" id="new_password-error"></p>
-            </div>
+                    <p class="profile-note">
+                        Por segurança, qualquer alteração cadastral ou troca de senha exige a confirmação da sua senha atual.
+                    </p>
 
-            <div class="form-group">
-                <label for="confirm_password">Confirmar nova senha</label> 
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirme a nova senha">
-            </div>
+                    <div class="profile-foot">
+                        <a href="/user/logout" class="logout-link">Encerrar sessão →</a>
+                    </div>
+                </aside>
 
-            <div class="form-actions">
-                <button type="submit" class="save-btn">Salvar Alterações</button>
+                <!-- Coluna direita: Formulário de edição -->
+                <section class="form-panel">
+                    <div class="banner banner-success" id="settingsSuccess" role="status" aria-live="polite" hidden></div>
+                    <div class="banner banner-error" id="settingsAlert" role="alert" aria-live="polite" hidden></div>
+
+                    <form id="settingsForm" action="/user/settings" method="POST" novalidate>
+                        <!-- 01. Dados pessoais -->
+                        <div class="form-section">
+                            <div class="section-head">
+                                <span class="section-num">01</span>
+                                <div>
+                                    <h3>Dados pessoais</h3>
+                                    <p>Informações vinculadas ao seu perfil e às empresas que você acessa.</p>
+                                </div>
+                            </div>
+
+                            <div class="fields-stack">
+                                <div class="field">
+                                    <label for="name">Nome completo</label>
+                                    <input
+                                        class="input"
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value="{{ current_user.fullname }}"
+                                        autocomplete="name"
+                                        required
+                                    >
+                                    <p class="error" id="name-error"></p>
+                                </div>
+
+                                <div class="field-grid">
+                                    <div class="field">
+                                        <label for="email">E-mail</label>
+                                        <input
+                                            class="input"
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            value="{{ current_user.email }}"
+                                            autocomplete="email"
+                                            required
+                                        >
+                                        <p class="error" id="email-error"></p>
+                                    </div>
+
+                                    <div class="field">
+                                        <label for="cpf">CPF</label>
+                                        <input
+                                            class="input"
+                                            type="text"
+                                            id="cpf"
+                                            name="cpf"
+                                            inputmode="numeric"
+                                            value="{{ current_user.cpf }}"
+                                            maxlength="14"
+                                            required
+                                        >
+                                        <p class="error" id="cpf-error"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 02. Redefinir senha (opcional) -->
+                        <div class="form-section">
+                            <div class="section-head">
+                                <span class="section-num">02</span>
+                                <div>
+                                    <h3>Nova senha <span class="opt-tag">Opcional</span></h3>
+                                    <p>Deixe em branco caso deseje manter sua senha atual.</p>
+                                </div>
+                            </div>
+
+                            <div class="fields-stack">
+                                <div class="field-grid">
+                                    <div class="field">
+                                        <label for="new_password">Nova senha</label>
+                                        <div class="password-wrap">
+                                            <input
+                                                class="input"
+                                                type="password"
+                                                id="new_password"
+                                                name="new_password"
+                                                placeholder="Mínimo 8 caracteres"
+                                                autocomplete="new-password"
+                                            >
+                                            <button type="button" class="toggle-pw" aria-label="Mostrar nova senha" data-target="new_password">
+                                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                                                    <circle cx="12" cy="12" r="3"/>
+                                                </svg>
+                                                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.4 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/>
+                                                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/>
+                                                    <line x1="2" y1="2" x2="22" y2="22"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <p class="error" id="new_password-error"></p>
+                                    </div>
+
+                                    <div class="field">
+                                        <label for="confirm_password">Confirmar nova senha</label>
+                                        <div class="password-wrap">
+                                            <input
+                                                class="input"
+                                                type="password"
+                                                id="confirm_password"
+                                                name="confirm_password"
+                                                placeholder="Repita a nova senha"
+                                                autocomplete="new-password"
+                                            >
+                                            <button type="button" class="toggle-pw" aria-label="Mostrar confirmação de senha" data-target="confirm_password">
+                                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                                                    <circle cx="12" cy="12" r="3"/>
+                                                </svg>
+                                                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.4 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/>
+                                                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/>
+                                                    <line x1="2" y1="2" x2="22" y2="22"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <p class="error" id="confirm_password-error"></p>
+                                    </div>
+                                </div>
+
+                                <ul class="pw-rules" id="pwRules" aria-label="Requisitos da nova senha">
+                                    <li data-rule="len">8+ caracteres</li>
+                                    <li data-rule="upper">Maiúscula</li>
+                                    <li data-rule="lower">Minúscula</li>
+                                    <li data-rule="num">Número</li>
+                                    <li data-rule="spec">Caractere especial</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 03. Senha atual obrigatória -->
+                        <div class="confirm-box">
+                            <div class="section-head" style="margin-bottom:.85rem;">
+                                <span class="section-num">03</span>
+                                <div>
+                                    <h3>Confirme com sua senha atual</h3>
+                                    <p>Obrigatória para autenticar e gravar suas alterações.</p>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label for="password">Senha atual</label>
+                                <div class="password-wrap">
+                                    <input
+                                        class="input"
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Digite sua senha atual"
+                                        autocomplete="current-password"
+                                        required
+                                    >
+                                    <button type="button" class="toggle-pw" aria-label="Mostrar senha atual" data-target="password">
+                                        <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                                            <circle cx="12" cy="12" r="3"/>
+                                        </svg>
+                                        <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.4 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/>
+                                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/>
+                                            <line x1="2" y1="2" x2="22" y2="22"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <p class="error" id="password-error"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="/dashboard/user" class="btn btn-outline">Cancelar</a>
+                            <button type="submit" class="btn btn-primary save-btn" id="saveBtn">
+                                <span id="saveBtnText">Salvar alterações</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </form>
+                </section>
             </div>
-        </form>
-    </section>
+        </div>
+    </main>
+
     <script src="{{ url_for('static', filename='js/user/settings.js') }}"></script>
 </body>
+
 </html>
