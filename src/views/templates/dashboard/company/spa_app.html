@@ -1,0 +1,1579 @@
+{% set company_name = snapshot.company.name if snapshot and snapshot.company and snapshot.company.name else 'Painel da empresa' %}
+{% set view_meta = {
+    'overview': {'eyebrow': 'Painel patrimonial', 'heading': company_name, 'title': company_name ~ ' | Beesiness'},
+    'assets': {'eyebrow': 'Gestão de bens e direitos', 'heading': 'Ativos registrados.', 'title': 'Ativos · ' ~ company_name ~ ' | Beesiness'},
+    'liabilities': {'eyebrow': 'Obrigações e capital', 'heading': 'Passivos registrados.', 'title': 'Passivos · ' ~ company_name ~ ' | Beesiness'},
+    'register_asset': {'eyebrow': 'Novo lançamento patrimonial', 'heading': 'Registrar ativo.', 'title': 'Registrar ativo · ' ~ company_name ~ ' | Beesiness'},
+    'register_liability': {'eyebrow': 'Obrigações e capital', 'heading': 'Registrar passivo.', 'title': 'Registrar passivo · ' ~ company_name ~ ' | Beesiness'},
+    'journal': {'eyebrow': 'Escrituração cronológica', 'heading': 'Livro Diário.', 'title': 'Livro Diário · ' ~ company_name ~ ' | Beesiness'},
+    'trial_balance': {'eyebrow': 'Verificação de saldos', 'heading': 'Balancete de verificação.', 'title': 'Balancete · ' ~ company_name ~ ' | Beesiness'},
+    'razonete': {'eyebrow': 'Contas em T (Livro Razão)', 'heading': 'Razonetes.', 'title': 'Razonetes · ' ~ company_name ~ ' | Beesiness'},
+    'balance_sheet': {'eyebrow': 'Demonstração estática', 'heading': 'Balanço Patrimonial.', 'title': 'Balanço Patrimonial · ' ~ company_name ~ ' | Beesiness'},
+    'income_statement': {'eyebrow': 'Desempenho econômico', 'heading': 'Demonstração do Resultado (DRE).', 'title': 'DRE · ' ~ company_name ~ ' | Beesiness'},
+    'authorization': {'eyebrow': 'Controle de acesso', 'heading': 'Permissões da equipe.', 'title': 'Permissões · ' ~ company_name ~ ' | Beesiness'}
+} %}
+{% set current_meta = view_meta.get(initial_view, view_meta['overview']) %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel contábil unificado da empresa na Beesiness.">
+    <title>{{ current_meta.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/shell.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/spa_app.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body id="spaRoot" data-cnpj="{{ cnpj }}" data-initial-view="{{ initial_view }}">
+    {% include 'dashboard/user/header.html' %}
+
+    <!-- Barra superior persistente da empresa + navegação instantânea -->
+    <section class="company-hero">
+        <div class="container">
+            <div class="company-head">
+                <div class="company-identity">
+                    <div class="company-meta">
+                        <span class="label" id="spaEyebrow">{{ current_meta.eyebrow }}</span>
+                        <span class="cnpj-pill" id="companyCnpjPill">
+                            <span class="spa-sync-dot" id="spaSyncDot" aria-hidden="true"></span>
+                            <span id="companyCnpjText">CNPJ {{ cnpj }}</span>
+                        </span>
+                    </div>
+                    <h1 id="companyTitle">{{ current_meta.heading }}</h1>
+                </div>
+
+                <div class="company-actions">
+                    <a
+                        class="btn {{ 'btn-dark' if initial_view == 'register_asset' else 'btn-primary' }}"
+                        id="btnActionRegAsset"
+                        href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj) }}"
+                        data-spa-view="register_asset"
+                    >
+                        <span>Registrar ativo</span>
+                        <span aria-hidden="true">+</span>
+                    </a>
+                    <a
+                        class="btn {{ 'btn-dark' if initial_view == 'register_liability' else 'btn-outline' }}"
+                        id="btnActionRegLiability"
+                        href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}"
+                        data-spa-view="register_liability"
+                    >
+                        <span>Registrar passivo</span>
+                        <span aria-hidden="true">+</span>
+                    </a>
+                </div>
+            </div>
+
+            <nav class="module-tabs" aria-label="Módulos da empresa">
+                <a class="tab {{ 'is-active' if initial_view == 'overview' else '' }}" href="{{ url_for('auth_dashboard.dashboard_company', cnpj=cnpj) }}" data-spa-view="overview">Visão geral</a>
+                <a class="tab {{ 'is-active' if initial_view == 'assets' else '' }}" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}" data-spa-view="assets">Ativos</a>
+                <a class="tab {{ 'is-active' if initial_view == 'liabilities' else '' }}" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}" data-spa-view="liabilities">Passivos</a>
+                <a class="tab {{ 'is-active' if initial_view == 'journal' else '' }}" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=cnpj) }}" data-spa-view="journal">Livro Diário</a>
+                <a class="tab {{ 'is-active' if initial_view == 'trial_balance' else '' }}" href="{{ url_for('auth_dashboard.balance_trial', cnpj=cnpj) }}" data-spa-view="trial_balance">Balancete</a>
+                <a class="tab {{ 'is-active' if initial_view == 'razonete' else '' }}" href="{{ url_for('auth_dashboard.razonete_site', cnpj=cnpj) }}" data-spa-view="razonete">Razonete</a>
+                <a class="tab {{ 'is-active' if initial_view == 'balance_sheet' else '' }}" href="{{ url_for('auth_dashboard.balance_sheet', cnpj=cnpj) }}" data-spa-view="balance_sheet">Balanço Patrimonial</a>
+                <a class="tab {{ 'is-active' if initial_view == 'income_statement' else '' }}" href="{{ url_for('auth_dashboard.income_statement', cnpj=cnpj) }}" data-spa-view="income_statement">DRE</a>
+                <a
+                    class="tab {{ 'is-active' if initial_view == 'authorization' else '' }}"
+                    id="tabAuthorization"
+                    href="{{ url_for('auth_dashboard.authorization_site', cnpj=cnpj) }}"
+                    data-spa-view="authorization"
+                    {% if snapshot.user.role != 'creator' %}hidden{% endif %}
+                >Permissões</a>
+            </nav>
+        </div>
+    </section>
+
+    <main class="page-main" id="spaMain">
+        <div class="container">
+
+            <!-- =========================================================
+                 1. VISÃO GERAL (overview)
+                 ========================================================= -->
+            <section class="spa-view dashboard-stack" data-view="overview" {% if initial_view != 'overview' %}hidden{% endif %}>
+                <div class="kpi-grid" aria-label="Resumo patrimonial">
+                    <article class="kpi-card kpi-highlight">
+                        <div class="kpi-top">
+                            <span class="kpi-index">01</span>
+                            <span class="kpi-tag">Disponibilidade</span>
+                        </div>
+                        <div class="kpi-body">
+                            <span class="kpi-label">Saldo em caixa</span>
+                            <strong class="kpi-value" id="ov-cash-now">R$ 0,00</strong>
+                        </div>
+                        <p class="kpi-foot" id="ov-cash-sub">Saldo reconciliado com o Livro Diário</p>
+                    </article>
+
+                    <article class="kpi-card">
+                        <div class="kpi-top">
+                            <span class="kpi-index">02</span>
+                            <span class="kpi-tag">Situação líquida</span>
+                        </div>
+                        <div class="kpi-body">
+                            <span class="kpi-label">Patrimônio líquido</span>
+                            <strong class="kpi-value" id="ov-patrimony">R$ 0,00</strong>
+                        </div>
+                        <p class="kpi-foot" id="ov-patrimony-sub">Ativo total menos obrigações exigíveis</p>
+                    </article>
+
+                    <a class="kpi-card kpi-link" id="ov-assets-box" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}" data-spa-view="assets">
+                        <div class="kpi-top">
+                            <span class="kpi-index">03</span>
+                            <span class="kpi-pill"><span id="ov-assets-quant">0</span> itens</span>
+                        </div>
+                        <div class="kpi-body">
+                            <span class="kpi-label">Ativos registrados</span>
+                            <strong class="kpi-value" id="ov-assets-total">R$ 0,00</strong>
+                        </div>
+                        <p class="kpi-foot kpi-foot-link">
+                            <span id="ov-assets-sub">Ver bens e direitos</span>
+                            <span class="arrow" aria-hidden="true">→</span>
+                        </p>
+                    </a>
+
+                    <a class="kpi-card kpi-link" id="ov-liabilities-box" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}" data-spa-view="liabilities">
+                        <div class="kpi-top">
+                            <span class="kpi-index">04</span>
+                            <span class="kpi-pill"><span id="ov-liabilities-quant">0</span> registros</span>
+                        </div>
+                        <div class="kpi-body">
+                            <span class="kpi-label">Obrigações pendentes</span>
+                            <strong class="kpi-value" id="ov-obligations-total">R$ 0,00</strong>
+                        </div>
+                        <p class="kpi-foot kpi-foot-link">
+                            <span id="ov-liabilities-sub">Ver passivos e capital</span>
+                            <span class="arrow" aria-hidden="true">→</span>
+                        </p>
+                    </a>
+                </div>
+
+                <div class="row-split row-main-charts">
+                    <article class="panel panel-flex">
+                        <header class="panel-head">
+                            <div>
+                                <span class="panel-eyebrow">Fluxo acumulado</span>
+                                <h2>Saldo x Tempo</h2>
+                                <p>Evolução cronológica do caixa conforme entradas e saídas efetivas.</p>
+                            </div>
+                            <div class="seg-control" role="group" aria-label="Tipo de gráfico de saldo">
+                                <button type="button" class="seg-btn is-active" data-ov-chart-mode="line">Linha</button>
+                                <button type="button" class="seg-btn" data-ov-chart-mode="bar">Barras</button>
+                            </div>
+                        </header>
+
+                        <div class="chart-stage" id="ov-balance-stage">
+                            <canvas id="ov-balance-canvas"></canvas>
+                        </div>
+                        <div class="empty-panel" id="ov-balance-empty" hidden>
+                            <strong>Sem movimentações de caixa registradas</strong>
+                            <span>Registre ativos ou pagamentos para acompanhar a curva de evolução do saldo.</span>
+                        </div>
+                    </article>
+
+                    <article class="panel panel-flex">
+                        <header class="panel-head">
+                            <div>
+                                <span class="panel-eyebrow">Concentração</span>
+                                <h2 id="ov-class-title">Ativos por classe</h2>
+                                <p id="ov-class-sub">Participação de cada classe sobre o ativo total.</p>
+                            </div>
+                            <div class="seg-control" role="group" aria-label="Visão por classe">
+                                <button type="button" class="seg-btn is-active" data-ov-class-mode="assets">Ativos</button>
+                                <button type="button" class="seg-btn" data-ov-class-mode="exits">Saídas</button>
+                            </div>
+                        </header>
+
+                        <ul class="class-list" id="ov-class-list"></ul>
+                        <div class="empty-panel" id="ov-class-empty" hidden>
+                            <strong>Nenhum valor categorizado ainda</strong>
+                            <span>Os totais por classe aparecerão automaticamente após os primeiros registros.</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="row-split row-indicators">
+                    <article class="panel panel-flex">
+                        <header class="panel-head">
+                            <div>
+                                <span class="panel-eyebrow">Comparativo por competência</span>
+                                <h2>Ativos x Passivos</h2>
+                                <p>Volume financeiro registrado em ativos frente às obrigações assumidas em cada mês.</p>
+                            </div>
+                        </header>
+
+                        <div class="chart-stage chart-stage-sm" id="ov-comp-stage">
+                            <canvas id="ov-comp-canvas"></canvas>
+                        </div>
+                        <div class="empty-panel" id="ov-comp-empty" hidden>
+                            <strong>Sem histórico mensal suficiente</strong>
+                            <span>Adicione lançamentos para comparar ativos e passivos ao longo dos meses.</span>
+                        </div>
+
+                        <div class="structure-strip" aria-label="Estrutura circulante e não circulante">
+                            <div class="structure-item">
+                                <span class="structure-label">Ativo circulante (c/ caixa)</span>
+                                <strong id="ov-curr-assets">R$ 0,00</strong>
+                            </div>
+                            <div class="structure-item">
+                                <span class="structure-label">Ativo não circulante</span>
+                                <strong id="ov-ncurr-assets">R$ 0,00</strong>
+                            </div>
+                            <div class="structure-item">
+                                <span class="structure-label">Passivo circulante</span>
+                                <strong id="ov-curr-liab">R$ 0,00</strong>
+                            </div>
+                            <div class="structure-item">
+                                <span class="structure-label">Passivo não circulante</span>
+                                <strong id="ov-ncurr-liab">R$ 0,00</strong>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="metrics-column">
+                        <div class="metrics-head">
+                            <span class="panel-eyebrow">Saúde financeira e caixa</span>
+                            <h2>Indicadores contábeis</h2>
+                        </div>
+
+                        <div class="metrics-grid">
+                            <article class="metric-card">
+                                <div class="metric-top">
+                                    <span class="metric-name">Total de entradas</span>
+                                    <span class="metric-badge badge-pos"><span id="ov-count-entrys">0</span> lanç.</span>
+                                </div>
+                                <strong class="metric-val" id="ov-values-entrys">R$ 0,00</strong>
+                                <span class="metric-desc">Ingressos efetivos no caixa</span>
+                            </article>
+
+                            <article class="metric-card">
+                                <div class="metric-top">
+                                    <span class="metric-name">Total de saídas</span>
+                                    <span class="metric-badge badge-neutral"><span id="ov-count-exits">0</span> lanç.</span>
+                                </div>
+                                <strong class="metric-val" id="ov-values-exits">R$ 0,00</strong>
+                                <span class="metric-desc">Pagamentos, quitações e compras</span>
+                            </article>
+
+                            <article class="metric-card">
+                                <div class="metric-top">
+                                    <span class="metric-name">Liquidez corrente</span>
+                                    <span class="metric-badge" id="ov-liq-badge">—</span>
+                                </div>
+                                <strong class="metric-val" id="ov-liq-current">—</strong>
+                                <span class="metric-desc">Ativo circulante ÷ Passivo circulante</span>
+                            </article>
+
+                            <article class="metric-card">
+                                <div class="metric-top">
+                                    <span class="metric-name">Liquidez imediata</span>
+                                    <span class="metric-badge badge-neutral">Caixa CP</span>
+                                </div>
+                                <strong class="metric-val" id="ov-liq-immediate">—</strong>
+                                <span class="metric-desc">Caixa disponível ÷ Passivo circulante</span>
+                            </article>
+
+                            <article class="metric-card">
+                                <div class="metric-top">
+                                    <span class="metric-name">Endividamento geral</span>
+                                    <span class="metric-badge" id="ov-debt-badge">—</span>
+                                </div>
+                                <strong class="metric-val" id="ov-debt-ratio">0%</strong>
+                                <span class="metric-desc">Passivo exigível sobre o ativo total</span>
+                            </article>
+
+                            <article class="metric-card">
+                                <div class="metric-top">
+                                    <span class="metric-name">Capital social</span>
+                                    <span class="metric-badge badge-gold">Patrimônio</span>
+                                </div>
+                                <strong class="metric-val" id="ov-equity-total">R$ 0,00</strong>
+                                <span class="metric-desc">Capital registrado pelos sócios</span>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <article class="panel">
+                    <header class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Histórico recente</span>
+                            <h2>Últimos lançamentos</h2>
+                        </div>
+                        <a class="btn-text-link" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=cnpj) }}" data-spa-view="journal">
+                            Abrir Livro Diário →
+                        </a>
+                    </header>
+
+                    <div class="table-wrap" id="ov-recent-wrap">
+                        <table class="recent-table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Evento · Classe</th>
+                                    <th>Natureza</th>
+                                    <th class="num-col">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ov-recent-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="empty-panel" id="ov-recent-empty" hidden>
+                        <strong>Nenhum lançamento registrado até o momento</strong>
+                        <span>Use os botões "Registrar ativo" ou "Registrar passivo" no topo da página para iniciar.</span>
+                    </div>
+                </article>
+            </section>
+
+            <!-- =========================================================
+                 2. ATIVOS (assets)
+                 ========================================================= -->
+            <section class="spa-view page-stack" data-view="assets" {% if initial_view != 'assets' %}hidden{% endif %}>
+                <div class="summary-strip" aria-label="Resumo dos ativos">
+                    <article class="summary-card is-dark">
+                        <span class="summary-label">Total em bens e direitos</span>
+                        <strong class="summary-value" id="ast-sum-total">R$ 0,00</strong>
+                        <span class="summary-sub" id="ast-sum-cash">Caixa disponível: R$ 0,00</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Ativos circulantes (s/ caixa)</span>
+                        <strong class="summary-value" id="ast-sum-current">R$ 0,00</strong>
+                        <span class="summary-sub">Realizáveis no curto prazo</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Ativos não circulantes</span>
+                        <strong class="summary-value" id="ast-sum-ncurrent">R$ 0,00</strong>
+                        <span class="summary-sub">Imobilizado, longo prazo e intangíveis</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Itens cadastrados</span>
+                        <strong class="summary-value" id="ast-sum-count">0</strong>
+                        <span class="summary-sub">Clique em uma linha para gerenciar</span>
+                    </article>
+                </div>
+
+                <div class="panel" id="ast-table-panel">
+                    <div class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Inventário patrimonial</span>
+                            <h2>Relação de ativos</h2>
+                        </div>
+                    </div>
+
+                    <div class="toolbar" style="margin-bottom: 1.15rem;">
+                        <div class="search-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="search" id="ast-search" class="search-input" placeholder="Filtrar por nome, classe, evento ou status...">
+                        </div>
+
+                        <div class="seg-control" role="group" aria-label="Filtrar por liquidez">
+                            <button type="button" class="seg-btn is-active" data-ast-filter="all">Todos</button>
+                            <button type="button" class="seg-btn" data-ast-filter="current">Circulantes</button>
+                            <button type="button" class="seg-btn" data-ast-filter="non_current">Não circulantes</button>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" id="ast-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Classe</th>
+                                    <th>Evento</th>
+                                    <th>Tipo</th>
+                                    <th>Aquisição</th>
+                                    <th>Status</th>
+                                    <th class="num-col">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ast-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="empty-state" id="ast-empty-filter" hidden style="border:0; padding:2.2rem 1rem;">
+                        <span class="empty-tag">Busca</span>
+                        <h2>Nenhum ativo corresponde ao filtro</h2>
+                        <p>Tente ajustar o termo pesquisado ou alternar entre circulantes e não circulantes.</p>
+                    </div>
+                </div>
+
+                <div class="empty-state" id="ast-empty-data" hidden>
+                    <span class="empty-tag">Inventário vazio</span>
+                    <h2>Nenhum ativo registrado ainda.</h2>
+                    <p>Cadastre máquinas, imóveis, contas bancárias, estoques ou aplicações da empresa.</p>
+                    <a class="btn btn-primary" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj) }}" data-spa-view="register_asset">Registrar primeiro ativo +</a>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 3. PASSIVOS (liabilities)
+                 ========================================================= -->
+            <section class="spa-view page-stack" data-view="liabilities" {% if initial_view != 'liabilities' %}hidden{% endif %}>
+                <div class="summary-strip" aria-label="Resumo dos passivos">
+                    <article class="summary-card is-dark">
+                        <span class="summary-label">Obrigações exigíveis</span>
+                        <strong class="summary-value" id="lib-sum-obligations">R$ 0,00</strong>
+                        <span class="summary-sub" id="lib-sum-obligations-count">0 obrigações com terceiros</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Passivo circulante</span>
+                        <strong class="summary-value" id="lib-sum-current">R$ 0,00</strong>
+                        <span class="summary-sub">Vencimento no curto prazo</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Passivo não circulante</span>
+                        <strong class="summary-value" id="lib-sum-ncurrent">R$ 0,00</strong>
+                        <span class="summary-sub">Exigível no longo prazo</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Capital social / PL</span>
+                        <strong class="summary-value" id="lib-sum-equity">R$ 0,00</strong>
+                        <span class="summary-sub">Aportes registrados pelos sócios</span>
+                    </article>
+                </div>
+
+                <div class="panel" id="lib-table-panel">
+                    <div class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Controle de compromissos</span>
+                            <h2>Relação de passivos e capital</h2>
+                        </div>
+                    </div>
+
+                    <div class="toolbar" style="margin-bottom: 1.15rem;">
+                        <div class="search-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="search" id="lib-search" class="search-input" placeholder="Filtrar por nome, evento, pagamento ou status...">
+                        </div>
+
+                        <div class="seg-control" role="group" aria-label="Filtrar natureza">
+                            <button type="button" class="seg-btn is-active" data-lib-filter="all">Todos</button>
+                            <button type="button" class="seg-btn" data-lib-filter="obligations">Obrigações</button>
+                            <button type="button" class="seg-btn" data-lib-filter="equity">Capital Social</button>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" id="lib-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Evento</th>
+                                    <th>Categoria</th>
+                                    <th>Emissão</th>
+                                    <th>Vencimento</th>
+                                    <th>Pagamento</th>
+                                    <th>Status</th>
+                                    <th class="num-col">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lib-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="empty-state" id="lib-empty-filter" hidden style="border:0; padding:2.2rem 1rem;">
+                        <span class="empty-tag">Busca</span>
+                        <h2>Nenhum registro corresponde ao filtro</h2>
+                        <p>Limpe o campo de busca ou alterne entre Obrigações e Capital Social.</p>
+                    </div>
+                </div>
+
+                <div class="empty-state" id="lib-empty-data" hidden>
+                    <span class="empty-tag">Sem pendências</span>
+                    <h2>Nenhum passivo registrado no momento.</h2>
+                    <p>Registre contas a pagar, fornecedores, financiamentos ou aportes de capital social.</p>
+                    <a class="btn btn-primary" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}" data-spa-view="register_liability">Registrar passivo +</a>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 4. REGISTRAR ATIVO (register_asset)
+                 ========================================================= -->
+            <section class="spa-view" data-view="register_asset" {% if initial_view != 'register_asset' %}hidden{% endif %}>
+                <div class="panel form-card">
+                    <div class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Bens e direitos</span>
+                            <h2>Dados do ativo</h2>
+                            <p>Cadastre bens, direitos, recebíveis ou entradas financeiras no patrimônio da empresa.</p>
+                        </div>
+                    </div>
+
+                    <form id="ra-form" novalidate>
+                        <div class="form-section">
+                            <h3 class="form-section-title">01 · Identificação e valor</h3>
+                            <div class="form-grid-3">
+                                <div class="field">
+                                    <label for="ra-name">Nome do ativo</label>
+                                    <input class="input" id="ra-name" type="text" placeholder="Ex.: Servidor principal" required>
+                                    <span class="field-error" id="err-ra-name"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="ra-value">Valor (R$)</label>
+                                    <input class="input" id="ra-value" type="text" inputmode="numeric" placeholder="R$ 0,00" required>
+                                    <span class="field-error" id="err-ra-value"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="ra-floating">Classificação</label>
+                                    <select class="select-input" id="ra-floating" required>
+                                        <option value="" disabled selected>Selecione o tipo</option>
+                                        <option value="Circulante">Circulante</option>
+                                        <option value="Não circulante">Não circulante</option>
+                                    </select>
+                                    <span class="field-error" id="err-ra-floating"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section-title">02 · Natureza contábil e aquisição</h3>
+                            <div class="form-grid">
+                                <div class="field">
+                                    <label for="ra-event">Evento contábil</label>
+                                    <select class="select-input" id="ra-event" required>
+                                        <option value="" disabled selected>Selecione o evento</option>
+                                        <option>Aquisição</option>
+                                        <option>Compra</option>
+                                        <option>Concessão</option>
+                                        <option>Entrada de Caixa</option>
+                                        <option>Herança</option>
+                                        <option>Incorporação</option>
+                                        <option>Investimento</option>
+                                        <option>Leilão</option>
+                                        <option>Lucro</option>
+                                        <option>Permuta</option>
+                                        <option>Produção Interna</option>
+                                        <option>Restituição Judicial</option>
+                                        <option>Serviço</option>
+                                        <option>Transferência</option>
+                                        <option>Troca</option>
+                                        <option>Venda</option>
+                                    </select>
+                                    <span class="field-error" id="err-ra-event"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="ra-class">Classe patrimonial</label>
+                                    <select class="select-input" id="ra-class" required>
+                                        <option value="" disabled selected>Selecione a classe</option>
+                                        <option>Ações</option>
+                                        <option>Banco</option>
+                                        <option>Caixa</option>
+                                        <option>Contas a Receber</option>
+                                        <option>Equipamentos</option>
+                                        <option>Espaços</option>
+                                        <option>Estoque</option>
+                                        <option>Imóveis</option>
+                                        <option>Infraestrutura</option>
+                                        <option>Intangíveis</option>
+                                        <option>Investimento</option>
+                                        <option>Licenças</option>
+                                        <option>Maquinário</option>
+                                        <option>Matérias-Primas</option>
+                                        <option>Mobília</option>
+                                        <option>Outro</option>
+                                        <option>Patentes</option>
+                                        <option>Serviço</option>
+                                        <option>Tecnologia e TI</option>
+                                        <option>Terreno</option>
+                                        <option>Veículos</option>
+                                    </select>
+                                    <span class="field-error" id="err-ra-class"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="ra-status">Status atual</label>
+                                    <select class="select-input" id="ra-status" required>
+                                        <option value="" disabled selected>Selecione o status</option>
+                                        <option>Disponível</option>
+                                        <option>Em Uso</option>
+                                        <option>Comprado</option>
+                                        <option>Realizado</option>
+                                        <option>Caixa</option>
+                                        <option>Alugado</option>
+                                        <option>Em Manutenção</option>
+                                        <option>Empenhado</option>
+                                        <option>Doado</option>
+                                        <option>Vendido</option>
+                                        <option>Leiloado</option>
+                                        <option>Danificado</option>
+                                        <option>Obsoleto</option>
+                                        <option>Apreendido</option>
+                                        <option>Perdido</option>
+                                    </select>
+                                    <span class="field-error" id="err-ra-status"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="ra-date">Data de aquisição / competência</label>
+                                    <input class="input" id="ra-date" type="date" min="1924-01-01" max="2999-12-31" required>
+                                    <span class="field-error" id="err-ra-date"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section-title">03 · Pagamento, localização e descrição</h3>
+                            <div class="form-grid">
+                                <div class="field">
+                                    <label for="ra-payment">Forma de pagamento</label>
+                                    <select class="select-input" id="ra-payment" required>
+                                        <option value="" disabled selected>Selecione a forma</option>
+                                        <option>Pix</option>
+                                        <option>Transferência Bancária</option>
+                                        <option>Boleto Bancário</option>
+                                        <option>Cartão de Crédito</option>
+                                        <option>Cartão de Débito</option>
+                                        <option>Dinheiro em espécie</option>
+                                        <option>Carteira Digital</option>
+                                        <option>Carnê</option>
+                                        <option>Cheque</option>
+                                        <option>Criptomoedas</option>
+                                        <option>Gift Cards</option>
+                                        <option>Vale-Alimentação</option>
+                                        <option>Vale-Refeição</option>
+                                        <option>Vale-Transporte</option>
+                                    </select>
+                                    <span class="field-error" id="err-ra-payment"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="ra-installment">Parcelamento</label>
+                                    <select class="select-input" id="ra-installment" required>
+                                        <option value="Débito" selected>Débito / À vista</option>
+                                        <option value="1x">1x</option>
+                                        <option value="2x">2x</option>
+                                        <option value="3x">3x</option>
+                                        <option value="4x">4x</option>
+                                        <option value="5x">5x</option>
+                                        <option value="6x">6x</option>
+                                        <option value="7x">7x</option>
+                                        <option value="8x">8x</option>
+                                        <option value="9x">9x</option>
+                                        <option value="10x">10x</option>
+                                        <option value="11x">11x</option>
+                                        <option value="12x">12x</option>
+                                    </select>
+                                    <span class="field-error" id="err-ra-installment"></span>
+                                </div>
+
+                                <div class="field col-span-2">
+                                    <label for="ra-location">Localização / Custódia (opcional)</label>
+                                    <input class="input" id="ra-location" type="text" placeholder="Ex.: Sede administrativa, Banco Itaú, Filial SP...">
+                                </div>
+
+                                <div class="field col-span-2">
+                                    <label for="ra-description">Observações (opcional)</label>
+                                    <textarea class="textarea-input" id="ra-description" maxlength="255" placeholder="Detalhes complementares sobre o ativo..."></textarea>
+                                    <span class="field-error" id="err-ra-description"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <a class="btn btn-outline" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}" data-spa-view="assets">Cancelar</a>
+                            <button type="submit" class="btn btn-primary" id="ra-submit">
+                                <span id="ra-submit-text">Registrar ativo</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 5. REGISTRAR PASSIVO (register_liability)
+                 ========================================================= -->
+            <section class="spa-view" data-view="register_liability" {% if initial_view != 'register_liability' %}hidden{% endif %}>
+                <div class="panel form-card">
+                    <div class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Compromissos e aportes</span>
+                            <h2>Dados do passivo</h2>
+                            <p>Registre contas a pagar, fornecedores, financiamentos, tributos ou aportes de capital social.</p>
+                        </div>
+                    </div>
+
+                    <form id="rl-form" novalidate>
+                        <div class="form-section">
+                            <h3 class="form-section-title">01 · Identificação e valor</h3>
+                            <div class="form-grid-3">
+                                <div class="field">
+                                    <label for="rl-name">Descrição / Credor</label>
+                                    <input class="input" id="rl-name" type="text" placeholder="Ex.: Fornecedor ABC" required>
+                                    <span class="field-error" id="err-rl-name"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="rl-value">Valor (R$)</label>
+                                    <input class="input" id="rl-value" type="text" inputmode="numeric" placeholder="R$ 0,00" required>
+                                    <span class="field-error" id="err-rl-value"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="rl-floating">Classificação</label>
+                                    <select class="select-input" id="rl-floating" required>
+                                        <option value="" disabled selected>Selecione o tipo</option>
+                                        <option value="Circulante">Circulante</option>
+                                        <option value="Não circulante">Não circulante</option>
+                                    </select>
+                                    <span class="field-error" id="err-rl-floating"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section-title">02 · Natureza contábil e prazos</h3>
+                            <div class="form-grid">
+                                <div class="field">
+                                    <label for="rl-event">Evento contábil</label>
+                                    <select class="select-input" id="rl-event" required>
+                                        <option value="" disabled selected>Selecione o evento</option>
+                                        <option>Conta a pagar</option>
+                                        <option>Fornecedor</option>
+                                        <option>Salário a pagar</option>
+                                        <option>Imposto a pagar(Operacional)</option>
+                                        <option>Imposto a pagar(Receita)</option>
+                                        <option>Empréstimo</option>
+                                        <option>Financiamento</option>
+                                        <option>Concessão de crédito</option>
+                                        <option>Capital Social</option>
+                                        <option>Lucro</option>
+                                        <option>Juros</option>
+                                        <option>Leasing</option>
+                                        <option>Multa</option>
+                                        <option>Prestação de serviços</option>
+                                        <option>Processos judiciais</option>
+                                        <option>Outro</option>
+                                    </select>
+                                    <span class="field-error" id="err-rl-event"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="rl-class">Categoria da operação</label>
+                                    <select class="select-input" id="rl-class" required>
+                                        <option value="" disabled selected>Selecione a categoria</option>
+                                        <option>Pagamento</option>
+                                        <option>Compra</option>
+                                        <option>Investimento</option>
+                                        <option>Entrada de Caixa</option>
+                                        <option>Venda</option>
+                                        <option>Concessão</option>
+                                        <option>Permuta</option>
+                                        <option>Troca</option>
+                                        <option>Leilão</option>
+                                        <option>Restituição Judicial</option>
+                                    </select>
+                                    <span class="field-error" id="err-rl-class"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="rl-emission">Data de emissão</label>
+                                    <input class="input" id="rl-emission" type="date" min="1924-01-01" max="2999-12-31" required>
+                                    <span class="field-error" id="err-rl-emission"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="rl-expiration">Data de vencimento</label>
+                                    <input class="input" id="rl-expiration" type="date" min="1924-01-01" max="2999-12-31" required>
+                                    <span class="field-error" id="err-rl-expiration"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section-title">03 · Situação, pagamento e descrição</h3>
+                            <div class="form-grid-3">
+                                <div class="field">
+                                    <label for="rl-status">Situação</label>
+                                    <select class="select-input" id="rl-status" required>
+                                        <option value="" disabled selected>Selecione o status</option>
+                                        <option>Pendente</option>
+                                        <option>Pago</option>
+                                        <option>Parcelado</option>
+                                        <option>A prazo</option>
+                                        <option>Em Atraso</option>
+                                        <option>Em Negociação</option>
+                                        <option>Cancelado</option>
+                                    </select>
+                                    <span class="field-error" id="err-rl-status"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="rl-payment">Forma de pagamento</label>
+                                    <select class="select-input" id="rl-payment" required>
+                                        <option value="" disabled selected>Selecione a forma</option>
+                                        <option>Pix</option>
+                                        <option>Boleto Bancário</option>
+                                        <option>Transferência Bancária</option>
+                                        <option>Cartão de Crédito</option>
+                                        <option>Cartão de Débito</option>
+                                        <option>Dinheiro em espécie</option>
+                                        <option>Carteira Digital</option>
+                                        <option>Carnê</option>
+                                        <option>Cheque</option>
+                                        <option>Criptomoedas</option>
+                                        <option>Gift Cards</option>
+                                        <option>Vale-Alimentação</option>
+                                        <option>Vale-Refeição</option>
+                                        <option>Vale-Transporte</option>
+                                    </select>
+                                    <span class="field-error" id="err-rl-payment"></span>
+                                </div>
+
+                                <div class="field">
+                                    <label for="rl-installment">Parcelamento</label>
+                                    <select class="select-input" id="rl-installment" required>
+                                        <option value="Débito" selected>Débito / À vista</option>
+                                        <option value="1x">1x</option>
+                                        <option value="2x">2x</option>
+                                        <option value="3x">3x</option>
+                                        <option value="4x">4x</option>
+                                        <option value="5x">5x</option>
+                                        <option value="6x">6x</option>
+                                        <option value="7x">7x</option>
+                                        <option value="8x">8x</option>
+                                        <option value="9x">9x</option>
+                                        <option value="10x">10x</option>
+                                        <option value="11x">11x</option>
+                                        <option value="12x">12x</option>
+                                    </select>
+                                    <span class="field-error" id="err-rl-installment"></span>
+                                </div>
+                            </div>
+
+                            <div class="field" style="margin-top: 1rem;">
+                                <label for="rl-description">Observações (opcional)</label>
+                                <textarea class="textarea-input" id="rl-description" maxlength="255" placeholder="Detalhes sobre o documento, número da nota ou contrato..."></textarea>
+                                <span class="field-error" id="err-rl-description"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <a class="btn btn-outline" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}" data-spa-view="liabilities">Cancelar</a>
+                            <button type="submit" class="btn btn-primary" id="rl-submit">
+                                <span id="rl-submit-text">Registrar passivo</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 6. LIVRO DIÁRIO (journal)
+                 ========================================================= -->
+            <section class="spa-view page-stack" data-view="journal" {% if initial_view != 'journal' %}hidden{% endif %}>
+                <div class="summary-strip" aria-label="Resumo do Livro Diário">
+                    <article class="summary-card is-dark">
+                        <span class="summary-label">Lançamentos vigentes</span>
+                        <strong class="summary-value" id="jrn-sum-count">0</strong>
+                        <span class="summary-sub" id="jrn-sum-archived">0 quitados / estornados</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Volume em ativos</span>
+                        <strong class="summary-value" id="jrn-sum-assets">R$ 0,00</strong>
+                        <span class="summary-sub">Bens, direitos e receitas</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Volume em obrigações</span>
+                        <strong class="summary-value" id="jrn-sum-liabilities">R$ 0,00</strong>
+                        <span class="summary-sub">Passivos exigíveis lançados</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Capital social / PL</span>
+                        <strong class="summary-value" id="jrn-sum-equity">R$ 0,00</strong>
+                        <span class="summary-sub">Aportes e lucros acumulados</span>
+                    </article>
+                </div>
+
+                <div class="panel">
+                    <div class="toolbar">
+                        <div class="search-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="search" id="jrn-search" class="search-input" placeholder="Buscar por conta, evento ou classe...">
+                        </div>
+
+                        <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+                            <div class="seg-control" role="group" aria-label="Filtrar lançamentos">
+                                <button type="button" class="seg-btn is-active" data-jrn-filter="active">Vigentes</button>
+                                <button type="button" class="seg-btn" data-jrn-filter="all">Todos</button>
+                                <button type="button" class="seg-btn" data-jrn-filter="asset">Ativos</button>
+                                <button type="button" class="seg-btn" data-jrn-filter="liability">Passivos</button>
+                            </div>
+
+                            <div class="seg-control" role="group" aria-label="Agrupamento">
+                                <button type="button" class="seg-btn is-active" data-jrn-group="month">Por mês</button>
+                                <button type="button" class="seg-btn" data-jrn-group="day">Por dia</button>
+                                <button type="button" class="seg-btn" data-jrn-group="year">Por ano</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="jrn-groups" class="page-stack"></div>
+
+                <div class="empty-state" id="jrn-empty" hidden>
+                    <span class="empty-tag">Livro Diário</span>
+                    <h2>Nenhum lançamento encontrado.</h2>
+                    <p>Registre movimentações de ativos ou passivos para iniciar a escrituração cronológica.</p>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 7. BALANCETE (trial_balance)
+                 ========================================================= -->
+            <section class="spa-view page-stack" data-view="trial_balance" {% if initial_view != 'trial_balance' %}hidden{% endif %}>
+                <div class="summary-strip" aria-label="Totais do Balancete">
+                    <article class="summary-card is-dark">
+                        <span class="summary-label">Total a débito (Ativos)</span>
+                        <strong class="summary-value" id="tb-sum-debit">R$ 0,00</strong>
+                        <span class="summary-sub">Lançamentos vigentes</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Total a crédito (Passivos e PL)</span>
+                        <strong class="summary-value" id="tb-sum-credit">R$ 0,00</strong>
+                        <span class="summary-sub">Obrigações e capital</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Saldo líquido apurado</span>
+                        <strong class="summary-value" id="tb-sum-net">R$ 0,00</strong>
+                        <span class="summary-sub">Débitos menos créditos</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Contas movimentadas</span>
+                        <strong class="summary-value" id="tb-account-count">0</strong>
+                        <span class="summary-sub">Contas sintéticas agrupadas</span>
+                    </article>
+                </div>
+
+                <div class="panel">
+                    <div class="toolbar">
+                        <div class="search-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="search" id="tb-search" class="search-input" placeholder="Filtrar nome da conta...">
+                        </div>
+
+                        <div class="seg-control" role="group" aria-label="Período de agrupamento">
+                            <button type="button" class="seg-btn is-active" data-tb-view="year">Consolidado / Ano</button>
+                            <button type="button" class="seg-btn" data-tb-view="month">Por mês</button>
+                            <button type="button" class="seg-btn" data-tb-view="day">Por dia</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tb-content" class="page-stack"></div>
+
+                <div class="empty-state" id="tb-empty" hidden>
+                    <span class="empty-tag">Balancete</span>
+                    <h2>Nenhuma conta encontrada para o período.</h2>
+                    <p>Adicione lançamentos patrimoniais para gerar o balancete de verificação.</p>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 8. RAZONETES (razonete)
+                 ========================================================= -->
+            <section class="spa-view page-stack" data-view="razonete" {% if initial_view != 'razonete' %}hidden{% endif %}>
+                <div class="panel">
+                    <div class="toolbar">
+                        <div class="search-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="search" id="raz-search" class="search-input" placeholder="Filtrar conta do razonete...">
+                        </div>
+
+                        <div class="seg-control" role="group" aria-label="Recorte temporal">
+                            <button type="button" class="seg-btn is-active" data-raz-view="all">Consolidado</button>
+                            <button type="button" class="seg-btn" data-raz-view="month">Por mês</button>
+                            <button type="button" class="seg-btn" data-raz-view="day">Por dia</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="raz-content" class="page-stack"></div>
+
+                <div class="empty-state" id="raz-empty" hidden>
+                    <span class="empty-tag">Razonetes</span>
+                    <h2>Nenhuma partida dobrada para exibir.</h2>
+                    <p>Registre operações contábeis para visualizar os débitos e créditos em contas em T.</p>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 9. BALANÇO PATRIMONIAL (balance_sheet)
+                 ========================================================= -->
+            <section class="spa-view page-stack" data-view="balance_sheet" {% if initial_view != 'balance_sheet' %}hidden{% endif %}>
+                <div class="panel">
+                    <div class="toolbar">
+                        <div>
+                            <span class="panel-eyebrow">Recorte demonstrativo</span>
+                            <h2 id="bs-period-title" style="font-size:1.1rem; font-weight:700;">Posição patrimonial consolidada</h2>
+                        </div>
+
+                        <div style="display:flex; align-items:center; gap:.65rem; flex-wrap:wrap;">
+                            <label for="bs-period-select" style="font-size:.82rem; font-weight:600; color:#555;">Competência:</label>
+                            <select class="select-input" id="bs-period-select" style="width:auto; min-width:210px; height:40px;">
+                                <option value="consolidated" selected>Posição atual consolidada</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bs-grid">
+                    <article class="bs-column">
+                        <header class="bs-col-head">
+                            <span>Aplicações de recursos</span>
+                            <h2>Ativo</h2>
+                        </header>
+
+                        <div class="bs-group">
+                            <div class="bs-group-head">
+                                <h3>Ativo circulante</h3>
+                                <strong id="bs-sub-ativo-circ">R$ 0,00</strong>
+                            </div>
+                            <ul class="bs-list" id="bs-list-ativo-circ"></ul>
+                        </div>
+
+                        <div class="bs-group">
+                            <div class="bs-group-head">
+                                <h3>Ativo não circulante</h3>
+                                <strong id="bs-sub-ativo-ncirc">R$ 0,00</strong>
+                            </div>
+                            <ul class="bs-list" id="bs-list-ativo-ncirc"></ul>
+                        </div>
+
+                        <footer class="bs-col-total">
+                            <span>Total do Ativo</span>
+                            <strong id="bs-total-ativo">R$ 0,00</strong>
+                        </footer>
+                    </article>
+
+                    <article class="bs-column">
+                        <header class="bs-col-head">
+                            <span>Origens de recursos</span>
+                            <h2>Passivo e Patrimônio Líquido</h2>
+                        </header>
+
+                        <div class="bs-group">
+                            <div class="bs-group-head">
+                                <h3>Passivo circulante</h3>
+                                <strong id="bs-sub-passivo-circ">R$ 0,00</strong>
+                            </div>
+                            <ul class="bs-list" id="bs-list-passivo-circ"></ul>
+                        </div>
+
+                        <div class="bs-group">
+                            <div class="bs-group-head">
+                                <h3>Passivo não circulante</h3>
+                                <strong id="bs-sub-passivo-ncirc">R$ 0,00</strong>
+                            </div>
+                            <ul class="bs-list" id="bs-list-passivo-ncirc"></ul>
+                        </div>
+
+                        <div class="bs-group bs-group-equity">
+                            <div class="bs-group-head">
+                                <h3>Patrimônio líquido</h3>
+                                <strong id="bs-sub-patrimonio">R$ 0,00</strong>
+                            </div>
+                            <ul class="bs-list" id="bs-list-patrimonio"></ul>
+                        </div>
+
+                        <footer class="bs-col-total">
+                            <span>Total do Passivo + PL</span>
+                            <strong id="bs-total-passivo-patrimonio">R$ 0,00</strong>
+                        </footer>
+                    </article>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 10. DRE (income_statement)
+                 ========================================================= -->
+            <section class="spa-view page-stack" data-view="income_statement" {% if initial_view != 'income_statement' %}hidden{% endif %}>
+                <div class="summary-strip" aria-label="Indicadores da DRE">
+                    <article class="summary-card is-dark">
+                        <span class="summary-label">Resultado operacional (Lucro / Prejuízo)</span>
+                        <strong class="summary-value" id="dre-kpi-loss-profit">R$ 0,00</strong>
+                        <span class="summary-sub" id="dre-kpi-period">Acumulado dos exercícios</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Receita operacional bruta</span>
+                        <strong class="summary-value" id="dre-kpi-gross">R$ 0,00</strong>
+                        <span class="summary-sub">Vendas, serviços e lucros</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Custos e despesas totais</span>
+                        <strong class="summary-value" id="dre-kpi-costs">R$ 0,00</strong>
+                        <span class="summary-sub">Deduções + custos + despesas</span>
+                    </article>
+                    <article class="summary-card">
+                        <span class="summary-label">Margem operacional</span>
+                        <strong class="summary-value" id="dre-kpi-margin">0,0%</strong>
+                        <span class="summary-sub">Resultado ÷ Receita bruta</span>
+                    </article>
+                </div>
+
+                <div class="dre-card">
+                    <header class="dre-head">
+                        <div>
+                            <span class="panel-eyebrow">Estrutura vertical</span>
+                            <h2>Demonstrativo de resultados</h2>
+                        </div>
+                        <span class="badge badge-gold" id="dre-years-badge">Consolidado</span>
+                    </header>
+
+                    <div class="dre-lines">
+                        <div class="dre-block is-expandable">
+                            <button type="button" class="dre-row dre-toggle" aria-expanded="true">
+                                <span class="dre-label"><b class="op op-plus">+</b> Receita operacional bruta</span>
+                                <strong class="dre-val" id="dre-brute-total">R$ 0,00</strong>
+                            </button>
+                            <ul class="dre-sublist" id="dre-brute-list"></ul>
+                        </div>
+
+                        <div class="dre-block is-expandable">
+                            <button type="button" class="dre-row dre-toggle" aria-expanded="true">
+                                <span class="dre-label"><b class="op op-minus">−</b> Deduções da receita bruta</span>
+                                <strong class="dre-val val-deduct" id="dre-deduct-total">R$ 0,00</strong>
+                            </button>
+                            <ul class="dre-sublist" id="dre-deduct-list"></ul>
+                        </div>
+
+                        <div class="dre-block dre-subtotal">
+                            <div class="dre-row">
+                                <span class="dre-label"><b class="op op-eq">=</b> Receita operacional líquida</span>
+                                <strong class="dre-val" id="dre-net-rev-total">R$ 0,00</strong>
+                            </div>
+                        </div>
+
+                        <div class="dre-block is-expandable">
+                            <button type="button" class="dre-row dre-toggle" aria-expanded="true">
+                                <span class="dre-label"><b class="op op-minus">−</b> Custos de vendas e serviços (CPV / CSP)</span>
+                                <strong class="dre-val val-deduct" id="dre-sell-total">R$ 0,00</strong>
+                            </button>
+                            <ul class="dre-sublist" id="dre-sell-list"></ul>
+                        </div>
+
+                        <div class="dre-block dre-subtotal">
+                            <div class="dre-row">
+                                <span class="dre-label"><b class="op op-eq">=</b> Resultado operacional bruto</span>
+                                <strong class="dre-val" id="dre-gross-res-total">R$ 0,00</strong>
+                            </div>
+                        </div>
+
+                        <div class="dre-block is-expandable">
+                            <button type="button" class="dre-row dre-toggle" aria-expanded="true">
+                                <span class="dre-label"><b class="op op-minus">−</b> Despesas operacionais e financeiras</span>
+                                <strong class="dre-val val-deduct" id="dre-op-total">R$ 0,00</strong>
+                            </button>
+                            <ul class="dre-sublist" id="dre-op-list"></ul>
+                        </div>
+
+                        <div class="dre-block dre-final">
+                            <div class="dre-row">
+                                <span class="dre-label"><b class="op op-eq">=</b> Lucro / Prejuízo operacional do exercício</span>
+                                <strong class="dre-val" id="dre-final-total">R$ 0,00</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 11. PERMISSÕES DA EQUIPE (authorization)
+                 ========================================================= -->
+            <section class="spa-view page-stack" data-view="authorization" {% if initial_view != 'authorization' %}hidden{% endif %}>
+                <div id="auth-content-wrap" class="page-stack">
+                    <div class="panel">
+                        <div class="panel-head" style="margin-bottom:1rem;">
+                            <div>
+                                <span class="panel-eyebrow">Novo vínculo</span>
+                                <h2>Autorizar membro por CPF</h2>
+                                <p>Busque um usuário já cadastrado na Beesiness pelo CPF para conceder acesso ao painel desta empresa.</p>
+                            </div>
+                        </div>
+
+                        <div class="invite-bar">
+                            <div class="invite-input-wrap">
+                                <input
+                                    type="text"
+                                    class="input"
+                                    id="auth-cpf-search"
+                                    inputmode="numeric"
+                                    maxlength="14"
+                                    placeholder="Digite o CPF (000.000.000-00)"
+                                    aria-label="CPF do usuário"
+                                >
+                            </div>
+                            <button type="button" class="btn btn-primary" id="auth-add-btn">
+                                <span>Buscar e autorizar</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="roles-legend" aria-label="Níveis de permissão">
+                        <div class="role-card">
+                            <span class="badge badge-gold">Proprietário</span>
+                            <p>Controle integral da empresa, relatórios e gestão de permissões.</p>
+                        </div>
+                        <div class="role-card">
+                            <span class="badge badge-pos">Editor</span>
+                            <p>Registra e gerencia ativos, passivos e consulta demonstrativos.</p>
+                        </div>
+                        <div class="role-card">
+                            <span class="badge">Conferente</span>
+                            <p>Audita lançamentos, saldos e relatórios contábeis da organização.</p>
+                        </div>
+                        <div class="role-card">
+                            <span class="badge">Leitor</span>
+                            <p>Acesso somente leitura aos indicadores e relatórios da empresa.</p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <span class="panel-eyebrow">Usuários vinculados</span>
+                                <h2 id="auth-members-title">Membros com acesso</h2>
+                            </div>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                        <th>Nível de acesso</th>
+                                        <th class="num-col">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="auth-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state" id="auth-restricted-state" hidden>
+                    <span class="empty-tag">Acesso restrito</span>
+                    <h2>Somente o proprietário gerencia permissões.</h2>
+                    <p>Sua credencial permite consultar e operar os módulos contábeis, mas a gestão de membros é exclusiva do titular.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- =========================================================
+         MODAIS ESCOPADOS DO PAINEL SPA
+         ========================================================= -->
+
+    <!-- Ativo: Detalhes -->
+    <div id="ast-detail-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="astDetailTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="astDetailTitle">Detalhes do ativo</h2>
+                <button type="button" class="modal-close" data-close-modal="ast-detail-modal" aria-label="Fechar">×</button>
+            </div>
+            <div class="detail-grid">
+                <div class="detail-item"><span>Nome</span><strong id="ast-det-name"></strong></div>
+                <div class="detail-item"><span>Valor registrado</span><strong id="ast-det-value"></strong></div>
+                <div class="detail-item"><span>Classe</span><p id="ast-det-class"></p></div>
+                <div class="detail-item"><span>Evento</span><p id="ast-det-event"></p></div>
+                <div class="detail-item"><span>Classificação</span><p id="ast-det-floating"></p></div>
+                <div class="detail-item"><span>Status</span><p id="ast-det-status"></p></div>
+                <div class="detail-item"><span>Data de aquisição</span><p id="ast-det-date"></p></div>
+                <div class="detail-item"><span>Parcelas</span><p id="ast-det-installment"></p></div>
+                <div class="detail-item is-full"><span>Localização</span><p id="ast-det-location"></p></div>
+                <div class="detail-item is-full"><span>Descrição</span><p id="ast-det-description"></p></div>
+                <div class="detail-item"><span>Registro no sistema</span><p id="ast-det-creation" class="td-muted"></p></div>
+                <div class="detail-item"><span>Identificador (UUID)</span><p id="ast-det-uuid" class="detail-mono"></p></div>
+            </div>
+            <div class="modal-actions modal-actions-between">
+                <button type="button" class="btn btn-sm btn-danger" id="ast-btn-delete">Estornar ativo</button>
+                <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-sm btn-outline" id="ast-btn-edit">Abater valor</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="ast-btn-sell">Vender</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ativo: Abater valor -->
+    <div id="ast-edit-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Abater valor do ativo</h2>
+                <button type="button" class="modal-close" data-close-modal="ast-edit-modal" aria-label="Fechar">×</button>
+            </div>
+            <div class="page-stack" style="gap:.9rem;">
+                <div class="field">
+                    <label for="ast-edit-name">Ativo</label>
+                    <input class="input" type="text" id="ast-edit-name" readonly>
+                </div>
+                <div class="field">
+                    <label for="ast-edit-old">Valor atual (R$)</label>
+                    <input class="input" type="text" id="ast-edit-old" readonly>
+                </div>
+                <div class="field">
+                    <label for="ast-edit-new">Valor a abater (R$)</label>
+                    <input class="input" type="number" step="0.01" min="0.01" id="ast-edit-new" placeholder="Ex.: 1500.00">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="ast-edit-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary" id="ast-btn-confirm-edit">Confirmar abatimento</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ativo: Vender -->
+    <div id="ast-sell-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Vender ativo</h2>
+                <button type="button" class="modal-close" data-close-modal="ast-sell-modal" aria-label="Fechar">×</button>
+            </div>
+            <p class="td-muted" style="font-size:.92rem;">Tem certeza que deseja registrar a venda deste ativo?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="ast-sell-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary" id="ast-btn-confirm-sell">Confirmar venda</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ativo: Estornar -->
+    <div id="ast-delete-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Estornar ativo</h2>
+                <button type="button" class="modal-close" data-close-modal="ast-delete-modal" aria-label="Fechar">×</button>
+            </div>
+            <p class="td-muted" style="font-size:.92rem;">Tem certeza que deseja estornar/remover este ativo do inventário?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="ast-delete-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-danger" id="ast-btn-confirm-delete">Confirmar estorno</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Passivo: Detalhes -->
+    <div id="lib-detail-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="libDetailTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="libDetailTitle">Detalhes do passivo</h2>
+                <button type="button" class="modal-close" data-close-modal="lib-detail-modal" aria-label="Fechar">×</button>
+            </div>
+            <div class="detail-grid">
+                <div class="detail-item"><span>Nome</span><strong id="lib-det-name"></strong></div>
+                <div class="detail-item"><span>Valor registrado</span><strong id="lib-det-value"></strong></div>
+                <div class="detail-item"><span>Evento</span><p id="lib-det-event"></p></div>
+                <div class="detail-item"><span>Categoria</span><p id="lib-det-class"></p></div>
+                <div class="detail-item"><span>Data de emissão</span><p id="lib-det-emission"></p></div>
+                <div class="detail-item"><span>Data de vencimento</span><p id="lib-det-expiration"></p></div>
+                <div class="detail-item"><span>Forma de pagamento</span><p id="lib-det-payment"></p></div>
+                <div class="detail-item"><span>Parcelas</span><p id="lib-det-installment"></p></div>
+                <div class="detail-item"><span>Status</span><p id="lib-det-status"></p></div>
+                <div class="detail-item"><span>Classificação</span><p id="lib-det-floating"></p></div>
+                <div class="detail-item is-full"><span>Descrição</span><p id="lib-det-description"></p></div>
+                <div class="detail-item"><span>Registro no sistema</span><p id="lib-det-creation" class="td-muted"></p></div>
+                <div class="detail-item"><span>Identificador (UUID)</span><p id="lib-det-uuid" class="detail-mono"></p></div>
+            </div>
+            <div class="modal-actions modal-actions-between">
+                <button type="button" class="btn btn-sm btn-danger" id="lib-btn-delete">Estornar</button>
+                <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-sm btn-outline" id="lib-btn-edit">Abater valor</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="lib-btn-settle">Quitar obrigação</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Passivo: Abater valor -->
+    <div id="lib-edit-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Abater valor do passivo</h2>
+                <button type="button" class="modal-close" data-close-modal="lib-edit-modal" aria-label="Fechar">×</button>
+            </div>
+            <div class="page-stack" style="gap:.9rem;">
+                <div class="field">
+                    <label for="lib-edit-name">Registro</label>
+                    <input class="input" type="text" id="lib-edit-name" readonly>
+                </div>
+                <div class="field">
+                    <label for="lib-edit-old">Valor atual (R$)</label>
+                    <input class="input" type="text" id="lib-edit-old" readonly>
+                </div>
+                <div class="field">
+                    <label for="lib-edit-new">Valor a abater (R$)</label>
+                    <input class="input" type="number" step="0.01" min="0.01" id="lib-edit-new" placeholder="Ex.: 1000.00">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="lib-edit-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary" id="lib-btn-confirm-edit">Confirmar abatimento</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Passivo: Quitar -->
+    <div id="lib-settle-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Quitar obrigação</h2>
+                <button type="button" class="modal-close" data-close-modal="lib-settle-modal" aria-label="Fechar">×</button>
+            </div>
+            <p class="td-muted" style="font-size:.92rem;">Deseja confirmar a quitação integral deste passivo com desconto no caixa da empresa?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="lib-settle-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary" id="lib-btn-confirm-settle">Confirmar quitação</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Passivo: Estornar -->
+    <div id="lib-delete-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Estornar passivo</h2>
+                <button type="button" class="modal-close" data-close-modal="lib-delete-modal" aria-label="Fechar">×</button>
+            </div>
+            <p class="td-muted" style="font-size:.92rem;">Tem certeza que deseja estornar/remover este registro?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="lib-delete-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-danger" id="lib-btn-confirm-delete">Confirmar estorno</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Livro Diário: Detalhes do lançamento -->
+    <div id="jrn-detail-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="jrn-det-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="jrn-det-title">Detalhes do lançamento</h2>
+                <button type="button" class="modal-close" data-close-modal="jrn-detail-modal" aria-label="Fechar">×</button>
+            </div>
+            <div class="detail-grid">
+                <div class="detail-item"><span>Conta / Descrição</span><strong id="jrn-det-name"></strong></div>
+                <div class="detail-item"><span>Valor</span><strong id="jrn-det-value"></strong></div>
+                <div class="detail-item"><span>Evento</span><p id="jrn-det-event"></p></div>
+                <div class="detail-item"><span>Classe</span><p id="jrn-det-class"></p></div>
+                <div class="detail-item"><span>Data de competência</span><p id="jrn-det-date"></p></div>
+                <div class="detail-item"><span>Situação</span><p id="jrn-det-status"></p></div>
+                <div class="detail-item" id="jrn-wrap-pay" hidden><span>Forma de pagamento</span><p id="jrn-det-pay"></p></div>
+                <div class="detail-item" id="jrn-wrap-exp" hidden><span>Vencimento</span><p id="jrn-det-exp"></p></div>
+                <div class="detail-item is-full" id="jrn-wrap-loc" hidden><span>Localização</span><p id="jrn-det-loc"></p></div>
+                <div class="detail-item is-full"><span>Observações</span><p id="jrn-det-desc"></p></div>
+                <div class="detail-item"><span>Débito / Crédito</span><p id="jrn-det-dc"></p></div>
+                <div class="detail-item"><span>UUID do lançamento</span><p id="jrn-det-uuid" class="detail-mono"></p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Permissões: Adicionar / Editar -->
+    <div id="auth-perm-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="auth-perm-title">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2 id="auth-perm-title">Configurar permissão</h2>
+                <button type="button" class="modal-close" data-close-modal="auth-perm-modal" aria-label="Fechar">×</button>
+            </div>
+            <div class="page-stack" style="gap:.95rem;">
+                <div class="field">
+                    <label for="auth-perm-name">Usuário</label>
+                    <input class="input" type="text" id="auth-perm-name" readonly>
+                </div>
+                <div class="field">
+                    <label for="auth-perm-cpf">CPF</label>
+                    <input class="input" type="text" id="auth-perm-cpf" readonly>
+                </div>
+                <div class="field">
+                    <label for="auth-perm-role">Nível de acesso</label>
+                    <select class="select-input" id="auth-perm-role" required>
+                        <option value="editor">Editor — registra e edita lançamentos</option>
+                        <option value="checker">Conferente — auditoria e conferência</option>
+                        <option value="viewer">Leitor — visualização de relatórios</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="auth-perm-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary" id="auth-btn-confirm-perm">Salvar permissão</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Permissões: Remover acesso -->
+    <div id="auth-remove-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Remover acesso</h2>
+                <button type="button" class="modal-close" data-close-modal="auth-remove-modal" aria-label="Fechar">×</button>
+            </div>
+            <p id="auth-remove-text" style="font-size:.92rem; color:#262626;">Tem certeza que deseja revogar o acesso deste usuário?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="auth-remove-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-danger" id="auth-btn-confirm-remove">Revogar acesso</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal compartilhado de Sucesso em registros -->
+    <div id="spa-success-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2 id="spa-success-title">Registro concluído</h2>
+                <button type="button" class="modal-close" data-close-modal="spa-success-modal" aria-label="Fechar">×</button>
+            </div>
+            <p id="spa-success-msg" style="font-size:.94rem; color:#262626;">Operação contabilizada com sucesso.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" id="spa-success-list-btn">Ver lista</button>
+                <button type="button" class="btn btn-sm btn-primary" id="spa-success-overview-btn">Voltar à visão geral</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal compartilhado de Aviso -->
+    <div id="spa-alert-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2 id="spa-alert-title">Aviso</h2>
+                <button type="button" class="modal-close" data-close-modal="spa-alert-modal" aria-label="Fechar">×</button>
+            </div>
+            <p id="spa-alert-msg" style="font-size:.92rem; color:#262626;"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-dark" id="spa-alert-close">Entendi</button>
+            </div>
+        </div>
+    </div>
+
+    <script id="initialSnapshot" type="application/json">{{ snapshot | tojson }}</script>
+    <script src="{{ url_for('static', filename='js/dashboard/company/spa_app.js') }}" defer></script>
+</body>
+
+</html>
