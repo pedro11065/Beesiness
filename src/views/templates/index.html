@@ -4,304 +4,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beesiness</title>
+    <meta name="description" content="Beesiness: o gestor de patrimônio para pequenas e médias empresas. Controle ativos, passivos e relatórios contábeis em um só lugar.">
+    <title>Beesiness | Gestor de patrimônio para pequenas e médias empresas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
 
 <body>
-    <header>     
-        <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Imagem do Cabeçalho">
-        <section class="header-links">
+    <div class="scroll-progress" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <a href="/" class="brand" aria-label="Beesiness - início">
+            <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+            <span>Beesiness</span>
+        </a>
+
+        <nav class="header-nav" aria-label="Seções">
+            <a href="#problemas">Desafios</a>
+            <a href="#solucao">Solução</a>
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#beneficios">Benefícios</a>
+        </nav>
+
+        <div class="header-links">
             {% if current_user.is_authenticated %}
-                <a href="/dashboard/user" class="dashboard">Dashboard</a>
-                <a href="/user/logout" class="logout">Logout</a>
+                <a href="/dashboard/user" class="btn-link hide-sm">Dashboard</a>
+                <a href="/user/logout" class="btn-link btn-outline">Logout</a>
             {% else %}
-                <a href="/user/register" class="register">Abra a sua conta</a>
-                <a href="/user/login" class="login">Login</a>           
+                <a href="/user/register" class="btn-link hide-sm">Abra a sua conta</a>
+                <a href="/user/login" class="btn-link btn-outline">Login</a>
             {% endif %}
-        </section>
+        </div>
     </header>
 
     <main>
-        <article-hero>
-            <section-hero>
-                <h1>Faça a sua empresa <h1_1>voar </h1_1> <br>como uma <h1_1>abelha</h1_1></h1>
-                <a class="box-hero" href="#features"><h2>Saiba mais</h2></a>
-            </section-hero>
-        </article-hero>
+        <!-- HERO -->
+        <section class="hero" id="inicio">
+            <div class="hero-bg" aria-hidden="true"></div>
+            <div class="hero-content">
+                <span class="label">Gestão patrimonial para PMEs</span>
+                <h1>Faça a sua empresa <span class="accent">voar</span><br>como uma <span class="accent">abelha</span></h1>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#problemas">Saiba mais</a>
+                    {% if current_user.is_authenticated %}
+                        <a class="btn btn-ghost" href="/dashboard/user">Ir para o dashboard</a>
+                    {% else %}
+                        <a class="btn btn-ghost" href="/user/register">Crie sua conta grátis</a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
 
-        <article class="features_background">
+        <!-- PRÉVIA DO PRODUTO -->
+        <section class="preview" aria-label="Prévia da plataforma">
+            <div class="preview-stage">
+                <div class="mockup" role="img" aria-label="Ilustração do painel da Beesiness com ativos, passivos e patrimônio líquido">
+                    <div class="mockup-bar"><i></i><i></i><i></i><span>app.beesiness / dashboard</span></div>
+                    <div class="mockup-body">
+                        <aside class="mockup-side">
+                            <b class="on">Visão geral</b><b>Ativos</b><b>Passivos</b><b>Relatórios</b><b>Configurações</b>
+                        </aside>
+                        <div class="mockup-main">
+                            <div class="kpis">
+                                <div class="kpi"><small>Ativos</small><strong>R$ 482.300</strong><em class="up">+8,2%</em></div>
+                                <div class="kpi"><small>Passivos</small><strong>R$ 156.900</strong><em class="down">−3,1%</em></div>
+                                <div class="kpi kpi-hl"><small>Patrimônio líquido</small><strong>R$ 325.400</strong><em class="up">+12,4%</em></div>
+                            </div>
+                            <div class="chart">
+                                <div class="chart-head"><span>Evolução patrimonial</span><span class="muted">últimos 12 meses</span></div>
+                                <div class="bars">
+                                    <i style="--h:38%"></i><i style="--h:45%"></i><i style="--h:42%"></i><i style="--h:55%"></i>
+                                    <i style="--h:52%"></i><i style="--h:61%"></i><i style="--h:58%"></i><i style="--h:70%"></i>
+                                    <i style="--h:68%"></i><i style="--h:77%"></i><i style="--h:84%"></i><i style="--h:92%"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <article-features-title id="features">
-                <h3>O gestor de patrimônio para pequenas e médias<br> empresas que você <h3_1>precisa.</h3_1></h3>
-            </article-features-title>
+        <!-- PROBLEMAS -->
+        <section class="section section-light" id="problemas">
+            <div class="container">
+                <div class="section-head">
+                    <div class="reveal">
+                        <span class="label label-dark">O desafio</span>
+                        <h2>Gerir o patrimônio de uma empresa <mark>não deveria ser um peso</mark></h2>
+                    </div>
+                    <p class="reveal">Pequenas e médias empresas costumam perder tempo e dinheiro por falta de uma visão organizada de tudo o que possuem e devem.</p>
+                </div>
 
-            <article-features>
+                <div class="grid grid-4">
+                    <article class="item reveal">
+                        <span class="index">01</span>
+                        <h3>Planilhas espalhadas</h3>
+                        <p>Informações duplicadas, versões conflitantes e dados que ninguém sabe se estão atualizados.</p>
+                    </article>
+                    <article class="item reveal">
+                        <span class="index">02</span>
+                        <h3>Pouca visibilidade</h3>
+                        <p>Difícil saber quanto a empresa realmente tem em caixa, em bens e em dívidas a cada momento.</p>
+                    </article>
+                    <article class="item reveal">
+                        <span class="index">03</span>
+                        <h3>Tempo perdido</h3>
+                        <p>Horas gastas em tarefas repetitivas, cálculos manuais e montagem de relatórios para o contador.</p>
+                    </article>
+                    <article class="item reveal">
+                        <span class="index">04</span>
+                        <h3>Risco de erros</h3>
+                        <p>Lançamentos manuais e falta de controle de acesso aumentam a chance de falhas e inconsistências.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-                <section-features-left>
+        <!-- SOLUÇÃO -->
+        <section class="section section-dark" id="solucao">
+            <div class="container">
+                <div class="section-head">
+                    <div class="reveal">
+                        <span class="label">A solução</span>
+                        <h2>O gestor de patrimônio para pequenas e médias empresas que você <span class="accent">precisa.</span></h2>
+                    </div>
+                    <p class="reveal">Tudo o que a sua empresa precisa para controlar o patrimônio, em uma plataforma simples e confiável.</p>
+                </div>
 
-                    <container-features id="feature-section-1" class="hide-left">
+                <div class="grid grid-3">
+                    <article class="item reveal">
+                        <span class="index">01</span>
+                        <h3>Controle total, em um só lugar</h3>
+                        <p>Centralize ativos, passivos e movimentações financeiras e acompanhe tudo em um painel único.</p>
+                    </article>
+                    <article class="item reveal">
+                        <span class="index">02</span>
+                        <h3>Relatórios personalizados</h3>
+                        <p>Geração de relatórios detalhados para análise de desempenho financeiro.</p>
+                    </article>
+                    <article class="item reveal">
+                        <span class="index">03</span>
+                        <h3>Integração contábil</h3>
+                        <p>Facilite o trabalho com contadores, exportando facilmente dados financeiros.</p>
+                    </article>
+                    <article class="item reveal">
+                        <span class="index">04</span>
+                        <h3>Gestão de inventário</h3>
+                        <p>Monitore seus ativos de forma eficiente, integrando o controle de patrimônio com o fluxo financeiro.</p>
+                    </article>
+                    <article class="item reveal">
+                        <span class="index">05</span>
+                        <h3>Automação de processos</h3>
+                        <p>Economize tempo automatizando tarefas repetitivas, como cálculos de despesas recorrentes e criação de relatórios.</p>
+                    </article>
+                    <article class="item reveal">
+                        <span class="index">06</span>
+                        <h3>Segurança e privacidade</h3>
+                        <p>Proteja seus dados financeiros com criptografia de ponta a ponta e controle de acesso baseado em permissões.</p>
+                    </article>
+                </div>
+            </div>
 
-                        <box-features-title>
-                            <h4>Controle total, <br> em um só lugar<h4_1>.</h4_1></h4>
-                        </box-features-title>
+            <!-- Faixa de relatórios (scroll horizontal) -->
+            <div class="marquee" aria-label="Relatórios incluídos">
+                <div class="marquee-track">
+                    <span>Balanço Patrimonial</span><i></i>
+                    <span>DRE</span><i></i>
+                    <span>Livro Diário</span><i></i>
+                    <span>Razonete</span><i></i>
+                    <span>Balancete</span><i></i>
+                    <span>Balanço Patrimonial</span><i></i>
+                    <span>DRE</span><i></i>
+                    <span>Livro Diário</span>
+                </div>
+            </div>
+        </section>
 
-                        <box-features-description>
-                            <h5>Facilite o trabalho com contadores, exportando facilmente dados financeiros.</h5>
-                        </box-features-description>
+        <!-- COMO FUNCIONA -->
+        <section class="section section-light" id="como-funciona">
+            <div class="container">
+                <div class="section-head">
+                    <div class="reveal">
+                        <span class="label label-dark">Como funciona</span>
+                        <h2>Do cadastro aos relatórios em <mark>três passos</mark></h2>
+                    </div>
+                    <p class="reveal">Sem instalação e sem burocracia: comece a organizar o patrimônio da sua empresa em minutos.</p>
+                </div>
 
-                    </container-features>
+                <ol class="steps">
+                    <span class="steps-track" aria-hidden="true"><span class="steps-fill"></span></span>
+                    <li class="step reveal">
+                        <span class="step-number">01</span>
+                        <h3>Crie sua conta e cadastre a empresa</h3>
+                        <p>Em poucos minutos você abre sua conta e registra os dados da sua empresa, sem burocracia.</p>
+                    </li>
+                    <li class="step reveal">
+                        <span class="step-number">02</span>
+                        <h3>Registre ativos e passivos</h3>
+                        <p>Cadastre bens, dívidas e movimentações. A plataforma organiza e mantém tudo atualizado para você.</p>
+                    </li>
+                    <li class="step reveal">
+                        <span class="step-number">03</span>
+                        <h3>Acompanhe e exporte relatórios</h3>
+                        <p>Visualize a saúde financeira do negócio e compartilhe os dados com o seu contador com facilidade.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
 
-                    <container-features id="feature-section-3" class="hide-left">
+        <!-- BENEFÍCIOS -->
+        <section class="section section-dark" id="beneficios">
+            <div class="container split">
+                <div class="split-text">
+                    <span class="label">Benefícios</span>
+                    <h2>Menos esforço operacional, <span class="accent">mais decisões estratégicas</span></h2>
+                    <p>A Beesiness foi pensada para a rotina de quem administra uma empresa e precisa de respostas rápidas e confiáveis.</p>
+                </div>
+                <ul class="benefits">
+                    <li class="reveal"><span class="index">01</span><div><strong>Mais tempo livre</strong><span>Automatize rotinas e foque no crescimento do negócio.</span></div></li>
+                    <li class="reveal"><span class="index">02</span><div><strong>Visão clara da empresa</strong><span>Saiba o que você tem e o que deve, sempre atualizado.</span></div></li>
+                    <li class="reveal"><span class="index">03</span><div><strong>Contabilidade facilitada</strong><span>Dados prontos para exportar e compartilhar com o contador.</span></div></li>
+                    <li class="reveal"><span class="index">04</span><div><strong>Dados protegidos</strong><span>Criptografia e permissões de acesso para cada usuário.</span></div></li>
+                </ul>
+            </div>
+        </section>
 
-                        <box-features-title>
-                            <h4>Integração contábil<h4_1>.</h4_1></h4>
-                        </box-features-title>
-
-                        <box-features-description>
-                            <h5>Facilite o trabalho com contadores, exportando facilmente dados financeiros.</h5>
-                        </box-features-description>
-                        
-                    </container-features>
-
-                    <container-features style="margin-bottom: 2rem;" id="feature-section-5" class="hide-left">
-
-                        <box-features-title>
-                            <h4>Automação de <br> Processos<h4_1>.</h4_1></h4>
-                        </box-features-title>
-
-                        <box-features-description>
-                            <h5>Economize tempo automatizando tarefas repetitivas, como cálculos de despesas recorrentes e criação de relatórios.</h5>
-                        </box-features-description>
-                        
-                    </container-features>
-
-                    <container-features-extra>
-                        <box-features-extra>
-                        </box-features-extra>
-                    </container-features-extra>
-
-                </section-features-left>
-
-                <section-features-right>
-
-                    <container-features-extra>
-                        <box-features-extra>
-                        </box-features-extra>
-                    </container-features-extra>
-
-                    <container-features id="feature-section-2" class="hide-right">
-
-                        <box-features-title>
-                            <h4>Relatórios <br>personalizados<h4_1>.</h4_1></h4>
-                        </box-features-title>
-
-                        <box-features-description>
-                            <h5>Geração de relatórios detalhados para análise de desempenho financeiro.</h5>
-                        </box-features-description>
-                        
-                    </container-features>
-
-                    <container-features  id="feature-section-4" class="hide-right">
-
-                        <box-features-title>
-                            <h4>Gestão de invetário<h4_1>.</h4_1></h4>
-                        </box-features-title>
-
-                        <box-features-description>
-                            <h5>Monitore seus ativos de forma eficiente, integrando o controle de patrimônio com o fluxo financeiro.</h5>
-                        </box-features-description>
-                        
-                    </container-features>
-
-                    <container-features  id="feature-section-6" class="hide-right">
-
-                        <box-features-title>
-                            <h4>Segurança e <br>Privacidade<h4_1>.</h4_1></h4>
-                        </box-features-title>
-
-                        <box-features-description>
-                            <h5>Proteja seus dados financeiros com criptografia de ponta a ponta e controle de acesso baseado em permissões.</h5>
-                        </box-features-description>
-                        
-                    </container-features>    
-
-                </section-features-right>
-
-            </article-features  >
-
-            <article-features-end id="feature-btn-container" class="hide-down">
-                <h3>Tudo isso e mais em um só lugar<h3_1>.</h3_1></h3>
-                <a href="/user/register"><box-features-register><h6>Crie sua conta de graça!</h6></box-features-register></a>
-            </article-features-end>
-
-        </article>
-
-        <article-team>
-            <section-team-title>
-                <h7>Conheça a equipe</h7>
-            </section-team-title>
-
-            <section-members>
-                <container-members>
-                    <box-member>
-
-                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/pedro.jpeg') }}" alt="Pedro Quixabeira"></member-photo>
-                        <member-title><h8>Pedro Quixabeira</h8></member-title>
-                        <member-sub-title><h9>Full-Stack/Database engineer</h9>></member-sub-title>
-
-                        <member-socials>
-                            <a  href="https://github.com/pedro11065" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                            </a>
-                            <a href="https://www.linkedin.com/in/pedro-henrique-silva-quixabeira/" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                            </a>
-                            <a href="mailto:pedrohenriquesilvaquixabeira@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                        </member-socials>
-
-                    </box-member>
-                    <box-member>
-                        
-                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/thiago.jpeg') }}" alt="Thiago Ameilda"></member-photo>
-                        <member-title><h8>Thiago Ameilda</h8></member-title>
-                        <member-sub-title><h9>Full-Stack</h9>></member-sub-title>
-
-                        <member-socials>
-                            <a  href="https://github.com/ThiagoAlmeidaDev" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                            </a>
-                            <a href="https://www.linkedin.com/in/thiagoalmeida29/" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                            </a>
-                            
-                        </member-socials>
-
-                    </box-member>
-                    <box-member>
-                        
-                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/miguel.jpeg') }}" alt="Miguel Macedo"></member-photo>
-                        <member-title><h8>Miguel Macedo</h8></member-title>
-                        <member-sub-title><h9>Front-End</h9>></member-sub-title>
-
-                        <member-socials>
-                            <a  href="https://github.com/MiguelMMarques065" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                            </a>
-                            <a href="https://www.linkedin.com/in/miguel-macedo-marques-8308392b8/" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                            </a>
-                            <a href="mailto:miguelmm06@hotmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                        </member-socials>
-
-                    </box-member>
-                </container-members>
-
-                <container-members>
-                    <box-member>
-                        
-                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/rhuan.jpg') }}" alt="Rhuan Mulero"></member-photo>
-                        <member-title><h8>Rhuan Mulero</h8></member-title>
-                        <member-sub-title><h9>Front-End</h9>></member-sub-title>
-
-                        <member-socials>
-                            <a  href="https://github.com/dev/rhuanmulero" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                            </a>
-                            <a href="https://www.linkedin.com/in/rhuan-mulero/" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                            </a>
-                            <a href="mailto:rhuanmscontato@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                        </member-socials>
-
-                    </box-member>
-                    <box-member>
-
-                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/beatriz.jpeg') }}" alt="Beatriz Lima"></member-photo>
-                        <member-title><h8>Beatriz Lima</h8></member-title>
-                        <member-sub-title><h9>Database engineer</h9>></member-sub-title>
-
-                        <member-socials>
-                            <a  href="https://github.com/biafalls" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                            </a>
-                            <a href="https://www.linkedin.com/in/beatriz-lima-a21a6b2a4/" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                            </a>
-                            <a href="mailto:biaevangelista1967@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                        </member-socials>
-
-                    </box-member>
-                    <box-member>
-                        
-                        <member-photo><img class="member-photo" src="{{ url_for('static', filename='images/index/julia.jpeg') }}" alt="Julia Santos"></member-photo>
-                        <member-title><h8>Julia Santos</h8></member-title>
-                        <member-sub-title><h9>Technical writer</h9>></member-sub-title>
-
-                        <member-socials>
-                            <a  href="https://github.com/Juli4Souzas" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/GitHub_logo.png') }}" alt="GitHub" class="icon">
-                            </a>
-                            <a href="https://www.linkedin.com/in/julia-santos-3873252b3/" target="_blank">
-                                <img src="{{ url_for('static', filename='images/socials/LinkedIn_logo.png') }}" alt="LinkedIn" class="icon">
-                            </a>
-                            <a href="mailto:souzasjulia14@gmail.com"><img src="{{ url_for('static', filename='images/socials/Gmail_Logo.png') }}" alt="Gmail" class="icon"></a>
-                        </member-socials>
-
-                    </box-member>
-                </container-members>
-            </section-members>
-        </article-team>
-
-        <footer>
-            <article-footer>
-
-                <section-footer-logo>
-                    <h10>BEESINESS</h10>
-                    <h11>Desde 2024</h11>
-                </section-footer-logo>
-
-                <section-footer>
-
-                    <box-footer>
-                        <h11>Serviços</h11>
-                    </box-footer>
-
-                    <box-footer>
-                        <h11>Trabalho conosco</h11>
-                    </box-footer>
-
-                    <box-footer>
-                        <h11>Sobre nós</h11>
-                    </box-footer>
-                    
-                </section-footer>
-
-            </article-footer>
-
-            </article-info>
-                
-            <article-end>
-                <h11>© 2024 Direitos Reservados - Termos de Uso - Política de Privacidade</h11>
-            </article-end>
-        </footer>
-
+        <!-- CTA FINAL -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta reveal">
+                    <svg class="cta-path" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M0 140 C 150 40, 300 40, 450 120 S 750 200, 900 90 S 1100 20, 1200 70" />
+                    </svg>
+                    <h2>Tudo isso e mais em um só lugar.</h2>
+                    <p>Comece agora e leve a gestão do patrimônio da sua empresa a outro nível.</p>
+                    {% if current_user.is_authenticated %}
+                        <a class="btn btn-dark" href="/dashboard/user">Ir para o dashboard</a>
+                    {% else %}
+                        <a class="btn btn-dark" href="/user/register">Crie sua conta de graça!</a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
     </main>
 
-
-
-
-
-
-
-
-
-
-
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <a href="/" class="brand">
+                    <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+                    <span>BEESINESS</span>
+                </a>
+                <p>Gestão de patrimônio para pequenas e médias empresas. Desde 2024.</p>
+            </div>
+            <nav class="footer-col" aria-label="Produto">
+                <h4>Produto</h4>
+                <a href="#solucao">Serviços</a>
+                <a href="#como-funciona">Como funciona</a>
+                <a href="#beneficios">Benefícios</a>
+            </nav>
+            <nav class="footer-col" aria-label="Empresa">
+                <h4>Empresa</h4>
+                <a href="#inicio">Sobre nós</a>
+                <a href="#inicio">Trabalho conosco</a>
+            </nav>
+            <nav class="footer-col" aria-label="Conta">
+                <h4>Conta</h4>
+                <a href="/user/login">Login</a>
+                <a href="/user/register">Criar conta</a>
+            </nav>
+        </div>
+        <div class="container footer-bottom">
+            <span>© 2024 Beesiness. Direitos Reservados.</span>
+            <span>Termos de Uso · Política de Privacidade</span>
+        </div>
+    </footer>
 
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>

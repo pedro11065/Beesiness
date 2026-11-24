@@ -1,81 +1,48 @@
-function ShowFeature1() {
-    const elemento = document.getElementById('feature-section-1');
-    const posicao = elemento.getBoundingClientRect().top;
-    const alturaJanela = window.innerHeight;
+// Fallback para navegadores sem suporte a CSS Scroll-Driven Animations.
+// Nos navegadores compatíveis, todas as animações são feitas em CSS (animation-timeline).
+(function () {
+    const supportsSDA = window.CSS && CSS.supports && CSS.supports('animation-timeline: view()');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (supportsSDA || reduceMotion) return;
 
-    if (posicao < alturaJanela) {
-        elemento.classList.add('visible');
+    document.documentElement.classList.add('no-sda');
+
+    // Revelação ao entrar na tela
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    const bar = document.querySelector('.scroll-progress');
+    const steps = document.querySelector('.steps');
+    const fill = document.querySelector('.steps-fill');
+    const marquee = document.querySelector('.marquee');
+    const track = document.querySelector('.marquee-track');
+
+    const clamp = (v) => Math.min(1, Math.max(0, v));
+
+    function onScroll() {
+        const vh = window.innerHeight;
+        const max = document.documentElement.scrollHeight - vh;
+        if (bar && max > 0) bar.style.transform = 'scaleX(' + window.scrollY / max + ')';
+
+        if (steps && fill) {
+            const r = steps.getBoundingClientRect();
+            fill.style.transform = 'scaleX(' + clamp((vh * 0.8 - r.top) / (vh * 0.5)) + ')';
+        }
+
+        if (marquee && track) {
+            const r = marquee.getBoundingClientRect();
+            const p = clamp((vh - r.top) / (vh + r.height));
+            track.style.transform = 'translateX(' + (-38 * p) + '%)';
+        }
     }
-}
 
-window.addEventListener('scroll', ShowFeature1);
-
-function ShowFeature2() {
-    const elemento = document.getElementById('feature-section-2');
-    const posicao = elemento.getBoundingClientRect().top;
-    const alturaJanela = window.innerHeight;
-
-    if (posicao < alturaJanela) {
-        elemento.classList.add('visible');
-    }
-}
-
-window.addEventListener('scroll', ShowFeature2);
-
-function ShowFeature3() {
-    const elemento = document.getElementById('feature-section-3');
-    const posicao = elemento.getBoundingClientRect().top;
-    const alturaJanela = window.innerHeight;
-
-    if (posicao < alturaJanela) {
-        elemento.classList.add('visible');
-    }
-}
-
-window.addEventListener('scroll', ShowFeature3);
-
-function ShowFeature4() {
-    const elemento = document.getElementById('feature-section-4');
-    const posicao = elemento.getBoundingClientRect().top;
-    const alturaJanela = window.innerHeight;
-
-    if (posicao < alturaJanela) {
-        elemento.classList.add('visible');
-    }
-}
-
-window.addEventListener('scroll', ShowFeature4);
-function ShowFeature5() {
-    const elemento = document.getElementById('feature-section-5');
-    const posicao = elemento.getBoundingClientRect().top;
-    const alturaJanela = window.innerHeight;
-
-    if (posicao < alturaJanela) {
-        elemento.classList.add('visible');
-    }
-}
-
-window.addEventListener('scroll', ShowFeature5);
-function ShowFeature6() {
-    const elemento = document.getElementById('feature-section-6');
-    const posicao = elemento.getBoundingClientRect().top;
-    const alturaJanela = window.innerHeight;
-
-    if (posicao < alturaJanela) {
-        elemento.classList.add('visible');
-    }
-}
-
-window.addEventListener('scroll', ShowFeature6);
-
-function ShowFeatureBtn() {
-    const elemento = document.getElementById('feature-btn-container');
-    const posicao = elemento.getBoundingClientRect().top;
-    const alturaJanela = window.innerHeight;
-
-    if (posicao < alturaJanela) {
-        elemento.classList.add('visible');
-    }
-}
-
-window.addEventListener('scroll', ShowFeatureBtn);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+})();

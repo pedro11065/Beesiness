@@ -12,7 +12,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth_user.login'  # A rota de login.
 
 # Configuração do cache simples na memória
-cache = Cache(config={'CACHE_TYPE': 'simple'})
+cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -40,7 +40,7 @@ def load_user(user_id):
 def create_app():
     app = Flask(__name__, static_folder='views/static', template_folder='views/templates')
     app.config['SECRET_KEY'] = 'chave_secreta_nome'  # Responsável por encriptar os cookies e session data
-    app.config['CACHE_TYPE'] = 'simple'  # Configuração de cache para Flask-Caching
+    app.config['CACHE_TYPE'] = 'SimpleCache'  # Configuração de cache para Flask-Caching
 
     # Inicializa o cache com a aplicação
     cache.init_app(app)
