@@ -1,195 +1,142 @@
-document.addEventListener('DOMContentLoaded', async function () {
-    const categoryTitles = document.querySelectorAll('.category-title');
+function getCnpjFromUrl() {
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 1] || "";
+}
 
-    
-    
-    categoryTitles.forEach(title => {
-        title.addEventListener('click', () => {
-            const dataList = title.nextElementSibling;
-            dataList.classList.toggle('collapsed');
+function formatMoney(val) {
+    const num = Number(val) || 0;
+    return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function escapeHTML(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : String(str);
+    return div.innerHTML;
+}
+
+function fillSublist(ulId, items) {
+    const ul = document.getElementById(ulId);
+    ul.innerHTML = "";
+    if (!Array.isArray(items) || items.length === 0) {
+        ul.innerHTML = `<li class="dre-subempty">Nenhuma conta movimentada neste grupo</li>`;
+        return;
+    }
+    items.forEach((it) => {
+        const li = document.createElement("li");
+        li.className = "dre-subitem";
+        li.innerHTML = `
+            <span>${escapeHTML(it.name)}</span>
+            <strong>${formatMoney(it.value)}</strong>
+        `;
+        ul.appendChild(li);
+    });
+}
+
+function applySignedClass(el, value, keepYellowOnFinal = false) {
+    const num = Number(value) || 0;
+    el.classList.remove("val-positive", "val-negative");
+    if (num < 0) el.classList.add("val-negative");
+    else if (num > 0 && !keepYellowOnFinal) el.classList.add("val-positive");
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const loading = document.getElementById("loading");
+    const main = document.getElementById("main");
+    const cnpj = getCnpjFromUrl();
+
+    document.querySelectorAll(".dre-toggle").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const list = btn.nextElementSibling;
+            if (!list) return;
+            const collapsed = list.classList.toggle("is-collapsed");
+            btn.setAttribute("aria-expanded", String(!collapsed));
         });
     });
 
-    const main = document.getElementById('main');
-    const loading = document.getElementById('loading');
-
-    function getCnpjFromUrl() {
-        const url = window.location.pathname;
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-    }
-
-    const cnpj = getCnpjFromUrl();
-
-    loading.style.display = 'flex';
-    main.style.display = 'none';
-
     try {
         const response = await fetch(`/dashboard/income-statement/${cnpj}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
         });
+        if (!response.ok && response.status !== 404) throw new Error("Falha ao carregar DRE");
 
-        if (!response.ok) {
-            throw new Error('Erro na resposta da API: ' + response.statusText);
-        }
+        const data =
+            response.status === 404
+                ? {
+                      years: [],
+                      brute_revenue: [],
+                      brute_revenue_float: 0,
+                      deductions_revenue: [],
+                      deductions_revenue_float: 0,
+                      result_revenue: 0,
+                      sell_costs: [],
+                      sell_costs_float: 0,
+                      result_operational_costs: 0,
+                      operational_costs: [],
+                      operational_costs_float: 0,
+                      loss_profit: 0
+                  }
+                : await response.json();
 
-        const data = await response.json();
-        console.log(data)
+        const gross = Number(data.brute_revenue_float) || 0;
+        const deduct = Number(data.deductions_revenue_float) || 0;
+        const netRev = Number(data.result_revenue) || 0;
+        const sellCosts = Number(data.sell_costs_float) || 0;
+        const grossProfit = Number(data.result_operational_costs) || 0;
+        const opCosts = Number(data.operational_costs_float) || 0;
+        const finalRes = Number(data.loss_profit) || 0;
 
+        const totalCostsAll = deduct + sellCosts + opCosts;
+        const margin = gross > 0 ? (finalRes / gross) * 100 : 0;
 
-        const BruteRevenue = document.getElementById('brute_revenue');
-        const DeductionsRevenue = document.getElementById('deductions_revenue');
-        const SellCosts = document.getElementById('sell_costs');
-        const OperationalCosts = document.getElementById('operational_costs');
-  
+        // KPIs superiores
+        document.getElementById("kpiLossProfit").textContent = formatMoney(finalRes);
+        document.getElementById("kpiGrossRev").textContent = formatMoney(gross);
+        document.getElementById("kpiTotalCosts").textContent = formatMoney(totalCostsAll);
+        document.getElementById("kpiMargin").textContent =
+            `${margin.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
 
+        const years = Array.isArray(data.years) && data.years.length > 0
+            ? data.years.length === 1
+                ? `Exercício ${data.years[0]}`
+                : `${data.years[0]} – ${data.years[data.years.length - 1]}`
+            : "Sem movimentação";
+        document.getElementById("dreYearsBadge").textContent = years;
+        document.getElementById("kpiPeriodNote").textContent = years;
 
+        // Linhas da DRE
+        document.getElementById("brute_revenue_total").textContent = formatMoney(gross);
+        document.getElementById("deductions_revenue_total").textContent =
+            deduct > 0 ? `- ${formatMoney(deduct)}` : formatMoney(0);
 
-        //RECEITA OPERACIONAL BRUTA---------------------------------------------------------------------------
+        const netRevEl = document.getElementById("result_revenue_total");
+        netRevEl.textContent = formatMoney(netRev);
+        applySignedClass(netRevEl, netRev);
 
-        document.getElementById('brute_revenue_total').textContent = `${formatValueToMoney(data.brute_revenue_float)}`;
+        document.getElementById("sell_costs_total").textContent =
+            sellCosts > 0 ? `- ${formatMoney(sellCosts)}` : formatMoney(0);
 
-        Object.keys(data.brute_revenue).forEach(i => {  
+        const gpEl = document.getElementById("result_operational_costs_total");
+        gpEl.textContent = formatMoney(grossProfit);
+        applySignedClass(gpEl, grossProfit);
 
-            const BruteRevenueDiv = document.createElement('li');
-            BruteRevenueDiv.className = 'data-list';
-            BruteRevenueDiv.innerHTML = `
-            
-            <li class="data-item">
-                ${data.brute_revenue[i].name}
-                <div class="data-value" id="vendas-produtos">${formatValueToMoney(data.brute_revenue[i].value)}</div>
-            </li>`
-                
-            BruteRevenue.appendChild(BruteRevenueDiv);
+        document.getElementById("operational_costs_total").textContent =
+            opCosts > 0 ? `- ${formatMoney(opCosts)}` : formatMoney(0);
 
+        const finalEl = document.getElementById("loss_profit_total");
+        finalEl.textContent = formatMoney(finalRes);
+        applySignedClass(finalEl, finalRes, true);
 
-        });
+        fillSublist("brute_revenue", data.brute_revenue);
+        fillSublist("deductions_revenue", data.deductions_revenue);
+        fillSublist("sell_costs", data.sell_costs);
+        fillSublist("operational_costs", data.operational_costs);
 
-
-
-
-        //DEDUÇÕES DA RECEITA BRUTA---------------------------------------------------------------------------
-
-        document.getElementById('deductions_revenue_total').textContent = `${formatValueToMoney(data.deductions_revenue_float)}`;
-        if (data.deductions_revenue_float >= 0){
-            document.getElementById('deductions_revenue_total').style.color = "green";
-        }
-        else{
-            document.getElementById('deductions_revenue_total').style.color = "red";
-        }
-
-        Object.keys(data.deductions_revenue).forEach(i => {  
-
-            const DeductionsRevenueDiv = document.createElement('li');
-            DeductionsRevenueDiv.className = 'data-list';
-            DeductionsRevenueDiv.innerHTML = `
-            
-            <li class="data-item">
-                ${data.brute_revenue[i].name}
-                <div class="data-value" id="vendas-produtos">${formatValueToMoney(data.deductions_revenue[i].value)}</div>
-            </li>`
-                
-            DeductionsRevenue.appendChild(DeductionsRevenueDiv);
-
-        });     
-
-
-
-
-        //RESULTADO OPERACIONAL BRUTO---------------------------------------------------------------------------
-
-        document.getElementById('result_revenue_total').textContent = `${formatValueToMoney(data.result_revenue)}`;
-        if (data.result_revenue >= 0){
-            document.getElementById('result_revenue_total').style.color = "green";
-        }
-        else{
-            document.getElementById('result_revenue_total').style.color = "red";
-        }
-
-
-
-        //CUSTOS DAS VENDAS---------------------------------------------------------------------------
-
-        document.getElementById('sell_costs_total').textContent = `${formatValueToMoney(data.sell_costs_float)}`;
- 
-        Object.keys(data.sell_costs).forEach(i => {  
-
-            const SellCostsDiv = document.createElement('li');
-            SellCostsDiv.className = 'data-list';
-            SellCostsDiv.innerHTML = `
-            
-            <li class="data-item">
-                ${data.sell_costs[i].name}
-                <div class="data-value" id="vendas-produtos">${formatValueToMoney(data.sell_costs[i].value)}</div>
-            </li>`
-                
-            SellCosts.appendChild(SellCostsDiv);
-
-        });
-
-
-
-        //RESULTADO OPERACIONAL LÍQUIDO--------------------------------------------------------------------------
-        document.getElementById('result_operational_costs_total').textContent = `${formatValueToMoney(data.result_operational_costs)}`;
-        if (data.result_operational_costs >= 0){
-            document.getElementById('result_operational_costs_total').style.color = "green";
-        }
-        else{
-            document.getElementById('result_operational_costs_total').style.color = "red";
-        }
-
-
-
-        //DESPESAS OPERACIONAIS---------------------------------------------------------------------------
-
-        document.getElementById('operational_costs_total').textContent = `${formatValueToMoney(data.operational_costs_float)}`;
-
-        Object.keys(data.operational_costs).forEach(i => {  
-
-            const SellCostsDiv = document.createElement('li');
-            SellCostsDiv.className = 'data-list';
-            SellCostsDiv.innerHTML = `
-            
-            <li class="data-item">
-                ${data.operational_costs[i].name}
-                <div class="data-value" id="vendas-produtos">${formatValueToMoney(data.operational_costs[i].value)}</div>
-            </li>`
-                
-            OperationalCosts.appendChild(SellCostsDiv);
-
-        });
-
-
-
-         //Lucro/Prejuízo operacional---------------------------------------------------------------------------
-
-         document.getElementById('loss_profit_total').textContent = `${formatValueToMoney(data.loss_profit)}`;
-         if (data.loss_profit >= 0){
-            document.getElementById('loss_profit_total').style.color = "green";
-        }
-        else{
-            document.getElementById('loss_profit_total').style.color = "red";
-        }
-
-
-        loading.style.display = 'none';
-        main.style.display = 'flex';
-        //---------------------------------------------------------------------------
-
-
+        loading.hidden = true;
+        main.hidden = false;
     } catch (error) {
-        const errorDiv = document.createElement('div');
-        errorDiv.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
-        main.appendChild(errorDiv);
+        console.error("Erro ao carregar DRE:", error);
+        loading.hidden = true;
+        main.hidden = false;
     }
 });
-
-
-
-function formatValueToMoney(valueStr) {
-    const valueNum = parseFloat(valueStr);
-    return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}

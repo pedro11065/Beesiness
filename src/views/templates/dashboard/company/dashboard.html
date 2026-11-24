@@ -1,283 +1,320 @@
-
-<!-- Se puder na próxima explicar para que vai servir o arquivo com a palavra batata, eu agradeceria, valeu! -->
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beesiness</title>
+    <meta name="description" content="Painel contábil e indicadores patrimoniais da empresa na Beesiness.">
+    <title>Painel da empresa | Beesiness</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/dashboard.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Adicionando Chart.js -->
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     {% include 'dashboard/user/header.html' %}
-   
-    <article_corousel class="carousel-container">
-        <button class="carousel-prev" onclick="scrollCarousel(-1)">&#10094;</button>
-        <section class="carousel-wrapper">
-            <nav class="buttons_container" id="buttons_container">
-                <a class="button_box_green" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}">Registrar Ativo</a>
-                <a class="button_box_red" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}">Registrar Passivo</a>
-                <a class="button_box" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}">Ativos</a>
-                <a class="button_box" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}">Passivos</a>
-                <a class="button_box" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=cnpj) }}">Diário</a>
-                <a class="button_box" href="{{ url_for('auth_dashboard.balance_trial', cnpj=cnpj) }}">Balancete</a>
-                <a class="button_box" href="{{ url_for('auth_dashboard.razonete_site', cnpj=cnpj) }}">Razonete</a>
-                <a class="button_box" href="{{ url_for('auth_dashboard.balance_sheet', cnpj=cnpj) }}">Balanço patrimonial</a>
-                <a class="button_box" href="{{ url_for('auth_dashboard.income_statement', cnpj=cnpj) }}">DRE</a>
-                <a class="button_box" href="{{ url_for('auth_dashboard.authorization_site', cnpj=cnpj) }}">Permissão</a>
-            </nav>
-        </section>
-        <button class="carousel-next" onclick="scrollCarousel(1)">&#10095;</button>
-    </article_corousel>
 
-    <div id="loading" class="loading">
-        <div class="loader "></div>
+    <!-- Barra superior da empresa + navegação de módulos -->
+    <section class="company-hero">
+        <div class="container">
+            <div class="company-head">
+                <div class="company-identity">
+                    <div class="company-meta">
+                        <span class="label">Painel patrimonial</span>
+                        <span class="cnpj-pill" id="companyCnpjPill">CNPJ {{ cnpj }}</span>
+                    </div>
+                    <h1 id="companyTitle">Carregando empresa...</h1>
+                </div>
+
+                <div class="company-actions">
+                    <a class="btn btn-primary" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj) }}">
+                        <span>Registrar ativo</span>
+                        <span aria-hidden="true">+</span>
+                    </a>
+                    <a class="btn btn-outline" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}">
+                        <span>Registrar passivo</span>
+                        <span aria-hidden="true">+</span>
+                    </a>
+                </div>
+            </div>
+
+            <nav class="module-tabs" aria-label="Módulos da empresa">
+                <a class="tab is-active" href="{{ url_for('auth_dashboard.dashboard_company', cnpj=cnpj) }}" aria-current="page">Visão geral</a>
+                <a class="tab" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}">Ativos</a>
+                <a class="tab" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}">Passivos</a>
+                <a class="tab" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=cnpj) }}">Livro Diário</a>
+                <a class="tab" href="{{ url_for('auth_dashboard.balance_trial', cnpj=cnpj) }}">Balancete</a>
+                <a class="tab" href="{{ url_for('auth_dashboard.razonete_site', cnpj=cnpj) }}">Razonete</a>
+                <a class="tab" href="{{ url_for('auth_dashboard.balance_sheet', cnpj=cnpj) }}">Balanço Patrimonial</a>
+                <a class="tab" href="{{ url_for('auth_dashboard.income_statement', cnpj=cnpj) }}">DRE</a>
+                <a class="tab" href="{{ url_for('auth_dashboard.authorization_site', cnpj=cnpj) }}">Permissões</a>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Skeletons durante o carregamento -->
+    <div id="loading" class="container skeleton-wrap" aria-live="polite" aria-label="Carregando indicadores">
+        <div class="sk-kpis">
+            <div class="sk-box"></div>
+            <div class="sk-box"></div>
+            <div class="sk-box"></div>
+            <div class="sk-box"></div>
+        </div>
+        <div class="sk-panels">
+            <div class="sk-box sk-tall"></div>
+            <div class="sk-box sk-tall"></div>
+        </div>
     </div>
 
-    <article id="logoutModal" class="modal">
-        <section class="modal-content">
-            <span class="close" onclick="toggleModal()">&times;</span>
-            <p>Você realmente deseja sair?</p>
-            <button class="btn confirm" onclick="logout()">Sair</button>
-            <button class="btn cancel" onclick="toggleModal()">Cancelar</button>
-        </section>
-    </article>
-    
-    <main id="main">
-        <article>
+    <!-- Conteúdo principal -->
+    <main id="main" class="dashboard-main" hidden>
+        <div class="container dashboard-stack">
 
-            <section-info-top > <!-- INFO BOXES 1 -->
+            <!-- LINHA 1: KPIs executivos -->
+            <section class="kpi-grid" aria-label="Resumo patrimonial">
+                <article class="kpi-card kpi-highlight">
+                    <div class="kpi-top">
+                        <span class="kpi-index">01</span>
+                        <span class="kpi-tag">Disponibilidade</span>
+                    </div>
+                    <div class="kpi-body">
+                        <span class="kpi-label">Saldo em caixa</span>
+                        <strong class="kpi-value" id="cash_now">R$ 0,00</strong>
+                    </div>
+                    <p class="kpi-foot" id="cash_sub">Saldo reconciliado com o Livro Diário</p>
+                </article>
 
-                <box-info-top >
+                <article class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-index">02</span>
+                        <span class="kpi-tag">Situação líquida</span>
+                    </div>
+                    <div class="kpi-body">
+                        <span class="kpi-label">Patrimônio líquido</span>
+                        <strong class="kpi-value" id="patrimony">R$ 0,00</strong>
+                    </div>
+                    <p class="kpi-foot" id="patrimony_sub">Ativo total menos obrigações exigíveis</p>
+                </article>
 
-                    <box-info-title>
-                        <h2>Saldo</h2><h2></h2>
-                    </box-info-title>
+                <a class="kpi-card kpi-link" id="assets_box" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}">
+                    <div class="kpi-top">
+                        <span class="kpi-index">03</span>
+                        <span class="kpi-pill"><span id="assets_quant">0</span> itens</span>
+                    </div>
+                    <div class="kpi-body">
+                        <span class="kpi-label">Ativos registrados</span>
+                        <strong class="kpi-value" id="assets_total">R$ 0,00</strong>
+                    </div>
+                    <p class="kpi-foot kpi-foot-link">
+                        <span id="assets_sub">Ver bens e direitos</span>
+                        <span class="arrow" aria-hidden="true">→</span>
+                    </p>
+                </a>
 
-                    <box-info-value>
-                        <h3 id="cash_now">R$----</h3>
-                    </box-info-value>
+                <a class="kpi-card kpi-link" id="liabilities_box" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}">
+                    <div class="kpi-top">
+                        <span class="kpi-index">04</span>
+                        <span class="kpi-pill"><span id="liabilities_quant">0</span> registros</span>
+                    </div>
+                    <div class="kpi-body">
+                        <span class="kpi-label">Obrigações pendentes</span>
+                        <strong class="kpi-value" id="obligations_total">R$ 0,00</strong>
+                    </div>
+                    <p class="kpi-foot kpi-foot-link">
+                        <span id="liabilities_sub">Ver passivos e capital</span>
+                        <span class="arrow" aria-hidden="true">→</span>
+                    </p>
+                </a>
+            </section>
 
-                </box-info-top>
-                
-                <box-info-top >
-                    <box-info-title>
-                        <h2>Patrimônio</h2><h2></h2>
-                    </box-info-title>
+            <!-- LINHA 2: Evolução do caixa + Distribuição por classe -->
+            <section class="row-split row-main-charts">
+                <article class="panel">
+                    <header class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Fluxo acumulado</span>
+                            <h2>Saldo x Tempo</h2>
+                            <p>Evolução cronológica do caixa conforme entradas e saídas efetivas.</p>
+                        </div>
+                        <div class="seg-control" role="group" aria-label="Tipo de gráfico de saldo">
+                            <button type="button" class="seg-btn is-active" data-chart-mode="line">Linha</button>
+                            <button type="button" class="seg-btn" data-chart-mode="bar">Barras</button>
+                        </div>
+                    </header>
 
-                    <box-info-value>
-                        <h3 id="patrimony">R$----</h3>
-                    </box-info-value>                   
-                </box-info-top>
+                    <div class="chart-stage" id="balanceChartStage">
+                        <canvas id="balanceChartCanvas"></canvas>
+                    </div>
+                    <div class="empty-panel" id="balanceEmpty" hidden>
+                        <strong>Sem movimentações de caixa registradas</strong>
+                        <span>Registre ativos ou pagamentos para acompanhar a curva de evolução do saldo.</span>
+                    </div>
+                </article>
 
-                <box-info-top id="assets_box">
+                <article class="panel">
+                    <header class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Concentração</span>
+                            <h2 id="classPanelTitle">Composição por classe</h2>
+                            <p id="classPanelSub">Participação de cada classe no total de ativos.</p>
+                        </div>
+                        <div class="seg-control" role="group" aria-label="Visão por classe">
+                            <button type="button" class="seg-btn is-active" data-class-mode="assets">Ativos</button>
+                            <button type="button" class="seg-btn" data-class-mode="exits">Saídas</button>
+                        </div>
+                    </header>
 
-                    <box-info-title>
-                        <h2>Quantidade de ativos</h2><h2>></h2>
-                    </box-info-title>
+                    <ul class="class-list" id="classBreakdownList"></ul>
+                    <div class="empty-panel" id="classEmpty" hidden>
+                        <strong>Nenhum valor categorizado ainda</strong>
+                        <span>Os totais por classe aparecerão automaticamente após os primeiros registros.</span>
+                    </div>
+                </article>
+            </section>
 
-                    <box-info-value>
-                        <h3 id="assets_quant">----</h3>
-                    </box-info-value>
+            <!-- LINHA 3: Ativos x Passivos + Indicadores contábeis -->
+            <section class="row-split row-indicators">
+                <article class="panel">
+                    <header class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Comparativo por competência</span>
+                            <h2>Ativos x Passivos</h2>
+                            <p>Volume financeiro registrado em ativos frente às obrigações assumidas em cada mês.</p>
+                        </div>
+                    </header>
 
-                </box-info-top>
-                
-                <box-info-top id="liabilities_box" >
-                    <box-info-title >
-                        <h2>Quantidade de passivos</h2><h2>></h2>
-                    </box-info-title>
-
-                    <box-info-value>
-                        <h3 id="liabilities_quant">----</h3>
-                    </box-info-value>                   
-                </box-info-top>
-
-            </section-info-top>
-
-        </article>
-
-        <!-- -------------------- -->
-
-        <article>
-
-            <section-graph> <!-- GRAPH 1 -->
-
-                <container-graph>
-                    
-                    <box-graph-title>
-                        <h1>Saldo x Tempo</h1>
-                    </box-graph-title>
-                        
-
-                     <box-graph-chart>
-                        <canvas id="balanceChartCanvas"></canvas> <!-- Canvas para o gráfico de saldo -->
-                     </box-graph-chart>
-
-                </container-graph>
-       
-            </section-graph>
-
-
-            <section-costs> <!--  -->
-
-                <container-class-title>
-                    <h1>Gasto por classe</h1>
-                </container-class-title>
-
-                <container-class>
-                    <container-class-left>
-                        <box-class><h5>Capital Social</h5> <h5>----</h5></box-class>
-                        <box-class><h5>Contas</h5> <h5>----</h5></box-class>
-                        <box-class><h5>Estoque</h5> <h5>----</h5></box-class>
-                        <box-class><h5>Matérias-primas</h5> <h5>----</h5></box-class>
-                        <box-class><h5>Investimentos</h5> <h2>----</h5></box-class>  
-                        <box-class><h5>Mobílias</h5>  <h5>----</h5></box-class>   
-                        <box-class><h5>Veículos</h5>  <h5>----</h5></box-class>  
-                        <box-class><h5>Equipamentos</h5>  <h5>----</h5></box-class>  
-                        <box-class><h5>Outros</h5>  <h5>----</h5></box-class>  
-
-                    </container-class-left>
-                    
-
-                    <container-class-right>
-                        <box-class><h5>Maquinário</h5> <h5>----</h5></box-class>
-                        <box-class><h5>Patentes</h5> <h5>----</h5></box-class>
-                        <box-class><h5>Ações</h5> <h5>----</h5></box-class>
-                        <box-class><h5>Tec e TI</h5> <h2>----</h5></box-class>
-                        <box-class><h5>Intangíveis</h5>  <h5>----</h5></box-class> 
-                        <box-class><h5>Infraestruturas</h5>  <h5>----</h5></box-class>  
-                        <box-class><h5>Terrenos</h5>  <h5>----</h5></box-class>   
-                        <box-class><h5>Licenças</h5>  <h5>----</h5></box-class>  
-                        <box-class><h5>Espaços</h5>  <h5>----</h5></box-class>  
-
-                    </container-class-right>
-                    
-                </container-class>
-
-            </section-costs>
-
-        </article>
-
-        <!-- -------------------- -->
-
-        <article>
-
-            <section-graph> <!-- GRAPH 1 -->
-
-                <container-graph>
-                    
-                    <box-graph-title>
-                        <h1>Passivos x Ativos</h1>
-                    </box-graph-title>
-                        
-
-                     <box-graph-chart>
+                    <div class="chart-stage chart-stage-sm" id="comparisonChartStage">
                         <canvas id="assetsLiabilitiesChartCanvas"></canvas>
-                     </box-graph-chart>
+                    </div>
+                    <div class="empty-panel" id="comparisonEmpty" hidden>
+                        <strong>Sem histórico mensal suficiente</strong>
+                        <span>Adicione lançamentos para comparar ativos e passivos ao longo dos meses.</span>
+                    </div>
 
-                </container-graph>
-       
-            </section-graph>
+                    <div class="structure-strip" aria-label="Estrutura circulante e não circulante">
+                        <div class="structure-item">
+                            <span class="structure-label">Ativo circulante (c/ caixa)</span>
+                            <strong id="current_assets_val">R$ 0,00</strong>
+                        </div>
+                        <div class="structure-item">
+                            <span class="structure-label">Ativo não circulante</span>
+                            <strong id="non_current_assets_val">R$ 0,00</strong>
+                        </div>
+                        <div class="structure-item">
+                            <span class="structure-label">Passivo circulante</span>
+                            <strong id="current_liabilities_val">R$ 0,00</strong>
+                        </div>
+                        <div class="structure-item">
+                            <span class="structure-label">Passivo não circulante</span>
+                            <strong id="non_current_liabilities_val">R$ 0,00</strong>
+                        </div>
+                    </div>
+                </article>
 
-            <section-info> <!-- INFO BOXES 1 -->
+                <div class="metrics-column">
+                    <div class="metrics-head">
+                        <span class="panel-eyebrow">Saúde financeira e caixa</span>
+                        <h2>Indicadores contábeis</h2>
+                    </div>
 
-                <container-info>
+                    <div class="metrics-grid">
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-name">Total de entradas</span>
+                                <span class="metric-badge badge-pos"><span id="count_entrys">0</span> lanç.</span>
+                            </div>
+                            <strong class="metric-val" id="values_entrys">R$ 0,00</strong>
+                            <span class="metric-desc">Ingressos efetivos no caixa</span>
+                        </article>
 
-                    <box-info>
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-name">Total de saídas</span>
+                                <span class="metric-badge badge-neutral"><span id="count_exits">0</span> lanç.</span>
+                            </div>
+                            <strong class="metric-val" id="values_exits">R$ 0,00</strong>
+                            <span class="metric-desc">Pagamentos, quitações e compras</span>
+                        </article>
 
-                        <box-info-title>
-                            <h2>Quantidade de entradas</h2><h2>></h2>
-                        </box-info-title>
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-name">Liquidez corrente</span>
+                                <span class="metric-badge" id="liquidity_badge">—</span>
+                            </div>
+                            <strong class="metric-val" id="liquidity_current">—</strong>
+                            <span class="metric-desc">Ativo circulante ÷ Passivo circulante</span>
+                        </article>
 
-                        <box-info-value>
-                            <h3 id="count_entrys">----</h3>
-                        </box-info-value>
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-name">Liquidez imediata</span>
+                                <span class="metric-badge badge-neutral">Caixa CP</span>
+                            </div>
+                            <strong class="metric-val" id="liquidity_immediate">—</strong>
+                            <span class="metric-desc">Caixa disponível ÷ Passivo circulante</span>
+                        </article>
 
-                    </box-info>
-                    
-                    <box-info>
-                        <box-info-title>
-                            <h2>Quantidade de saídas</h2><h2>></h2>
-                        </box-info-title>
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-name">Endividamento geral</span>
+                                <span class="metric-badge" id="debt_badge">—</span>
+                            </div>
+                            <strong class="metric-val" id="debt_ratio">0%</strong>
+                            <span class="metric-desc">Passivo exigível sobre o ativo total</span>
+                        </article>
 
-                        <box-info-value>
-                            <h3 id="count_exits">----</h3>
-                        </box-info-value>                   
-                    </box-info>
+                        <article class="metric-card">
+                            <div class="metric-top">
+                                <span class="metric-name">Capital social</span>
+                                <span class="metric-badge badge-gold">Patrimônio</span>
+                            </div>
+                            <strong class="metric-val" id="equity_total">R$ 0,00</strong>
+                            <span class="metric-desc">Capital registrado pelos sócios</span>
+                        </article>
+                    </div>
+                </div>
+            </section>
 
-                </container-info>
+            <!-- LINHA 4: Últimos lançamentos -->
+            <section class="panel">
+                <header class="panel-head">
+                    <div>
+                        <span class="panel-eyebrow">Histórico recente</span>
+                        <h2>Últimos lançamentos</h2>
+                    </div>
+                    <a class="btn-text-link" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=cnpj) }}">
+                        Abrir Livro Diário →
+                    </a>
+                </header>
 
-                <container-info>
+                <div class="table-wrap" id="recentTableWrap">
+                    <table class="recent-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Evento · Classe</th>
+                                <th>Natureza</th>
+                                <th class="num-col">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentEntriesBody"></tbody>
+                    </table>
+                </div>
 
-                    <box-info>
+                <div class="empty-panel" id="recentEmpty" hidden>
+                    <strong>Nenhum lançamento registrado até o momento</strong>
+                    <span>Use os botões "Registrar ativo" ou "Registrar passivo" no topo da página para iniciar.</span>
+                </div>
+            </section>
 
-                        <box-info-title>
-                            <h2>Total entrada</h2><h2>></h2>
-                        </box-info-title>
-
-                        <box-info-value>
-                            <h3 id="values_entrys">R$----</h3>
-                        </box-info-value>
-
-                    </box-info>
-                    
-                    <box-info>
-                        <box-info-title>
-                            <h2>Total saída</h2><h2>></h2>
-                        </box-info-title>
-
-                        <box-info-value>
-                            <h3 id="values_exits">R$----</h3>
-                        </box-info-value>                   
-                    </box-info>
-                    
-                </container-info>
-
-                <container-info>
-
-                    <box-info>
-
-                        <box-info-title>
-                            <h2>----</h2><h2>></h2>
-                        </box-info-title>
-
-                        <box-info-value>
-                            <h3>R$----</h3>
-                        </box-info-value>
-
-                    </box-info>
-                    
-                    <box-info>
-                        <box-info-title>
-                            <h2>----</h2><h2>></h2>
-                        </box-info-title>
-
-                        <box-info-value>
-                            <h3>R$----</h3>
-                        </box-info-value>                   
-                    </box-info>
-                    
-                </container-info>
-
-
-            </section-info>
-
-        </article>
-
-        <!-- -------------------- -->
-
+        </div>
     </main>
-
-</body>
-
-
 
     <script src="{{ url_for('static', filename='js/dashboard/company/dashboard.js') }}" defer></script>
 </body>
+
 </html>

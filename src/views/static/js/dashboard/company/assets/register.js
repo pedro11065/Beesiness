@@ -1,192 +1,172 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('AssetForm');
-    const submitButton = document.querySelector('.register-button');
-    const submitButtonTxt = document.getElementById('register-button-text');
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("AssetForm");
+    const submitButton = document.getElementById("register-button");
+    const submitButtonTxt = document.getElementById("register-button-text");
+    const valueInput = document.getElementById("acquisition_value");
 
-    // Função para extrair o CNPJ da URL
     function getCnpjFromUrl() {
-        const url = window.location.pathname;  // Obtém o caminho da url.
-        const parts = url.split('/');  // Divide a url pelas barras.
-        return parts[parts.length - 1];  // Retorna a última parte dividida.
+        const parts = window.location.pathname.split("/").filter(Boolean);
+        return parts[parts.length - 1] || "";
     }
 
     const cnpj = getCnpjFromUrl();
 
-    submitButton.addEventListener('click', async (event) => {
-        event.preventDefault();
+    function formatCurrencyInput(raw) {
+        const digits = String(raw || "").replace(/\D/g, "");
+        if (!digits) return "";
+        const num = parseFloat(digits) / 100;
+        return num.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
 
-        if (!validateForm()) {
-            return; // Se a validação falhar, não envia o formulário
+    valueInput.addEventListener("input", function () {
+        this.value = formatCurrencyInput(this.value);
+    });
+
+    form.querySelectorAll(".input, .select-input, .textarea-input").forEach((el) => {
+        const clear = () => {
+            el.classList.remove("is-invalid");
+            const err = document.getElementById("err-" + el.id);
+            if (err) err.textContent = "";
+        };
+        el.addEventListener("input", clear);
+        el.addEventListener("change", clear);
+    });
+
+    function setFieldError(id, msg) {
+        const el = document.getElementById(id);
+        const err = document.getElementById("err-" + id);
+        if (el) el.classList.add("is-invalid");
+        if (err) err.textContent = msg;
+    }
+
+    function clearErrors() {
+        form.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
+        form.querySelectorAll(".field-error").forEach((el) => (el.textContent = ""));
+    }
+
+    function openAlertModal(message) {
+        document.getElementById("alert-message").textContent = message;
+        document.getElementById("alert-modal").classList.add("is-open");
+    }
+
+    function openSuccessModal(message) {
+        document.getElementById("success-message").textContent = message;
+        document.getElementById("success-modal").classList.add("is-open");
+    }
+
+    document.querySelectorAll("#alert-modal .fechar, #alert-modal .close").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            document.getElementById("alert-modal").classList.remove("is-open");
+        });
+    });
+
+    function validateForm() {
+        clearErrors();
+        let ok = true;
+
+        const name = document.getElementById("name").value.trim();
+        const rawVal = valueInput.value.trim().replace(/[^\d,-]/g, "").replace(",", ".");
+        const numVal = parseFloat(rawVal);
+        const floating = document.getElementById("floating").value.trim();
+        const eventValue = document.getElementById("event").value.trim();
+        const classeValue = document.getElementById("class").value.trim();
+        const status = document.getElementById("status").value.trim();
+        const acquisitionDate = document.getElementById("acquisition_date").value.trim();
+        const paymentMethod = document.getElementById("payment_method").value.trim();
+        const installment = document.getElementById("installment").value.trim();
+        const description = document.getElementById("description").value.trim();
+
+        if (name.length < 3) {
+            setFieldError("name", "Informe um nome com ao menos 3 caracteres.");
+            ok = false;
+        }
+        if (Number.isNaN(numVal) || numVal <= 0) {
+            setFieldError("acquisition_value", "Informe um valor maior que zero.");
+            ok = false;
+        }
+        if (!floating) {
+            setFieldError("floating", "Selecione a classificação.");
+            ok = false;
+        }
+        if (!eventValue) {
+            setFieldError("event", "Selecione o evento.");
+            ok = false;
+        }
+        if (!classeValue) {
+            setFieldError("class", "Selecione a classe.");
+            ok = false;
+        }
+        if (!status) {
+            setFieldError("status", "Selecione o status.");
+            ok = false;
+        }
+        if (!acquisitionDate) {
+            setFieldError("acquisition_date", "Informe a data de aquisição.");
+            ok = false;
+        }
+        if (!paymentMethod) {
+            setFieldError("payment_method", "Selecione a forma de pagamento.");
+            ok = false;
+        }
+        if (!installment) {
+            setFieldError("installment", "Selecione o parcelamento.");
+            ok = false;
+        }
+        if (description.length > 255) {
+            setFieldError("description", "Máximo de 255 caracteres.");
+            ok = false;
         }
 
+        return ok;
+    }
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!validateForm()) return;
+
         submitButton.disabled = true;
-        submitButtonTxt.textContent = "Aguarde..."
-
-
-        const eventValue = document.getElementById('event').value.trim();
-        const floating = document.getElementById('floating').value.trim();
-        const classeValue = document.getElementById('class').value.trim();
-        const name = document.getElementById('name').value.trim();
-        const localization = document.getElementById('localization').value.trim() || 'Descrição não adicionada.';
-        const acquisitionDate = document.getElementById('acquisition_date').value.trim();
-        const acquisitionValue = document.getElementById('acquisition_value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.'); 
-        const status = document.getElementById('status').value.trim();
-        const payment_method = document.getElementById('payment_method').value.trim();
-        const installment = document.getElementById('installment').value.trim();
-        const description = document.getElementById('description').value.trim() || 'Descrição não adicionada.';
+        submitButtonTxt.textContent = "Registrando...";
 
         const formData = {
-            cnpj: cnpj,
-            event: eventValue,
-            classe: classeValue,
-            name: name,
-            floating: floating,
-            localization: localization,
-            acquisitionDate: acquisitionDate,
-            acquisitionValue: acquisitionValue,
-            status: status,
-            description: description,
-            installment: installment,
-            payment_method: payment_method
+            cnpj,
+            event: document.getElementById("event").value.trim(),
+            classe: document.getElementById("class").value.trim(),
+            name: document.getElementById("name").value.trim(),
+            floating: document.getElementById("floating").value.trim(),
+            localization: document.getElementById("localization").value.trim() || "Não informada",
+            acquisitionDate: document.getElementById("acquisition_date").value.trim(),
+            acquisitionValue: valueInput.value.trim().replace(/[^\d,-]/g, "").replace(",", "."),
+            status: document.getElementById("status").value.trim(),
+            description: document.getElementById("description").value.trim() || "Sem observações.",
+            installment: document.getElementById("installment").value.trim(),
+            payment_method: document.getElementById("payment_method").value.trim()
         };
 
         try {
             const response = await fetch(`/dashboard/register/asset/${cnpj}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             });
 
             if (response.ok) {
-                openSuccessModal('Ativo registrado com sucesso!');
+                openSuccessModal("Ativo registrado e contabilizado com sucesso.");
             } else {
-                const errorData = await response.json();
-                openAlertModal(`Erro: ${errorData.message || 'Não foi possível registrar o ativo.'}`);
+                const errData = await response.json().catch(() => ({}));
+                openAlertModal(errData.message || "Não foi possível registrar o ativo.");
                 submitButton.disabled = false;
-                submitButtonTxt.textContent = "Registrar";
+                submitButtonTxt.textContent = "Registrar ativo";
             }
         } catch (error) {
-            console.error('Erro ao enviar dados:', error);
-            openAlertModal('Erro ao enviar dados. Tente novamente mais tarde.');
+            console.error("Erro ao enviar ativo:", error);
+            openAlertModal("Erro de conexão ao enviar os dados. Tente novamente.");
             submitButton.disabled = false;
-            submitButtonTxt.textContent = "Registrar";
+            submitButtonTxt.textContent = "Registrar ativo";
         }
     });
-
-    function validateForm() {
-        const eventValue = document.getElementById('event').value.trim();
-        const classeValue = document.getElementById('class').value.trim();
-        const name = document.getElementById('name').value.trim();
-        const localization = document.getElementById('localization').value.trim();
-        const acquisitionDate = document.getElementById('acquisition_date').value.trim();
-        const acquisitionValue = document.getElementById('acquisition_value').value.trim().replace(/[^\d,-]/g, '').replace(',', '.');
-        const status = document.getElementById('status').value.trim();
-        const description = document.getElementById('description').value.trim();
-        const floating = document.getElementById('floating').value.trim();
-
-        // Verifica se os campos obrigatórios estão vazios
-        if (!eventValue || !classeValue || !name || !acquisitionDate || !acquisitionValue || !status || !floating ) {
-            openAlertModal('Campo obrigatório não preenchido.');
-            return false;
-        }
-
-        // Validação de nome
-        if (name.length < 3) {
-            openAlertModal('Nome muito curto.');
-            return false;
-        } else if (name.length > 255) {
-            openAlertModal('Nome muito longo.');
-            return false;
-        }
-
-        // Validação de valor (precisa ser um número)
-        if (isNaN(acquisitionValue) || acquisitionValue <= 0) {
-            openAlertModal('Valor inválido.');
-            return false;
-        }
-
-        // Validação de descrição
-        if (description.length > 255) { // Limite de caracteres para descrição
-            openAlertModal(`Descrição muito longa (máx. 255 caracteres).\nVocê digitou ${description.length} caracteres!`);
-            return false;
-        }
-
-        return true; // Todos os campos são válidos
-    }
-
-    function formatMoney(value) {
-        value = value.replace(/\D/g, '');
-        const numericValue = parseFloat(value) / 100;
-
-        if (isNaN(numericValue)) {
-            return 'R$ 0,00';
-        }
-
-        const result = new Intl.NumberFormat('pt-BR', { 
-            style: 'currency', 
-            currency: 'BRL', 
-            minimumFractionDigits: 2, 
-            maximumFractionDigits: 2 
-        }).format(numericValue);
-
-        return result;
-    }
-
-    document.getElementById('acquisition_value').addEventListener('input', function (e) {
-        this.value = formatMoney(this.value);
-    });
-
-    function openAlertModal(message) {
-        const modal = document.getElementById('alert-modal');
-        const modalMessage = document.getElementById('alert-message');
-
-        modalMessage.textContent = message;
-        modal.style.display = 'block';
-
-        // Fecha ao clicar fora da área do modal
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        };
-    }
-
-    // Função para abrir o modal de sucesso
-    function openSuccessModal(message) {
-        const modal = document.getElementById('success-modal');
-        const successMessage = document.getElementById('success-message');
-
-        successMessage.textContent = message;
-        modal.style.display = 'block';
-
-        const closeButton = modal.querySelector('.fechar');
-        closeButton.onclick = function() {
-            closeModal();
-            window.location.href = `/dashboard/company/${cnpj}`;
-        };
-
-        // Fecha ao clicar fora da área do modal
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
-                window.location.href = `/dashboard/company/${cnpj}`;
-            }
-        };
-    }
-
-
-    function closeModal() {
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach(modal => {
-            modal.style.display = 'none';
-        });
-    }
-
-    document.querySelectorAll('.fechar').forEach(button => {
-        button.addEventListener('click', closeModal);
-    });
-
-    document.querySelector('.close').addEventListener('click', closeModal);
 });

@@ -1,409 +1,413 @@
-html {
-    scroll-behavior: smooth;
-    margin: 0;
-    padding: 0;
+/* =========================================================
+   Beesiness - User Dashboard (Seleção de empresas)
+   ========================================================= */
+:root {
+    --yellow: #EDC805;
+    --ink: #0F0F0F;
+    --dark: #1A1A1A;
+    --light: #F6F5F0;
+    --white: #FFFFFF;
+    --muted: #5F5F5F;
+    --line: rgba(0, 0, 0, .1);
+    --line-strong: rgba(0, 0, 0, .2);
+    --danger: #C92A2A;
+    --container: 1180px;
+    --ease: cubic-bezier(.2, .7, .2, 1);
 }
 
-/* Remove margem e padding padrão de todos os elementos */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+[hidden] { display: none !important; }
 
-/* Configuração básica do corpo da página */
 body {
-    font-family: inter;
-    background-color: #d2d2d2; /*FFD700*/
-    height: 100vh;
-    width: auto;
-    margin: 0;
-}
-
-p {
-    font-family: inter;
-    color: white;
-    font-size: 1.1rem;
-    font-weight:300;
-}
-
-#loading {
-    display: none;
-    font-size: 1.5em;
-    color: #000000;
-    text-align: center;
-    margin: 50px;
-}
-
-.main {
-    width: 100%;
-    height: auto; 
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-
-}
-
-.main h1 {
-    font-family: inter;
-    color: rgb(0, 0, 0);
-    margin-left: 2rem;
-    font-size: 1.8rem;
-    font-weight:400;
-}
-
-.main h2 {
-    font-family: inter;
-    color: white;
-    margin-left: 2rem;
-    font-size: 1.8rem;
-    font-weight:400;
-}
-
-.main p {
-    color: white;
-    margin-top: 0.3rem;
-    margin-left: 2rem;
-    font-size: 1.2rem;
-    font-weight:300;
-    text-shadow: #000 1px 1px 4px;
-}
-
-.main .icon {
-    margin-left: 10px;
-    width: 30px;
-    height: 30px;
-}
-
-main .box {
-    background-color: white;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    width: 80%;
-    height: auto; 
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    justify-content: flex-start;
-      border-radius: 2rem;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    color: var(--ink);
+    background: var(--light);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
-.main .box .new_company {
-    cursor: pointer;
-    background-color: #FFD400; /*#2F7B00*/
-    margin-top: 0.5rem;
+a { text-decoration: none; color: inherit; }
+button, input { font: inherit; }
+
+:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; border-radius: 6px; }
+
+.container { width: min(var(--container), 92%); margin-inline: auto; }
+
+.label {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    font-size: .74rem;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink);
     margin-bottom: 1rem;
-    padding-right: 2rem;
-    width: 90%;
-    height: 15vh; 
+}
+.label::before { content: ""; width: 1.5rem; height: 2px; background: var(--yellow); }
+
+/* ===== Área principal ===== */
+.workspace {
+    flex: 1;
+    padding: clamp(2.5rem, 5vw, 4.25rem) 0 5rem;
+}
+
+.workspace-head {
     display: flex;
-    align-items: center; 
+    align-items: flex-end;
     justify-content: space-between;
-    border-radius: 2rem;
-    border: none;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    gap: 2rem;
+    padding-bottom: 2.25rem;
+    border-bottom: 1px solid var(--line);
 }
 
-.main .box .new_company:hover {
-    background-color: #f4cd09;
+.workspace-intro h1 {
+    font-size: clamp(2.1rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -.035em;
+    line-height: 1.06;
+}
+.workspace-intro p {
+    margin-top: .75rem;
+    max-width: 560px;
+    font-size: 1rem;
+    color: var(--muted);
+}
+.workspace-intro strong {
+    color: var(--ink);
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
-.main .box .company:hover {
-    background-color: #1d1d1d;
+.workspace-actions { flex: none; }
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    height: 48px;
+    padding: 0 1.5rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: -.005em;
+    cursor: pointer;
+    transition: background-color .25s var(--ease), color .25s var(--ease), transform .2s var(--ease);
+}
+.btn-primary:hover { background: var(--ink); color: #fff; }
+.btn-primary:active { transform: translateY(1px); }
+.btn-plus {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1;
 }
 
-main .box .company {
-    background-color: #222222;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    padding-right: 2rem;
-    width: 90%;
-    height: 20vh; 
-    display: flex;
-    align-items: center; 
-    justify-content: space-between;
-    border-radius: 2rem;
-    border: none;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    height: 44px;
+    padding: 0 1.25rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink);
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .2s, background-color .2s, color .2s;
 }
+.btn-secondary:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
 
-main .box .company .company-data {
-    justify-content:flex-start;
-}
-
-main .box .company-data-error {
-    background-color: #222222;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    padding-right: 2rem;
-    width: 90%;
-    height: 20vh; 
+/* ===== Barra de filtro ===== */
+.workspace-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 2rem;
-    border: none;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    gap: 1rem;
+    margin-top: 1.75rem;
 }
 
-.icon-simbolo {
-    width: 60px;
-    height: 60px;
-    margin-left: 15px;
+.search-wrap {
+    position: relative;
+    width: min(360px, 100%);
+}
+.search-wrap svg {
+    position: absolute;
+    left: .9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 17px;
+    height: 17px;
+    color: #7A7A7A;
+    pointer-events: none;
+}
+.search-input {
+    width: 100%;
+    height: 42px;
+    padding: 0 .9rem 0 2.45rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--white);
+    color: var(--ink);
+    font-size: .9rem;
+    transition: border-color .2s, box-shadow .2s;
+}
+.search-input::placeholder { color: #949494; }
+.search-input:focus {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(237, 200, 5, .28);
 }
 
+.company-count {
+    font-size: .82rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+}
+
+/* ===== Skeletons de carregamento ===== */
+.skeleton-grid {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+.skeleton-card {
+    height: 196px;
+    border-radius: 16px;
+    background: linear-gradient(90deg, #EAE9E3 25%, #F2F1EC 50%, #EAE9E3 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+}
+@keyframes shimmer {
+    from { background-position: 200% 0; }
+    to   { background-position: -200% 0; }
+}
+
+/* ===== Grade de empresas ===== */
+.companies-grid {
+    margin-top: 1.75rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.company-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 204px;
+    padding: 1.4rem 1.5rem;
+    border-radius: 16px;
+    background: var(--white);
+    border: 1px solid rgba(0, 0, 0, .08);
+    overflow: hidden;
+    transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.company-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--yellow);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .35s var(--ease);
+}
+.company-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 0, 0, .18);
+    box-shadow: 0 18px 36px -18px rgba(0, 0, 0, .16);
+}
+.company-card:hover::before { transform: scaleX(1); }
+
+.card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+}
+.card-index {
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    font-variant-numeric: tabular-nums;
+    color: #8A8A8A;
+}
+
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .73rem;
+    font-weight: 600;
+    padding: .24rem .62rem;
+    border-radius: 999px;
+    background: #F3F2EE;
+    color: #3D3D3D;
+    border: 1px solid rgba(0, 0, 0, .06);
+}
+.role-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7A7A7A;
+}
+.role-badge.role-creator {
+    background: rgba(237, 200, 5, .2);
+    border-color: rgba(237, 200, 5, .55);
+    color: var(--ink);
+}
+.role-badge.role-creator::before { background: var(--ink); }
+
+.card-body { margin: 1.35rem 0 1.5rem; }
 .nome-empresa {
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    margin-left: 20px;
+    font-size: 1.22rem;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.25;
+    color: var(--ink);
+    word-break: break-word;
+}
+.company-cnpj {
+    display: block;
+    margin-top: .35rem;
+    font-size: .84rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
 }
 
-.company-data {
+.card-foot {
     display: flex;
     align-items: center;
-    justify-content: flex-start; 
-    padding: 10px;
+    justify-content: space-between;
+    padding-top: .95rem;
+    border-top: 1px solid rgba(0, 0, 0, .07);
+    font-size: .84rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+.card-arrow {
+    display: inline-block;
+    transition: transform .25s var(--ease);
+}
+.company-card:hover .card-arrow { transform: translateX(4px); }
+
+/* Card extra de adicionar empresa */
+.company-card-add {
+    background: transparent;
+    border: 1.5px dashed rgba(0, 0, 0, .2);
+    justify-content: center;
+    align-items: flex-start;
+    gap: .5rem;
+}
+.company-card-add::before { display: none; }
+.company-card-add:hover {
+    background: var(--white);
+    border-style: solid;
+    border-color: var(--ink);
+}
+.add-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+    margin-bottom: .4rem;
+    transition: background-color .2s, color .2s;
+}
+.company-card-add:hover .add-circle { background: var(--ink); color: #fff; }
+.company-card-add strong {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -.015em;
+}
+.company-card-add span {
+    font-size: .86rem;
+    color: var(--muted);
 }
 
+/* ===== Estados vazio / sem filtro / erro ===== */
+.state-box {
+    grid-column: 1 / -1;
+    padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+    border-radius: 20px;
+    background: var(--white);
+    border: 1px solid rgba(0, 0, 0, .08);
+    text-align: center;
+}
+.state-box .state-tag {
+    display: inline-block;
+    font-size: .74rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: .75rem;
+}
+.state-box h2 {
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 700;
+    letter-spacing: -.025em;
+}
+.state-box p {
+    margin: .6rem auto 1.6rem;
+    max-width: 440px;
+    font-size: .95rem;
+    color: var(--muted);
+}
+.state-error h2 { color: var(--danger); }
 
-@media (max-width: 40rem) { 
-    p {
-        color: white;
-        margin-left: 0.6rem;
-        font-size: 0.9rem;
-        font-weight:300;
+/* ===== Responsivo ===== */
+@media (max-width: 980px) {
+    .companies-grid,
+    .skeleton-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
+}
 
-    header .user {
-        display:flex;
-        align-items: center; 
-        gap: 0rem;
-        margin-left: 0.1rem;
-        
-    } 
-
-    header .user .icon {
-        margin-left: 0.4rem;
-        width: 30px;
-        height: 30px;
-    }
-
-    .main h1 {
-        font-family: inter;
-        color: white;
-        margin-left: 2rem;
-        font-size: 0.9rem;
-        font-weight:300;
-    }
-    .main p {
-        font-family: inter;
-        color: white;
-        margin-top: 0.3rem;
-        margin-left: 2rem;
-        font-size: 0.7rem;
-        font-weight:300;
-        text-shadow: #000 1px 1px 4px;
-    }
-    main .box .icon {
-        margin-left: 0.4rem;
-        width: 20px;
-        height: 20px;
-    }
-
-    main .box {
-        max-width: 800px;
-        background-color: transparent;
-        margin-top: 0;
-        margin-bottom: 0;
-        padding-top: 1rem;
-        padding-bottom: 2rem;
-        padding-left: 0;
-        padding-right: 0;
-        width: 95%;
-        height: 90vh; 
-        display: flex;
+@media (max-width: 680px) {
+    .workspace-head {
         flex-direction: column;
-        align-items: center; 
-        justify-content: flex-start;
-          border-radius: 2rem;
-        box-shadow: rgba(50, 50, 93, 0) 0px 13px 27px -5px, 
-        rgba(0, 0, 0, 0) 0px 8px 16px -8px;
-    
+        align-items: flex-start;
+        gap: 1.25rem;
     }
+    .workspace-actions,
+    .workspace-actions .btn-primary {
+        width: 100%;
+    }
+    .workspace-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-wrap { width: 100%; }
+    .companies-grid,
+    .skeleton-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
-    main .box .new_company {
-        margin-top: 0.3rem;
-        margin-bottom: 1rem;
-        padding-right: 1rem;
-        width: 90%;
-        height: 6vh; 
-        display: flex;
-        align-items: center; 
-        justify-content: space-between;
-        border-radius: 0.5rem;
-        border: none;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-        rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    
-    }
-    
-    main .box .company {
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-        padding-right: 2rem;
-        width: 90%;
-        height: 10vh; 
-        border-radius: 0.5rem;
-
-    }
-        
-    main .box .company-data-error {
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-        padding-right: 2rem;
-        width: 90%;
-        height: 10vh; 
-        border-radius: 0.5rem;
-
-    }
-
-    .icon-simbolo {
-        width: 4rem;
-        height: 4rem;
-        margin-left: 1rem;
-    }
-    
-    .nome-empresa {
-        color: white;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-left: 1rem;
-    }
-    
-    .company-data {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 10px;
-    }
-    
-    @media (max-width: 40rem) { 
-        p {
-            color: white;
-            margin-left: 0.6rem;
-            font-size: 0.9rem;
-            font-weight: 300;
-        }
-    
-        header .user {
-            display: flex;
-            align-items: center; 
-            gap: 0rem;
-            margin-left: 0.1rem;
-        } 
-    
-        header .user .icon {
-            margin-left: 0.4rem;
-            width: 30px;
-            height: 30px;
-        }
-    
-        .main h1 {
-            font-family: inter;
-            color: white;
-            margin-left: 2rem;
-            font-size: 0.9rem;
-            font-weight: 300;
-        }
-    
-        .main p {
-            font-family: inter;
-            color: white;
-            margin-top: 0.3rem;
-            margin-left: 2rem;
-            font-size: 0.7rem;
-            font-weight: 300;
-            text-shadow: #000 1px 1px 4px;
-        }
-    
-        main .box .icon {
-            margin-left: 0.4rem;
-            width: 20px;
-            height: 20px;
-        }
-    
-        main .box {
-            max-width: 800px;
-            background-color: transparent;
-            margin: 0; 
-            padding: 1rem 0;
-            width: 95%;
-            height: 90vh; 
-            display: flex;
-            flex-direction: column;
-            align-items: center; 
-            justify-content: flex-start;
-            border-radius: 2rem;
-            box-shadow: rgba(50, 50, 93, 0) 0px 13px 27px -5px, 
-                        rgba(0, 0, 0, 0) 0px 8px 16px -8px;
-        }
-    
-        main .box .new_company {
-            margin-top: 0.3rem;
-            margin-bottom: 1rem;
-            padding-right: 1rem;
-            width: 90%;
-            height: 6vh; 
-            display: flex;
-            align-items: center; 
-            justify-content: space-between;
-            border-radius: 0.5rem;
-            border: none;
-            box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, 
-                        rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-        }
-        
-        main .box .company, main .box .company-data-error {
-            margin: 0.5rem 0;
-            padding-right: 2rem;
-            width: 90%;
-            height: auto;
-            border-radius: 0.5rem;
-        }
-    
-        .icon-simbolo {
-            width: 40px;
-            height: 40px;
-            margin-left: 10px;
-        }
-        
-        .nome-empresa {
-            font-size: 1.2rem;
-            margin-left: 0.5rem;
-        }
-    
-        .main .box .company {
-            height: auto; 
-        }
-    
-        .main .box .company-data {
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            width: 100%;
-            padding: 5px;
-        }
-    }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }

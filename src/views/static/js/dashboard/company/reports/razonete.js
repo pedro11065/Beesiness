@@ -1,180 +1,183 @@
-document.addEventListener('DOMContentLoaded', async function () { 
-    const main = document.getElementById('main');
-    const loading = document.getElementById('loading');
+let historicRows = [];
+let activeView = "all";
 
-    function getCnpjFromUrl() {
-        const url = window.location.pathname;
-        const parts = url.split('/');
-        return parts[parts.length - 1];
+const MONTHS_FULL = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+];
+
+function getCnpjFromUrl() {
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 1] || "";
+}
+
+function formatMoney(val) {
+    const num = Number(val) || 0;
+    return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function escapeHTML(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : String(str);
+    return div.innerHTML;
+}
+
+function cleanAccountName(name) {
+    return name === "#!@cash@!#" ? "Caixa" : name || "Conta";
+}
+
+function parseIsoDate(raw) {
+    if (!raw) return null;
+    const s = String(raw).trim();
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) {
+        const [y, m, d] = s.slice(0, 10).split("-").map(Number);
+        return new Date(y, m - 1, d);
     }
+    const d = new Date(s);
+    return Number.isNaN(d.getTime()) ? null : d;
+}
 
-    function formatDateToBrazilian(dateStr) {
-        const date = new Date(dateStr);
-        date.setHours(date.getHours() + 3);
+function renderRazonetes() {
+    const container = document.getElementById("razContent");
+    const emptyEl = document.getElementById("razEmpty");
+    const q = (document.getElementById("razSearch").value || "").trim().toLowerCase();
 
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = date.toLocaleString('pt-BR', { month: 'long' });
-        const year = date.getFullYear();
-        return `${day} de ${month} de ${year}`;
+    container.innerHTML = "";
+
+    // Mantém apenas lançamentos que possuem débito ou crédito efetivo > 0
+    const effective = historicRows.filter((item) => {
+        const d = Number(item.debit) || 0;
+        const c = Number(item.credit) || 0;
+        if (d <= 0 && c <= 0) return false;
+        const accName = cleanAccountName(item.name);
+        if (q && !accName.toLowerCase().includes(q)) return false;
+        return true;
+    });
+
+    if (effective.length === 0) {
+        emptyEl.hidden = false;
+        return;
     }
+    emptyEl.hidden = true;
 
-    function formatValueToMoney(valueStr) {
-        const valueNum = parseFloat(valueStr);
-        return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
+    const periods = new Map();
+    effective.forEach((item) => {
+        const dt = parseIsoDate(item.date);
+        let key = "all";
+        let title = "Posição consolidada das contas";
+        if (dt && activeView === "month") {
+            key = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}`;
+            title = `${MONTHS_FULL[dt.getMonth()]} de ${dt.getFullYear()}`;
+        } else if (dt && activeView === "day") {
+            const dStr = String(dt.getDate()).padStart(2, "0");
+            const mStr = String(dt.getMonth() + 1).padStart(2, "0");
+            key = `${dt.getFullYear()}-${mStr}-${dStr}`;
+            title = `${dStr}/${mStr}/${dt.getFullYear()}`;
+        }
 
-    function CashName(nameStr) {
-        return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
-    }
+        if (!periods.has(key)) periods.set(key, { title, accounts: new Map() });
+        const accName = cleanAccountName(item.name);
+        const accMap = periods.get(key).accounts;
+        if (!accMap.has(accName)) accMap.set(accName, { debits: [], credits: [] });
 
+        const acc = accMap.get(accName);
+        const deb = Number(item.debit) || 0;
+        const cred = Number(item.credit) || 0;
+        if (deb > 0) acc.debits.push(deb);
+        if (cred > 0) acc.credits.push(cred);
+    });
+
+    const sortedKeys = Array.from(periods.keys()).sort().reverse();
+    sortedKeys.forEach((key) => {
+        const period = periods.get(key);
+        const accEntries = Array.from(period.accounts.entries()).sort((a, b) => {
+            if (a[0] === "Caixa") return -1;
+            if (b[0] === "Caixa") return 1;
+            return a[0].localeCompare(b[0], "pt-BR");
+        });
+
+        const section = document.createElement("section");
+        section.className = "raz-period";
+        section.innerHTML = `
+            <header class="raz-period-title">
+                <h2>${escapeHTML(period.title)}</h2>
+                <span>${accEntries.length} ${accEntries.length === 1 ? "razonete" : "razonetes"}</span>
+            </header>
+            <div class="t-grid"></div>
+        `;
+
+        const grid = section.querySelector(".t-grid");
+        accEntries.forEach(([accName, { debits, credits }]) => {
+            const totD = debits.reduce((s, v) => s + v, 0);
+            const totC = credits.reduce((s, v) => s + v, 0);
+            const diff = totD - totC;
+            const balLabel = diff > 0 ? "Saldo devedor" : diff < 0 ? "Saldo credor" : "Conta saldada";
+
+            const card = document.createElement("article");
+            card.className = "t-card";
+            card.innerHTML = `
+                <div class="t-head">
+                    <h3>${escapeHTML(accName)}</h3>
+                </div>
+                <div class="t-cols-head">
+                    <span>Débito (D)</span>
+                    <span>Crédito (C)</span>
+                </div>
+                <div class="t-body">
+                    <div class="t-side t-side-debit">
+                        ${debits.length ? debits.map((v) => `<div>${formatMoney(v)}</div>`).join("") : `<div class="t-empty-mark">—</div>`}
+                    </div>
+                    <div class="t-side t-side-credit">
+                        ${credits.length ? credits.map((v) => `<div>${formatMoney(v)}</div>`).join("") : `<div class="t-empty-mark">—</div>`}
+                    </div>
+                </div>
+                <div class="t-totals">
+                    <span>${formatMoney(totD)}</span>
+                    <span>${formatMoney(totC)}</span>
+                </div>
+                <div class="t-balance">
+                    <span>${balLabel}</span>
+                    <strong>${formatMoney(Math.abs(diff))}</strong>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        container.appendChild(section);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const loading = document.getElementById("loading");
+    const main = document.getElementById("main");
     const cnpj = getCnpjFromUrl();
-    loading.style.display = 'flex';
-    main.style.display = 'none';
+
+    document.getElementById("razSearch").addEventListener("input", renderRazonetes);
+    document.querySelectorAll("[data-rview]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            activeView = btn.dataset.rview;
+            document.querySelectorAll("[data-rview]").forEach((b) => b.classList.toggle("is-active", b === btn));
+            renderRazonetes();
+        });
+    });
 
     try {
         const response = await fetch(`/dashboard/razonete/${cnpj}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
         });
-
-        if (!response.ok) {
-            throw new Error('Erro na resposta da API: ' + response.statusText);
-        }
+        if (!response.ok) throw new Error("Falha ao buscar razonetes");
 
         const data = await response.json();
-        loading.style.display = 'none';
-        main.style.display = 'flex';
+        historicRows = Array.isArray(data.historic) ? data.historic : [];
 
-        if (data.historic) {
-            const groupedByMonth = {};
-
-            data.historic.forEach(item => {
-                const date = new Date(item.date);
-                date.setHours(date.getHours() + 3); // Coloca no UTC de Brasília.
-            
-                const month = date.toLocaleString('pt-BR', { month: 'long' });
-                const day = formatDateToBrazilian(date)
-
-                // Agrupando por mês
-                if (!groupedByMonth[month]) {
-                    groupedByMonth[month] = {};
-                }
-
-                // Agrupando por dia
-                if (!groupedByMonth[month][day]) {
-                    groupedByMonth[month][day] = { items: [], groupedByClass: {} };
-                }
-
-                groupedByMonth[month][day].items.push(item);
-
-                // Agrupando por classe 
-                if (!groupedByMonth[month][day].groupedByClass[item.name]) {
-                    groupedByMonth[month][day].groupedByClass[item.name] = {
-                        credit: 0,
-                        debit: 0,
-                        items: []
-                    };
-                }
-                groupedByMonth[month][day].groupedByClass[item.name].credit += item.credit;
-                groupedByMonth[month][day].groupedByClass[item.name].debit += item.debit;
-
-                // Armazenando item para exibição futura
-                if (item.credit > 0) {
-                    groupedByMonth[month][day].groupedByClass[item.name].items.push({ type: 'credit', value: item.credit });
-                } else {
-                    groupedByMonth[month][day].groupedByClass[item.name].items.push({ type: 'debit', value: item.debit });
-                }
-            });
-
-            Object.keys(groupedByMonth).forEach(month => {
-                const monthDiv = document.createElement('section');
-                monthDiv.className = 'month-container';
-
-                monthDiv.innerHTML = 
-                    `<header class="month-title-container">
-                        <article class="month-title-box">
-                            <div class="month-box">
-                                <h1>${month.charAt(0).toUpperCase() + month.slice(1)}</h1>
-                            </div>
-                        </article>
-                    </header>`;
-
-                Object.keys(groupedByMonth[month]).forEach(day => {
-                    const dayDiv = document.createElement('article');
-                    dayDiv.className = 'day-container';
-
-                    dayDiv.innerHTML = 
-                        `<header class="day-title-container">
-                            <div class="title-box">
-                                <h3>${day}</h3>
-                            </div>
-                        </header>`;
-
-                    const balanceDiv = document.createElement('main');
-                    balanceDiv.className = 'balance-container';
-
-                    // Agrupando por classe e mostrando créditos e débitos
-                    for (const className in groupedByMonth[month][day].groupedByClass) {
-                        const classData = groupedByMonth[month][day].groupedByClass[className];
-
-                        const classDiv = document.createElement('div');
-                        classDiv.className = 'class-container';
-
-                        const totalCredit = classData.items.filter(item => item.type === 'credit').reduce((acc, item) => acc + item.value, 0);
-                        const totalDebit = classData.items.filter(item => item.type === 'debit').reduce((acc, item) => acc + item.value, 0);
-                        const difference = totalCredit - totalDebit >= 0 ? totalCredit - totalDebit : totalDebit - totalCredit;
-
-                        classDiv.innerHTML = `
-                        <h4 class="class-name">${CashName(className)}</h4>
-                        <div class="values-container">
-                            <div class="debit-container">
-                                ${classData.items.filter(item => item.type === 'debit').map(item => `
-                                    <div class="value-item debit">${formatValueToMoney(item.value)}</div>
-                                `).join('')}
-                            </div>
-                            <div class="credit-container">
-                                ${classData.items.filter(item => item.type === 'credit').map(item => `
-                                    <div class="value-item credit">${formatValueToMoney(item.value)}</div>
-                                `).join('')}
-                            </div>
-                        </div>
-                        <div class="total-line-above"></div>
-                        <div class="total-container">
-                            <div class="total-values-container">
-                            <div class="debit-total-container">
-                                <div class="total-values debit-total">${formatValueToMoney(totalDebit)}</div>
-                            </div>
-                            <div class="credit-total-container">
-                                <div class="total-values credit-total">${formatValueToMoney(totalCredit)}</div>
-                            </div>
-                        </div>
-                             <div class="difference-container">
-                                <div class="difference-value">${formatValueToMoney(difference)}</div>
-                            </div>
-                        </div>
-                        `;
-
-                        balanceDiv.appendChild(classDiv);
-
-                    }
-
-                    dayDiv.appendChild(balanceDiv);
-                    monthDiv.appendChild(dayDiv);
-                });
-
-                main.appendChild(monthDiv);
-            });
-        } else {
-            const noDataDiv = document.createElement('div');
-            noDataDiv.innerHTML = `<div class="error"><h1>Sem dados disponíveis.</h1></div>`;
-            main.appendChild(noDataDiv);
-        }
+        loading.hidden = true;
+        main.hidden = false;
+        renderRazonetes();
     } catch (error) {
-        console.log(error)
-        const errorDiv = document.createElement('div');
-        errorDiv.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
-        main.appendChild(errorDiv);
+        console.error("Erro ao carregar razonetes:", error);
+        loading.hidden = true;
+        main.hidden = false;
+        document.getElementById("razEmpty").hidden = false;
     }
 });

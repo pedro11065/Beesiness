@@ -4,198 +4,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passivos</title>
-
+    <title>Passivos | Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/shell.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/liabilities/liabilities.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/dashboard/company/liabilities/liabilities.js') }}" defer></script>
 </head>
 
 <body>
     {% include 'dashboard/user/header.html' %}
+    {% set active_tab = 'liabilities' %}
+    {% set page_eyebrow = 'Obrigações e capital' %}
+    {% set page_heading = 'Passivos registrados.' %}
+    {% include 'dashboard/company/_subnav.html' %}
 
-    <div id="modal" class="modal">
+    <div id="loading" class="container skeleton-stack" aria-live="polite">
+        <div class="sk-bar"></div>
+        <div class="sk-bar sk-bar-lg"></div>
+    </div>
+
+    <main class="page-main" id="main" hidden>
+        <div class="container page-stack">
+            <section class="summary-strip" aria-label="Resumo dos passivos">
+                <article class="summary-card is-dark">
+                    <span class="summary-label">Obrigações exigíveis</span>
+                    <strong class="summary-value" id="sumObligations">R$ 0,00</strong>
+                    <span class="summary-sub" id="sumObligationsCount">0 obrigações com terceiros</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Passivo circulante</span>
+                    <strong class="summary-value" id="sumLiabCurrent">R$ 0,00</strong>
+                    <span class="summary-sub">Vencimento no curto prazo</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Passivo não circulante</span>
+                    <strong class="summary-value" id="sumLiabNonCurrent">R$ 0,00</strong>
+                    <span class="summary-sub">Exigível no longo prazo</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Capital social / PL</span>
+                    <strong class="summary-value" id="sumEquity">R$ 0,00</strong>
+                    <span class="summary-sub">Aportes registrados pelos sócios</span>
+                </article>
+            </section>
+
+            <section class="panel" id="tablePanel">
+                <div class="panel-head">
+                    <div>
+                        <span class="panel-eyebrow">Controle de compromissos</span>
+                        <h2>Relação de passivos e capital</h2>
+                    </div>
+                </div>
+
+                <div class="toolbar" style="margin-bottom: 1.15rem;">
+                    <div class="search-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="search" id="liabilitySearch" class="search-input" placeholder="Filtrar por nome, evento, pagamento ou status...">
+                    </div>
+
+                    <div class="seg-control" role="group" aria-label="Filtrar natureza">
+                        <button type="button" class="seg-btn is-active" data-filter="all">Todos</button>
+                        <button type="button" class="seg-btn" data-filter="obligations">Obrigações</button>
+                        <button type="button" class="seg-btn" data-filter="equity">Capital Social</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap" id="tableWrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Evento</th>
+                                <th>Categoria</th>
+                                <th>Emissão</th>
+                                <th>Vencimento</th>
+                                <th>Pagamento</th>
+                                <th>Status</th>
+                                <th class="num-col">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-container"></tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state" id="emptyFilterState" hidden style="border:0; padding:2.2rem 1rem;">
+                    <span class="empty-tag">Busca</span>
+                    <h2>Nenhum registro corresponde ao filtro</h2>
+                    <p>Limpe o campo de busca ou alterne entre Obrigações e Capital Social.</p>
+                </div>
+            </section>
+
+            <section class="empty-state" id="emptyDataState" hidden>
+                <span class="empty-tag">Sem pendências</span>
+                <h2>Nenhum passivo registrado no momento.</h2>
+                <p>Registre contas a pagar, fornecedores, financiamentos ou aportes de capital social.</p>
+                <a class="btn btn-primary" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}">Registrar passivo +</a>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de detalhes -->
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Detalhes do passivo</h2>
-
-                <button class="options-button" onclick="toggleDropdown(event)">
-                    <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
-                </button>
-                
-                <div class="dropdown-menu" style="display:none;">
-                    <button class="dropdown-item" onclick="openEditModal()">Editar</button>
-                    <button class="dropdown-item" onclick="settleLiability(event)">Quitar</button>
-                    <button class="dropdown-item" onclick="deleteLiability(event)">Deletar</button>
-                </div>
+                <h2 id="detailModalTitle">Detalhes do passivo</h2>
+                <button type="button" class="modal-close" data-close-modal="modal" aria-label="Fechar">×</button>
             </div>
-            <div class="form-group">
-                <label>Nome:</label>
-                <p id="name"></p>
-    
-                <label>Valor:</label>
-                <p id="value"></p>
 
-                <label>Parcelas:</label>
-                <p id="installment"></p>
-
-                <label>Forma de pagamento:</label>
-                <p id="payment_method"></p>
-    
-                <label>Descrição:</label>
-                <p id="description"></p>
-    
-                <div class="emission-class-expiration">
-                    <div>
-                        <label>Data de Emissão:</label>
-                        <p id="emission_date"></p>
-                    </div>
-                    <div>
-                        <label>Data de Vencimento:</label>
-                        <p id="expiration_date"></p>
-                    </div>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span>Nome</span>
+                    <strong id="name"></strong>
                 </div>
-            </div>
-            
-            <div class="event-class-status">
-                <div>
-                    <label>Evento:</label>
+                <div class="detail-item">
+                    <span>Valor registrado</span>
+                    <strong id="value"></strong>
+                </div>
+                <div class="detail-item">
+                    <span>Evento</span>
                     <p id="event"></p>
                 </div>
-                <div>
-                    <label>Classe:</label>
+                <div class="detail-item">
+                    <span>Categoria</span>
                     <p id="class"></p>
                 </div>
-                <div>
-                    <label>Status:</label>
+                <div class="detail-item">
+                    <span>Data de emissão</span>
+                    <p id="emission_date"></p>
+                </div>
+                <div class="detail-item">
+                    <span>Data de vencimento</span>
+                    <p id="expiration_date"></p>
+                </div>
+                <div class="detail-item">
+                    <span>Forma de pagamento</span>
+                    <p id="payment_method"></p>
+                </div>
+                <div class="detail-item">
+                    <span>Parcelas</span>
+                    <p id="installment"></p>
+                </div>
+                <div class="detail-item">
+                    <span>Status</span>
                     <p id="status"></p>
                 </div>
-                <div>
-                    <label>Circulante:</label>
+                <div class="detail-item">
+                    <span>Classificação</span>
                     <p id="floating"></p>
                 </div>
-            </div>
-            
-            <footer class="footer">
-                <div class="footer-right">
-                    <p id="creation"></p>
-                    <p id="uuid"></p>
+                <div class="detail-item is-full">
+                    <span>Descrição</span>
+                    <p id="description"></p>
                 </div>
-            </footer>
+                <div class="detail-item">
+                    <span>Registro no sistema</span>
+                    <p id="creation" class="td-muted"></p>
+                </div>
+                <div class="detail-item">
+                    <span>Identificador (UUID)</span>
+                    <p id="uuid" class="detail-mono"></p>
+                </div>
+            </div>
+
+            <div class="modal-actions modal-actions-between">
+                <button type="button" class="btn btn-sm btn-danger" id="btnDeleteLiability">Estornar</button>
+                <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-sm btn-outline" id="btnEditLiability">Abater valor</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btnSettleLiability">Quitar obrigação</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Modal de quitar -->
-    <div id="settle-modal" class="modal">
-        <div class="modal-content">
+    <!-- Modal de edição / abatimento -->
+    <div id="edit-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
             <div class="modal-header">
-                <h2>Quitar</h2>
+                <h2>Abater valor do passivo</h2>
+                <button type="button" class="modal-close" data-close-modal="edit-modal" aria-label="Fechar">×</button>
             </div>
-            <div class="modal-body">
-                <p>Tem certeza que deseja quitar o passivo?</p>
+            <div class="page-stack" style="gap:.9rem;">
+                <div class="field">
+                    <label for="edit-name">Registro</label>
+                    <input class="input" type="text" id="edit-name" readonly>
+                </div>
+                <div class="field">
+                    <label for="old_value">Valor atual (R$)</label>
+                    <input class="input" type="text" id="old_value" readonly>
+                </div>
+                <div class="field">
+                    <label for="new_value">Valor a abater (R$)</label>
+                    <input class="input" type="number" step="0.01" min="0.01" id="new_value" placeholder="Ex.: 1000.00">
+                </div>
             </div>
-            <div class="button-group">
-                <button class="btn confirm-settle">Sim</button>
-                <button class="btn cancel-settle">Não</button>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline" data-close-modal="edit-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary" id="btnConfirmEdit">Confirmar abatimento</button>
             </div>
         </div>
     </div>
 
-      <!-- Modal de confirmação -->
-     <div id="confirm-modal" class="modal">
-        <div class="modal-content">
+    <!-- Modal de quitação -->
+    <div id="settle-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
             <div class="modal-header">
-                <h2>Confirmação</h2>
+                <h2>Quitar obrigação</h2>
+                <button type="button" class="modal-close" data-close-modal="settle-modal" aria-label="Fechar">×</button>
             </div>
-            <div class="modal-body">
-                <p>Tem certeza que deseja deletar o passivo?</p>
+            <p class="td-muted" style="font-size:.92rem;">Deseja confirmar a quitação integral deste passivo com desconto no caixa da empresa?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline cancel-settle" data-close-modal="settle-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary confirm-settle" id="btnConfirmSettle">Confirmar quitação</button>
             </div>
-            <div class="button-group">
-                <button class="btn confirm-delete">Sim</button>
-                <button class="btn cancel-delete">Não</button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação de estorno -->
+    <div id="confirm-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Estornar passivo</h2>
+                <button type="button" class="modal-close" data-close-modal="confirm-modal" aria-label="Fechar">×</button>
+            </div>
+            <p class="td-muted" style="font-size:.92rem;">Tem certeza que deseja estornar/remover este registro?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline cancel-delete" data-close-modal="confirm-modal">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-danger confirm-delete" id="btnConfirmDelete">Confirmar estorno</button>
             </div>
         </div>
     </div>
 
     <!-- Modal de aviso -->
-    <div id="alert-modal" class="modal">
-        <div class="modal-content">
+    <div id="alert-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
             <div class="modal-header">
                 <h2>Aviso</h2>
+                <button type="button" class="modal-close" data-close-modal="alert-modal" aria-label="Fechar">×</button>
             </div>
-            <div class="modal-body">
-                <p id="body-content"></p>
-            </div>
-            <div class="button-group">
-                <button class="btn fechar">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de edição -->
-    <div id="edit-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Configuração do passivo</h2>
-            </div>
-
-            <div class="form-group">
-                <label for="name">Nome:</label>
-                <input type="text" id="edit-name" name="edit-name" readonly>
-
-                <label for="cpf">Valor antigo:</label>
-                <input type="text" id="old_value" name="old_value" readonly>
-
-                <label for="permission">Valor abatido:</label>
-                <input type="text" id="new_value" name="new_value">
-                </select>
-            </div>
-
-            <div class="button-group">
-                <button class="btn confirm-edit" onclick="confirmEdit()">Confirmar</button>
-                <button class="btn cancel-edit" onclick="closeEditModal()">Cancelar</button>
+            <p id="body-content" style="font-size:.92rem; color:#262626;"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-dark fechar" id="btnCloseAlert">Entendi</button>
             </div>
         </div>
     </div>
-
-    <menu class="menu-container" id="menuContainer">
-        <a href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}" style="text-decoration: none;">
-            <div class="register-box">Registrar </div>
-        </a>
-        <div class="info-box">
-            Lista passivos
-        </div>
-    </menu>
-    
-    <main class="main" id="main">
-        <div class="table-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Evento</th>
-                        <th>Categoria</th>
-                        <th>Valor</th>
-                        <th>Parcelas</th>
-                        <th>D. de Emissão</th>
-                        <th>D. de Vencimento</th>
-                        <th>F. de Pagamento</th>
-                        <th>Status</th>
-                        <th>Descrição</th>
-                        <th>D. de Criação</th>
-                        <th>H. de Criação</th>
-                    </tr>
-                </thead>
-                <tbody id="data-container"></tbody>
-            </table>
-        </div>
-    </main>
-
-    <div id="loading" class="loading">
-        <div class="loader "></div>
-    </div>
-    
 </body>
+
 </html>

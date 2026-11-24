@@ -1,183 +1,182 @@
-document.addEventListener('DOMContentLoaded', async function () {
-    const main = document.getElementById('main');
-    const main_temporario = document.getElementById('main_temporario'); 
-    const menu = document.getElementById('menu-container');
-    const monthYearSelect = document.getElementById('month-year-select');
+let bsPayload = null;
 
-    // Formatar data no formato "MM/YYYY"
-    const formatDateToMonthYear = (dateString) => {
-        const [year, month] = dateString.split('-');
-        return `${month}/${year}`;
-    };
+const MONTHS_FULL = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+];
 
-    // Preencher as opções de mês/ano no menu
-    const populateMonthYearOptions = (dates) => {
-        const uniqueMonths = [...new Set(dates.map(formatDateToMonthYear))].sort((a, b) => {
-            const [monthA, yearA] = a.split('/').map(Number);
-            const [monthB, yearB] = b.split('/').map(Number);
-            return yearA === yearB ? monthA - monthB : yearA - yearB;
-        });
+function getCnpjFromUrl() {
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 1] || "";
+}
 
-        uniqueMonths.forEach(monthYear => {
-            const option = document.createElement('option');
-            option.value = monthYear;
-            option.textContent = monthYear;
-            monthYearSelect.appendChild(option);
-        });
-    };
+function formatMoney(val) {
+    const num = Number(val) || 0;
+    return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
 
-    // Filtrar os dados pelo mês/ano
-    const filterDataByMonthYear = (data, monthYear) => {
-        const [selectedMonth, selectedYear] = monthYear.split('/').map(Number);
-        return Object.fromEntries(Object.entries(data).map(([key, values]) => [
-            key, filterEntriesByDate(values, selectedYear, selectedMonth)
-        ]));
-    };
+function escapeHTML(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : String(str);
+    return div.innerHTML;
+}
 
-    // Filtrar entradas com base no mês/ano
-    const filterEntriesByDate = (values, year, month) => {
-        const filtered = {};
-        Object.entries(values).forEach(([name, transactions]) => {
-            if (Array.isArray(transactions)) {
-                const filteredTransactions = transactions.filter(({ date }) => {
-                    const [dataYear, dataMonth] = date.split('-').map(Number);
-                    return dataYear === year && dataMonth === month;
-                });
-                if (filteredTransactions.length > 0) filtered[name] = filteredTransactions;
-            } else {
-                filtered[name] = transactions;
-            }
-        });
-        return filtered;
-    };
+function renderList(ulId, subId, items) {
+    const ul = document.getElementById(ulId);
+    const subEl = document.getElementById(subId);
+    ul.innerHTML = "";
 
-    // Atualizar o DOM com os resultados
-    const updateHtmlWithResults = (data, sectionSelector, isPatrimony = false) => {
-        const section = document.querySelector(sectionSelector);
-        if (!section) return;
-    
-        const renderDataList = (ul, data) => {
-            ul.innerHTML = '';
-            Object.entries(data).forEach(([key, transactions]) => {
-                if (Array.isArray(transactions)) {
-                    const totalValue = transactions.reduce((sum, { value }) => sum + value, 0);
-                    const li = document.createElement('li');
-                    li.classList.add('data-item');
-                    li.textContent = `${key}: ${formatValueToMoney(0, totalValue)}`;
-                    ul.appendChild(li);
-                } else if (typeof transactions === 'object') {
-                    Object.entries(transactions).forEach(([subcategory, subcategoryTransactions]) => {
-                        const li = document.createElement('li');
-                        li.classList.add('data-item');
-                        const totalSubcategoryValue = subcategoryTransactions.reduce((sum, { value }) => sum + value, 0);
-                        li.textContent = `${subcategory}: ${formatValueToMoney(0, totalSubcategoryValue)}`;
-                        ul.appendChild(li);
-                    });
-                }
-            });
-        };
-    
-        if (isPatrimony) {
-            const ul = section.querySelector('.data-list');
-            renderDataList(ul, data);
-        } else {
-            section.querySelectorAll('.category-item').forEach(categoryItem => {
-                const categoryName = categoryItem.querySelector('.category-title h3').textContent.trim().toLowerCase();
-                const ul = categoryItem.querySelector('.data-list');
-                if (data[categoryName]) renderDataList(ul, data[categoryName]);
-            });
-        }
-    };
+    const total = (items || []).reduce((s, it) => s + (Number(it.value) || 0), 0);
+    subEl.textContent = formatMoney(total);
 
-    const displayFilteredData = (data) => {
-        updateHtmlWithResults(data.assets, '.first-category-container .category-container'); // Ativos
-        updateHtmlWithResults(data.liabilities, '.second-category-container .category-container'); // Passivos
-        updateHtmlWithResults(data.patrimony, '.patrimony-section', true); // Patrimônio líquido
+    if (!items || items.length === 0) {
+        ul.innerHTML = `<li class="bs-empty">Sem lançamentos nesta rubrica</li>`;
+        return total;
+    }
 
-        const totalAtivo = sumValues(data.assets);
-        document.getElementById('total-ativo').textContent = formatValueToMoney(0, totalAtivo);
+    items.forEach((it) => {
+        const li = document.createElement("li");
+        li.className = "bs-item";
+        li.innerHTML = `
+            <span>${escapeHTML(it.name)}</span>
+            <strong>${formatMoney(it.value)}</strong>
+        `;
+        ul.appendChild(li);
+    });
+    return total;
+}
 
-        const totalPassivo = sumValues(data.liabilities);
-        const totalPatrimonio = sumValues(data.patrimony);
+function extractMonthItems(categoryDict, year, month) {
+    const out = [];
+    Object.entries(categoryDict || {}).forEach(([name, txList]) => {
+        if (!Array.isArray(txList)) return;
+        const sum = txList
+            .filter((t) => {
+                const [y, m] = String(t.date || "").split("-").map(Number);
+                return y === year && m === month;
+            })
+            .reduce((s, t) => s + (Number(t.value) || 0), 0);
+        if (sum !== 0) out.push({ name, value: sum });
+    });
+    return out.sort((a, b) => b.value - a.value);
+}
 
-        const totalPassivoPatrimonio = totalPassivo + totalPatrimonio;
-        document.getElementById('total-passivo-patrimonio').textContent = formatValueToMoney(0, totalPassivoPatrimonio);
-    };
+function renderBalanceSheet(mode) {
+    if (!bsPayload) return;
+    const titleEl = document.getElementById("bsPeriodTitle");
 
-    // Função para somar os valores considerando a estrutura dos dados
-    const sumValues = (data) => {
-        return Object.values(data).reduce((total, category) => {
-            if (typeof category === 'object') {
-                return total + Object.values(category).reduce((sum, transactions) => {
-                    if (Array.isArray(transactions)) {
-                        return sum + transactions.reduce((transactionSum, { value }) => transactionSum + (typeof value === 'number' ? value : 0), 0);
-                    }
-                    return sum;
-                }, 0);
-            }
-            return total;
-        }, 0);
-    };
+    if (mode === "consolidated" && bsPayload.current_position) {
+        titleEl.textContent = "Posição patrimonial consolidada (vigente)";
+        const cp = bsPayload.current_position;
+        const aC = renderList("list-ativo-circ", "sub-ativo-circ", cp.assets_circulante);
+        const aNC = renderList("list-ativo-ncirc", "sub-ativo-ncirc", cp.assets_nao_circulante);
+        const pC = renderList("list-passivo-circ", "sub-passivo-circ", cp.liabilities_circulante);
+        const pNC = renderList("list-passivo-ncirc", "sub-passivo-ncirc", cp.liabilities_nao_circulante);
+        const eq = renderList("list-patrimonio", "sub-patrimonio", cp.equity);
 
-    // Função principal com chamada à API e inicialização
+        document.getElementById("total-ativo").textContent = formatMoney(aC + aNC);
+        document.getElementById("total-passivo-patrimonio").textContent = formatMoney(pC + pNC + eq);
+        return;
+    }
+
+    // Competência mensal MM/YYYY
+    const [mStr, yStr] = String(mode).split("/");
+    const month = Number(mStr);
+    const year = Number(yStr);
+    titleEl.textContent = `Movimentação patrimonial · ${MONTHS_FULL[month - 1] || mStr} de ${year}`;
+
+    const aC = renderList(
+        "list-ativo-circ",
+        "sub-ativo-circ",
+        extractMonthItems((bsPayload.assets || {}).circulante, year, month)
+    );
+    const aNC = renderList(
+        "list-ativo-ncirc",
+        "sub-ativo-ncirc",
+        extractMonthItems((bsPayload.assets || {}).nao_circulante, year, month)
+    );
+    const pC = renderList(
+        "list-passivo-circ",
+        "sub-passivo-circ",
+        extractMonthItems((bsPayload.liabilities || {}).circulante, year, month)
+    );
+    const pNC = renderList(
+        "list-passivo-ncirc",
+        "sub-passivo-ncirc",
+        extractMonthItems((bsPayload.liabilities || {}).nao_circulante, year, month)
+    );
+
+    const patDict = ((bsPayload.patrimony || {}).circulante) || {};
+    const eqItems = extractMonthItems(patDict, year, month);
+    const monthDiff = Math.round((aC + aNC - (pC + pNC) - eqItems.reduce((s, x) => s + x.value, 0)) * 100) / 100;
+    if (Math.abs(monthDiff) >= 0.01) {
+        eqItems.push({ name: "Resultado líquido do período", value: monthDiff });
+    }
+    const eq = renderList("list-patrimonio", "sub-patrimonio", eqItems);
+
+    document.getElementById("total-ativo").textContent = formatMoney(aC + aNC);
+    document.getElementById("total-passivo-patrimonio").textContent = formatMoney(pC + pNC + eq);
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const loading = document.getElementById("loading");
+    const main = document.getElementById("main");
+    const select = document.getElementById("month-year-select");
+    const cnpj = getCnpjFromUrl();
+
+    select.addEventListener("change", () => renderBalanceSheet(select.value));
+
     try {
-        const cnpj = getCnpjFromUrl();
-    
-        main_temporario.style.display = 'flex';
-        menu.style.display = 'flex';
-        main.style.display = 'none';
-    
         const response = await fetch(`/dashboard/balance-sheet/${cnpj}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
         });
-    
-        if (!response.ok) throw new Error('Erro na resposta da API: ' + response.statusText);
-    
-        const data = await response.json();
-        console.log(data);
-    
-        populateMonthYearOptions(data.dates);
-    
-        monthYearSelect.addEventListener('change', function () {
-            const selectedMonthYear = this.value;
-            const [selectedMonth, selectedYear] = selectedMonthYear.split('/');
-            const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-            const monthName = monthNames[parseInt(selectedMonth, 10) - 1];
-    
-            document.querySelector('#month-container .month-box h1').textContent = monthName;
-    
-            const filteredData = {
-                assets: filterDataByMonthYear(data.assets, selectedMonthYear),
-                liabilities: filterDataByMonthYear(data.liabilities, selectedMonthYear),
-                patrimony: filterDataByMonthYear(data.patrimony, selectedMonthYear)
-            };
-    
-            console.log(filteredData);
-            displayFilteredData(filteredData);
-    
-            main_temporario.style.display = 'none';
-            main.style.display = 'flex';
-            menu.style.display = 'flex';
+        if (!response.ok && response.status !== 404) throw new Error("Erro ao consultar balanço");
+
+        bsPayload =
+            response.status === 404
+                ? {
+                      dates: [],
+                      assets: { circulante: {}, nao_circulante: {} },
+                      liabilities: { circulante: {}, nao_circulante: {} },
+                      patrimony: { circulante: {} },
+                      current_position: {
+                          assets_circulante: [],
+                          assets_nao_circulante: [],
+                          liabilities_circulante: [],
+                          liabilities_nao_circulante: [],
+                          equity: []
+                      }
+                  }
+                : await response.json();
+
+        const uniqueMonths = Array.from(
+            new Set(
+                (bsPayload.dates || []).map((d) => {
+                    const [y, m] = d.split("-");
+                    return `${m}/${y}`;
+                })
+            )
+        ).sort((a, b) => {
+            const [mA, yA] = a.split("/").map(Number);
+            const [mB, yB] = b.split("/").map(Number);
+            return yA === yB ? mA - mB : yA - yB;
         });
-    
+
+        uniqueMonths.forEach((my) => {
+            const [m, y] = my.split("/");
+            const opt = document.createElement("option");
+            opt.value = my;
+            opt.textContent = `${MONTHS_FULL[Number(m) - 1]} / ${y}`;
+            select.appendChild(opt);
+        });
+
+        loading.hidden = true;
+        main.hidden = false;
+        renderBalanceSheet("consolidated");
     } catch (error) {
-        console.error(error);
-        main_temporario.style.display = 'none';
-        main.style.display = 'flex';
-        main.innerHTML = `<div class="error"><h1>Erro ao procurar as informações.</h1></div>`;
+        console.error("Erro ao carregar Balanço Patrimonial:", error);
+        loading.hidden = true;
+        main.hidden = false;
     }
 });
-
-const getCnpjFromUrl = () => {
-    const url = window.location.pathname;
-    const parts = url.split('/');
-    return parts[parts.length - 1];
-};
-
-const formatValueToMoney = (mode, value) => {
-    if (mode === 0 && value && !isNaN(value)) {
-        return parseFloat(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-    return '- - -';  // Retorna '----' se o valor não for válido
-};

@@ -1,159 +1,188 @@
-const cnpj = getCnpjFromUrl()
-let isEditMode = false; // Essa variável que define se o modal está no modo de edição ou adição
+let isEditMode = false;
+let rawTargetCpf = "";
+let reloadAfterAlert = false;
 
-// Funções de Utilidade
 function getCnpjFromUrl() {
-    const url = window.location.pathname;  // Obtém o caminho da URL
-    const parts = url.split('/');  // Divide a URL pelas barras
-    return parts[parts.length - 2];  // Retorna a penúltima parte da URL
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 2] || "";
+}
+
+const cnpj = getCnpjFromUrl();
+
+function formatCPF(raw) {
+    const d = String(raw || "").replace(/\D/g, "").slice(0, 11);
+    if (d.length !== 11) return raw || "";
+    return d.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+}
+
+function maskCPFInput(val) {
+    let v = String(val || "").replace(/\D/g, "").slice(0, 11);
+    v = v.replace(/^(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3");
+    v = v.replace(/\.(\d{3})(\d)/, ".$1-$2");
+    return v;
 }
 
 function verifyCPF(strCPF) {
-    var Soma;
-    var Resto;
-    Soma = 0;
+    if (strCPF.length !== 11 || /(.)\1{10}/.test(strCPF)) return false;
 
-    if (/(.)\1{10}/.test(strCPF)) return false;
-
-    for (var i = 1; i <= 9; i++) {
-        Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+    let soma = 0;
+    for (let i = 1; i <= 9; i++) {
+        soma += parseInt(strCPF.substring(i - 1, i), 10) * (11 - i);
     }
+    let resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(strCPF.substring(9, 10), 10)) return false;
 
-    Resto = (Soma * 10) % 11;
-
-    if ((Resto == 10) || (Resto == 11)) Resto = 0;
-    if (Resto != parseInt(strCPF.substring(9, 10))) return false;
-
-    Soma = 0;
-    for (var i = 1; i <= 10; i++) {
-        Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+    soma = 0;
+    for (let i = 1; i <= 10; i++) {
+        soma += parseInt(strCPF.substring(i - 1, i), 10) * (12 - i);
     }
-
-    Resto = (Soma * 10) % 11;
-
-    if ((Resto == 10) || (Resto == 11)) Resto = 0;
-    if (Resto != parseInt(strCPF.substring(10, 11))) return false;
-
-    return true;
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    return resto === parseInt(strCPF.substring(10, 11), 10);
 }
 
-
-// Funções de Ação
-function openEditModal(fullname, cpf, permission) {
-    isEditMode = true;
-
-    document.getElementById('name').value = fullname;
-    document.getElementById('cpf').value = cpf;
-    document.getElementById('permission').value = permission;
-
-    document.getElementById('modal').style.display = 'block';
-
-    // Fecha o dropdown
-    const dropdown = event.target.closest('td').querySelector('.dropdown-menu');
-    dropdown.style.display = 'none';
+function showAlert(message, shouldReload = false) {
+    reloadAfterAlert = shouldReload;
+    document.getElementById("alert-message").textContent = message;
+    document.getElementById("alert-modal").classList.add("is-open");
 }
 
-function openAlertModal(message) {
-    document.getElementById('alert-message').textContent = message;
-    document.getElementById('alert-modal').style.display = 'block';
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("modal");
+    const confirmModal = document.getElementById("confirm-modal");
+    const alertModal = document.getElementById("alert-modal");
+    const cpfSearch = document.getElementById("cpf-search");
+    const addBtn = document.getElementById("add-button");
 
-document.querySelector('.btn.confirmar').addEventListener('click', function () {
-    document.getElementById('modal').style.display = 'none';
+    // Formata os CPFs exibidos na tabela
+    document.querySelectorAll(".cpf-cell").forEach((td) => {
+        td.textContent = formatCPF(td.textContent.trim());
+    });
 
-    const cpf = document.getElementById('cpf').value;
-    const permission = document.getElementById('permission').value;
+    cpfSearch.addEventListener("input", (e) => {
+        e.target.value = maskCPFInput(e.target.value);
+    });
 
-    const action = isEditMode ? 'update_permission' : 'add';
+    document.querySelectorAll(".cancelar").forEach((b) => {
+        b.addEventListener("click", () => modal.classList.remove("is-open"));
+    });
+    document.querySelectorAll(".nao").forEach((b) => {
+        b.addEventListener("click", () => confirmModal.classList.remove("is-open"));
+    });
+    document.getElementById("btnCloseAuthAlert").addEventListener("click", () => {
+        alertModal.classList.remove("is-open");
+        if (reloadAfterAlert) window.location.reload();
+    });
 
-    fetch(`/dashboard/company/${cnpj}/authorization`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, data: { cpf, permission } })
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                openAlertModal(data.message)
+    [modal, confirmModal].forEach((m) => {
+        m.addEventListener("click", (e) => {
+            if (e.target === m) m.classList.remove("is-open");
+        });
+    });
+
+    // Buscar usuário por CPF antes de abrir o modal de permissão
+    addBtn.addEventListener("click", async () => {
+        const digits = cpfSearch.value.replace(/\D/g, "");
+        if (!verifyCPF(digits)) {
+            showAlert("Informe um CPF válido (11 dígitos) para buscar o usuário.");
+            return;
+        }
+
+        addBtn.disabled = true;
+        try {
+            const res = await fetch(`/dashboard/company/${cnpj}/authorization`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "search", data: { cpf: digits, permission: "viewer" } })
+            });
+            const data = await res.json();
+
+            if (data.result) {
+                isEditMode = false;
+                rawTargetCpf = digits;
+                document.getElementById("permModalTitle").textContent = "Conceder acesso";
+                document.getElementById("name").value = data.result.fullname || "Usuário localizado";
+                document.getElementById("cpf").value = formatCPF(digits);
+                document.getElementById("permission").value = "viewer";
+                modal.classList.add("is-open");
+            } else {
+                showAlert(data.message || "Nenhum usuário cadastrado com este CPF.");
             }
-        })
-        .catch(error => console.error('Erro ao atualizar permissão:', error));
-});
+        } catch (err) {
+            console.error("Erro ao buscar CPF:", err);
+            showAlert("Erro ao consultar o CPF. Tente novamente.");
+        } finally {
+            addBtn.disabled = false;
+        }
+    });
 
-document.querySelector('.btn.cancelar').addEventListener('click', function () {
-    document.getElementById('modal').style.display = 'none';
-});
+    // Botões de editar papel na tabela
+    document.querySelectorAll("[data-edit-cpf]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            isEditMode = true;
+            rawTargetCpf = String(btn.dataset.editCpf || "").replace(/\D/g, "");
+            document.getElementById("permModalTitle").textContent = "Alterar nível de acesso";
+            document.getElementById("name").value = btn.dataset.editName || "";
+            document.getElementById("cpf").value = formatCPF(rawTargetCpf);
+            document.getElementById("permission").value = btn.dataset.editRole || "viewer";
+            modal.classList.add("is-open");
+        });
+    });
 
-document.querySelector('.btn.nao').onclick = function () {
-    document.getElementById('confirm-modal').style.display = 'none';
-};
+    // Salvar adição ou alteração
+    document.getElementById("btnConfirmPerm").addEventListener("click", async () => {
+        const permission = document.getElementById("permission").value;
+        const action = isEditMode ? "update_permission" : "add";
+        const btn = document.getElementById("btnConfirmPerm");
+        btn.disabled = true;
 
-document.getElementById('add-button').addEventListener('click', function () {
-    const cpf = document.getElementById('cpf-search').value.replace(/\D/g, '');
+        try {
+            const res = await fetch(`/dashboard/company/${cnpj}/authorization`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action, data: { cpf: rawTargetCpf, permission } })
+            });
+            const data = await res.json();
+            modal.classList.remove("is-open");
+            showAlert(data.message || "Permissão salva com sucesso.", true);
+        } catch (err) {
+            console.error("Erro ao salvar permissão:", err);
+            showAlert("Erro ao atualizar a permissão.");
+        } finally {
+            btn.disabled = false;
+        }
+    });
 
-    if (cpf.length !== 11 || !verifyCPF(cpf)) {
-        openAlertModal('Por favor, insira um CPF válido.');
-        return;
-    }
+    // Botões de remover usuário
+    document.querySelectorAll("[data-delete-cpf]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            rawTargetCpf = String(btn.dataset.deleteCpf || "").replace(/\D/g, "");
+            const userName = btn.dataset.deleteName || "este usuário";
+            document.getElementById("confirmDeleteText").textContent =
+                `Deseja revogar o acesso de ${userName} ao painel desta empresa?`;
+            confirmModal.classList.add("is-open");
+        });
+    });
 
-    isEditMode = false;
-
-    document.getElementById('cpf').value = cpf;
-    document.getElementById('name').placeholder = 'Ao confirmar, o nome do usuário será adicionado automaticamente.';
-    document.getElementById('permission').value = 'viewer'
-
-    document.getElementById('modal').style.display = 'block';
-});
-
-document.querySelector('#alert-modal .fechar').addEventListener('click', function () {
-    document.getElementById('alert-modal').style.display = 'none';
-    window.location.reload();
-    alertModal.removeEventListener('click', closeModal);
-});
-
-document.querySelector('#cpf-search').addEventListener('input', function (e) {
-    let cpf = e.target.value.replace(/\D/g, '');
-
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-
-    e.target.value = cpf;
-});
-
-function deleteUser(cpf) {
-    document.getElementById('confirm-modal').style.display = 'block';
-
-    document.querySelector('.btn.sim').onclick = function () {
-        fetch(`/dashboard/company/${cnpj}/authorization`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'delete', data: { cpf: cpf } }) // Usando o CPF passado como argumento
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    openAlertModal(data.message);
-                }
-
-                window.location.reload();
-            })
-            .catch(error => console.error('Erro ao deletar o usuário:', error));
-
-        document.getElementById('confirm-modal').style.display = 'none';
-    };
-}
-
-document.addEventListener('click', function () {
-    const dropdowns = document.querySelectorAll('.dropdown-menu');
-    dropdowns.forEach(dropdown => {
-        dropdown.style.display = 'none';
+    document.getElementById("btnConfirmRemove").addEventListener("click", async () => {
+        const btn = document.getElementById("btnConfirmRemove");
+        btn.disabled = true;
+        try {
+            const res = await fetch(`/dashboard/company/${cnpj}/authorization`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "delete", data: { cpf: rawTargetCpf } })
+            });
+            const data = await res.json();
+            confirmModal.classList.remove("is-open");
+            showAlert(data.message || "Acesso revogado com sucesso.", true);
+        } catch (err) {
+            console.error("Erro ao remover usuário:", err);
+            showAlert("Erro ao revogar o acesso.");
+        } finally {
+            btn.disabled = false;
+        }
     });
 });
-
-function toggleDropdown(event) {
-    event.stopPropagation();
-
-    const dropdown = event.target.closest('td').querySelector('.dropdown-menu');
-    dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
-}

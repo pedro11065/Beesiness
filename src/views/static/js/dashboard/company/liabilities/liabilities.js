@@ -1,305 +1,306 @@
-const confirmModal = document.getElementById('confirm-modal');
-const alertModal = document.getElementById('alert-modal');
-const editModal = document.getElementById('edit-modal');
+let allLiabilities = [];
+let currentLiability = null;
+let activeFilter = "all";
+let shouldReloadAfterAlert = false;
 
-document.addEventListener('DOMContentLoaded', async function () {
-    loading.style.display = 'flex';
-    main.style.display = 'none';
-    
-    try {    
-        const cnpj = getCnpjFromUrl(); // Obter o CNPJ da URL
-        const response = await fetch(`/dashboard/liabilities/${cnpj}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+const EQUITY_KEYS = new Set(["Capital Social", "Lucro", "Lucros acumulados"]);
+
+function getCnpjFromUrl() {
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 1] || "";
+}
+
+function formatMoney(val) {
+    const num = Number(val) || 0;
+    return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function escapeHTML(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : String(str);
+    return div.innerHTML;
+}
+
+function isEquity(item) {
+    return EQUITY_KEYS.has(item.event) || EQUITY_KEYS.has(item.name);
+}
+
+function openModalById(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("is-open");
+}
+
+function closeModalById(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("is-open");
+}
+
+function showAlert(message, reloadOnClose = false) {
+    shouldReloadAfterAlert = reloadOnClose;
+    document.getElementById("body-content").textContent = message;
+    openModalById("alert-modal");
+}
+
+function statusBadgeClass(item) {
+    if (isEquity(item)) return "badge-gold";
+    const s = String(item.status || "").toLowerCase();
+    if (s.includes("pago") || s.includes("quitad")) return "badge-pos";
+    if (s.includes("atraso")) return "badge-danger";
+    if (s.includes("pendent") || s.includes("parcel") || s.includes("prazo")) return "badge-warn";
+    return "";
+}
+
+function openLiabilityDetails(liab) {
+    currentLiability = liab;
+    const eq = isEquity(liab);
+    document.getElementById("name").textContent = liab.name === "#!@cash@!#" ? "Caixa" : liab.name || "—";
+    document.getElementById("value").textContent = formatMoney(liab.value);
+    document.getElementById("event").textContent = liab.event || "—";
+    document.getElementById("class").textContent = liab.class || "—";
+    document.getElementById("emission_date").textContent = liab.emission_date || "—";
+    document.getElementById("expiration_date").textContent = liab.expiration_date || "—";
+    document.getElementById("payment_method").textContent = liab.payment_method || "—";
+    document.getElementById("installment").textContent = liab.installment ? `${liab.installment}x` : "1x";
+    document.getElementById("status").textContent = eq ? "Integralizado / Registrado" : liab.status || "—";
+    document.getElementById("floating").textContent = eq
+        ? "Patrimônio Líquido"
+        : liab.floating
+            ? "Passivo circulante"
+            : "Passivo não circulante";
+    document.getElementById("description").textContent = liab.description || "—";
+    document.getElementById("creation").textContent = `${liab.creation_date || ""} às ${liab.creation_time || ""}`;
+    document.getElementById("uuid").textContent = liab.liability_id || "";
+
+    document.getElementById("btnSettleLiability").hidden = eq;
+    openModalById("modal");
+}
+
+function renderRows() {
+    const tbody = document.getElementById("data-container");
+    const tableWrap = document.getElementById("tableWrap");
+    const emptyFilter = document.getElementById("emptyFilterState");
+    const q = (document.getElementById("liabilitySearch").value || "").trim().toLowerCase();
+
+    const filtered = allLiabilities.filter((l) => {
+        const eq = isEquity(l);
+        if (activeFilter === "obligations" && eq) return false;
+        if (activeFilter === "equity" && !eq) return false;
+        if (!q) return true;
+        return [l.name, l.event, l.class, l.payment_method, l.status]
+            .some((field) => String(field || "").toLowerCase().includes(q));
+    });
+
+    tbody.innerHTML = "";
+
+    if (filtered.length === 0) {
+        tableWrap.hidden = true;
+        emptyFilter.hidden = false;
+        return;
+    }
+
+    tableWrap.hidden = false;
+    emptyFilter.hidden = true;
+
+    filtered.forEach((liab) => {
+        const tr = document.createElement("tr");
+        tr.className = "is-clickable";
+        tr.tabIndex = 0;
+        const eq = isEquity(liab);
+        const badgeCls = statusBadgeClass(liab);
+        const statusLabel = eq ? "Patrimônio" : liab.status || "—";
+
+        tr.innerHTML = `
+            <td class="td-strong">${escapeHTML(liab.name === "#!@cash@!#" ? "Caixa" : liab.name)}</td>
+            <td>${escapeHTML(liab.event)}</td>
+            <td class="td-muted">${escapeHTML(liab.class)}</td>
+            <td class="td-date">${escapeHTML(liab.emission_date)}</td>
+            <td class="td-date">${escapeHTML(liab.expiration_date)}</td>
+            <td>${escapeHTML(liab.payment_method)}</td>
+            <td><span class="badge ${badgeCls}">${escapeHTML(statusLabel)}</span></td>
+            <td class="num-col">${formatMoney(liab.value)}</td>
+        `;
+        tr.addEventListener("click", () => openLiabilityDetails(liab));
+        tr.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openLiabilityDetails(liab);
             }
         });
+        tbody.appendChild(tr);
+    });
+}
 
-        if (!response.ok) {
-            throw new Error('Erro na resposta da API: ' + response.statusText);
+document.addEventListener("DOMContentLoaded", async function () {
+    const loading = document.getElementById("loading");
+    const main = document.getElementById("main");
+    const tablePanel = document.getElementById("tablePanel");
+    const emptyDataState = document.getElementById("emptyDataState");
+    const cnpj = getCnpjFromUrl();
+
+    document.querySelectorAll("[data-close-modal]").forEach((btn) => {
+        btn.addEventListener("click", () => closeModalById(btn.dataset.closeModal));
+    });
+    document.querySelectorAll(".modal").forEach((m) => {
+        m.addEventListener("click", (e) => {
+            if (e.target === m) m.classList.remove("is-open");
+        });
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            document.querySelectorAll(".modal.is-open").forEach((m) => m.classList.remove("is-open"));
         }
+    });
+
+    document.getElementById("btnCloseAlert").addEventListener("click", () => {
+        closeModalById("alert-modal");
+        if (shouldReloadAfterAlert) window.location.reload();
+    });
+
+    document.getElementById("liabilitySearch").addEventListener("input", renderRows);
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            activeFilter = btn.dataset.filter;
+            document.querySelectorAll("[data-filter]").forEach((b) => b.classList.toggle("is-active", b === btn));
+            renderRows();
+        });
+    });
+
+    // Abater valor
+    document.getElementById("btnEditLiability").addEventListener("click", () => {
+        if (!currentLiability) return;
+        document.getElementById("edit-name").value = currentLiability.name || "";
+        document.getElementById("old_value").value = Number(currentLiability.value || 0).toFixed(2);
+        document.getElementById("new_value").value = "";
+        openModalById("edit-modal");
+    });
+
+    document.getElementById("btnConfirmEdit").addEventListener("click", async () => {
+        if (!currentLiability) return;
+        const discountVal = parseFloat(document.getElementById("new_value").value);
+        const oldVal = Number(currentLiability.value) || 0;
+
+        if (Number.isNaN(discountVal) || discountVal <= 0 || discountVal >= oldVal) {
+            showAlert("Informe um valor maior que 0 e menor que o valor atual.");
+            return;
+        }
+
+        const btn = document.getElementById("btnConfirmEdit");
+        btn.disabled = true;
+        try {
+            const response = await fetch(`/dashboard/update-liability/${currentLiability.liability_id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ new_value: discountVal })
+            });
+            const result = await response.json();
+            closeModalById("edit-modal");
+            closeModalById("modal");
+            showAlert(result.message || "Valor atualizado com sucesso.", response.ok);
+        } catch (err) {
+            showAlert("Erro ao atualizar o valor do passivo.");
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    // Quitar obrigação
+    document.getElementById("btnSettleLiability").addEventListener("click", () => {
+        if (!currentLiability) return;
+        openModalById("settle-modal");
+    });
+
+    document.getElementById("btnConfirmSettle").addEventListener("click", async () => {
+        if (!currentLiability) return;
+        const btn = document.getElementById("btnConfirmSettle");
+        btn.disabled = true;
+        try {
+            const response = await fetch(`/dashboard/settle-liability/${currentLiability.liability_id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            });
+            const result = await response.json();
+            closeModalById("settle-modal");
+            closeModalById("modal");
+            showAlert(result.message || "Passivo quitado com sucesso.", response.ok);
+        } catch (err) {
+            showAlert("Erro ao quitar o passivo.");
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    // Estornar
+    document.getElementById("btnDeleteLiability").addEventListener("click", () => {
+        if (!currentLiability) return;
+        if (String(currentLiability.status || "").toLowerCase().includes("estornado")) {
+            showAlert("Este passivo já foi estornado anteriormente.");
+            return;
+        }
+        openModalById("confirm-modal");
+    });
+
+    document.getElementById("btnConfirmDelete").addEventListener("click", async () => {
+        if (!currentLiability) return;
+        const btn = document.getElementById("btnConfirmDelete");
+        btn.disabled = true;
+        try {
+            const response = await fetch(`/dashboard/refund-liability/${currentLiability.liability_id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            });
+            const result = await response.json();
+            closeModalById("confirm-modal");
+            closeModalById("modal");
+            showAlert(result.message || "Passivo estornado com sucesso.", response.ok);
+        } catch (err) {
+            showAlert("Erro ao estornar o passivo.");
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    // Carregar passivos
+    try {
+        const response = await fetch(`/dashboard/liabilities/${cnpj}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        });
+        if (!response.ok) throw new Error("Falha ao buscar passivos");
 
         const data = await response.json();
-        console.log(data)
+        allLiabilities = Array.isArray(data.historic) ? data.historic : [];
 
-        loading.style.display = 'none';
-        main.style.display = 'flex';
+        const obligations = allLiabilities.filter((l) => !isEquity(l));
+        const equityList = allLiabilities.filter(isEquity);
 
+        const sumOblig = obligations.reduce((s, l) => s + (Number(l.value) || 0), 0);
+        const sumCurr = obligations.filter((l) => l.floating === true).reduce((s, l) => s + (Number(l.value) || 0), 0);
+        const sumNonCurr = obligations.filter((l) => l.floating !== true).reduce((s, l) => s + (Number(l.value) || 0), 0);
+        const sumEq = equityList.reduce((s, l) => s + (Number(l.value) || 0), 0);
 
-        if (data.historic) {
-            const dataContainer = document.getElementById('data-container');
-            dataContainer.innerHTML = ''; // Limpar o conteúdo anterior, se houver
-            
-            const tableContainer = document.querySelector('.table-container');
-            tableContainer.style.display = 'block';
+        document.getElementById("sumObligations").textContent = formatMoney(sumOblig);
+        document.getElementById("sumObligationsCount").textContent =
+            obligations.length === 1 ? "1 obrigação ativa" : `${obligations.length} obrigações ativas`;
+        document.getElementById("sumLiabCurrent").textContent = formatMoney(sumCurr);
+        document.getElementById("sumLiabNonCurrent").textContent = formatMoney(sumNonCurr);
+        document.getElementById("sumEquity").textContent = formatMoney(sumEq);
 
-            data.historic.forEach(liabilities => {
-                const row = document.createElement('tr');
-                
-                // Preencher o conteúdo do AssetDiv com os dados do passivo
-                row.innerHTML = `
-                    <td class="limited-text name">${liabilities.liability_id}</td>
-                    <td class="limited-text name">${CashName(liabilities.name)}</td>
-                    <td>${liabilities.event}</td>
-                    <td>${liabilities.class}</td>
-                    <td>${formatValueToMoney(liabilities.value)}</td>
-                    <td>${liabilities.installment}</td>
-                    <td>${liabilities.emission_date}</td>
-                    <td>${liabilities.expiration_date}</td>
-                    <td>${liabilities.payment_method}</td>
-                    <td>${liabilities.status}</td>
-                    <td class="limited-text">${liabilities.description}</td>
-                    <td>${liabilities.creation_date}</td>
-                    <td>${liabilities.creation_time}</td>
-                `;
+        loading.hidden = true;
+        main.hidden = false;
 
-                dataContainer.appendChild(row);
-
-                // Adiciona evento de clique ao row para abrir o modal
-                row.addEventListener('click', function () {
-                    document.getElementById('name').innerText = liabilities.name; // Nome
-                    document.getElementById('event').innerText = liabilities.event; // Evento
-                    document.getElementById('class').innerText = liabilities.class; // Classe
-                    document.getElementById('value').innerText = liabilities.value; // Valor
-                    document.getElementById('installment').innerText = liabilities.installment; // Parcelas
-                    document.getElementById('emission_date').innerText = liabilities.emission_date; // Data de Emissão
-                    document.getElementById('expiration_date').innerText = liabilities.expiration_date; // Data de Vencimento
-                    document.getElementById('payment_method').innerText = liabilities.payment_method; // Forma de Pagamento
-                    document.getElementById('status').innerText = liabilities.status; // Status
-                    document.getElementById('floating').innerText = liabilities.floating ? 'Sim' : 'Não';
-                    document.getElementById('description').innerText = liabilities.description; // Descrição
-                    document.getElementById('creation').innerText = `${liabilities.status} - ${liabilities.creation_date}`; // Data e Horário de Criação
-                    document.getElementById('uuid').innerText = liabilities.liability_id; // ID
-
-                    document.getElementById('modal').style.display = 'block';
-                });
-            });
+        if (allLiabilities.length === 0) {
+            tablePanel.hidden = true;
+            emptyDataState.hidden = false;
         } else {
-            const noDataDiv = document.createElement('div');
-            noDataDiv.className = 'error';
-            noDataDiv.innerHTML = '<h1>Sem dados disponíveis.</h1>';
-            main.appendChild(noDataDiv);
+            tablePanel.hidden = false;
+            emptyDataState.hidden = true;
+            renderRows();
         }
     } catch (error) {
-        console.log(error)
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error';
-        errorDiv.innerHTML = '<h1>Erro ao procurar as informações.</h1>';
-        main.appendChild(errorDiv);
+        console.error("Erro ao carregar passivos:", error);
+        loading.hidden = true;
+        main.hidden = false;
+        tablePanel.hidden = true;
+        emptyDataState.hidden = false;
     }
-
-    // Fechar o modal ao clicar fora dele
-    window.addEventListener('click', function (event) {
-        const modal = document.getElementById('modal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
 });
-
-// Funções auxiliares
-function getCnpjFromUrl() {
-    const url = window.location.pathname;
-    const parts = url.split('/');
-    return parts[parts.length - 1];
-}
-
-function formatValueToMoney(valueStr) {
-    const valueNum = parseFloat(valueStr);
-    return valueNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
-
-function CashName(nameStr) {
-    return nameStr === '#!@cash@!#' ? 'Caixa' : nameStr;
-}
-
-// Eventos e funções para deletar o passivo.
-document.addEventListener('click', function (event) {
-    const dropdowns = document.querySelectorAll('.dropdown-menu');
-    
-    dropdowns.forEach(dropdown => {
-        // Verifica se o clique foi fora do dropdown ou do botão
-        if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) { 
-            dropdown.style.display = 'none';
-        }
-    });
-});
-
-function toggleDropdown(event) {
-    event.stopPropagation();
-
-    const dropdown = event.currentTarget.nextElementSibling;
-    if (dropdown) dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
-}
-
-/* Deletar */
-function deleteLiability(event) {
-    event.stopPropagation();
-
-    confirmModal.style.display = 'block';
-
-    const dropdown = event.currentTarget.nextElementSibling;
-    if (dropdown) dropdown.style.display = 'none';
-
-    const liabilityId = document.getElementById('uuid').innerText;
-
-    const status = document.getElementById('status').innerText;
-
-    if (status.trim().toLowerCase().includes('estornado')) {
-        document.getElementById('body-content').innerText = 'Este passivo já foi estornado uma vez.';
-        document.getElementById('alert-modal').style.display = 'block';
-
-        confirmModal.style.display = 'none';
-        return;
-    }
-
-    const yesButton = document.querySelector('.btn.sim');
-
-    document.querySelector('.btn.sim').onclick = async function () {
-        try {   
-            yesButton.disabled = true;
-            yesButton.style.cursor = 'not-allowed';
-
-            const response = await fetch(`/dashboard/refund-liability/${liabilityId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                document.getElementById('body-content').innerText = result.message;
-                document.getElementById('alert-modal').style.display = 'block';
-                
-                confirmModal.style.display = 'none';
-                document.getElementById('modal').style.display = 'none';
-            } else {
-                throw new Error(result.message || 'Erro ao deletar o passivo.');
-            }
-        } catch (error) {
-            document.getElementById('body-content').innerText = error.message;
-            document.getElementById('alert-modal').style.display = 'block';
-        } finally {
-            yesButton.disabled = false;
-            yesButton.style.cursor  = 'pointer';
-        }
-    };
-}
-
-/* Editar */
-document.querySelector('.btn.cancel-delete').onclick = function () {
-    confirmModal.style.display = 'none';
-};
-
-document.querySelector('#alert-modal .btn.fechar').onclick = function () {
-    const confirmModalVisible = confirmModal.style.display === 'block';
-    alertModal.style.display = 'none';
-    if (confirmModalVisible) location.reload();
-};
-
-function openEditModal() {
-    editModal.style.display = 'block';
-
-    const name = document.getElementById('name').innerText;
-    const oldValue = document.getElementById('value').innerText;
-
-    document.getElementById('edit-name').value = name;
-    document.getElementById('old_value').value = oldValue;
-    document.getElementById('new_value').value = '';
-}
-
-function closeEditModal() {
-    editModal.style.display = 'none';
-}
-
-async function confirmEdit() {
-    const newValue = parseFloat(document.getElementById('new_value').value);
-    const oldValue = parseFloat(document.getElementById('old_value').value);
-    const liabilityId = document.getElementById('uuid').innerText;
-
-    if (isNaN(newValue) || newValue <= 0 || newValue >= oldValue) {
-        document.getElementById('body-content').innerText = 'Por favor, insira um valor maior que 0 e menor que o valor atual.';
-        alertModal.style.display = 'block';
-        return;
-    }
-
-    // Enviar requisição para atualizar o valor do passivo
-    try {
-        const response = await fetch(`/dashboard/update-liability/${liabilityId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ new_value: newValue })
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            document.getElementById('body-content').innerText = result.message;
-            alertModal.style.display = 'block';
-            closeEditModal();
-        } else {
-            throw new Error(result.message || 'Erro ao atualizar o valor.');
-        }
-    } catch (error) {
-        document.getElementById('body-content').innerText = error.message;
-        alertModal.style.display = 'block';
-    }
-}
-
-/* Quitar */
-function settleLiability(event) {
-    event.stopPropagation();
-
-    // Mostrar modal de quitar
-    const settleModal = document.getElementById('settle-modal');
-    settleModal.style.display = 'block';
-
-    const dropdown = event.currentTarget.nextElementSibling;
-    if (dropdown) dropdown.style.display = 'none';
-
-    const liabilityId = document.getElementById('uuid').innerText;
-    
-    // Botão "Sim" do modal de quitar
-    const confirmSettleButton = document.querySelector('.btn.confirm-settle');
-
-    confirmSettleButton.onclick = async function () {
-        try {
-            confirmSettleButton.disabled = true;
-            confirmSettleButton.style.cursor = 'not-allowed';
-
-            const response = await fetch(`/dashboard/settle-liability/${liabilityId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                document.getElementById('body-content').innerText = result.message;
-                document.getElementById('alert-modal').style.display = 'block';
-
-                settleModal.style.display = 'none';
-                document.getElementById('modal').style.display = 'none';
-            } else {
-                throw new Error(result.message || 'Erro ao quitar o passivo.');
-            }
-        } catch (error) {
-            document.getElementById('body-content').innerText = error.message;
-            document.getElementById('alert-modal').style.display = 'block';
-        } finally {
-            confirmSettleButton.disabled = false;
-            confirmSettleButton.style.cursor = 'pointer';
-        }
-    };
-
-    // Botão "Não" do modal de quitar
-    document.querySelector('.btn.cancel-settle').onclick = function () {
-        settleModal.style.display = 'none';
-    };
-}

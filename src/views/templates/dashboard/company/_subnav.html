@@ -1,0 +1,66 @@
+{% set nav_cnpj = cnpj | default(request.view_args.get('cnpj', '')) %}
+<section class="company-hero">
+    <div class="container">
+        <div class="company-head">
+            <div class="company-identity">
+                <div class="company-meta">
+                    <span class="label">{{ page_eyebrow | default('Painel patrimonial') }}</span>
+                    <span class="cnpj-pill" id="companyCnpjPill">CNPJ {{ nav_cnpj }}</span>
+                </div>
+                <h1 id="companyTitle">{{ page_heading | default('Painel da empresa') }}</h1>
+            </div>
+
+            <div class="company-actions">
+                <a class="btn {{ 'btn-dark' if active_tab == 'register_asset' else 'btn-primary' }}" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=nav_cnpj) }}">
+                    <span>Registrar ativo</span>
+                    <span aria-hidden="true">+</span>
+                </a>
+                <a class="btn {{ 'btn-dark' if active_tab == 'register_liability' else 'btn-outline' }}" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=nav_cnpj) }}">
+                    <span>Registrar passivo</span>
+                    <span aria-hidden="true">+</span>
+                </a>
+            </div>
+        </div>
+
+        <nav class="module-tabs" aria-label="Módulos da empresa">
+            <a class="tab {{ 'is-active' if active_tab == 'overview' else '' }}" href="{{ url_for('auth_dashboard.dashboard_company', cnpj=nav_cnpj) }}">Visão geral</a>
+            <a class="tab {{ 'is-active' if active_tab == 'assets' else '' }}" href="{{ url_for('auth_dashboard.assets_site', cnpj=nav_cnpj) }}">Ativos</a>
+            <a class="tab {{ 'is-active' if active_tab == 'liabilities' else '' }}" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=nav_cnpj) }}">Passivos</a>
+            <a class="tab {{ 'is-active' if active_tab == 'journal' else '' }}" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=nav_cnpj) }}">Livro Diário</a>
+            <a class="tab {{ 'is-active' if active_tab == 'trial_balance' else '' }}" href="{{ url_for('auth_dashboard.balance_trial', cnpj=nav_cnpj) }}">Balancete</a>
+            <a class="tab {{ 'is-active' if active_tab == 'razonete' else '' }}" href="{{ url_for('auth_dashboard.razonete_site', cnpj=nav_cnpj) }}">Razonete</a>
+            <a class="tab {{ 'is-active' if active_tab == 'balance_sheet' else '' }}" href="{{ url_for('auth_dashboard.balance_sheet', cnpj=nav_cnpj) }}">Balanço Patrimonial</a>
+            <a class="tab {{ 'is-active' if active_tab == 'income_statement' else '' }}" href="{{ url_for('auth_dashboard.income_statement', cnpj=nav_cnpj) }}">DRE</a>
+            <a class="tab {{ 'is-active' if active_tab == 'authorization' else '' }}" href="{{ url_for('auth_dashboard.authorization_site', cnpj=nav_cnpj) }}">Permissões</a>
+        </nav>
+    </div>
+
+    <script>
+        (function () {
+            const rawCnpj = "{{ nav_cnpj }}";
+            const pill = document.getElementById("companyCnpjPill");
+            if (pill && /^\d{14}$/.test(rawCnpj)) {
+                pill.textContent = "CNPJ " + rawCnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
+            }
+            const cachedName = rawCnpj ? sessionStorage.getItem("beesiness_company_" + rawCnpj) : null;
+            if (cachedName && pill) {
+                pill.textContent = cachedName + " · " + pill.textContent;
+            } else if (rawCnpj) {
+                fetch("/dashboard/company/" + rawCnpj, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                })
+                    .then(function (r) { return r.ok ? r.json() : null; })
+                    .then(function (d) {
+                        if (d && d.company_name) {
+                            sessionStorage.setItem("beesiness_company_" + rawCnpj, d.company_name);
+                            if (pill && !pill.textContent.includes(d.company_name)) {
+                                pill.textContent = d.company_name + " · " + pill.textContent;
+                            }
+                        }
+                    })
+                    .catch(function () {});
+            }
+        })();
+    </script>
+</section>

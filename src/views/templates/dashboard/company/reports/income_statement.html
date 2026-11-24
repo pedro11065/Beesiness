@@ -4,107 +4,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DRE</title>
-
+    <title>DRE | Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/shell.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/income_statement.css') }}">
-
-    <!-- Icon da Aba do Navegador -->
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-
-    <!-- Fonte Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/dashboard/company/reports/income_statement.js') }}" defer></script>
 </head>
 
 <body>
     {% include 'dashboard/user/header.html' %}
+    {% set active_tab = 'income_statement' %}
+    {% set page_eyebrow = 'Desempenho econômico' %}
+    {% set page_heading = 'Demonstração do Resultado (DRE).' %}
+    {% include 'dashboard/company/_subnav.html' %}
 
-
-
-    <div id="loading" class="loading">
-        <div class="loader "></div>
+    <div id="loading" class="container skeleton-stack" aria-live="polite">
+        <div class="sk-bar"></div>
+        <div class="sk-bar sk-bar-lg"></div>
     </div>
 
-    <main class="main" id="main">
-        <section class="year-container" id="year-container">
-            <header class="year-title-container" id="year-title-container">
-                <article class="year-title-box">
-                    <div class="year-box">
-                        <h1>2024 - 2025</h1>
-                    </div>
+    <main class="page-main" id="main" hidden>
+        <div class="container page-stack">
+            <section class="summary-strip" aria-label="Indicadores da DRE">
+                <article class="summary-card is-dark">
+                    <span class="summary-label">Resultado operacional (Lucro / Prejuízo)</span>
+                    <strong class="summary-value" id="kpiLossProfit">R$ 0,00</strong>
+                    <span class="summary-sub" id="kpiPeriodNote">Acumulado dos exercícios</span>
                 </article>
-            </header>
-    
-            <div class="financial-container">
-                    <!-- Receita Operacional Bruta -->
-                    <div class="category-item">
-                        <div class="category-title">
-                            <h3>(+) RECEITA OPERACIONAL BRUTA</h3>
-                            <div class="category-value" id="brute_revenue_total" >1300</div>
-                        </div>
-                        <ul class="data-list" id="brute_revenue">
+                <article class="summary-card">
+                    <span class="summary-label">Receita operacional bruta</span>
+                    <strong class="summary-value" id="kpiGrossRev">R$ 0,00</strong>
+                    <span class="summary-sub">Vendas, serviços e lucros</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Custos e despesas totais</span>
+                    <strong class="summary-value" id="kpiTotalCosts">R$ 0,00</strong>
+                    <span class="summary-sub">Deduções + custos + despesas</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Margem operacional</span>
+                    <strong class="summary-value" id="kpiMargin">0,0%</strong>
+                    <span class="summary-sub">Resultado ÷ Receita bruta</span>
+                </article>
+            </section>
 
-                        </ul>
+            <section class="dre-card">
+                <header class="dre-head">
+                    <div>
+                        <span class="panel-eyebrow">Estrutura vertical</span>
+                        <h2>Demonstrativo de resultados</h2>
                     </div>
-                
-                    <!-- Deduções da Receita Bruta -->
-                    <div class="category-item">
-                        <div class="category-title">
-                            <h3>(-) DEDUÇÕES DA RECEITA BRUTA</h3>
-                            <div class="category-value" id="deductions_revenue_total" >----</div>
-                        </div>
-                        <ul class="data-list" id="deductions_revenue">
-                          
-                        </ul>
-                    </div>
-                
-                    <!-- Receita Operacional Líquida -->
-                    <div class="category-item">
-                        <div class="category-title">
-                            <h3>(=) RESULTADO OPERACIONAL BRUTO</h3>
-                            <div class="category-value" id="result_revenue_total">----</div>
-                        </div>
-                    </div>
-                
-                    <!-- Custos das Vendas -->
-                    <div class="category-item">
-                        <div class="category-title">
-                            <h3>(-) CUSTOS DAS VENDAS</h3>
-                            <div class="category-value" id="sell_costs_total">----</div>
-                        </div>
-                        <ul class="data-list" id="sell_costs">
+                    <span class="badge badge-gold" id="dreYearsBadge">Consolidado</span>
+                </header>
 
-                        </ul>
+                <div class="dre-lines">
+                    <!-- (+) Receita Bruta -->
+                    <div class="dre-block is-expandable">
+                        <button type="button" class="dre-row dre-toggle" aria-expanded="true">
+                            <span class="dre-label"><b class="op op-plus">+</b> Receita operacional bruta</span>
+                            <strong class="dre-val" id="brute_revenue_total">R$ 0,00</strong>
+                        </button>
+                        <ul class="dre-sublist" id="brute_revenue"></ul>
                     </div>
-                
-                    <!-- Resultado Operacional Líquido -->
-                    <div class="category-item">
-                        <div class="category-title">
-                            <h3>(=) RESULTADO OPERACIONAL LÍQUIDO</h3>
-                            <div class="category-value" id="result_operational_costs_total">----</div>
-                        </div>
-                    </div>
-                
-                    <!-- Despesas Operacionais -->
-                    <div class="category-item">
-                        <div class="category-title">
-                            <h3>(-) DESPESAS OPERACIONAIS</h3>
-                            <div class="category-value" id="operational_costs_total">----</div>
-                        </div>
-                        <ul class="data-list" id="operational_costs">
 
-                        </ul>
+                    <!-- (-) Deduções -->
+                    <div class="dre-block is-expandable">
+                        <button type="button" class="dre-row dre-toggle" aria-expanded="true">
+                            <span class="dre-label"><b class="op op-minus">−</b> Deduções da receita bruta</span>
+                            <strong class="dre-val val-deduct" id="deductions_revenue_total">R$ 0,00</strong>
+                        </button>
+                        <ul class="dre-sublist" id="deductions_revenue"></ul>
                     </div>
-                
-                    <!-- Resultado Líquido do Exercício -->
-                    <div class="category-item">
-                        <div class="category-title">
-                            <h3>(=) Lucro/Prejuízo operacional</h3>
-                            <div class="category-value" id="loss_profit_total">----</div>
+
+                    <!-- (=) Receita Líquida -->
+                    <div class="dre-block dre-subtotal">
+                        <div class="dre-row">
+                            <span class="dre-label"><b class="op op-eq">=</b> Receita operacional líquida</span>
+                            <strong class="dre-val" id="result_revenue_total">R$ 0,00</strong>
+                        </div>
+                    </div>
+
+                    <!-- (-) Custos das vendas -->
+                    <div class="dre-block is-expandable">
+                        <button type="button" class="dre-row dre-toggle" aria-expanded="true">
+                            <span class="dre-label"><b class="op op-minus">−</b> Custos de vendas e serviços (CPV / CSP)</span>
+                            <strong class="dre-val val-deduct" id="sell_costs_total">R$ 0,00</strong>
+                        </button>
+                        <ul class="dre-sublist" id="sell_costs"></ul>
+                    </div>
+
+                    <!-- (=) Lucro Bruto -->
+                    <div class="dre-block dre-subtotal">
+                        <div class="dre-row">
+                            <span class="dre-label"><b class="op op-eq">=</b> Resultado operacional bruto</span>
+                            <strong class="dre-val" id="result_operational_costs_total">R$ 0,00</strong>
+                        </div>
+                    </div>
+
+                    <!-- (-) Despesas operacionais -->
+                    <div class="dre-block is-expandable">
+                        <button type="button" class="dre-row dre-toggle" aria-expanded="true">
+                            <span class="dre-label"><b class="op op-minus">−</b> Despesas operacionais e financeiras</span>
+                            <strong class="dre-val val-deduct" id="operational_costs_total">R$ 0,00</strong>
+                        </button>
+                        <ul class="dre-sublist" id="operational_costs"></ul>
+                    </div>
+
+                    <!-- (=) Resultado Final -->
+                    <div class="dre-block dre-final">
+                        <div class="dre-row">
+                            <span class="dre-label"><b class="op op-eq">=</b> Lucro / Prejuízo operacional do exercício</span>
+                            <strong class="dre-val" id="loss_profit_total">R$ 0,00</strong>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+        </div>
     </main>
-<body>
+</body>
+
+</html>

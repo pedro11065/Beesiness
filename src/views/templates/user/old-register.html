@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Beesiness</title>
+
+    <!-- Css Linkado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/register.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+
+    <!-- Fontes do Google: Roboto Slab -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+
+<body>
+
+    <!-- Modal  -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"></div>
+
+            <div class="modal-body"></div>
+        </div>
+    </div>
+    <photo >
+        
+    </photo>
+    <main>
+        <section class="welcome-section">
+
+            <welcome-box class="welcome-box">
+                <h1>Seja bem-vindo(a)!</h1>
+            </welcome-box>
+
+        </section>
+        <form id="registerForm" action="/user/register" method="post">
+            <article class="form-article">
+                <section class="form-section">  <!-- email -->
+
+                    <div class="msg">E-mail</div>
+                        <input class="form-box" type="text" id="email" name="email" required>
+                    <div class="msg-error" id="email-error"></div>
+                </section>
+
+                <section class="form-section"> <!-- cpf -->
+                    <div class="msg">CPF</div>
+                        <input class="form-box" type="text" id="cpf" name="cpf" maxlength="14" required>
+                    <div class="msg-error" id="cpf-error"></div>
+                </section>
+            </article>
+
+            <article class="form-article">
+                <section class="form-section-fullname"> <!-- fullname-->
+                    <div class="msg">Nome Completo</div>
+                        <input class="form-box" type="text" id="name" name="fullName" required>  
+                    <div class="msg-error" id="name-error"></div>
+                </section>
+
+                <section class="form-section-birthdate"> <!-- birthdate -->
+                    <div class="msg">Data de nascimento</div>   
+                        <input class="form-box-birthdate" type="date" id="birthDate" name="birthDate" min="1924-01-01" max="2999-12-31" maxlength="10" required>
+                    <div class="msg-error" id="birthDate-error"></div>
+                </section>
+            </article>
+
+            <article class="form-article">
+                <section class="form-section"> <!-- password -->
+                    <div class="msg">Senha</div>
+                        <input class="form-box" type="password" id="password" name="password" required>
+                    <div class="msg-error" id="password-error"></div>
+                </section>
+
+                <section class="form-section"> <!-- confirm password -->
+                    <div class="msg">Confirme a senha</div>
+                        <input class="form-box" type="password" id="confirmPassword" name="confirmPassword" required>
+                    <div class="msg-error" id="confirmPassword-error"></div>
+                </section>
+            </article>
+
+            <article class="form-article-end">
+                <section class="form-section-terms"> <!-- terms -->
+                    <div class="form-check-terms-box"> 
+                        <div class="form-check-box">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                            <label class="form-check-label" for="flexCheckChecked">
+                        </div>
+                        Criando uma conta no Beesiness, você aceita os 
+                        <span class="terms-conditions">Termos & Condições</span> e a
+                        <span class="privacy-policy"">Política de Privacidade</span>
+                    </div>
+
+                    <div class="msg-error"></div>
+                </section>
+            </article>
+
+            <article class="form-article-button">
+                <button type="submit" id="registroBtn" class="form-section-button register-btn" disabled>Registrar</button> 
+                <button type="submit" id="login-btn" class="login-button" href="/user/login">Já tem uma conta? Faça login!</button>
+            </article>
+        </form>
+    </main>
+    <script src="{{ url_for('static', filename='js/user/register.js') }}"></script>
+</body>

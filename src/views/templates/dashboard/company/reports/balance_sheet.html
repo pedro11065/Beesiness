@@ -4,112 +4,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balanço patrimonial</title>
-
+    <title>Balanço Patrimonial | Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/shell.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/balance_sheet.css') }}">
-
-    <!-- Icon da Aba do Navegador -->
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-
-    <!-- Fonte Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/dashboard/company/reports/balance_sheet.js') }}" defer></script>
 </head>
 
 <body>
     {% include 'dashboard/user/header.html' %}
+    {% set active_tab = 'balance_sheet' %}
+    {% set page_eyebrow = 'Demonstração estática' %}
+    {% set page_heading = 'Balanço Patrimonial.' %}
+    {% include 'dashboard/company/_subnav.html' %}
 
-    <menu class="menu-container" id="menu-container">
-        <div class="menu-box" id="month-year-btn">
-            <select class="select" id="month-year-select" name="month_year" required>
-                <option value="" disabled selected>Escolher mês e ano</option>
-            </select>
-        </div>
-    </menu>
+    <div id="loading" class="container skeleton-stack" aria-live="polite">
+        <div class="sk-bar"></div>
+        <div class="sk-bar sk-bar-lg"></div>
+    </div>
 
-    <main class="main" id="main">
-        <section class="month-container" id="month-container">
-            <header class="month-title-container" id="month-title-container">
-                <article class="month-title-box">
-                    <div class="month-box">
-                        <h1> - - - </h1>
+    <main class="page-main" id="main" hidden>
+        <div class="container page-stack">
+            <section class="panel">
+                <div class="toolbar">
+                    <div>
+                        <span class="panel-eyebrow">Recorte demonstrativo</span>
+                        <h2 id="bsPeriodTitle" style="font-size:1.1rem; font-weight:700;">Posição patrimonial consolidada</h2>
                     </div>
-                </article>
-            </header>
-    
-            <div class="financial-container">
-                <!-- Ativo -->
-                <section class="first-category-container">
-                    <header class="asset-title">
+
+                    <div style="display:flex; align-items:center; gap:.65rem; flex-wrap:wrap;">
+                        <label for="month-year-select" style="font-size:.82rem; font-weight:600; color:#555;">Competência:</label>
+                        <select class="select-input" id="month-year-select" style="width:auto; min-width:210px; height:40px;">
+                            <option value="consolidated" selected>Posição atual consolidada</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bs-grid" id="bsSheet">
+                <!-- Coluna esquerda: ATIVO -->
+                <article class="bs-column">
+                    <header class="bs-col-head">
+                        <span>Aplicações de recursos</span>
                         <h2>Ativo</h2>
                     </header>
-                    
-                    <section class="category-container">
-                        <div class="category-item">
-                            <div class="category-title">
-                                <h3>CIRCULANTE</h3>
-                            </div>
-                            <ul class="data-list">
-                                <li class="data-item"></li>
-                            </ul>
+
+                    <div class="bs-group">
+                        <div class="bs-group-head">
+                            <h3>Ativo circulante</h3>
+                            <strong id="sub-ativo-circ">R$ 0,00</strong>
                         </div>
-                        <div class="category-item">
-                            <div class="category-title">
-                                <h3>NÃO CIRCULANTE</h3>
-                            </div>
-                            <ul class="data-list">
-                                <li class="data-item"></li>
-                            </ul>
+                        <ul class="bs-list" id="list-ativo-circ"></ul>
+                    </div>
+
+                    <div class="bs-group">
+                        <div class="bs-group-head">
+                            <h3>Ativo não circulante</h3>
+                            <strong id="sub-ativo-ncirc">R$ 0,00</strong>
                         </div>
-                    </section>
-                </section>
-            
-                <!-- Passivo -->
-                <section class="second-category-container">
-                    <header class="liability-title">
-                        <h2>Passivo</h2>
+                        <ul class="bs-list" id="list-ativo-ncirc"></ul>
+                    </div>
+
+                    <footer class="bs-col-total">
+                        <span>Total do Ativo</span>
+                        <strong id="total-ativo">R$ 0,00</strong>
+                    </footer>
+                </article>
+
+                <!-- Coluna direita: PASSIVO + PATRIMÔNIO LÍQUIDO -->
+                <article class="bs-column">
+                    <header class="bs-col-head">
+                        <span>Origens de recursos</span>
+                        <h2>Passivo e Patrimônio Líquido</h2>
                     </header>
-                    
-                    <section class="category-container">
-                        <div class="category-item">
-                            <div class="category-title">
-                                <h3>CIRCULANTE</h3>
-                            </div>
-                            <ul class="data-list">
-                                <li class="data-item"></li>
-                            </ul>
-                        </div>
-                        <div class="category-item">
-                            <div class="category-title">
-                                <h3>NÃO CIRCULANTE</h3>
-                            </div>
-                            <ul class="data-list">
-                                <li class="data-item"></li>
-                            </ul>
-                        </div>
-                    </section>
-            
-                    <!-- Patrimônio Líquido -->
-                    <section class="patrimony-section">
-                        <header class="patrimony-title"><h2>Patrimônio Líquido</h2></header>
-                        <div class="category-item">
-                            <ul class="data-list">
-                                <li class="data-item"></li>
-                            </ul>
-                        </div>
-                    </section>
-                </section>
-            </div>
 
-            <!-- Box dos totais -->
-            <div class="total-box">
-                <h3>Total Ativo: <span id="total-ativo"></span></h3>
-                <h3>Total Passivo: <span id="total-passivo-patrimonio"></span></h3>
-            </div>
-    </main>
+                    <div class="bs-group">
+                        <div class="bs-group-head">
+                            <h3>Passivo circulante</h3>
+                            <strong id="sub-passivo-circ">R$ 0,00</strong>
+                        </div>
+                        <ul class="bs-list" id="list-passivo-circ"></ul>
+                    </div>
 
-    <main class="main" id="main_temporario">
-        <div class="error"><h1>Selecione um mês para que os dados apareçam.</h1></div>
+                    <div class="bs-group">
+                        <div class="bs-group-head">
+                            <h3>Passivo não circulante</h3>
+                            <strong id="sub-passivo-ncirc">R$ 0,00</strong>
+                        </div>
+                        <ul class="bs-list" id="list-passivo-ncirc"></ul>
+                    </div>
+
+                    <div class="bs-group bs-group-equity">
+                        <div class="bs-group-head">
+                            <h3>Patrimônio líquido</h3>
+                            <strong id="sub-patrimonio">R$ 0,00</strong>
+                        </div>
+                        <ul class="bs-list" id="list-patrimonio"></ul>
+                    </div>
+
+                    <footer class="bs-col-total">
+                        <span>Total do Passivo + PL</span>
+                        <strong id="total-passivo-patrimonio">R$ 0,00</strong>
+                    </footer>
+                </article>
+            </section>
+        </div>
     </main>
-<body>
+</body>
+
+</html>

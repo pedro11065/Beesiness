@@ -4,38 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Razonete</title>
-
+    <title>Razonetes | Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/shell.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/razonete.css') }}">
-
-    <!-- Icon da Aba do Navegador -->
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-
-    <!-- Fonte Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/dashboard/company/reports/razonete.js') }}" defer></script>
 </head>
 
 <body>
     {% include 'dashboard/user/header.html' %}
+    {% set active_tab = 'razonete' %}
+    {% set page_eyebrow = 'Contas em T (Livro Razão)' %}
+    {% set page_heading = 'Razonetes.' %}
+    {% include 'dashboard/company/_subnav.html' %}
 
-    <menu class="menu-container" id="menuContainer">
-        <div class="menu-box">
-            <a>Dia</a>
-        </div>
-        <div class="menu-box">
-            <a>Mês</a>
-        </div>
-        <div class="menu-box">
-            <a>Ano</a>
-        </div>
-    </menu>
-    
-    <main class="main" id="main"></main>
-
-    <div id="loading" class="loading">
-        <div class="loader "></div>
+    <div id="loading" class="container skeleton-stack" aria-live="polite">
+        <div class="sk-bar"></div>
+        <div class="sk-bar sk-bar-lg"></div>
     </div>
 
-<body>
+    <main class="page-main" id="main" hidden>
+        <div class="container page-stack">
+            <section class="panel">
+                <div class="toolbar">
+                    <div class="search-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="search" id="razSearch" class="search-input" placeholder="Filtrar conta do razonete...">
+                    </div>
+
+                    <div class="seg-control" role="group" aria-label="Recorte temporal">
+                        <button type="button" class="seg-btn is-active" data-rview="all">Consolidado</button>
+                        <button type="button" class="seg-btn" data-rview="month">Por mês</button>
+                        <button type="button" class="seg-btn" data-rview="day">Por dia</button>
+                    </div>
+                </div>
+            </section>
+
+            <div id="razContent" class="page-stack"></div>
+
+            <section class="empty-state" id="razEmpty" hidden>
+                <span class="empty-tag">Razonetes</span>
+                <h2>Nenhuma partida dobrada para exibir.</h2>
+                <p>Registre operações contábeis para visualizar os débitos e créditos em contas em T.</p>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

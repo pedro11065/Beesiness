@@ -1,136 +1,213 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beesiness</title>
+    <title>Permissões | Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/shell.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/authorization/authorization.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/dashboard/company/authorization/authorization.js') }}" defer></script>
 </head>
+
 <body>
     {% include 'dashboard/user/header.html' %}
+    {% set active_tab = 'authorization' %}
+    {% set page_eyebrow = 'Controle de acesso' %}
+    {% set page_heading = 'Permissões da equipe.' %}
+    {% include 'dashboard/company/_subnav.html' %}
 
-    <!-- Box de busca -->
-    <div class="controls-container">
-        <div class="search-box">
-            <input type="text" placeholder="Digite o CPF" id="cpf-search" maxlength="14">
-            <button type="button" id="search-button">
-                <img src="{{ url_for('static', filename='images/dashboard/public/search.png') }}" alt="Buscar">
-            </button>
+    <main class="page-main">
+        <div class="container page-stack">
+            <!-- Convidar / autorizar por CPF -->
+            <section class="panel">
+                <div class="panel-head" style="margin-bottom:1rem;">
+                    <div>
+                        <span class="panel-eyebrow">Novo vínculo</span>
+                        <h2>Autorizar membro por CPF</h2>
+                        <p>Busque um usuário já cadastrado na Beesiness pelo CPF para conceder acesso ao painel desta empresa.</p>
+                    </div>
+                </div>
+
+                <div class="invite-bar">
+                    <div class="invite-input-wrap">
+                        <input
+                            type="text"
+                            class="input"
+                            id="cpf-search"
+                            inputmode="numeric"
+                            maxlength="14"
+                            placeholder="Digite o CPF (000.000.000-00)"
+                            aria-label="CPF do usuário"
+                        >
+                    </div>
+                    <button type="button" class="btn btn-primary" id="add-button">
+                        <span>Buscar e autorizar</span>
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Guia rápido de perfis -->
+            <section class="roles-legend" aria-label="Níveis de permissão">
+                <div class="role-card">
+                    <span class="badge badge-gold">Proprietário</span>
+                    <p>Controle integral da empresa, relatórios e gestão de permissões.</p>
+                </div>
+                <div class="role-card">
+                    <span class="badge badge-pos">Editor</span>
+                    <p>Registra e gerencia ativos, passivos e consulta demonstrativos.</p>
+                </div>
+                <div class="role-card">
+                    <span class="badge">Conferente</span>
+                    <p>Audita lançamentos, saldos e relatórios contábeis da organização.</p>
+                </div>
+                <div class="role-card">
+                    <span class="badge">Leitor</span>
+                    <p>Acesso somente leitura aos indicadores e relatórios da empresa.</p>
+                </div>
+            </section>
+
+            <!-- Lista de usuários com acesso -->
+            <section class="panel">
+                <div class="panel-head">
+                    <div>
+                        <span class="panel-eyebrow">Usuários vinculados</span>
+                        <h2>Membros com acesso ({{ users | length }})</h2>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Nível de acesso</th>
+                                <th class="num-col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            {% set role = user[1] %}
+                            <tr>
+                                <td class="td-strong" style="text-transform: capitalize;">
+                                    {{ user[2] }}
+                                    {% if user[3] == current_user.cpf %}
+                                        <span class="you-tag">(você)</span>
+                                    {% endif %}
+                                </td>
+                                <td class="td-date cpf-cell">{{ user[3] }}</td>
+                                <td>
+                                    {% if role == 'creator' %}
+                                        <span class="badge badge-gold">Proprietário</span>
+                                    {% elif role == 'editor' %}
+                                        <span class="badge badge-pos">Editor</span>
+                                    {% elif role == 'checker' %}
+                                        <span class="badge">Conferente</span>
+                                    {% else %}
+                                        <span class="badge">Leitor</span>
+                                    {% endif %}
+                                </td>
+                                <td class="num-col">
+                                    {% if user[3] == current_user.cpf %}
+                                        <span class="td-muted" style="font-size:.78rem;">Titular da sessão</span>
+                                    {% else %}
+                                        <div class="row-actions">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-outline"
+                                                data-edit-name="{{ user[2] }}"
+                                                data-edit-cpf="{{ user[3] }}"
+                                                data-edit-role="{{ user[1] }}"
+                                            >
+                                                Alterar papel
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-danger"
+                                                data-delete-cpf="{{ user[3] }}"
+                                                data-delete-name="{{ user[2] }}"
+                                            >
+                                                Remover
+                                            </button>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
+    </main>
 
-        <div class="add-box">
-            <button id="add-button">Adicionar</button>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
+    <!-- Modal de adição / edição de permissão -->
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="permModalTitle">
+        <div class="modal-content modal-sm">
             <div class="modal-header">
-                <h2>Configuração de permissão</h2>
+                <h2 id="permModalTitle">Configurar permissão</h2>
+                <button type="button" class="modal-close cancelar" aria-label="Fechar">×</button>
             </div>
 
-            <div class="form-group">
-                <label for="name">Nome:</label>
-                <input type="text" id="name" name="name" readonly>
-
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" readonly>
-
-                <label for="permission">Permissão:</label>
-                <select id="permission" name="permission" required>
-                    <!-- <option value="creator">Creator</option> -->
-                    <option value="editor">Editor</option>
-                    <option value="checker">Checker</option>
-                    <option value="viewer">Viewer</option>
-                </select>
+            <div class="page-stack" style="gap:.95rem;">
+                <div class="field">
+                    <label for="name">Usuário</label>
+                    <input class="input" type="text" id="name" name="name" readonly>
+                </div>
+                <div class="field">
+                    <label for="cpf">CPF</label>
+                    <input class="input" type="text" id="cpf" name="cpf" readonly>
+                </div>
+                <div class="field">
+                    <label for="permission">Nível de acesso</label>
+                    <select class="select-input" id="permission" name="permission" required>
+                        <option value="editor">Editor — registra e edita lançamentos</option>
+                        <option value="checker">Conferente — auditoria e conferência</option>
+                        <option value="viewer">Leitor — visualização de relatórios</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="button-group">
-                <button class="btn confirmar">Confirmar</button>
-                <button class="btn cancelar">Cancelar</button>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline cancelar">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary confirmar" id="btnConfirmPerm">Salvar permissão</button>
             </div>
         </div>
     </div>
 
-        <!-- Modal de Aviso -->
-    <div id="alert-modal" class="modal">
-        <div class="modal-content">
+    <!-- Modal de confirmação de exclusão -->
+    <div id="confirm-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h2>Remover acesso</h2>
+                <button type="button" class="modal-close nao" aria-label="Fechar">×</button>
+            </div>
+            <p id="confirmDeleteText" style="font-size:.92rem; color:#262626;">Tem certeza que deseja revogar o acesso deste usuário?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-outline nao">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-danger sim" id="btnConfirmRemove">Revogar acesso</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de aviso -->
+    <div id="alert-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
             <div class="modal-header">
                 <h2>Aviso</h2>
             </div>
-            <div class="modal-body">
-                <p id="alert-message">Mensagem de aviso</p>
-            </div>
-            <div class="button-group">
-                <button class="btn fechar">Fechar</button>
+            <p id="alert-message" style="font-size:.92rem; color:#262626;"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-dark fechar" id="btnCloseAuthAlert">Entendi</button>
             </div>
         </div>
     </div>
-
-    <!-- Modal de Confirmação -->
-    <div id="confirm-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Confirmação</h2>
-            </div>
-            <div class="modal-body">
-                <p>Tem certeza que deseja deletar este usuário?</p>
-            </div>
-            <div class="button-group">
-                <button class="btn sim">Sim</button>
-                <button class="btn nao">Não</button>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Tabela de Autorização -->
-    <main class="main">
-        <section class="container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Permissão</th>
-                        <th>Opções</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                    <tr>
-                        <td>{{ user[0] }}</td>
-                        <td>{{ user[2] }}</td>
-                        <td>{{ user[3]}}</td>
-                        <td>{{ user[1] }}</td>
-                        <td>
-                            {% if user[3] == current_user.cpf %}
-                                <button class="options-button" disabled style="cursor: not-allowed;">
-                                    <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
-                                </button>
-                            {% else %}
-                                <button class="options-button" onclick="toggleDropdown(event)">
-                                    <img src="{{ url_for('static', filename='images/dashboard/public/three_dots_vertical.png') }}" alt="Pontos">
-                                </button>
-                                <div class="dropdown-menu" style="display:none;">
-                                    <button class="dropdown-item" onclick="openEditModal('{{ user[2] }}', '{{ user[3] }}', '{{ user[1] }}')">Editar</button>
-                                    <button class="dropdown-item" onclick="deleteUser('{{ user[3] }}')">Deletar</button>
-                                </div>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    </main>
 </body>
+
 </html>

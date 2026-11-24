@@ -4,84 +4,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de empresa - Beesiness</title>
-
-    <!-- Css Linkado -->
+    <meta name="description" content="Cadastre o CNPJ da sua empresa na Beesiness para gerenciar ativos, passivos e relatórios contábeis.">
+    <title>Registrar empresa | Beesiness</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/company/register.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
-
-    <!-- Fontes do Google: Roboto Slab -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="auth-layout">
+        <!-- Painel institucional (esquerda) -->
+        <aside class="auth-showcase" aria-label="Sobre o cadastro de empresa">
+            <svg class="showcase-path" viewBox="0 0 800 900" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M-40 170 C 150 80, 280 260, 460 170 S 700 60, 860 160" />
+                <path d="M-60 740 C 150 630, 310 820, 510 700 S 720 580, 860 680" />
+            </svg>
 
-    <!-- Modal  -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header"></div>
+            <div class="showcase-top">
+                <a href="/" class="brand" aria-label="Beesiness - Página inicial">
+                    <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+                    <span>Beesiness</span>
+                </a>
+                <a href="/dashboard/user" class="back-link">← Minhas empresas</a>
+            </div>
 
-            <div class="modal-body"></div>
-        </div>
+            <div class="showcase-center">
+                <span class="label">Nova organização</span>
+                <h2>Estruture a contabilidade da sua <span class="accent">empresa.</span></h2>
+                <p>Cada CNPJ registrado conta com um ambiente dedicado para lançamentos patrimoniais, demonstrativos e controle de equipe.</p>
+
+                <ol class="showcase-steps">
+                    <li>
+                        <span class="step-idx">01</span>
+                        <div>
+                            <strong>Ambiente isolado por CNPJ</strong>
+                            <span>Ativos, passivos e movimentações organizados separadamente para cada empresa.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-idx">02</span>
+                        <div>
+                            <strong>Demonstrativos automáticos</strong>
+                            <span>Balanço Patrimonial, DRE, Livro Diário, Razonete e Balancete prontos para consulta.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-idx">03</span>
+                        <div>
+                            <strong>Gestão de permissões</strong>
+                            <span>Você entra como proprietário e pode autorizar sócios, contadores e equipe.</span>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="showcase-bottom">
+                <span>Conectado como <strong class="user-inline">{{ current_user.fullname }}</strong></span>
+                <span>© 2024 Beesiness</span>
+            </div>
+        </aside>
+
+        <!-- Painel do formulário (direita) -->
+        <main class="auth-main">
+            <div class="mobile-topbar">
+                <a href="/" class="brand brand-dark">
+                    <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+                    <span>Beesiness</span>
+                </a>
+                <a href="/dashboard/user" class="back-link back-link-dark">← Minhas empresas</a>
+            </div>
+
+            <div class="auth-card">
+                <header class="auth-header">
+                    <span class="label label-dark">Cadastro empresarial</span>
+                    <h1>Registrar empresa.</h1>
+                    <p class="auth-subtitle">
+                        Informe os dados cadastrais para criar o painel patrimonial do CNPJ.
+                    </p>
+                </header>
+
+                <div class="alert-error" id="message-error" role="alert" aria-live="polite"></div>
+
+                <form id="registroEmpresaForm" action="/company/register" method="POST" novalidate>
+                    <div class="field">
+                        <div class="field-label-row">
+                            <label for="name">Nome da empresa</label>
+                            <span class="field-hint">Até 40 caracteres</span>
+                        </div>
+                        <input
+                            class="input"
+                            type="text"
+                            id="name"
+                            name="name"
+                            maxlength="40"
+                            placeholder="Ex.: Colmeia Comércio Ltda."
+                            autocomplete="organization"
+                            required
+                        >
+                        <div class="msg-error" id="nomeEmpresa-error"></div>
+                    </div>
+
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="cnpj">CNPJ</label>
+                            <input
+                                class="input"
+                                type="text"
+                                id="cnpj"
+                                name="cnpj"
+                                inputmode="numeric"
+                                maxlength="18"
+                                placeholder="00.000.000/0000-00"
+                                required
+                            >
+                            <div class="msg-error" id="cnpj-error"></div>
+                        </div>
+
+                        <div class="field">
+                            <label for="email">E-mail da empresa</label>
+                            <input
+                                class="input"
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="financeiro@empresa.com.br"
+                                autocomplete="email"
+                                required
+                            >
+                            <div class="msg-error" id="email-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="password">Senha da empresa</label>
+                            <div class="password-wrap">
+                                <input
+                                    class="input"
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Mínimo 8 caracteres"
+                                    autocomplete="new-password"
+                                    required
+                                >
+                                <button type="button" class="toggle-pw" aria-label="Mostrar senha" data-target="password">
+                                    <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                    <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.4 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/>
+                                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/>
+                                        <line x1="2" y1="2" x2="22" y2="22"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="msg-error" id="password-error"></div>
+                        </div>
+
+                        <div class="field">
+                            <label for="confirmPassword">Confirme a senha</label>
+                            <div class="password-wrap">
+                                <input
+                                    class="input"
+                                    type="password"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    placeholder="Repita a senha"
+                                    autocomplete="new-password"
+                                    required
+                                >
+                                <button type="button" class="toggle-pw" aria-label="Mostrar confirmação de senha" data-target="confirmPassword">
+                                    <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                    <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.4 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/>
+                                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/>
+                                        <line x1="2" y1="2" x2="22" y2="22"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="msg-error" id="confirmPassword-error"></div>
+                        </div>
+                    </div>
+
+                    <ul class="pw-rules" id="pwRules" aria-label="Requisitos da senha">
+                        <li data-rule="len">8+ caracteres</li>
+                        <li data-rule="upper">Maiúscula</li>
+                        <li data-rule="lower">Minúscula</li>
+                        <li data-rule="num">Número</li>
+                        <li data-rule="spec">Caractere especial</li>
+                    </ul>
+
+                    <div class="form-actions">
+                        <a href="/dashboard/user" class="btn-cancel">Cancelar</a>
+                        <button type="submit" id="registroBtn" class="btn-submit register-btn">
+                            <span class="btn-label">Registrar empresa</span>
+                            <span class="btn-arrow" aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
     </div>
-    <photo >
-        
-    </photo>
-    <main>
-        <section class="welcome-section">
 
-            <welcome-box class="welcome-box">
-                <h1>Criando empresa!</h1>
-            </welcome-box>
-
-        </section>
-        <form id="registroEmpresaForm" action="/company/register" method="post">
-            <article class="form-article">
-                <section class="form-section-name"> <!-- nome da empresa -->
-                    <div class="msg">Nome da empresa</div>
-                        <input class="form-box" type="text" id="name" name="name" required>
-                    <p class="msg-error" id="nomeEmpresa-error"></p>
-                </section>
-            </article>
-
-            <article class="form-article">
-                <section class="form-section">  <!-- email -->
-                    <div class="msg">E-mail</div>
-                        <input class="form-box" type="text" id="email" name="email" required>
-                    <div class="msg-error" id="email-error"></div>
-                </section>
-
-                <section class="form-section"> <!-- cpf -->
-                    <div class="msg">CNPJ</div>
-                        <input class="form-box" type="text" id="cnpj" name="cnpj" maxlength="18" required>
-                    <div class="msg-error" id="cnpj-error"></div>
-                </section>
-            </article>
-
-            <article class="form-article">
-                <section class="form-section"> <!-- password -->
-                    <div class="msg">Senha</div>
-                        <input class="form-box" type="password" id="password" name="password" required>
-                    <div class="msg-error" id="password-error"></div>
-                </section>
-
-                <section class="form-section"> <!-- confirm password -->
-                    <div class="msg">Confirme a senha</div>
-                        <input class="form-box" type="password" id="confirmPassword" name="confirmPassword" required>
-                    <div class="msg-error" id="confirmPassword-error"></div>
-                </section>
-            </article>
-
-
-            <article class="form-article-button">
-                <button type="submit" id="registroBtn" class="form-section-button register-btn">Registrar</button> 
-            </article>
-        </form>
-    </main>
     <script src="{{ url_for('static', filename='js/company/register.js') }}"></script>
 </body>
+
+</html>

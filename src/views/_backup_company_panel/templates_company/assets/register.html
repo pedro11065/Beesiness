@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar ativo</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/assets/register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/assets/select.css') }}">
+
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <script src="{{ url_for('static', filename='js/dashboard/company/assets/register.js') }}" defer></script>
+</head>
+
+<body>
+    {% include 'dashboard/user/header.html' %}
+
+    <!-- Modal de Sucesso  -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sucesso!</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="success-message">Registro realizado com sucesso!</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+             <!-- Modal de Aviso-->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Aviso</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="alert-message">Mensagem de aviso</p>
+            </div>
+            <div class="button-group">
+                <button class="btn fechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+     
+    <main class="main">
+
+        <article> 
+            <section-title>
+                <h1>Registrar Ativo</h1>
+            </section-title>
+        </article>
+
+        <form id="AssetForm">
+            <article>
+                <section>
+                    <contaner class="name">
+                        <box-msg>
+                            <h2>Nome</h2>
+                        </box-msg>
+                        <input class="form-box" id="name" type="text" name="name" required>
+                    </contaner>
+
+                    <contaner class="acquisition_value">
+                        <box-msg>
+                            <h2>Valor</h2>
+                        </box-msg>
+                        <input class="form-box" id="acquisition_value" type="text" name="acquisition_value" required>
+                    </contaner>
+
+                    <contaner class="floating">
+                        <box-msg>
+                            <h2>Tipo</h2>
+                        </box-msg>
+                        <select class="select" id="floating" name="floating" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Não circulante</option>
+                            <option>Circulante</option>
+                        </select>
+                    </contaner>
+
+                </section>
+            </article>
+
+            <article>
+                <section>
+                    <contaner class="acquisition_date">
+                        <box-msg>
+                            <h2>Data de aquisição</h2>
+                        </box-msg>
+                        <input class="form-box" id="acquisition_date" type="date" name="acquisition_date" min="1924-01-01" max="2999-12-31" maxlength="10" required>
+                    </contaner>
+
+                    <contaner class="localization">
+                        <box-msg>
+                            <h2>Localização</h2>
+                        </box-msg>
+                        <input class="form-box" id="localization" type="text" name="localization" required>
+                    </contaner>
+
+                    <contaner class="event">
+                        <box-msg>
+                            <h2>Evento</h2>
+                        </box-msg>
+                        <select class="select" id="event" name="event" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Aquisição</option>
+                            <option>Compra</option>
+                            <option>Concessão</option>
+                            <option>Entrada de Caixa</option>
+                            <option>Herança</option>
+                            <option>Incorporação</option>
+                            <option>Investimento</option>
+                            <option>Leilão</option>
+                            <option>Lucro</option>
+                            <option>Permuta</option>
+                            <option>Produção Interna</option>
+                            <option>Restituição Judicial</option>
+                            <option>Serviço</option>
+                            <option>Transferência</option>
+                            <option>Troca</option>
+                            <option>Venda</option>
+                        </select>
+                    </contaner>
+
+                    <contaner class="status">
+                        <box-msg>
+                            <h2>Status</h2>
+                        </box-msg>
+                        <select class="select" id="status" name="status" required>
+                            <option value="" disabled selected>- - -</option>
+                            <option>Alugado</option>
+                            <option>Apreendido</option>
+                            <option>Caixa</option>
+                            <option>Comprado</option>
+                            <option>Danificado</option>
+                            <option>Disponível</option>
+                            <option>Doado</option>
+                            <option>Em Manutenção</option>
+                            <option>Em Uso</option>
+                            <option>Empenhado</option>
+                            <option>Leiloado</option>
+                            <option>Obsoleto</option>
+                            <option>Perdido</option>
+                            <option>Realizado</option>
+                            <option>Vendido</option>
+                        </select>
+                    </contaner>
+                </section>
+            </article>
+
+            <article>
+                <section style="width: 53.5%;">
+                    <container style="width: 100%;">
+                        <contaner class="class">
+                            <box-msg>
+                                <h2>Classe</h2>
+                            </box-msg>
+                            <select class="select" id="class" name="class" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Ações</option>
+                                <option>Banco</option>
+                                <option>Caixa</option>
+                                <option>Contas a Receber</option>
+                                <option>Equipamentos</option>
+                                <option>Espaços</option>
+                                <option>Estoque</option>
+                                <option>Imóveis</option>
+                                <option>Infraestrutura</option>
+                                <option>Intangíveis</option>
+                                <option>Investimento</option>
+                                <option>Licenças</option>
+                                <option>Maquinário</option>
+                                <option>Matérias-Primas</option>
+                                <option>Mobília</option>
+                                <option>Outro</option>
+                                <option>Patentes</option>
+                                <option>Serviço</option>
+                                <option>Tecnologia e TI</option>
+                                <option>Terreno</option>
+                                <option>Veículos</option>
+                            </select>
+                        </contaner>
+
+                        <contaner class="payment">
+                            <box-msg>
+                                <h2>Forma de pagamento</h2>
+                            </box-msg>
+                            <select class="select" id="payment_method" name="payment_method" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Boleto Bancário</option>
+                                <option>Carnê</option>
+                                <option>Cartão de Crédito</option>
+                                <option>Cartão de Débito</option>
+                                <option>Carteira Digital</option>
+                                <option>Cheque</option>
+                                <option>Criptomoedas</option>
+                                <option>Dinheiro em espécie</option>
+                                <option>Gift Cards</option>
+                                <option>Pix</option>
+                                <option>Transferência Bancária</option>
+                                <option>Vale-Alimentação</option>
+                                <option>Vale-Refeição</option>
+                                <option>Vale-Transporte</option>
+                            </select>
+                        </contaner>
+
+                        <contaner class="installment">
+                            <box-msg>
+                                <h2>Parcelamento</h2>
+                            </box-msg>
+                            <select class="select" id="installment" name="installment" required>
+                                <option value="" disabled selected>- - -</option>
+                                <option>Débito</option>
+                                <option>1x</option>
+                                <option>2x</option>
+                                <option>3x</option>
+                                <option>4x</option>
+                                <option>5x</option>
+                                <option>6x</option>
+                                <option>7x</option>
+                                <option>8x</option>
+                                <option>9x</option>
+                                <option>10x</option>
+                                <option>11x</option>
+                                <option>12x</option>
+                            </select>
+                        </contaner>
+                    </contaner>
+                </section>
+                <section style="height: 100%">
+                    <contaner class="description">
+                        <box-msg>
+                            <h2>Descrição</h2>
+                        </box-msg>
+                        <textarea class="form-box" id="description" type="text" name="description" required></textarea>
+                    </contaner>
+                </section>  
+            </article>
+
+            <article>   
+                <section>
+                    <button type="submit" class="register-button" id="register-button"><h3 id="register-button-text">Registrar</h3></button>
+                </section>
+            </article>
+        </form>
+    </main>
+</body>
+
+</html>

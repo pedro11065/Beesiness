@@ -1,104 +1,279 @@
-<!-- Template do header -->
+<!-- Cabeçalho compartilhado dos painéis autenticados -->
 <header class="main-header">
     <style>
+        .main-header,
         .main-header * {
             box-sizing: border-box;
         }
 
         .main-header {
-            position:relative;
-            box-sizing: border-box;
-            background-color: #1E1E1E;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 10vw;
-            height: 4rem;
-            overflow: visible;
-            z-index: 10;
+            position: sticky;
+            top: 0;
+            z-index: 60;
             width: 100%;
-            box-shadow: rgba(0, 0, 0, 0.05) 0px 19px 38px, rgba(0, 0, 0, 0.05) 0px 15px 12px;
+            height: 4rem;
+            background: rgba(20, 20, 20, 0.94);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
-        .main-header .logo {
-            height: 80%;
-            padding: 0.5rem;
-            object-fit: contain;
+        .main-header .mh-inner {
+            width: min(1180px, 92%);
+            height: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .main-header .mh-left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
         }
 
         .main-header .logo-link {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            height: 100%;
-        }
-
-        .main-header .header-name {
-            display: flex;
+            gap: 0.6rem;
+            text-decoration: none;
             color: #ffffff;
-            align-items: center;
-            position: relative;
-            height: 100%;
-            padding: 0 1rem;
-            font-size: 1rem;
-            font-family: inter;
+            font-weight: 600;
+            font-size: 1.02rem;
+            letter-spacing: -0.015em;
         }
 
-        .main-header section {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            width: auto; 
-            margin-bottom: 0; 
+        .main-header .logo {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+
+        .main-header .mh-divider {
+            width: 1px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .main-header .mh-ContextLink {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #b8b8b8;
+            text-decoration: none;
+            font-size: 0.86rem;
+            font-weight: 500;
+            white-space: nowrap;
+            padding: 0.35rem 0.65rem;
+            border-radius: 8px;
+            transition: color 0.2s, background-color 0.2s;
+        }
+
+        .main-header .mh-ContextLink:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .main-header .mh-user {
+            position: relative;
+        }
+
+        .main-header .mh-user-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            height: 2.35rem;
+            padding: 0 0.65rem 0 0.35rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #f2f2f2;
+            font: inherit;
+            font-size: 0.86rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .main-header .mh-user-btn:hover,
+        .main-header .mh-user.is-open .mh-user-btn {
+            border-color: rgba(237, 200, 5, 0.55);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .main-header .mh-user-btn:focus-visible {
+            outline: 2px solid #EDC805;
+            outline-offset: 2px;
+        }
+
+        .main-header .mh-avatar {
+            width: 1.7rem;
+            height: 1.7rem;
+            border-radius: 50%;
+            background: #EDC805;
+            color: #0F0F0F;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: grid;
+            place-items: center;
+            text-transform: uppercase;
+            flex: none;
+        }
+
+        .main-header .mh-username {
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-transform: capitalize;
+        }
+
+        .main-header .mh-chevron {
+            width: 14px;
+            height: 14px;
+            color: #9e9e9e;
+            transition: transform 0.2s ease;
+            flex: none;
+        }
+
+        .main-header .mh-user.is-open .mh-chevron {
+            transform: rotate(180deg);
         }
 
         .main-header .dropdown-content {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #1E1E1E;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 50;
-            transition:all 0.2s ease;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 210px;
+            padding: 0.4rem;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+            z-index: 80;
         }
 
-        .main-header .dropdown-content a {
-            color: #ffffff;;
-            
-            padding: 12px 16px;
-            text-decoration: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition:all 0.2s ease;
-        }
-
-        .main-header .dropdown-content a:hover {
-            background-color: #2e2e2e;
-            
-        }
-
-        .main-header #exit {
-            color: red;
-        }
-
-        .main-header .header-name:hover .dropdown-content,
-        .dropdown-content:hover {
+        .main-header .mh-user.is-open .dropdown-content {
             display: block;
         }
 
+        .main-header .mh-menu-label {
+            padding: 0.45rem 0.7rem 0.35rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #787878;
+        }
+
+        .main-header .dropdown-content a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.55rem 0.7rem;
+            border-radius: 8px;
+            color: #e8e8e8;
+            text-decoration: none;
+            font-size: 0.87rem;
+            font-weight: 500;
+            transition: background-color 0.15s, color 0.15s;
+        }
+
+        .main-header .dropdown-content a:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        .main-header .mh-menu-sep {
+            height: 1px;
+            margin: 0.35rem 0.3rem;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .main-header #exit {
+            color: #ff7b7b;
+        }
+
+        .main-header #exit:hover {
+            background: rgba(255, 90, 90, 0.12);
+            color: #ff9c9c;
+        }
+
+        @media (max-width: 600px) {
+            .main-header .mh-username,
+            .main-header .mh-divider {
+                display: none;
+            }
+            .main-header .mh-ContextLink {
+                font-size: 0.78rem;
+                padding: 0.3rem 0.55rem;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+            }
+            .main-header .mh-user-btn {
+                padding-right: 0.5rem;
+            }
+        }
     </style>
-    <a href="/" class="logo-link">
-        <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="Imagem do Cabeçalho">
-    </a>
-    <section class="header-name">
-            <span style="text-transform: capitalize;">{{ current_user.fullname }}</span>
-            <div class="dropdown-content">
-                <a href="/user/settings">Editar conta</a>
-                <a id="exit" href="/user/logout">Sair</a>
+
+    <div class="mh-inner">
+        <div class="mh-left">
+            <a href="/" class="logo-link" aria-label="Beesiness - Página inicial">
+                <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+                <span>Beesiness</span>
+            </a>
+            {% if request.path != '/dashboard/user' %}
+                <span class="mh-divider" aria-hidden="true"></span>
+                <a href="/dashboard/user" class="mh-ContextLink">← <span>Minhas empresas</span></a>
+            {% endif %}
         </div>
-    </section>
+
+        <div class="mh-user" id="mhUserMenu">
+            <button type="button" class="mh-user-btn" id="mhUserBtn" aria-expanded="false" aria-haspopup="true">
+                <span class="mh-avatar" aria-hidden="true">{{ (current_user.fullname or 'U')[0] }}</span>
+                <span class="mh-username">{{ current_user.fullname }}</span>
+                <svg class="mh-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+
+            <div class="dropdown-content" role="menu">
+                <div class="mh-menu-label">Navegação</div>
+                <a href="/dashboard/user" role="menuitem">Minhas empresas</a>
+                <a href="/company/register" role="menuitem">Registrar empresa</a>
+                <a href="/user/settings" role="menuitem">Editar conta</a>
+                <div class="mh-menu-sep" role="separator"></div>
+                <a id="exit" href="/user/logout" role="menuitem">Sair da conta</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const menu = document.getElementById('mhUserMenu');
+            const btn = document.getElementById('mhUserBtn');
+            if (!menu || !btn) return;
+
+            function setOpen(open) {
+                menu.classList.toggle('is-open', open);
+                btn.setAttribute('aria-expanded', String(open));
+            }
+
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                setOpen(!menu.classList.contains('is-open'));
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!menu.contains(e.target)) setOpen(false);
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') setOpen(false);
+            });
+        })();
+    </script>
 </header>

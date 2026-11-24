@@ -4,43 +4,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balancete</title>
-
+    <title>Balancete | Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/shell.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/trial_balance.css') }}">
-
-    <!-- Icon da Aba do Navegador -->
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-
-    <!-- Fonte Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/dashboard/company/reports/trial_balance.js') }}" defer></script>
 </head>
 
 <body>
     {% include 'dashboard/user/header.html' %}
+    {% set active_tab = 'trial_balance' %}
+    {% set page_eyebrow = 'Verificação de saldos' %}
+    {% set page_heading = 'Balancete de verificação.' %}
+    {% include 'dashboard/company/_subnav.html' %}
 
-    <menu class="menu-container" id="menuContainer">
-        <div class="menu-box" id="day-btn">
-            <a>Dia</a>
-        </div>
-        <div class="menu-box" id="month-btn">
-            <a>Mês</a>
-        </div>
-        <div class="menu-box" id="year-btn">
-            <a>Ano</a>
-        </div>
-
-        <!-- <div class="menu-box">
-            <button onclick="generatePDF()">Gerar PDF</button>
-        </div> -->
-    </menu>
-
-    <main class="main" id="main"> </main>
-
-    <div id="loading" class="loading">
-        <div class="loader "></div>
+    <div id="loading" class="container skeleton-stack" aria-live="polite">
+        <div class="sk-bar"></div>
+        <div class="sk-bar sk-bar-lg"></div>
     </div>
-    
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script> -->
-<body>
+
+    <main class="page-main" id="main" hidden>
+        <div class="container page-stack">
+            <section class="summary-strip" aria-label="Totais do Balancete">
+                <article class="summary-card is-dark">
+                    <span class="summary-label">Total a débito (Ativos)</span>
+                    <strong class="summary-value" id="tbSumDebit">R$ 0,00</strong>
+                    <span class="summary-sub">Lançamentos vigentes</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Total a crédito (Passivos e PL)</span>
+                    <strong class="summary-value" id="tbSumCredit">R$ 0,00</strong>
+                    <span class="summary-sub">Obrigações e capital</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Saldo líquido apurado</span>
+                    <strong class="summary-value" id="tbSumNet">R$ 0,00</strong>
+                    <span class="summary-sub">Débitos menos créditos</span>
+                </article>
+                <article class="summary-card">
+                    <span class="summary-label">Contas movimentadas</span>
+                    <strong class="summary-value" id="tbAccountCount">0</strong>
+                    <span class="summary-sub">Contas sintéticas agrupadas</span>
+                </article>
+            </section>
+
+            <section class="panel">
+                <div class="toolbar">
+                    <div class="search-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="search" id="tbSearch" class="search-input" placeholder="Filtrar nome da conta...">
+                    </div>
+
+                    <div class="seg-control" role="group" aria-label="Período de agrupamento">
+                        <button type="button" class="seg-btn is-active" id="year-btn" data-view="year">Consolidado / Ano</button>
+                        <button type="button" class="seg-btn" id="month-btn" data-view="month">Por mês</button>
+                        <button type="button" class="seg-btn" id="day-btn" data-view="day">Por dia</button>
+                    </div>
+                </div>
+            </section>
+
+            <div id="tbContent" class="page-stack"></div>
+
+            <section class="empty-state" id="tbEmpty" hidden>
+                <span class="empty-tag">Balancete</span>
+                <h2>Nenhuma conta encontrada para o período.</h2>
+                <p>Adicione lançamentos patrimoniais para gerar o balancete de verificação.</p>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

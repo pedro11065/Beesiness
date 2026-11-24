@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRE</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/reports/income_statement.css') }}">
+
+    <!-- Icon da Aba do Navegador -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <script src="{{ url_for('static', filename='js/dashboard/company/reports/income_statement.js') }}" defer></script>
+</head>
+
+<body>
+    {% include 'dashboard/user/header.html' %}
+
+
+
+    <div id="loading" class="loading">
+        <div class="loader "></div>
+    </div>
+
+    <main class="main" id="main">
+        <section class="year-container" id="year-container">
+            <header class="year-title-container" id="year-title-container">
+                <article class="year-title-box">
+                    <div class="year-box">
+                        <h1>2024 - 2025</h1>
+                    </div>
+                </article>
+            </header>
+    
+            <div class="financial-container">
+                    <!-- Receita Operacional Bruta -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(+) RECEITA OPERACIONAL BRUTA</h3>
+                            <div class="category-value" id="brute_revenue_total" >1300</div>
+                        </div>
+                        <ul class="data-list" id="brute_revenue">
+
+                        </ul>
+                    </div>
+                
+                    <!-- Deduções da Receita Bruta -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(-) DEDUÇÕES DA RECEITA BRUTA</h3>
+                            <div class="category-value" id="deductions_revenue_total" >----</div>
+                        </div>
+                        <ul class="data-list" id="deductions_revenue">
+                          
+                        </ul>
+                    </div>
+                
+                    <!-- Receita Operacional Líquida -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(=) RESULTADO OPERACIONAL BRUTO</h3>
+                            <div class="category-value" id="result_revenue_total">----</div>
+                        </div>
+                    </div>
+                
+                    <!-- Custos das Vendas -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(-) CUSTOS DAS VENDAS</h3>
+                            <div class="category-value" id="sell_costs_total">----</div>
+                        </div>
+                        <ul class="data-list" id="sell_costs">
+
+                        </ul>
+                    </div>
+                
+                    <!-- Resultado Operacional Líquido -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(=) RESULTADO OPERACIONAL LÍQUIDO</h3>
+                            <div class="category-value" id="result_operational_costs_total">----</div>
+                        </div>
+                    </div>
+                
+                    <!-- Despesas Operacionais -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(-) DESPESAS OPERACIONAIS</h3>
+                            <div class="category-value" id="operational_costs_total">----</div>
+                        </div>
+                        <ul class="data-list" id="operational_costs">
+
+                        </ul>
+                    </div>
+                
+                    <!-- Resultado Líquido do Exercício -->
+                    <div class="category-item">
+                        <div class="category-title">
+                            <h3>(=) Lucro/Prejuízo operacional</h3>
+                            <div class="category-value" id="loss_profit_total">----</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+<body>

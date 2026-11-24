@@ -4,68 +4,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Beesiness</title>
-
-    <!-- Css Linkado -->
+    <meta name="description" content="Acesse sua conta na Beesiness e acompanhe o patrimônio da sua empresa.">
+    <title>Login | Beesiness</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/user/login.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <!-- Icon da Aba do Navegador -->
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo') }}" type="image/png">
-
-    <!-- Fontes do Google: Roboto Slab -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-    <script src="{{ url_for('static', filename='js/user/login.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="auth-layout">
+        <!-- Painel institucional (esquerda) -->
+        <aside class="auth-showcase" aria-label="Sobre a Beesiness">
+            <svg class="showcase-path" viewBox="0 0 800 900" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M-40 180 C 140 90, 260 280, 440 190 S 700 60, 860 170" />
+                <path d="M-60 720 C 160 610, 320 810, 520 690 S 720 560, 860 660" />
+            </svg>
 
-    <photo >
-        
-    </photo>
+            <div class="showcase-top">
+                <a href="/" class="brand" aria-label="Beesiness - voltar ao início">
+                    <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+                    <span>Beesiness</span>
+                </a>
+                <a href="/" class="back-link">← Voltar ao início</a>
+            </div>
 
-    <main>
-        <section class="welcome-section">
-            <welcome-box class="welcome-box">
-                <h1>Olá de novo!</h1>
-                <div class="msg" style="color: rgb(70, 70, 70); font-weight: 400;">
-                    <a href="/user/register" style="color: rgb(70, 70, 70); font-weight: 400;">Não tem uma conta ainda? clique aqui!</a>
-                    
+            <div class="showcase-center">
+                <span class="label">Gestão patrimonial</span>
+                <h2>Todo o patrimônio da sua empresa, sob <span class="accent">controle.</span></h2>
+                <p>Acompanhe ativos, passivos e relatórios contábeis em tempo real em um ambiente único e seguro.</p>
+
+                <div class="mini-panel" aria-hidden="true">
+                    <div class="mini-row">
+                        <span class="mini-index">01</span>
+                        <span class="mini-name">Balanço Patrimonial &amp; DRE</span>
+                        <span class="mini-tag">Em tempo real</span>
+                    </div>
+                    <div class="mini-row">
+                        <span class="mini-index">02</span>
+                        <span class="mini-name">Livro Diário, Razonete e Balancete</span>
+                        <span class="mini-tag">Integrado</span>
+                    </div>
+                    <div class="mini-row">
+                        <span class="mini-index">03</span>
+                        <span class="mini-name">Controle de ativos e passivos</span>
+                        <span class="mini-tag">Multi-empresa</span>
+                    </div>
                 </div>
-            </welcome-box>
-        </section>
+            </div>
 
-        <form id="loginForm" action="/user/login" method="POST">
-            <article class="form-article">
-                <section class="form-section">  <!-- email -->
-                    <div class="msg">E-mail</div>
-                        <input class="form-box" type="text" id="email" name="email" required>
-                    <div class="msg-error" id="message-error">
+            <div class="showcase-bottom">
+                <span>© 2024 Beesiness</span>
+                <span>Gestão de patrimônio para PMEs</span>
+            </div>
+        </aside>
+
+        <!-- Painel do formulário (direita) -->
+        <main class="auth-main">
+            <div class="mobile-topbar">
+                <a href="/" class="brand brand-dark">
+                    <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+                    <span>Beesiness</span>
+                </a>
+                <a href="/" class="back-link back-link-dark">← Início</a>
+            </div>
+
+            <div class="auth-card">
+                <header class="auth-header">
+                    <span class="label label-dark">Acesso à conta</span>
+                    <h1>Olá de novo.</h1>
+                    <p class="auth-switch">
+                        Ainda não tem uma conta?
+                        <a href="/user/register">Abra a sua conta</a>
+                    </p>
+                </header>
+
+                <div class="alert-error" id="message-error" role="alert" aria-live="polite"></div>
+
+                <form id="loginForm" action="/user/login" method="POST" novalidate>
+                    <div class="field">
+                        <label for="email">E-mail ou CPF</label>
+                        <input
+                            class="input"
+                            type="text"
+                            id="email"
+                            name="email"
+                            placeholder="voce@empresa.com.br"
+                            autocomplete="username"
+                            required
+                        >
+                        <div class="msg-error" id="email-error"></div>
                     </div>
-                </section>
-            </article>
 
-            <article class="form-article">
-                <section class="form-section"> <!-- password -->
-                    <div class="msg">Senha</div>
-                        <input class="form-box" type="password" id="password" name="password" required>
-
-                    <div class="msg">
-                        <a href="/user/forget-password" style="color: rgb(70, 70, 70); font-weight: 400; padding-top: 0.2rem">Esqueci minha senha</a>
+                    <div class="field">
+                        <div class="field-label-row">
+                            <label for="password">Senha</label>
+                            <a href="/user/forget-password" class="forgot-link">Esqueci minha senha</a>
+                        </div>
+                        <div class="password-wrap">
+                            <input
+                                class="input"
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Digite sua senha"
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button type="button" class="toggle-pw" aria-label="Mostrar senha" data-target="password">
+                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.4 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/>
+                                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/>
+                                    <line x1="2" y1="2" x2="22" y2="22"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="msg-error" id="password-error"></div>
                     </div>
-                    </div>
-                </section>
-            </article>
 
+                    <button type="submit" class="btn-submit login-section-button">
+                        <span class="btn-label">Entrar na conta</span>
+                        <span class="btn-arrow" aria-hidden="true">→</span>
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
 
-
-            <article class="login-article-button">
-                <button type="submit" class="login-section-button">Login</button> 
-            </article>
-        </form>
-
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    </main>
+    <script src="{{ url_for('static', filename='js/user/login.js') }}"></script>
 </body>
+
+</html>

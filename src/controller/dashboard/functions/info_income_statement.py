@@ -1,118 +1,106 @@
-from flask import jsonify
 from datetime import datetime
+from flask import jsonify
 
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
 
-def process_items(items, events_to_include, exclude_name=None):
-    """
-    Filtra os itens por eventos, agrupa por 'name' e soma os valores.
-    
-    Args:
-        items (list): Lista de itens a processar.
-        events_to_include (list): Lista de eventos a incluir no filtro.
-        exclude_name (str): Nome a ser excluído do filtro (opcional).
-    
-    Returns:
-        tuple: Lista de itens agrupados e a soma total de valores.
-    """
+def process_items(items, events_to_include):
     filtered_items = [
         item for item in items
-        if item['event'] in events_to_include and item['name'] != '#!@cash@!#'
+        if item.get('event') in events_to_include and item.get('name') != '#!@cash@!#'
     ]
     grouped_items = {}
 
     for item in filtered_items:
         name = item['name']
+        val = float(item.get('value') or 0)
         if name in grouped_items:
-            grouped_items[name]['value'] += float(item['value'])
+            grouped_items[name]['value'] += val
         else:
             grouped_items[name] = {
-                'name': item['name'],
-                'value': float(item['value']),
-                'event': item['event'],
-                'type': item['type'],
-                'date': item['date']
+                'name': name,
+                'value': val,
+                'event': item.get('event'),
+                'type': item.get('type'),
+                'date': item.get('date'),
             }
-    
-    grouped_list = list(grouped_items.values())
-    total_value = sum(item['value'] for item in grouped_list)
 
-    return grouped_list, total_value
+    grouped_list = sorted(grouped_items.values(), key=lambda x: x['value'], reverse=True)
+    total_value = sum(item['value'] for item in grouped_list)
+    return grouped_list, round(total_value, 2)
 
 
 def info_income_statement(company_id, cnpj):
     try:
-        historic_data = db_search_historic(company_id)
-        if not historic_data:
-            return jsonify({'error': 'No historical data found'}), 404
+        historic_data = db_search_historic(company_id) or []
 
         assets = []
         liabilities = []
         years = set()
 
         for item in historic_data:
+            raw_date = str(item.get('date') or '')
             try:
-                transaction_date = datetime.strptime(item['date'], "%Y-%m-%d")
+                transaction_date = datetime.strptime(raw_date[:10], '%Y-%m-%d')
+                years.add(transaction_date.year)
             except ValueError:
                 continue
 
-            years.add(transaction_date.year)
-
-            if item['ignore'] != True:
-                if item['type'] == 'asset':
+            if item.get('ignore') is not True:
+                if item.get('type') == 'asset':
                     assets.append(item)
-                elif item['type'] == 'liability':
+                elif item.get('type') == 'liability':
                     liabilities.append(item)
 
-        sorted_years = sorted(list(years))
+        sorted_years = sorted(years)
 
-        # Receita bruta
         brute_revenue, brute_revenue_float = process_items(
             assets + liabilities,
-            events_to_include=['Lucro', 'Venda', 'Serviço']
+            events_to_include=['Lucro', 'Venda', 'Serviço', 'Prestação de serviços'],
         )
 
-        # Deduções da receita
         deductions_revenue, deductions_revenue_float = process_items(
             liabilities,
-            events_to_include=['Imposto a pagar(Receita)', 'Devolução', 'Desconto']
+            events_to_include=['Imposto a pagar(Receita)', 'Imposto a pagar', 'Devolução', 'Desconto'],
         )
 
-        # Resultado operacional bruto
-        result_revenue = brute_revenue_float - deductions_revenue_float
+        result_revenue = round(brute_revenue_float - deductions_revenue_float, 2)
 
-        # Custos das vendas
         sell_costs, sell_costs_float = process_items(
             assets + liabilities,
-            events_to_include=['Fornecedor', 'Salário a pagar', 'Serviço', 'Compra', 'Investimento']
+            events_to_include=['Fornecedor', 'Salário a pagar', 'Compra'],
         )
 
-        # Resultado operacional líquido
-        result_operational_costs = result_revenue - sell_costs_float
+        result_operational_costs = round(result_revenue - sell_costs_float, 2)
 
-        # Custos operacionais
         operational_costs, operational_costs_float = process_items(
             liabilities,
-            events_to_include=['Conta a pagar', 'Empréstimo', 'Financiamento', 'Imposto a pagar(Operacional)', 'Multa', 'Serviço']
+            events_to_include=[
+                'Conta a pagar',
+                'Empréstimo',
+                'Financiamento',
+                'Imposto a pagar(Operacional)',
+                'Multa',
+                'Juros',
+            ],
         )
 
-        # Lucro/prejuízo operacional
-        loss_profit = result_operational_costs - operational_costs_float
+        loss_profit = round(result_operational_costs - operational_costs_float, 2)
 
         return jsonify({
-            'brute_revenue': brute_revenue,  # Receita operacional bruta
-            'brute_revenue_float': brute_revenue_float,  # Receita operacional bruta(valor)
-            'deductions_revenue': deductions_revenue,  # Deduções da receita bruta
-            'deductions_revenue_float': deductions_revenue_float,  # Deduções da receita bruta(valor)
-            'result_revenue': result_revenue,  # Resultado operacional bruto
-            'sell_costs': sell_costs,  # Custos das vendas
-            'sell_costs_float': sell_costs_float,  # Custos das vendas(valor)
-            'result_operational_costs': result_operational_costs,  # Resultado operacional líquido
-            'operational_costs': operational_costs,  # Despesas operacionais
-            'operational_costs_float': operational_costs_float,  # Despesas operacionais(valor)
-            'loss_profit': loss_profit,  # Lucro/prejuízo operacional
-        })
+            'years': sorted_years,
+            'brute_revenue': brute_revenue,
+            'brute_revenue_float': brute_revenue_float,
+            'deductions_revenue': deductions_revenue,
+            'deductions_revenue_float': deductions_revenue_float,
+            'result_revenue': result_revenue,
+            'sell_costs': sell_costs,
+            'sell_costs_float': sell_costs_float,
+            'result_operational_costs': result_operational_costs,
+            'operational_costs': operational_costs,
+            'operational_costs_float': operational_costs_float,
+            'loss_profit': loss_profit,
+        }), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

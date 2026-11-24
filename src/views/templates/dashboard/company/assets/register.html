@@ -4,257 +4,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar ativo</title>
-
+    <title>Registrar ativo | Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/shell.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/assets/register.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/assets/select.css') }}">
-
-    <!-- Icon da Aba do Navegador -->
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
-
-    <!-- Fonte Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/dashboard/company/assets/register.js') }}" defer></script>
 </head>
 
 <body>
     {% include 'dashboard/user/header.html' %}
+    {% set active_tab = 'register_asset' %}
+    {% set page_eyebrow = 'Novo lançamento patrimonial' %}
+    {% set page_heading = 'Registrar ativo.' %}
+    {% include 'dashboard/company/_subnav.html' %}
 
-    <!-- Modal de Sucesso  -->
-    <div id="success-modal" class="modal">
-        <div class="modal-content">
+    <main class="page-main">
+        <div class="container">
+            <section class="panel form-card">
+                <div class="panel-head">
+                    <div>
+                        <span class="panel-eyebrow">Bens e direitos</span>
+                        <h2>Dados do ativo</h2>
+                        <p>Cadastre bens, direitos, recebíveis ou entradas financeiras no patrimônio da empresa.</p>
+                    </div>
+                </div>
+
+                <form id="AssetForm" novalidate>
+                    <div class="form-section">
+                        <h3 class="form-section-title">01 · Identificação e valor</h3>
+                        <div class="form-grid-3">
+                            <div class="field">
+                                <label for="name">Nome do ativo</label>
+                                <input class="input" id="name" type="text" name="name" placeholder="Ex.: Servidor principal" required>
+                                <span class="field-error" id="err-name"></span>
+                            </div>
+
+                            <div class="field">
+                                <label for="acquisition_value">Valor (R$)</label>
+                                <input class="input" id="acquisition_value" type="text" inputmode="numeric" name="acquisition_value" placeholder="R$ 0,00" required>
+                                <span class="field-error" id="err-acquisition_value"></span>
+                            </div>
+
+                            <div class="field">
+                                <label for="floating">Classificação</label>
+                                <select class="select-input" id="floating" name="floating" required>
+                                    <option value="" disabled selected>Selecione o tipo</option>
+                                    <option value="Circulante">Circulante</option>
+                                    <option value="Não circulante">Não circulante</option>
+                                </select>
+                                <span class="field-error" id="err-floating"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">02 · Natureza contábil e aquisição</h3>
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="event">Evento contábil</label>
+                                <select class="select-input" id="event" name="event" required>
+                                    <option value="" disabled selected>Selecione o evento</option>
+                                    <option>Aquisição</option>
+                                    <option>Compra</option>
+                                    <option>Concessão</option>
+                                    <option>Entrada de Caixa</option>
+                                    <option>Herança</option>
+                                    <option>Incorporação</option>
+                                    <option>Investimento</option>
+                                    <option>Leilão</option>
+                                    <option>Lucro</option>
+                                    <option>Permuta</option>
+                                    <option>Produção Interna</option>
+                                    <option>Restituição Judicial</option>
+                                    <option>Serviço</option>
+                                    <option>Transferência</option>
+                                    <option>Troca</option>
+                                    <option>Venda</option>
+                                </select>
+                                <span class="field-error" id="err-event"></span>
+                            </div>
+
+                            <div class="field">
+                                <label for="class">Classe patrimonial</label>
+                                <select class="select-input" id="class" name="class" required>
+                                    <option value="" disabled selected>Selecione a classe</option>
+                                    <option>Ações</option>
+                                    <option>Banco</option>
+                                    <option>Caixa</option>
+                                    <option>Contas a Receber</option>
+                                    <option>Equipamentos</option>
+                                    <option>Espaços</option>
+                                    <option>Estoque</option>
+                                    <option>Imóveis</option>
+                                    <option>Infraestrutura</option>
+                                    <option>Intangíveis</option>
+                                    <option>Investimento</option>
+                                    <option>Licenças</option>
+                                    <option>Maquinário</option>
+                                    <option>Matérias-Primas</option>
+                                    <option>Mobília</option>
+                                    <option>Outro</option>
+                                    <option>Patentes</option>
+                                    <option>Serviço</option>
+                                    <option>Tecnologia e TI</option>
+                                    <option>Terreno</option>
+                                    <option>Veículos</option>
+                                </select>
+                                <span class="field-error" id="err-class"></span>
+                            </div>
+
+                            <div class="field">
+                                <label for="status">Status atual</label>
+                                <select class="select-input" id="status" name="status" required>
+                                    <option value="" disabled selected>Selecione o status</option>
+                                    <option>Disponível</option>
+                                    <option>Em Uso</option>
+                                    <option>Comprado</option>
+                                    <option>Realizado</option>
+                                    <option>Caixa</option>
+                                    <option>Alugado</option>
+                                    <option>Em Manutenção</option>
+                                    <option>Empenhado</option>
+                                    <option>Doado</option>
+                                    <option>Vendido</option>
+                                    <option>Leiloado</option>
+                                    <option>Danificado</option>
+                                    <option>Obsoleto</option>
+                                    <option>Apreendido</option>
+                                    <option>Perdido</option>
+                                </select>
+                                <span class="field-error" id="err-status"></span>
+                            </div>
+
+                            <div class="field">
+                                <label for="acquisition_date">Data de aquisição / competência</label>
+                                <input class="input" id="acquisition_date" type="date" name="acquisition_date" min="1924-01-01" max="2999-12-31" required>
+                                <span class="field-error" id="err-acquisition_date"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">03 · Pagamento, localização e descrição</h3>
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="payment_method">Forma de pagamento</label>
+                                <select class="select-input" id="payment_method" name="payment_method" required>
+                                    <option value="" disabled selected>Selecione a forma</option>
+                                    <option>Pix</option>
+                                    <option>Transferência Bancária</option>
+                                    <option>Boleto Bancário</option>
+                                    <option>Cartão de Crédito</option>
+                                    <option>Cartão de Débito</option>
+                                    <option>Dinheiro em espécie</option>
+                                    <option>Carteira Digital</option>
+                                    <option>Carnê</option>
+                                    <option>Cheque</option>
+                                    <option>Criptomoedas</option>
+                                    <option>Gift Cards</option>
+                                    <option>Vale-Alimentação</option>
+                                    <option>Vale-Refeição</option>
+                                    <option>Vale-Transporte</option>
+                                </select>
+                                <span class="field-error" id="err-payment_method"></span>
+                            </div>
+
+                            <div class="field">
+                                <label for="installment">Parcelamento</label>
+                                <select class="select-input" id="installment" name="installment" required>
+                                    <option value="Débito" selected>Débito / À vista</option>
+                                    <option value="1x">1x</option>
+                                    <option value="2x">2x</option>
+                                    <option value="3x">3x</option>
+                                    <option value="4x">4x</option>
+                                    <option value="5x">5x</option>
+                                    <option value="6x">6x</option>
+                                    <option value="7x">7x</option>
+                                    <option value="8x">8x</option>
+                                    <option value="9x">9x</option>
+                                    <option value="10x">10x</option>
+                                    <option value="11x">11x</option>
+                                    <option value="12x">12x</option>
+                                </select>
+                                <span class="field-error" id="err-installment"></span>
+                            </div>
+
+                            <div class="field col-span-2">
+                                <label for="localization">Localização / Custódia (opcional)</label>
+                                <input class="input" id="localization" type="text" name="localization" placeholder="Ex.: Sede administrativa, Banco Itaú, Filial SP...">
+                            </div>
+
+                            <div class="field col-span-2">
+                                <label for="description">Observações (opcional)</label>
+                                <textarea class="textarea-input" id="description" name="description" maxlength="255" placeholder="Detalhes complementares sobre o ativo..."></textarea>
+                                <span class="field-error" id="err-description"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <a class="btn btn-outline" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}">Cancelar</a>
+                        <button type="submit" class="btn btn-primary register-button" id="register-button">
+                            <span id="register-button-text">Registrar ativo</span>
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Sucesso -->
+    <div id="success-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
             <div class="modal-header">
-                <h2>Sucesso!</h2>
-                <span class="close">&times;</span>
+                <h2>Ativo registrado</h2>
             </div>
-            <div class="modal-body">
-                <p id="success-message">Registro realizado com sucesso!</p>
-            </div>
-            <div class="button-group">
-                <button class="btn fechar">Fechar</button>
+            <p id="success-message" style="font-size:.94rem; color:#262626;">Registro realizado com sucesso!</p>
+            <div class="modal-actions">
+                <a class="btn btn-sm btn-outline" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}">Ver lista de ativos</a>
+                <a class="btn btn-sm btn-primary fechar" href="{{ url_for('auth_dashboard.dashboard_company', cnpj=cnpj) }}">Voltar à visão geral</a>
             </div>
         </div>
     </div>
 
-             <!-- Modal de Aviso-->
-    <div id="alert-modal" class="modal">
-        <div class="modal-content">
+    <!-- Modal de Aviso -->
+    <div id="alert-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content modal-sm">
             <div class="modal-header">
                 <h2>Aviso</h2>
-                <span class="close">&times;</span>
+                <button type="button" class="modal-close close" aria-label="Fechar">×</button>
             </div>
-            <div class="modal-body">
-                <p id="alert-message">Mensagem de aviso</p>
-            </div>
-            <div class="button-group">
-                <button class="btn fechar">Fechar</button>
+            <p id="alert-message" style="font-size:.92rem; color:#262626;"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm btn-dark fechar">Entendi</button>
             </div>
         </div>
     </div>
-     
-    <main class="main">
-
-        <article> 
-            <section-title>
-                <h1>Registrar Ativo</h1>
-            </section-title>
-        </article>
-
-        <form id="AssetForm">
-            <article>
-                <section>
-                    <contaner class="name">
-                        <box-msg>
-                            <h2>Nome</h2>
-                        </box-msg>
-                        <input class="form-box" id="name" type="text" name="name" required>
-                    </contaner>
-
-                    <contaner class="acquisition_value">
-                        <box-msg>
-                            <h2>Valor</h2>
-                        </box-msg>
-                        <input class="form-box" id="acquisition_value" type="text" name="acquisition_value" required>
-                    </contaner>
-
-                    <contaner class="floating">
-                        <box-msg>
-                            <h2>Tipo</h2>
-                        </box-msg>
-                        <select class="select" id="floating" name="floating" required>
-                            <option value="" disabled selected>- - -</option>
-                            <option>Não circulante</option>
-                            <option>Circulante</option>
-                        </select>
-                    </contaner>
-
-                </section>
-            </article>
-
-            <article>
-                <section>
-                    <contaner class="acquisition_date">
-                        <box-msg>
-                            <h2>Data de aquisição</h2>
-                        </box-msg>
-                        <input class="form-box" id="acquisition_date" type="date" name="acquisition_date" min="1924-01-01" max="2999-12-31" maxlength="10" required>
-                    </contaner>
-
-                    <contaner class="localization">
-                        <box-msg>
-                            <h2>Localização</h2>
-                        </box-msg>
-                        <input class="form-box" id="localization" type="text" name="localization" required>
-                    </contaner>
-
-                    <contaner class="event">
-                        <box-msg>
-                            <h2>Evento</h2>
-                        </box-msg>
-                        <select class="select" id="event" name="event" required>
-                            <option value="" disabled selected>- - -</option>
-                            <option>Aquisição</option>
-                            <option>Compra</option>
-                            <option>Concessão</option>
-                            <option>Entrada de Caixa</option>
-                            <option>Herança</option>
-                            <option>Incorporação</option>
-                            <option>Investimento</option>
-                            <option>Leilão</option>
-                            <option>Lucro</option>
-                            <option>Permuta</option>
-                            <option>Produção Interna</option>
-                            <option>Restituição Judicial</option>
-                            <option>Serviço</option>
-                            <option>Transferência</option>
-                            <option>Troca</option>
-                            <option>Venda</option>
-                        </select>
-                    </contaner>
-
-                    <contaner class="status">
-                        <box-msg>
-                            <h2>Status</h2>
-                        </box-msg>
-                        <select class="select" id="status" name="status" required>
-                            <option value="" disabled selected>- - -</option>
-                            <option>Alugado</option>
-                            <option>Apreendido</option>
-                            <option>Caixa</option>
-                            <option>Comprado</option>
-                            <option>Danificado</option>
-                            <option>Disponível</option>
-                            <option>Doado</option>
-                            <option>Em Manutenção</option>
-                            <option>Em Uso</option>
-                            <option>Empenhado</option>
-                            <option>Leiloado</option>
-                            <option>Obsoleto</option>
-                            <option>Perdido</option>
-                            <option>Realizado</option>
-                            <option>Vendido</option>
-                        </select>
-                    </contaner>
-                </section>
-            </article>
-
-            <article>
-                <section style="width: 53.5%;">
-                    <container style="width: 100%;">
-                        <contaner class="class">
-                            <box-msg>
-                                <h2>Classe</h2>
-                            </box-msg>
-                            <select class="select" id="class" name="class" required>
-                                <option value="" disabled selected>- - -</option>
-                                <option>Ações</option>
-                                <option>Banco</option>
-                                <option>Caixa</option>
-                                <option>Contas a Receber</option>
-                                <option>Equipamentos</option>
-                                <option>Espaços</option>
-                                <option>Estoque</option>
-                                <option>Imóveis</option>
-                                <option>Infraestrutura</option>
-                                <option>Intangíveis</option>
-                                <option>Investimento</option>
-                                <option>Licenças</option>
-                                <option>Maquinário</option>
-                                <option>Matérias-Primas</option>
-                                <option>Mobília</option>
-                                <option>Outro</option>
-                                <option>Patentes</option>
-                                <option>Serviço</option>
-                                <option>Tecnologia e TI</option>
-                                <option>Terreno</option>
-                                <option>Veículos</option>
-                            </select>
-                        </contaner>
-
-                        <contaner class="payment">
-                            <box-msg>
-                                <h2>Forma de pagamento</h2>
-                            </box-msg>
-                            <select class="select" id="payment_method" name="payment_method" required>
-                                <option value="" disabled selected>- - -</option>
-                                <option>Boleto Bancário</option>
-                                <option>Carnê</option>
-                                <option>Cartão de Crédito</option>
-                                <option>Cartão de Débito</option>
-                                <option>Carteira Digital</option>
-                                <option>Cheque</option>
-                                <option>Criptomoedas</option>
-                                <option>Dinheiro em espécie</option>
-                                <option>Gift Cards</option>
-                                <option>Pix</option>
-                                <option>Transferência Bancária</option>
-                                <option>Vale-Alimentação</option>
-                                <option>Vale-Refeição</option>
-                                <option>Vale-Transporte</option>
-                            </select>
-                        </contaner>
-
-                        <contaner class="installment">
-                            <box-msg>
-                                <h2>Parcelamento</h2>
-                            </box-msg>
-                            <select class="select" id="installment" name="installment" required>
-                                <option value="" disabled selected>- - -</option>
-                                <option>Débito</option>
-                                <option>1x</option>
-                                <option>2x</option>
-                                <option>3x</option>
-                                <option>4x</option>
-                                <option>5x</option>
-                                <option>6x</option>
-                                <option>7x</option>
-                                <option>8x</option>
-                                <option>9x</option>
-                                <option>10x</option>
-                                <option>11x</option>
-                                <option>12x</option>
-                            </select>
-                        </contaner>
-                    </contaner>
-                </section>
-                <section style="height: 100%">
-                    <contaner class="description">
-                        <box-msg>
-                            <h2>Descrição</h2>
-                        </box-msg>
-                        <textarea class="form-box" id="description" type="text" name="description" required></textarea>
-                    </contaner>
-                </section>  
-            </article>
-
-            <article>   
-                <section>
-                    <button type="submit" class="register-button" id="register-button"><h3 id="register-button-text">Registrar</h3></button>
-                </section>
-            </article>
-        </form>
-    </main>
 </body>
 
 </html>

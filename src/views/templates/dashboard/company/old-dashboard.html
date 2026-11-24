@@ -1,0 +1,283 @@
+
+<!-- Se puder na próxima explicar para que vai servir o arquivo com a palavra batata, eu agradeceria, valeu! -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beesiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/company/dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Adicionando Chart.js -->
+    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+    
+</head>
+<body>
+    {% include 'dashboard/user/header.html' %}
+   
+    <article_corousel class="carousel-container">
+        <button class="carousel-prev" onclick="scrollCarousel(-1)">&#10094;</button>
+        <section class="carousel-wrapper">
+            <nav class="buttons_container" id="buttons_container">
+                <a class="button_box_green" href="{{ url_for('auth_dashboard.register_asset_site', cnpj=cnpj )}}">Registrar Ativo</a>
+                <a class="button_box_red" href="{{ url_for('auth_dashboard.register_liability_site', cnpj=cnpj) }}">Registrar Passivo</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.assets_site', cnpj=cnpj) }}">Ativos</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.liabilities_site', cnpj=cnpj) }}">Passivos</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.register_journal_site', cnpj=cnpj) }}">Diário</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.balance_trial', cnpj=cnpj) }}">Balancete</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.razonete_site', cnpj=cnpj) }}">Razonete</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.balance_sheet', cnpj=cnpj) }}">Balanço patrimonial</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.income_statement', cnpj=cnpj) }}">DRE</a>
+                <a class="button_box" href="{{ url_for('auth_dashboard.authorization_site', cnpj=cnpj) }}">Permissão</a>
+            </nav>
+        </section>
+        <button class="carousel-next" onclick="scrollCarousel(1)">&#10095;</button>
+    </article_corousel>
+
+    <div id="loading" class="loading">
+        <div class="loader "></div>
+    </div>
+
+    <article id="logoutModal" class="modal">
+        <section class="modal-content">
+            <span class="close" onclick="toggleModal()">&times;</span>
+            <p>Você realmente deseja sair?</p>
+            <button class="btn confirm" onclick="logout()">Sair</button>
+            <button class="btn cancel" onclick="toggleModal()">Cancelar</button>
+        </section>
+    </article>
+    
+    <main id="main">
+        <article>
+
+            <section-info-top > <!-- INFO BOXES 1 -->
+
+                <box-info-top >
+
+                    <box-info-title>
+                        <h2>Saldo</h2><h2></h2>
+                    </box-info-title>
+
+                    <box-info-value>
+                        <h3 id="cash_now">R$----</h3>
+                    </box-info-value>
+
+                </box-info-top>
+                
+                <box-info-top >
+                    <box-info-title>
+                        <h2>Patrimônio</h2><h2></h2>
+                    </box-info-title>
+
+                    <box-info-value>
+                        <h3 id="patrimony">R$----</h3>
+                    </box-info-value>                   
+                </box-info-top>
+
+                <box-info-top id="assets_box">
+
+                    <box-info-title>
+                        <h2>Quantidade de ativos</h2><h2>></h2>
+                    </box-info-title>
+
+                    <box-info-value>
+                        <h3 id="assets_quant">----</h3>
+                    </box-info-value>
+
+                </box-info-top>
+                
+                <box-info-top id="liabilities_box" >
+                    <box-info-title >
+                        <h2>Quantidade de passivos</h2><h2>></h2>
+                    </box-info-title>
+
+                    <box-info-value>
+                        <h3 id="liabilities_quant">----</h3>
+                    </box-info-value>                   
+                </box-info-top>
+
+            </section-info-top>
+
+        </article>
+
+        <!-- -------------------- -->
+
+        <article>
+
+            <section-graph> <!-- GRAPH 1 -->
+
+                <container-graph>
+                    
+                    <box-graph-title>
+                        <h1>Saldo x Tempo</h1>
+                    </box-graph-title>
+                        
+
+                     <box-graph-chart>
+                        <canvas id="balanceChartCanvas"></canvas> <!-- Canvas para o gráfico de saldo -->
+                     </box-graph-chart>
+
+                </container-graph>
+       
+            </section-graph>
+
+
+            <section-costs> <!--  -->
+
+                <container-class-title>
+                    <h1>Gasto por classe</h1>
+                </container-class-title>
+
+                <container-class>
+                    <container-class-left>
+                        <box-class><h5>Capital Social</h5> <h5>----</h5></box-class>
+                        <box-class><h5>Contas</h5> <h5>----</h5></box-class>
+                        <box-class><h5>Estoque</h5> <h5>----</h5></box-class>
+                        <box-class><h5>Matérias-primas</h5> <h5>----</h5></box-class>
+                        <box-class><h5>Investimentos</h5> <h2>----</h5></box-class>  
+                        <box-class><h5>Mobílias</h5>  <h5>----</h5></box-class>   
+                        <box-class><h5>Veículos</h5>  <h5>----</h5></box-class>  
+                        <box-class><h5>Equipamentos</h5>  <h5>----</h5></box-class>  
+                        <box-class><h5>Outros</h5>  <h5>----</h5></box-class>  
+
+                    </container-class-left>
+                    
+
+                    <container-class-right>
+                        <box-class><h5>Maquinário</h5> <h5>----</h5></box-class>
+                        <box-class><h5>Patentes</h5> <h5>----</h5></box-class>
+                        <box-class><h5>Ações</h5> <h5>----</h5></box-class>
+                        <box-class><h5>Tec e TI</h5> <h2>----</h5></box-class>
+                        <box-class><h5>Intangíveis</h5>  <h5>----</h5></box-class> 
+                        <box-class><h5>Infraestruturas</h5>  <h5>----</h5></box-class>  
+                        <box-class><h5>Terrenos</h5>  <h5>----</h5></box-class>   
+                        <box-class><h5>Licenças</h5>  <h5>----</h5></box-class>  
+                        <box-class><h5>Espaços</h5>  <h5>----</h5></box-class>  
+
+                    </container-class-right>
+                    
+                </container-class>
+
+            </section-costs>
+
+        </article>
+
+        <!-- -------------------- -->
+
+        <article>
+
+            <section-graph> <!-- GRAPH 1 -->
+
+                <container-graph>
+                    
+                    <box-graph-title>
+                        <h1>Passivos x Ativos</h1>
+                    </box-graph-title>
+                        
+
+                     <box-graph-chart>
+                        <canvas id="assetsLiabilitiesChartCanvas"></canvas>
+                     </box-graph-chart>
+
+                </container-graph>
+       
+            </section-graph>
+
+            <section-info> <!-- INFO BOXES 1 -->
+
+                <container-info>
+
+                    <box-info>
+
+                        <box-info-title>
+                            <h2>Quantidade de entradas</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3 id="count_entrys">----</h3>
+                        </box-info-value>
+
+                    </box-info>
+                    
+                    <box-info>
+                        <box-info-title>
+                            <h2>Quantidade de saídas</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3 id="count_exits">----</h3>
+                        </box-info-value>                   
+                    </box-info>
+
+                </container-info>
+
+                <container-info>
+
+                    <box-info>
+
+                        <box-info-title>
+                            <h2>Total entrada</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3 id="values_entrys">R$----</h3>
+                        </box-info-value>
+
+                    </box-info>
+                    
+                    <box-info>
+                        <box-info-title>
+                            <h2>Total saída</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3 id="values_exits">R$----</h3>
+                        </box-info-value>                   
+                    </box-info>
+                    
+                </container-info>
+
+                <container-info>
+
+                    <box-info>
+
+                        <box-info-title>
+                            <h2>----</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3>R$----</h3>
+                        </box-info-value>
+
+                    </box-info>
+                    
+                    <box-info>
+                        <box-info-title>
+                            <h2>----</h2><h2>></h2>
+                        </box-info-title>
+
+                        <box-info-value>
+                            <h3>R$----</h3>
+                        </box-info-value>                   
+                    </box-info>
+                    
+                </container-info>
+
+
+            </section-info>
+
+        </article>
+
+        <!-- -------------------- -->
+
+    </main>
+
+</body>
+
+
+
+    <script src="{{ url_for('static', filename='js/dashboard/company/dashboard.js') }}" defer></script>
+</body>
+</html>

@@ -4,107 +4,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Beesiness</title>
-
-    <!-- Css Linkado -->
+    <meta name="description" content="Crie sua conta gratuita na Beesiness e comece a gerir o patrimônio da sua empresa.">
+    <title>Criar conta | Beesiness</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/user/register.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <!-- Icon da Aba do Navegador -->
     <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/png">
-
-    <!-- Fontes do Google: Roboto Slab -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="auth-layout">
+        <!-- Painel institucional (esquerda) -->
+        <aside class="auth-showcase" aria-label="Vantagens da Beesiness">
+            <svg class="showcase-path" viewBox="0 0 800 900" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M-40 160 C 160 70, 290 250, 470 160 S 710 50, 860 150" />
+                <path d="M-60 760 C 150 650, 310 830, 510 710 S 720 590, 860 690" />
+            </svg>
 
-    <!-- Modal  -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header"></div>
+            <div class="showcase-top">
+                <a href="/" class="brand" aria-label="Beesiness - voltar ao início">
+                    <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+                    <span>Beesiness</span>
+                </a>
+                <a href="/" class="back-link">← Voltar ao início</a>
+            </div>
 
+            <div class="showcase-center">
+                <span class="label">Comece gratuitamente</span>
+                <h2>Organize ativos, passivos e relatórios em <span class="accent">minutos.</span></h2>
+                <p>Crie sua conta pessoal para cadastrar sua empresa e ter visibilidade contábil sem planilhas dispersas.</p>
+
+                <ol class="showcase-steps">
+                    <li>
+                        <span class="step-idx">01</span>
+                        <div>
+                            <strong>Cadastro rápido e sem custo</strong>
+                            <span>Abra sua conta em poucos instantes e vincule suas empresas.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-idx">02</span>
+                        <div>
+                            <strong>Relatórios contábeis prontos</strong>
+                            <span>Balanço Patrimonial, DRE, Livro Diário, Razonete e Balancete.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="step-idx">03</span>
+                        <div>
+                            <strong>Segurança e permissões</strong>
+                            <span>Dados protegidos com criptografia e controle de acesso por perfil.</span>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="showcase-bottom">
+                <span>© 2024 Beesiness</span>
+                <span>Gestão de patrimônio para PMEs</span>
+            </div>
+        </aside>
+
+        <!-- Painel do formulário (direita) -->
+        <main class="auth-main">
+            <div class="mobile-topbar">
+                <a href="/" class="brand brand-dark">
+                    <img class="logo" src="{{ url_for('static', filename='images/Beesiness_logo.png') }}" alt="">
+                    <span>Beesiness</span>
+                </a>
+                <a href="/" class="back-link back-link-dark">← Início</a>
+            </div>
+
+            <div class="auth-card auth-card-wide">
+                <header class="auth-header">
+                    <span class="label label-dark">Nova conta</span>
+                    <h1>Crie sua conta.</h1>
+                    <p class="auth-switch">
+                        Já possui cadastro?
+                        <a href="/user/login">Fazer login</a>
+                    </p>
+                </header>
+
+                <div class="alert-error" id="message-error" role="alert" aria-live="polite"></div>
+
+                <form id="registerForm" action="/user/register" method="POST" novalidate>
+                    <div class="field">
+                        <label for="name">Nome completo</label>
+                        <input
+                            class="input"
+                            type="text"
+                            id="name"
+                            name="fullName"
+                            placeholder="Ex.: Maria Oliveira"
+                            autocomplete="name"
+                            required
+                        >
+                        <div class="msg-error" id="name-error"></div>
+                    </div>
+
+                    <div class="field">
+                        <label for="email">E-mail corporativo ou pessoal</label>
+                        <input
+                            class="input"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="voce@empresa.com.br"
+                            autocomplete="email"
+                            required
+                        >
+                        <div class="msg-error" id="email-error"></div>
+                    </div>
+
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="cpf">CPF</label>
+                            <input
+                                class="input"
+                                type="text"
+                                id="cpf"
+                                name="cpf"
+                                inputmode="numeric"
+                                maxlength="14"
+                                placeholder="000.000.000-00"
+                                required
+                            >
+                            <div class="msg-error" id="cpf-error"></div>
+                        </div>
+
+                        <div class="field">
+                            <label for="birthDate">Data de nascimento</label>
+                            <input
+                                class="input"
+                                type="date"
+                                id="birthDate"
+                                name="birthDate"
+                                min="1924-01-01"
+                                max="2999-12-31"
+                                required
+                            >
+                            <div class="msg-error" id="birthDate-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="password">Senha</label>
+                            <div class="password-wrap">
+                                <input
+                                    class="input"
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Mínimo 8 caracteres"
+                                    autocomplete="new-password"
+                                    required
+                                >
+                                <button type="button" class="toggle-pw" aria-label="Mostrar senha" data-target="password">
+                                    <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                    <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.4 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/>
+                                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/>
+                                        <line x1="2" y1="2" x2="22" y2="22"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="msg-error" id="password-error"></div>
+                        </div>
+
+                        <div class="field">
+                            <label for="confirmPassword">Confirme a senha</label>
+                            <div class="password-wrap">
+                                <input
+                                    class="input"
+                                    type="password"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    placeholder="Repita a senha"
+                                    autocomplete="new-password"
+                                    required
+                                >
+                                <button type="button" class="toggle-pw" aria-label="Mostrar confirmação de senha" data-target="confirmPassword">
+                                    <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                    <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.4 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94"/>
+                                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.4 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/>
+                                        <line x1="2" y1="2" x2="22" y2="22"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="msg-error" id="confirmPassword-error"></div>
+                        </div>
+                    </div>
+
+                    <ul class="pw-rules" id="pwRules" aria-label="Requisitos da senha">
+                        <li data-rule="len">8+ caracteres</li>
+                        <li data-rule="upper">Maiúscula</li>
+                        <li data-rule="lower">Minúscula</li>
+                        <li data-rule="num">Número</li>
+                        <li data-rule="spec">Caractere especial</li>
+                    </ul>
+
+                    <div class="terms-row">
+                        <div class="checkbox-wrap">
+                            <input
+                                class="checkbox-input"
+                                type="checkbox"
+                                id="flexCheckChecked"
+                                aria-label="Concordo com os Termos e Condições e a Política de Privacidade"
+                            >
+                            <label class="checkbox-box" for="flexCheckChecked"></label>
+                            <span class="terms-text">
+                                <label for="flexCheckChecked">Criando uma conta na Beesiness, você concorda com os</label>
+                                <button type="button" class="link-inline terms-conditions">Termos &amp; Condições</button>
+                                <label for="flexCheckChecked">e a</label>
+                                <button type="button" class="link-inline privacy-policy">Política de Privacidade</button>.
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="registroBtn" class="btn-submit register-btn" disabled>
+                        <span class="btn-label">Criar minha conta</span>
+                        <span class="btn-arrow" aria-hidden="true">→</span>
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Termos e Política de Privacidade -->
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+        <div class="modal-dialog">
+            <div class="modal-top">
+                <div class="modal-header" id="modalTitle"></div>
+                <button type="button" class="modal-close" id="modalClose" aria-label="Fechar janela">×</button>
+            </div>
             <div class="modal-body"></div>
         </div>
     </div>
-    <photo >
-        
-    </photo>
-    <main>
-        <section class="welcome-section">
 
-            <welcome-box class="welcome-box">
-                <h1>Seja bem-vindo(a)!</h1>
-            </welcome-box>
-
-        </section>
-        <form id="registerForm" action="/user/register" method="post">
-            <article class="form-article">
-                <section class="form-section">  <!-- email -->
-
-                    <div class="msg">E-mail</div>
-                        <input class="form-box" type="text" id="email" name="email" required>
-                    <div class="msg-error" id="email-error"></div>
-                </section>
-
-                <section class="form-section"> <!-- cpf -->
-                    <div class="msg">CPF</div>
-                        <input class="form-box" type="text" id="cpf" name="cpf" maxlength="14" required>
-                    <div class="msg-error" id="cpf-error"></div>
-                </section>
-            </article>
-
-            <article class="form-article">
-                <section class="form-section-fullname"> <!-- fullname-->
-                    <div class="msg">Nome Completo</div>
-                        <input class="form-box" type="text" id="name" name="fullName" required>  
-                    <div class="msg-error" id="name-error"></div>
-                </section>
-
-                <section class="form-section-birthdate"> <!-- birthdate -->
-                    <div class="msg">Data de nascimento</div>   
-                        <input class="form-box-birthdate" type="date" id="birthDate" name="birthDate" min="1924-01-01" max="2999-12-31" maxlength="10" required>
-                    <div class="msg-error" id="birthDate-error"></div>
-                </section>
-            </article>
-
-            <article class="form-article">
-                <section class="form-section"> <!-- password -->
-                    <div class="msg">Senha</div>
-                        <input class="form-box" type="password" id="password" name="password" required>
-                    <div class="msg-error" id="password-error"></div>
-                </section>
-
-                <section class="form-section"> <!-- confirm password -->
-                    <div class="msg">Confirme a senha</div>
-                        <input class="form-box" type="password" id="confirmPassword" name="confirmPassword" required>
-                    <div class="msg-error" id="confirmPassword-error"></div>
-                </section>
-            </article>
-
-            <article class="form-article-end">
-                <section class="form-section-terms"> <!-- terms -->
-                    <div class="form-check-terms-box"> 
-                        <div class="form-check-box">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                            <label class="form-check-label" for="flexCheckChecked">
-                        </div>
-                        Criando uma conta no Beesiness, você aceita os 
-                        <span class="terms-conditions">Termos & Condições</span> e a
-                        <span class="privacy-policy"">Política de Privacidade</span>
-                    </div>
-
-                    <div class="msg-error"></div>
-                </section>
-            </article>
-
-            <article class="form-article-button">
-                <button type="submit" id="registroBtn" class="form-section-button register-btn" disabled>Registrar</button> 
-                <button type="submit" id="login-btn" class="login-button" href="/user/login">Já tem uma conta? Faça login!</button>
-            </article>
-        </form>
-    </main>
     <script src="{{ url_for('static', filename='js/user/register.js') }}"></script>
 </body>
+
+</html>

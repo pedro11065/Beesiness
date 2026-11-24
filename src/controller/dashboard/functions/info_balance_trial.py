@@ -1,59 +1,52 @@
-from flask_login import current_user
-from flask import jsonify
 from datetime import datetime
+from flask import jsonify
 
 from src.model.database.company.patrimony.historic.search import db_search_historic
 
+
 def info_balance_trial(company_id, cnpj):
     try:
-        # Busca os dados históricos do banco de dados
         historic_data = db_search_historic(company_id)
         if historic_data is False:
             return jsonify({'message': 'Erro ao pesquisar no banco de dados, tente mais tarde.'}), 500
 
         if not historic_data:
-            return jsonify({'message': 'Nenhum dado registrado no banco de dados.'}), 404
+            return jsonify({'assets': {}, 'liabilities': {}, 'entries': []}), 200
 
-        # Estruturas para armazenar os dados filtrados
         assets = {}
         liabilities = {}
+        entries = []
 
-        # Processa os dados históricos
         for item in historic_data:
-            # Ignora itens específicos
-            if item['name'] == '#!@cash@!#':
+            if item.get('name') == '#!@cash@!#' or item.get('ignore') is True:
                 continue
 
-            # Formata a data de criação, se disponível
-            if 'date' in item:
-                try:
-                    item['date'] = datetime.fromisoformat(item['date']).strftime('%Y-%m-%d')
-                except ValueError:
-                    item['date'] = None  # Ignora se a data estiver no formato errado
+            raw_date = str(item.get('date') or '')
+            try:
+                clean_date = datetime.fromisoformat(raw_date[:10]).strftime('%Y-%m-%d')
+            except ValueError:
+                clean_date = None
 
-            # Classifica os itens como assets ou liabilities
-            if item['type'] == 'asset':
-                if item['name'] not in assets:
-                    assets[item['name']] = []  # Inicializa a lista se não existir
-                assets[item['name']].append({
-                    "date": item.get('date'),
-                    "value": item['value']
-                })
+            val = float(item.get('value') or 0)
+            entry_obj = {
+                'date': clean_date,
+                'value': val,
+                'event': item.get('event') or '',
+                'class': item.get('class') or '',
+            }
 
-            elif item['type'] == 'liability':
-                if item['name'] not in liabilities:
-                    liabilities[item['name']] = []  # Inicializa a lista se não existir
-                liabilities[item['name']].append({
-                    "date": item.get('date'),
-                    "value": item['value']
-                })
+            if item.get('type') == 'asset':
+                assets.setdefault(item['name'], []).append(entry_obj)
+                entries.append({**entry_obj, 'name': item['name'], 'side': 'debit'})
+            elif item.get('type') == 'liability':
+                liabilities.setdefault(item['name'], []).append(entry_obj)
+                entries.append({**entry_obj, 'name': item['name'], 'side': 'credit'})
 
-        # Retorna os dados como JSON
         return jsonify({
             'assets': assets,
-            'liabilities': liabilities
-        })
+            'liabilities': liabilities,
+            'entries': entries,
+        }), 200
 
     except Exception as e:
-        # Retorna um erro genérico em caso de exceção
         return jsonify({'error': str(e)}), 500

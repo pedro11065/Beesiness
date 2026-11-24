@@ -1,280 +1,194 @@
-document.addEventListener('DOMContentLoaded', async function () {
-    const main = document.getElementById('main');
-    const loading = document.getElementById('loading');
-    const dayBtn = document.getElementById('day-btn');
-    const monthBtn = document.getElementById('month-btn');
+let rawEntries = [];
+let currentView = "year";
 
-    let currentView = 'month'; // Default view is by month
+const MONTHS_FULL = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+];
 
-    function getCnpjFromUrl() {
-        const url = window.location.pathname;
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-    }
+function getCnpjFromUrl() {
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 1] || "";
+}
 
-    function formatValueToMoney(value) {
-        if(value <= 0) return '---';
-        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
+function formatMoney(val) {
+    const num = Number(val) || 0;
+    return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
 
-    // Agrupa por mês, depois por dia dentro de cada mês
-    function groupByMonthAndDay(data) {
-        const grouped = {};
-        const processEntries = (entries, type) => {
-            Object.keys(entries).forEach(account => {
-                entries[account].forEach(item => {
-                    const date = new Date(item.date);
-                    date.setHours(date.getHours() + 3); // Ajuste para o horário de Brasília
-                    const month = date.toLocaleString('pt-BR', { month: 'long' });
-                    const day = date.getDate();
+function escapeHTML(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : String(str);
+    return div.innerHTML;
+}
 
-                    if (!grouped[month]) {
-                        grouped[month] = {};
-                    }
-
-                    if (!grouped[month][day]) {
-                        grouped[month][day] = { accounts: {}, totalAssets: 0, totalLiabilities: 0 };
-                    }
-
-                    if (!grouped[month][day].accounts[account]) {
-                        grouped[month][day].accounts[account] = { debit: 0, credit: 0 };
-                    }
-
-                    if (type === 'assets') {
-                        grouped[month][day].accounts[account].debit += item.value;
-                        grouped[month][day].totalAssets += item.value;
-                    } else {
-                        grouped[month][day].accounts[account].credit += item.value;
-                        grouped[month][day].totalLiabilities += item.value;
-                    }
+function normalizeEntriesFromLegacy(data) {
+    if (Array.isArray(data.entries)) return data.entries;
+    const list = [];
+    const pushSide = (dict, side) => {
+        Object.entries(dict || {}).forEach(([name, items]) => {
+            (items || []).forEach((it) => {
+                list.push({
+                    name,
+                    date: it.date,
+                    value: Number(it.value) || 0,
+                    side
                 });
             });
-        };
-
-        processEntries(data.assets, 'assets');
-        processEntries(data.liabilities, 'liabilities');
-        return grouped;
-    }
-
-    function groupByMonth(data) {
-        const grouped = {};
-        const processEntries = (entries, type) => {
-            Object.keys(entries).forEach(account => {
-                entries[account].forEach(item => {
-                    const date = new Date(item.date);
-                    date.setHours(date.getHours() + 3); // Ajuste para o horário de Brasília
-                    const month = date.toLocaleString('pt-BR', { month: 'long' });
-
-                    if (!grouped[month]) {
-                        grouped[month] = { accounts: {}, totalAssets: 0, totalLiabilities: 0 };
-                    }
-
-                    if (!grouped[month].accounts[account]) {
-                        grouped[month].accounts[account] = { debit: 0, credit: 0 };
-                    }
-
-                    if (type === 'assets') {
-                        grouped[month].accounts[account].debit += item.value;
-                        grouped[month].totalAssets += item.value;
-                    } else {
-                        grouped[month].accounts[account].credit += item.value;
-                        grouped[month].totalLiabilities += item.value;
-                    }
-                });
-            });
-        };
-
-        processEntries(data.assets, 'assets');
-        processEntries(data.liabilities, 'liabilities');
-        return grouped;
-    }
-
-    function renderDataByMonthAndDay(groupedData) {
-        main.innerHTML = ''; // Limpa o conteúdo antes de renderizar
-
-        console.log(groupedData)
-
-        Object.keys(groupedData).forEach(month => {
-            const monthDiv = document.createElement('section');
-            monthDiv.className = 'month-container';
-
-            // Cabeçalho do mês
-            monthDiv.innerHTML = `
-                <header class="month-title-container">
-                    <div class="month-box">
-                        <h1>${month.charAt(0).toUpperCase() + month.slice(1)}</h1>
-                    </div>
-                </header>
-            `;
-
-            // Agrupar os dados por dia
-            Object.keys(groupedData[month]).forEach(day => {
-                const { accounts, totalAssets, totalLiabilities } = groupedData[month][day];
-                const dayDiv = document.createElement('section');
-                dayDiv.className = 'day-container';
-
-                // Cabeçalho do dia
-                dayDiv.innerHTML = `
-                    <header class="day-title-container">
-                        <div class="day-box">
-                            <h2>Dia ${day.padStart(2, '0')}</h2>
-                        </div>
-                    </header>
-                `;
-
-                // Corpo do dia
-                function renderAccounts(accounts, totalAssets, totalLiabilities) {
-                    return `
-                        <section class="accounts-container">
-                            <header class="account-title">
-                                <h2>Contas</h2>
-                            </header>
-                            ${Object.entries(accounts)
-                                .map(([name, { debit, credit }]) => `
-                                    <div class="data_box">${name}</div>
-                                `).join('')}
-                            <div class="data_box total-row">Total</div>
-                        </section>
-
-                        <section class="accounts-container">
-                            <header class="debtor-title">
-                                <h2>Débito</h2>
-                            </header>
-                            ${Object.entries(accounts)
-                                .map(([name, { debit }]) => `
-                                    <div class="data_box">${formatValueToMoney(debit)}</div>
-                                `).join('')}
-                            <div class="data_box total-row">${formatValueToMoney(totalAssets)}</div>
-                        </section>
-
-                        <section class="accounts-container">
-                            <header class="creditor-title">
-                                <h2>Crédito</h2>
-                            </header>
-                            ${Object.entries(accounts)
-                                .map(([name, { credit }]) => `
-                                    <div class="data_box">${formatValueToMoney(credit)}</div>
-                                `).join('')}
-                            <div class="data_box total-row">${formatValueToMoney(totalLiabilities)}</div>
-                        </section>
-                    `;
-                }
-
-                const balanceDiv = document.createElement('main');
-                balanceDiv.className = 'balance-container';
-                balanceDiv.innerHTML = renderAccounts(accounts, totalAssets, totalLiabilities);
-                dayDiv.appendChild(balanceDiv);
-                monthDiv.appendChild(dayDiv);
-            });
-
-            main.appendChild(monthDiv);
         });
+    };
+    pushSide(data.assets, "debit");
+    pushSide(data.liabilities, "credit");
+    return list;
+}
+
+function renderTrialBalance() {
+    const container = document.getElementById("tbContent");
+    const emptyEl = document.getElementById("tbEmpty");
+    const q = (document.getElementById("tbSearch").value || "").trim().toLowerCase();
+
+    const filtered = rawEntries.filter((e) => !q || String(e.name || "").toLowerCase().includes(q));
+    container.innerHTML = "";
+
+    if (filtered.length === 0) {
+        emptyEl.hidden = false;
+        return;
     }
+    emptyEl.hidden = true;
 
-    function renderDataByMonth(groupedData) {
-        main.innerHTML = ''; // Limpa o conteúdo antes de renderizar
-
-        Object.keys(groupedData).forEach(month => {
-            const { accounts, totalAssets, totalLiabilities } = groupedData[month];
-            const monthDiv = document.createElement('section');
-            monthDiv.className = 'month-container';
-
-            // Cabeçalho do mês
-            monthDiv.innerHTML = `
-                <header class="month-title-container">
-                    <div class="month-box">
-                        <h1>${month.charAt(0).toUpperCase() + month.slice(1)}</h1>
-                    </div>
-                    <div class="month-box">
-                        <h1>${formatValueToMoney(totalAssets - totalLiabilities)}</h1>
-                    </div>
-                </header>
-            `;
-
-            function renderAccounts(accounts, totalAssets, totalLiabilities) {
-                return `
-                    <section class="accounts-container">
-                        <header class="account-title">
-                            <h2>Contas</h2>
-                        </header>
-                        ${Object.entries(accounts)
-                            .map(([name, { debit, credit }]) => `
-                                <div class="data_box">${name}</div>
-                            `).join('')}
-                        <div class="data_box total-row">Total</div>
-                    </section>
-
-                    <section class="accounts-container">
-                        <header class="debtor-title">
-                            <h2>Débito</h2>
-                        </header>
-                        ${Object.entries(accounts)
-                            .map(([name, { debit }]) => `
-                                <div class="data_box">${formatValueToMoney(debit)}</div>
-                            `).join('')}
-                        <div class="data_box total-row">${formatValueToMoney(totalAssets)}</div>
-                    </section>
-
-                    <section class="accounts-container">
-                        <header class="creditor-title">
-                            <h2>Crédito</h2>
-                        </header>
-                        ${Object.entries(accounts)
-                            .map(([name, { credit }]) => `
-                                <div class="data_box">${formatValueToMoney(credit)}</div>
-                            `).join('')}
-                        <div class="data_box total-row">${formatValueToMoney(totalLiabilities)}</div>
-                    </section>
-                `;
-            }
-
-            const balanceDiv = document.createElement('main');
-            balanceDiv.className = 'balance-container';
-            balanceDiv.innerHTML = renderAccounts(accounts, totalAssets, totalLiabilities);
-            monthDiv.appendChild(balanceDiv);
-            main.appendChild(monthDiv);
-        });
-    }
-
-    async function fetchData() {
-        try {
-            const cnpj = getCnpjFromUrl();
-            const response = await fetch(`/dashboard/trial-balance/${cnpj}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-    
-    
-            const data = await response.json();
-
-            loading.style.display = 'none';
-
-            // Agrupar os dados de acordo com a visualização escolhida
-            let groupedData;
-            if (currentView === 'month') {
-                groupedData = groupByMonth(data);
-                renderDataByMonth(groupedData);
+    const periods = new Map();
+    filtered.forEach((item) => {
+        const dStr = String(item.date || "");
+        let key = "Consolidado";
+        let title = "Consolidado geral";
+        if (/^\d{4}-\d{2}-\d{2}/.test(dStr)) {
+            const [y, m, d] = dStr.slice(0, 10).split("-").map(Number);
+            if (currentView === "year") {
+                key = `${y}`;
+                title = `Exercício ${y}`;
+            } else if (currentView === "month") {
+                key = `${y}-${String(m).padStart(2, "0")}`;
+                title = `${MONTHS_FULL[m - 1]} de ${y}`;
             } else {
-                groupedData = groupByMonthAndDay(data);
-                renderDataByMonthAndDay(groupedData);
+                key = `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                title = `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
             }
-        } catch (error) {
-            console.error("Erro ao carregar os dados:", error);
         }
+        if (!periods.has(key)) periods.set(key, { title, accounts: new Map() });
+        const accMap = periods.get(key).accounts;
+        if (!accMap.has(item.name)) accMap.set(item.name, { debit: 0, credit: 0 });
+        const acc = accMap.get(item.name);
+        if (item.side === "debit") acc.debit += Number(item.value) || 0;
+        else acc.credit += Number(item.value) || 0;
+    });
+
+    const sortedKeys = Array.from(periods.keys()).sort().reverse();
+    sortedKeys.forEach((k) => {
+        const period = periods.get(k);
+        let totDebit = 0;
+        let totCredit = 0;
+        const rows = Array.from(period.accounts.entries()).sort((a, b) => (b[1].debit + b[1].credit) - (a[1].debit + a[1].credit));
+
+        rows.forEach(([, v]) => {
+            totDebit += v.debit;
+            totCredit += v.credit;
+        });
+
+        const section = document.createElement("section");
+        section.className = "tb-period-card";
+        section.innerHTML = `
+            <header class="tb-period-head">
+                <h2>${escapeHTML(period.title)}</h2>
+                <span>${rows.length} ${rows.length === 1 ? "conta" : "contas"}</span>
+            </header>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Conta contábil</th>
+                            <th>Natureza do saldo</th>
+                            <th class="num-col">Movimento Débito</th>
+                            <th class="num-col">Movimento Crédito</th>
+                            <th class="num-col">Saldo apurado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows
+                            .map(([name, v]) => {
+                                const net = v.debit - v.credit;
+                                const natBadge =
+                                    net > 0
+                                        ? `<span class="badge badge-pos">Devedor</span>`
+                                        : net < 0
+                                            ? `<span class="badge badge-gold">Credor</span>`
+                                            : `<span class="badge">Zerado</span>`;
+                                return `
+                                    <tr>
+                                        <td class="td-strong">${escapeHTML(name)}</td>
+                                        <td>${natBadge}</td>
+                                        <td class="num-col">${v.debit > 0 ? formatMoney(v.debit) : "—"}</td>
+                                        <td class="num-col">${v.credit > 0 ? formatMoney(v.credit) : "—"}</td>
+                                        <td class="num-col">${formatMoney(Math.abs(net))}</td>
+                                    </tr>
+                                `;
+                            })
+                            .join("")}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">Totais do período</td>
+                            <td class="num-col">${formatMoney(totDebit)}</td>
+                            <td class="num-col">${formatMoney(totCredit)}</td>
+                            <td class="num-col">${formatMoney(totDebit - totCredit)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        `;
+        container.appendChild(section);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const loading = document.getElementById("loading");
+    const main = document.getElementById("main");
+    const cnpj = getCnpjFromUrl();
+
+    document.getElementById("tbSearch").addEventListener("input", renderTrialBalance);
+    document.querySelectorAll("[data-view]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            currentView = btn.dataset.view;
+            document.querySelectorAll("[data-view]").forEach((b) => b.classList.toggle("is-active", b === btn));
+            renderTrialBalance();
+        });
+    });
+
+    try {
+        const response = await fetch(`/dashboard/trial-balance/${cnpj}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        });
+        if (!response.ok && response.status !== 404) throw new Error("Falha ao buscar balancete");
+
+        const data = response.status === 404 ? { assets: {}, liabilities: {} } : await response.json();
+        rawEntries = normalizeEntriesFromLegacy(data);
+
+        const totD = rawEntries.filter((e) => e.side === "debit").reduce((s, e) => s + e.value, 0);
+        const totC = rawEntries.filter((e) => e.side === "credit").reduce((s, e) => s + e.value, 0);
+        const uniqueAccs = new Set(rawEntries.map((e) => e.name)).size;
+
+        document.getElementById("tbSumDebit").textContent = formatMoney(totD);
+        document.getElementById("tbSumCredit").textContent = formatMoney(totC);
+        document.getElementById("tbSumNet").textContent = formatMoney(totD - totC);
+        document.getElementById("tbAccountCount").textContent = String(uniqueAccs);
+
+        loading.hidden = true;
+        main.hidden = false;
+        renderTrialBalance();
+    } catch (error) {
+        console.error("Erro ao carregar balancete:", error);
+        loading.hidden = true;
+        main.hidden = false;
+        document.getElementById("tbEmpty").hidden = false;
     }
-
-    dayBtn.addEventListener('click', () => {
-        currentView = 'day';
-        fetchData();
-    });
-
-    monthBtn.addEventListener('click', () => {
-        currentView = 'month';
-        fetchData();
-    });
-
-    // Inicializa a página com os dados do mês
-    fetchData();
 });
